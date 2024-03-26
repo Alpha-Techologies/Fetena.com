@@ -1,11 +1,12 @@
-const express = require('express')
+// const express = require('express')
 // const bodyParser = require('body-parser')
 // const cors = require('cors')
 
 // const db = require('./db')
 // const movieRouter = require('./routes/movie-router')
 
-const app = express()
+// const app = express()
+const app = require("./app");
 const apiPort = 8080
 
 // app.use(bodyParser.urlencoded({ extended: true }))
@@ -15,7 +16,7 @@ const apiPort = 8080
 // db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 app.get('/', (req, res) => {
-    res.send('Hello !')
+    res.send('Hello world!')
 })
 
 // app.use('/api', movieRouter)

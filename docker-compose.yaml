@@ -10,7 +10,7 @@ services:
     command: npm run dev
     volumes:
       - ./server/:/usr/src/app
-      - /usr/src/app/node_modules
+      # - /usr/src/app/node_modules
     ports:
       - "8080:8080"
     depends_on:
