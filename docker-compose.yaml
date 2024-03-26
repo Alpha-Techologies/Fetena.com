@@ -22,6 +22,7 @@ services:
       - app-network
   mongo:
     image: mongo:latest
+    command: mongod --quiet --logpath /dev/null 
     # environment:  // If Mongo Authorization is need to be enabled
     #   MONGO_INITDB_ROOT_USERNAME: root
     #   MONGO_INITDB_ROOT_PASSWORD: rootpassword

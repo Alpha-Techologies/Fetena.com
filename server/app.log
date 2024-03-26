@@ -1,2 +1,0 @@
-2024-03-26T19:39:41.166Z - [INFO   ] - DBconnection succcessful
-2024-03-26T19:39:41.213Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
