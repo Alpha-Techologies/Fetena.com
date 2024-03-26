@@ -15,7 +15,7 @@ const apiPort = 8080
 // db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 app.get('/', (req, res) => {
-    res.send('Hellokjmnknjkkjhk Worlnbd!')
+    res.send('Hello !')
 })
 
 // app.use('/api', movieRouter)
