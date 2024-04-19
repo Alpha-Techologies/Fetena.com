@@ -2,7 +2,7 @@ import * as React from "react";
 import { Icon } from '@iconify/react';
 
 
-function WhyTalenthubEthiopia() {
+function WhyChooseUsSection() {
   const reasons = [
     {
       image: "https://cdn.builder.io/api/v1/image/assets/TEMP/b60da799b4359ad9e95668c90a82d4d959ba6e8d5b590b67104a6daa6d8a57fc?apiKey=da0e5699a0964f23ab3a2091e7f935a3&",
@@ -39,11 +39,11 @@ function WhyTalenthubEthiopia() {
 <>
 
    
-    <section className="py-24 lg:px-32 md:p-16 p-4">
+    <section className="py-16 px-32 ">
     <h2 className="text-4xl font-bold leading-9 text-black max-md:max-w-full text-left">
               Why fetena.com
             </h2>
-      <div className="flex flex-col lg:flex-row gap-8 items-center justify-center">
+      <div className="flex gap-8 items-center justify-center">
 
 
       
@@ -57,7 +57,7 @@ function WhyTalenthubEthiopia() {
           />
   
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4">
 
       {reasons.map((reason, index) => (
                 <ReasonCard key={index} reason={reason} />
@@ -93,4 +93,4 @@ function ReasonCard({ reason }) {
   );
 }
 
-export default WhyTalenthubEthiopia;
+export default WhyChooseUsSection;

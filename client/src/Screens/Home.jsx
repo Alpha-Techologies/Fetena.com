@@ -1,5 +1,5 @@
 import HeroSection from "../Components/HeroSection"
-import WhyTalenthubEthiopia from "../Components/WhyTalenthubEthiopia"
+import WhyChooseUsSection from "../Components/WhyChooseUsSection"
 import Feature1 from "../Components/Feature1"
 import Feature2 from "../Components/Feature2"
 import HowItWorks from "../Components/HowItWorks"
@@ -14,7 +14,7 @@ const Home = () => {
     <>
       <NavBar />
     <HeroSection />
-    <WhyTalenthubEthiopia />
+    <WhyChooseUsSection />
     <Feature1 />
     <Feature2 />
     <Feature1 />
