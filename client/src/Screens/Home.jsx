@@ -5,9 +5,9 @@ import Feature2 from "../Components/Feature2"
 import HowItWorks from "../Components/HowItWorks"
 import Cta from "../Components/Cta"
 
-import NavBar from "../Components/NavBar"
-import Footer from "../Components/Footer"
-import TestimonySection from "../Components/TestimonySection"
+import NavBar from "../Components/NavBar";
+import Footer from "../Components/Footer";
+import TestimonySection from "../Components/TestimonySection";
 
 const Home = () => {
   return (
@@ -20,10 +20,10 @@ const Home = () => {
     <Feature1 />
     <Feature2 />
       <TestimonySection />
-    <HowItWorks />
-    <Cta />
+      <HowItWorks />
+      <Cta />
       <Footer />
     </>
-  )
-}
-export default Home
+  );
+};
+export default Home;

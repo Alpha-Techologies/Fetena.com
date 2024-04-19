@@ -1,5 +1,6 @@
 // React Related Imports
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // Components Imports
 import Button from './Button'
@@ -24,7 +25,9 @@ const NavBar = () => {
           alt='Fetena.com Logo'
         />
         <div className='flex md:order-2 space-x-3 md:space-x-0 '>
-          <Button text='Get started' />
+          <Link to='/sign-in'>
+            <Button text='Get started' />
+          </Link>
           <div className='md:hidden'>
             <Hamburger
               toggled={isOpen}
@@ -32,7 +35,10 @@ const NavBar = () => {
             />
           </div>
         </div>
-        <div className={` ${isOpen ? "block" : "hidden"} items-center justify-between  w-full md:flex md:w-auto md:order-1`}>
+        <div
+          className={` ${
+            isOpen ? "block" : "hidden"
+          } items-center justify-between  w-full md:flex md:w-auto md:order-1`}>
           <ul className='flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white '>
             <li>
               <a
