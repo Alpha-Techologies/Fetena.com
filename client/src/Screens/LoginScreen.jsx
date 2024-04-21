@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import fetena_logo from '../assets/fetena_logo.png'
-import { Button, Checkbox, Form, Input, Divider } from "antd";
+import { Button, Form, Input, Divider } from "antd";
 import { Icon } from '@iconify/react';
 
 const LoginScreen = () => {
