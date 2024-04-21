@@ -5,6 +5,10 @@ import { Route, Routes } from "react-router-dom";
 import Home from "../Screens/Home";
 import RegistrationScreen from "../Screens/RegistrationScreen";
 import LoginScreen from "../Screens/LoginScreen";
+import ForgotPasswordScreen from "../Screens/ForgotPasswordScreen";
+import OTPScreen from "../Screens/OTPScreen";
+import VerifyEmailScreen from "../Screens/VerifyEmailScreen";
+import ResetPasswordScreen from "../Screens/ResetPasswordScreen";
 import DashboardScreen from "../Screens/DashboardScreen";
 import ProtectedRoutes from '../Screens/ProtectedRoutes'
 
@@ -26,6 +30,22 @@ const AllRoutes = () => {
       <Route
         path='sign-in'
         element={<LoginScreen />}
+      />
+      <Route
+        path='forgot-password'
+        element={<ForgotPasswordScreen />}
+      />
+      <Route
+        path='verify-otp'
+        element={<OTPScreen />}
+      />
+      <Route
+        path='verify-email'
+        element={<VerifyEmailScreen />}
+      />
+      <Route
+        path='reset-password'
+        element={<ResetPasswordScreen/>}
       />
       <Route
         path='register'
