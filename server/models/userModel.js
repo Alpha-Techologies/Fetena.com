@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+// const Schema = mongoose.Schema;
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
@@ -153,6 +153,13 @@ const user = new mongoose.Schema(
     passwordResetExpires: {
       type: Date,
     },
+    activationToken: {
+      type: String,
+      default: undefined,
+    },
+    activationTokenExpires: {
+      type: Date,
+    },
   },
   {
     toJSON: {
@@ -220,6 +227,23 @@ user.methods.createPasswordResetToken = function () {
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
+};
+
+user.methods.createActivationToken = function () {
+  const activationToken = crypto.randomBytes(32).toString("hex");
+
+  this.activationToken = crypto
+    .createHash("sha256")
+    .update(activationToken)
+    .digest("hex");
+
+  // console.log({
+  //   resetToken
+  // }, this.passwordResetToken)
+
+  this.activationTokenExpires = Date.now() + 10 * 60 * 1000;
+
+  return activationToken;
 };
 
 // user.toggleMessage = function (id) {

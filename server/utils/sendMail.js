@@ -42,7 +42,7 @@ module.exports = class Email {
   async send(template, subject, password) {
     //1) render html based on template
     const html = pug.renderFile(
-      `${__dirname}/../templates/email/${template}.pug`,
+      `${__dirname}/../email/${template}.pug`,
       {
         firstName: this.firstName,
         email: this.to,
@@ -68,7 +68,7 @@ module.exports = class Email {
   async sendWelcome(password) {
     await this.send(
       "welcome",
-      `Welcome to the AASTU'S Rock Library`,
+      `Welcome to the Fetena.com`,
       (password = password)
     );
   }
@@ -76,6 +76,13 @@ module.exports = class Email {
   async sendPasswordReset() {
     await this.send(
       "passwordReset",
+      `Your password reset token is valid for 10 minutes`
+    );
+  }
+
+  async sendActivationToken() {
+    await this.send(
+      "activationToken",
       `Your password reset token is valid for 10 minutes`
     );
   }
