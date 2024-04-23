@@ -61,12 +61,10 @@ router.patch("/updatePassword", protect, updatePassword);
 router.patch("/updateMe", protect, updateMe);
 router.patch("/deleteMe", protect, deleteMe);
 router.patch("/activate/:token", activateAccount);
-
-
 // verify-email
+
 // OTP
 // LOGIN WITH GOOGLE
-// 
 
 // router.get(
 //   "/image/:filename",
