@@ -39,11 +39,11 @@ function WhyChooseUsSection() {
 <>
 
    
-    <section className="py-16 px-32 ">
+    <section className="py-16 px-16 md:px-32 ">
     <h2 className="text-4xl font-bold leading-9 text-black max-md:max-w-full text-left">
               Why fetena.com
             </h2>
-      <div className="flex gap-8 items-center justify-center">
+      <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
 
 
       
@@ -57,7 +57,7 @@ function WhyChooseUsSection() {
           />
   
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
       {reasons.map((reason, index) => (
                 <ReasonCard key={index} reason={reason} />
@@ -79,7 +79,7 @@ function ReasonCard({ reason }) {
   
 
 <article className="group flex flex-col justify-center items-start py-7 pr-12 pl-6 leading-5 text-black bg-gray-100 rounded-xl max-w-[304px] transition-all duration-300 hover:bg-blue-900 hover:text-white hover:scale-105">
-  <div className="aspect-square w-[55px] h-[55px] bg-blue-800 rounded-full flex justify-center items-center text-white group-hover:bg-white group-hover:text-blue-900">
+  <div className=" border aspect-square w-[55px] h-[55px] bg-blue-900 rounded-full flex justify-center items-center text-white group-hover:border-white group-hover:text-white ">
     <Icon icon="mdi-light:home" className="text-3xl font-bold transition-colors duration-300" />
   </div>
   <h3 className="mt-6 text-base font-medium">

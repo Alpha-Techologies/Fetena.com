@@ -21,7 +21,7 @@ const LoginScreen = () => {
           <Link to={'/register'} className='text-primary-500 hover:underline'>Sign up</Link>
         </p>
       </div>
-      <div className='flex flex-col gap-4 '>
+      <div className='flex flex-col gap-4'>
         <h2 className='text-md font-semibold '>Log In with your Credentials</h2>
         <Form>
           <Form.Item
@@ -60,11 +60,11 @@ const LoginScreen = () => {
           <Divider> or </Divider>
           <div className='flex flex-col gap-2'>
             <h2 className='text-md font-semibold'>Log In with your Socials</h2>
-            <div className='flex items-center gap-4 border border-[#DCDFE4] px-8 rounded-[8px] py-1 cursor-pointer '>
+            <div className='flex justify-center items-center gap-4 border border-[#DCDFE4] px-8 rounded-[8px] py-1 cursor-pointer '>
               <Icon icon='devicon:google' />
               <span>Continue with Google</span>
             </div>
-            <div className='flex items-center gap-4 border border-[#DCDFE4] px-8 rounded py-1 cursor-pointer'>
+            <div className='flex justify-center items-center gap-4 border border-[#DCDFE4] px-8 rounded py-1 cursor-pointer'>
               <Icon icon='devicon:linkedin' />
               <span>Continue with LinkedIn</span>
             </div>
