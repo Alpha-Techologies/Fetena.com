@@ -3,6 +3,7 @@ const express = require("express");
 // const authController = require("./../Controller/authController");
 // const userController = require("./../Controller/userController");
 const {
+  log,
   login,
   logout,
   forgotPassword,
@@ -53,7 +54,8 @@ router
     .route("/backup")
     .get(zip)
   
-router.get("/", protect, getAllUsers);
+router.get("/", log);
+// router.get("/", protect, getAllUsers);
 router.get("/me", protect, getMe, getUser);
 router.get("/logout", logout);
 router.get("/myEdits", protect);//getMyEdits
