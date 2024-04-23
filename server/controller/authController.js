@@ -279,12 +279,12 @@ exports.activateAccount = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    next(APIError("Verification Failed.", StatusCodes.UNAUTHORIZED))
+    next(new APIError("Verification Failed.", StatusCodes.UNAUTHORIZED))
     
   }
   
   if (user.verificationToken !== verificationToken) {
-    next(APIError("Verification Failed.", StatusCodes.UNAUTHORIZED))
+    next(new APIError("Verification Failed.", StatusCodes.UNAUTHORIZED))
 
   }
 
