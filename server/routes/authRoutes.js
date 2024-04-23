@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const resetPassword = require("../auth/resetPassword");
-const updatePassword = require("../auth/updatePassword");
-const forgotPassword = require("../auth/forgotPassword");
+import '../controller/auth'
+
 
 
 router.post("/forgotPassword", validationRules[4], forgotPassword);

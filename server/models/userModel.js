@@ -141,13 +141,17 @@ const user = new mongoose.Schema(
     passwordResetExpires: {
       type: Date,
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
     activationToken: {
       type: String,
       default: undefined,
     },
-    activationTokenExpires: {
-      type: Date,
-    },
+    // activationTokenExpires: {
+    //   type: Date,
+    // },
   },
   {
     toJSON: {
@@ -174,7 +178,7 @@ user.pre("save", function (next) {
 
       // override the cleartext password with the hashed one
       user.password = hash;
-      // user.passwordConfirm = hash;
+      // user.passwordConfirm = hash; 
       next();
     });
   });
@@ -229,7 +233,7 @@ user.methods.createActivationToken = function () {
   //   resetToken
   // }, this.passwordResetToken)
 
-  this.activationTokenExpires = Date.now() + 10 * 60 * 1000;
+  // this.activationTokenExpires = Date.now() + 10 * 60 * 1000;
 
   return activationToken;
 };

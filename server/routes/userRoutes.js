@@ -9,7 +9,7 @@ const {
   signUp,
   protect,
   activateAccount
-} = require("./../controller/authController");
+} = require("../controller/authController");
 
 const {
   getAllUsers,
@@ -22,12 +22,15 @@ const {
   getUser,
   filterUserUpdateFields,
   // getProfile,
-} = require("./../controller/userController");
+} = require("../controller/userController");
 
-const {zip} = require("./../utils/zip")
+const {zip} = require("../utils/zip")
 
 const { validationRules, checkId } = require("../lib/validation");
 const { login } = require("../controller/auth/login");
+const { updatePassword } = require("../controller/auth");
+
+
 // const {
 //   getUserProfile,
 //   uploadUserProfile,
@@ -47,7 +50,6 @@ router
     .route("/backup")
     .get(zip)
   
-router.get("/", log);
 // router.get("/", protect, getAllUsers);
 router.get("/me", protect, getMe, getUser);
 router.get("/logout", logout);
@@ -62,7 +64,8 @@ router.post("/login", validationRules[3], login);
 router.patch("/updatePassword", protect, updatePassword);
 router.patch("/updateMe", protect, updateMe);
 router.patch("/deleteMe", protect, deleteMe);
-router.patch("/activate/:token", activateAccount);
+router.post("/verify-email", activateAccount); 
+// router.patch("/activate/:token", activateAccount);
 // verify-email
 
 // OTP

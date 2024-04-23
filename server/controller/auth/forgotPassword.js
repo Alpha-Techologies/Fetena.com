@@ -1,7 +1,7 @@
-const User = require("../models/userModel");
+const User = require("../../models/userModel");
 // const jwt = require("jsonwebtoken");
-const catchAsync = require("../utils/catchAsync");
-const APIError = require("../utils/apiError");
+const catchAsync = require("../../utils/catchAsync");
+const APIError = require("../../utils/apiError");
 
 
 exports.forgotPassword = catchAsync(async (req, res, next) => {

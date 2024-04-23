@@ -27,6 +27,8 @@ exports.login = catchAsync(async (req, res, next) => {
     }
   
     if (!user.active){ return next(new APIError("Your have been deactivated, Please contact manager for further instructions", StatusCodes.UNAUTHORIZED))}
+
+    if(!user.isVerified) {return next(new APIError("Your Account is not Activated.", StatusCodes.UNAUTHORIZED))}
   
     if (!user || !(await user.correctPassword(password, user.password))) {
       return next(new APIError("Invalid Credentials", StatusCodes.UNAUTHORIZED));
