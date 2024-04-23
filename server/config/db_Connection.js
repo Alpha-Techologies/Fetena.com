@@ -1,8 +1,6 @@
 /* Load mongoose module - allow to manipulate the database */
 const mongoose = require("mongoose");
-require("dotenv").config({
-  path: "./config.env"
-});
+
 
 const logger = require("./../utils/logger")
 

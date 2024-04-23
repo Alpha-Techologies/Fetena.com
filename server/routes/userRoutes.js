@@ -1,7 +1,6 @@
 const express = require("express");
 
 const {
-  login,
   logout,
   forgotPassword,
   updatePassword,
@@ -28,6 +27,7 @@ const {
 const {zip} = require("./../utils/zip")
 
 const { validationRules, checkId } = require("../lib/validation");
+const { login } = require("../controller/auth/login");
 // const {
 //   getUserProfile,
 //   uploadUserProfile,

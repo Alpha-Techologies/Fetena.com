@@ -64,23 +64,7 @@ const user = new mongoose.Schema(
       type: Date,
       default: Date.now(),
     },
-    // images: {
-    //   url: {
-    //     type: {
-    //       String,
-    //     },
-    //     default: null,
-    //     trim: true,
-    //   },
-    //   caption: {
-    //     type: {
-    //       String,
-    //     },
-    //     default: null,
-    //     trim: true,
-    //   },
-    // },
-    photo: {
+    profilePhoto: {
       url: {
         type: {
           String,
@@ -88,13 +72,17 @@ const user = new mongoose.Schema(
         default: null,
         trim: true,
       },
-      caption: {
+
+    },
+    idPhoto: {
+      url: {
         type: {
           String,
         },
         default: null,
         trim: true,
       },
+
       // id: {
       //   type: mongoose.Schema.Types.ObjectId,
       //   trim: true,
