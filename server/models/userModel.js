@@ -35,10 +35,10 @@ const user = new mongoose.Schema(
     password: {
       type: String,
       default: null,
-      validate: [
-        validator.isAlphanumeric,
-        "Only letters and numbers are allowed as password",
-      ],
+      // validate: [
+      //   validator.isAlphanumeric,
+      //   "Only letters and numbers are allowed as password",
+      // ],
       minlength: 8,
       maxlength: 100,
       required: [true, "Please provide a Password"],
@@ -105,6 +105,7 @@ const user = new mongoose.Schema(
     },
     role: {
       type: String,
+      required:false,
       default: "user",
       enum: {
         values: ["manager", "receptionist", "user"],

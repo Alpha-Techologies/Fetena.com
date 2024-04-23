@@ -47,7 +47,7 @@ router
     .route("/backup")
     .get(zip)
   
-router.get("/", log);
+
 // router.get("/", protect, getAllUsers);
 router.get("/me", protect, getMe, getUser);
 router.get("/logout", logout);
