@@ -2,14 +2,14 @@ const express = require("express");
 
 const {
   logout,
-  forgotPassword,
-  updatePassword,
-  resetPassword,
+  // forgotPassword,
+  // updatePassword,
+  // resetPassword,
   restrictTo,
   signUp,
   protect,
   activateAccount
-} = require("./../controller/authController");
+} = require("../controller/authController");
 
 const {
   getAllUsers,
@@ -22,12 +22,15 @@ const {
   getUser,
   filterUserUpdateFields,
   // getProfile,
-} = require("./../controller/userController");
+} = require("../controller/userController");
 
-const {zip} = require("./../utils/zip")
+const {zip} = require("../utils/zip")
 
 const { validationRules, checkId } = require("../lib/validation");
 const { login } = require("../controller/auth/login");
+const { updatePassword } = require("../controller/auth");
+
+
 // const {
 //   getUserProfile,
 //   uploadUserProfile,
@@ -55,13 +58,15 @@ router.get("/myEdits", protect);//getMyEdits
 
 router.post("/signup",validationRules[2], signUp);
 router.post("/login", validationRules[3], login);
-router.post("/forgotPassword", validationRules[4], forgotPassword);
-router.post("/resetPassword/:token", resetPassword);
+// router.post("/forgotPassword", validationRules[4], forgotPassword);
+// router.post("/resetPassword/:token", resetPassword);
+
 
 router.patch("/updatePassword", protect, updatePassword);
 router.patch("/updateMe", protect, updateMe);
 router.patch("/deleteMe", protect, deleteMe);
-router.patch("/activate/:token", activateAccount);
+router.post("/verify-email", activateAccount); 
+// router.patch("/activate/:token", activateAccount);
 // verify-email
 
 // OTP
