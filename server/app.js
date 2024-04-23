@@ -9,7 +9,10 @@ const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean") // remove the html tags that are needed
 const hpp = require("hpp");
-
+const cookieParser = require('cookie-parser')
+require("dotenv").config({
+  path: "./config.env"
+});
 
 const limiter = rateLimit({
   max: 100,
@@ -19,6 +22,7 @@ const limiter = rateLimit({
 });
 const methodOverride = require("method-override");
 
+app.use(cookieParser(process.env.JWT_SECRET))
 // app.set('trust proxy', true)
 app.use(helmet());
 
@@ -59,6 +63,7 @@ app.use((req, res, next) => {
 
 
 const userRouter = require("./routes/userRoutes");
+const { signedCookies } = require("cookie-parser");
 // const roomRouter = require("./routes/roomRoutes");
 
 app.use("/users", userRouter);

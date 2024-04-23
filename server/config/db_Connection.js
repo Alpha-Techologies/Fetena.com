@@ -1,8 +1,6 @@
 /* Load mongoose module - allow to manipulate the database */
 const mongoose = require("mongoose");
-require("dotenv").config({
-  path: "./config.env"
-});
+
 
 const logger = require("./../utils/logger")
 
@@ -12,7 +10,8 @@ const {
 } = require("./db_Authentication");
 
 mongoose
-  .connect("mongodb://mongo:27017/beach-resort?retryWrites=true", { //create connection
+  // .connect("mongodb://mongo:27017/beach-resort?retryWrites=true", { //create connection
+  .connect("mongodb://localhost:27017/beach-resort?retryWrites=true", { //create connection
     useNewUrlParser: true,
     // useCreateIndex: true,
     // useFindAndModify: false,
