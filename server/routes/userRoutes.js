@@ -1,10 +1,6 @@
 const express = require("express");
 
-// const authController = require("./../Controller/authController");
-// const userController = require("./../Controller/userController");
 const {
-  log,
-  login,
   logout,
   forgotPassword,
   updatePassword,
@@ -12,7 +8,9 @@ const {
   restrictTo,
   signUp,
   protect,
+  activateAccount
 } = require("./../controller/authController");
+
 const {
   getAllUsers,
   getMe,
@@ -23,13 +21,13 @@ const {
   updateMe,
   getUser,
   filterUserUpdateFields,
-  getProfile,
+  // getProfile,
 } = require("./../controller/userController");
 
 const {zip} = require("./../utils/zip")
 
-// const rockController = require("./../Controller/rockController"); //do not comment or remove
 const { validationRules, checkId } = require("../lib/validation");
+const { login } = require("../controller/auth/login");
 // const {
 //   getUserProfile,
 //   uploadUserProfile,
@@ -37,18 +35,13 @@ const { validationRules, checkId } = require("../lib/validation");
 //   buffer,
 //   resizePhoto,
 // } = require("../lib/imageUpload");
-// const transaction = require("../utils/transaction");
 
 const router = express.Router();
 
-// router.use(transaction);
 router.param("id", checkId);
 router.param("token", checkId);
 router.param("filename", checkId);
 
-// router.post("/signup", function(req, res, next) {
-//     console.log("test")
-//     });
 
 router
     .route("/backup")
@@ -66,6 +59,13 @@ router.post("/forgotPassword", validationRules[4], forgotPassword);
 router.post("/resetPassword/:token", resetPassword);
 
 router.patch("/updatePassword", protect, updatePassword);
+router.patch("/updateMe", protect, updateMe);
+router.patch("/deleteMe", protect, deleteMe);
+router.patch("/activate/:token", activateAccount);
+// verify-email
+
+// OTP
+// LOGIN WITH GOOGLE
 
 // router.get(
 //   "/image/:filename",

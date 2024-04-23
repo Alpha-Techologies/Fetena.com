@@ -423,4 +423,5 @@ required
   );
 }
 
+
 export default RegistrationScreen;

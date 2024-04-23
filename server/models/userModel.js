@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+// const Schema = mongoose.Schema;
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
@@ -64,23 +64,7 @@ const user = new mongoose.Schema(
       type: Date,
       default: Date.now(),
     },
-    // images: {
-    //   url: {
-    //     type: {
-    //       String,
-    //     },
-    //     default: null,
-    //     trim: true,
-    //   },
-    //   caption: {
-    //     type: {
-    //       String,
-    //     },
-    //     default: null,
-    //     trim: true,
-    //   },
-    // },
-    photo: {
+    profilePhoto: {
       url: {
         type: {
           String,
@@ -88,13 +72,17 @@ const user = new mongoose.Schema(
         default: null,
         trim: true,
       },
-      caption: {
+
+    },
+    idPhoto: {
+      url: {
         type: {
           String,
         },
         default: null,
         trim: true,
       },
+
       // id: {
       //   type: mongoose.Schema.Types.ObjectId,
       //   trim: true,
@@ -151,6 +139,13 @@ const user = new mongoose.Schema(
       default: undefined,
     },
     passwordResetExpires: {
+      type: Date,
+    },
+    activationToken: {
+      type: String,
+      default: undefined,
+    },
+    activationTokenExpires: {
       type: Date,
     },
   },
@@ -220,6 +215,23 @@ user.methods.createPasswordResetToken = function () {
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
+};
+
+user.methods.createActivationToken = function () {
+  const activationToken = crypto.randomBytes(32).toString("hex");
+
+  this.activationToken = crypto
+    .createHash("sha256")
+    .update(activationToken)
+    .digest("hex");
+
+  // console.log({
+  //   resetToken
+  // }, this.passwordResetToken)
+
+  this.activationTokenExpires = Date.now() + 10 * 60 * 1000;
+
+  return activationToken;
 };
 
 // user.toggleMessage = function (id) {
