@@ -26,6 +26,7 @@ const RegistrationScreen = () => {
     phoneNumber: "",
     password: "",
     passwordConfirm: "",
+    role: "user",
     idPhotoType: "",
     profilePhoto: null, // Separate state for the first image
     idPhoto: null, // Separate state for the second image
@@ -34,7 +35,7 @@ const RegistrationScreen = () => {
 
   const submitFormData = async (formData) => {
     try {
-      const response = await fetch('YOUR_BACKEND_ENDPOINT_URL', {
+      const response = await fetch('http://localhost:8080/users/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

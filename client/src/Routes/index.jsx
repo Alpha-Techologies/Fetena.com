@@ -9,7 +9,8 @@ import Home from "../Screens/Home";
 import RegistrationScreen from "../Screens/RegistrationScreen";
 import LoginScreen from "../Screens/LoginScreen";
 import DashboardScreen from "../Screens/DashboardScreen";
-import ProtectedRoutes from '../Screens/ProtectedRoutes'
+import ProtectedRoutes from '../Screens/ProtectedRoutes';
+import VerifyEmail from "../Screens/VerifyEmail";
 
 //Pages
 import DashboardPage from "../Pages/DashboardPage";
@@ -34,6 +35,11 @@ const AllRoutes = () => {
         <Route
           path='register'
           element={<RegistrationScreen />}
+        />
+
+<Route
+          path='activate'
+          element={<VerifyEmail />}
         />
         <Route
           path='/dashboard'
