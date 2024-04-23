@@ -1,5 +1,6 @@
 // React Related Imports
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import { Link } from "react-router-dom";
 
 // Components Imports
 import Button from './Button'
@@ -14,9 +15,26 @@ const NavBar = () => {
 
   const [isOpen, setOpen] = useState(false)
 
+  const [isScrolled, setIsScrolled] = useState(false);
+  const handleScroll = () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    setIsScrolled(scrollTop > 0);
+  };
+
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
-    <nav className='bg-white  fixed w-full z-20 top-0 start-0 border-b border-gray-200'>
+    <nav className={`bg-white fixed w-full z-20 top-0 start-0 border-b border-gray-200 ${
+      isScrolled
+        ? "bg-opacity-70 backdrop-filter backdrop-blur-lg shadow-sm bg-[#F9FAFB]"
+        : ""
+    }`}>
       <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
         <img
           src={fetena_logo}
@@ -24,7 +42,9 @@ const NavBar = () => {
           alt='Fetena.com Logo'
         />
         <div className='flex md:order-2 space-x-3 md:space-x-0 '>
-          <Button text='Get started' />
+          <Link to='/sign-in'>
+            <Button text='Get started' />
+          </Link>
           <div className='md:hidden'>
             <Hamburger
               toggled={isOpen}
@@ -32,8 +52,11 @@ const NavBar = () => {
             />
           </div>
         </div>
-        <div className={` ${isOpen ? "block" : "hidden"} items-center justify-between  w-full md:flex md:w-auto md:order-1`}>
-          <ul className='flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white '>
+        <div
+          className={` ${
+            isOpen ? "block" : "hidden"
+          } items-center justify-between  w-full md:flex md:w-auto md:order-1`}>
+          <ul className='flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg lg:bg-transparent md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white '>
             <li>
               <a
                 href='#'
