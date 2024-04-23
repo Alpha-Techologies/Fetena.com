@@ -5,13 +5,14 @@ const express = require("express");
 const {
   login,
   logout,
-  forgotPassword,
-  updatePassword,
-  resetPassword,
+  // forgotPassword,
+  // updatePassword,
+  // resetPassword,
   restrictTo,
   signUp,
   protect,
 } = require("./../controller/authController");
+
 const {
   getAllUsers,
   getMe,
@@ -60,10 +61,10 @@ router.get("/myEdits", protect);//getMyEdits
 
 router.post("/signup",validationRules[2], signUp);
 router.post("/login", validationRules[3], login);
-router.post("/forgotPassword", validationRules[4], forgotPassword);
-router.post("/resetPassword/:token", resetPassword);
+// router.post("/forgotPassword", validationRules[4], forgotPassword);
+// router.post("/resetPassword/:token", resetPassword);
 
-router.patch("/updatePassword", protect, updatePassword);
+// router.patch("/updatePassword", protect, updatePassword);
 
 // router.get(
 //   "/image/:filename",

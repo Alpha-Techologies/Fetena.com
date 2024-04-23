@@ -15,7 +15,7 @@ const limiter = rateLimit({
   max: 100,
   windiwMs: 60 * 60 * 10000,
   message:
-    "Too many requests have been coming in from this IP, pleasve try again in an hour",
+    "Too many requests have been coming in from this IP, please try again in an hour",
 });
 const methodOverride = require("method-override");
 
