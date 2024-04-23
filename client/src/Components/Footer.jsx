@@ -3,7 +3,7 @@ import fetena_logo from '../assets/fetena_logo.png'
 
 const Footer = () => {
   return (
-    <footer className='p-4 bg-white sm:p-6 w-full'>
+    <footer className='p-4 bg-white sm:p-6 w-full border border-t-blue-100'>
       <div className='mx-auto max-w-screen-xl'>
         <div className='md:flex md:justify-between'>
           <div className='mb-6 md:mb-0 flex lg:flex-col lg:items-start sm:items-center sm:justify-start gap-4'>
