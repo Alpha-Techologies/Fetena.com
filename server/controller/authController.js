@@ -75,7 +75,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
 
   // await newUser.save();
 
-  const activationURL = `https://${"localhost:4000"}/activate?token=${activationToken}&email=${email}`;
+  const activationURL = `http://${"localhost:4000"}/activate?token=${activationToken}&email=${email}`;
 
   try {
     await new Email(newUser, activationURL).sendPasswordReset();
@@ -275,7 +275,8 @@ exports.restrictTo = (...roles) => {
 // });
 
 exports.activateAccount = catchAsync(async (req, res, next) => {
-  const { verificationToken, email } = req.body;
+  const { token, email } = req.body;
+
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -283,14 +284,14 @@ exports.activateAccount = catchAsync(async (req, res, next) => {
     
   }
   
-  if (user.verificationToken !== verificationToken) {
+  if (user.activationToken !== token) {
     next(new APIError("Verification Failed.", StatusCodes.UNAUTHORIZED))
 
   }
 
   user.isVerified = true;
   user.verified = Date.now();
-  user.verificationToken = "";
+  user.activationToken = "";
 
   await user.save();
 

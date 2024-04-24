@@ -31,6 +31,7 @@ const LoginScreen = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log('handl', formData)
       await mutateFormData(formData);
       navigate('/');
     } catch (error) {
@@ -39,6 +40,7 @@ const LoginScreen = () => {
   };
   const mutateFormData = async (formData) => {
     try {
+      console.log(formData, 'space')
       const response = await fetch('http://localhost:8080/users/login', {
         method: 'POST',
         headers: {

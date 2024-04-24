@@ -28,7 +28,7 @@ const {zip} = require("../utils/zip")
 
 const { validationRules, checkId } = require("../lib/validation");
 const { login } = require("../controller/auth/login");
-const { updatePassword } = require("../controller/auth");
+const { updatePassword, forgotPassword, resetPassword } = require("../controller/auth");
 
 
 // const {
@@ -58,8 +58,8 @@ router.get("/myEdits", protect);//getMyEdits
 
 router.post("/signup",validationRules[2], signUp);
 router.post("/login", validationRules[3], login);
-// router.post("/forgotPassword", validationRules[4], forgotPassword);
-// router.post("/resetPassword/:token", resetPassword);
+router.post("/forgotPassword", validationRules[4], forgotPassword);
+router.post("/resetPassword/:token", resetPassword);
 
 
 router.patch("/updatePassword", protect, updatePassword);
