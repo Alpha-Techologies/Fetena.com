@@ -13,6 +13,7 @@
   "dependencies": {
     "antd": "^5.16.2",
     "hamburger-react": "^2.5.0",
+    "otp-input-react": "^0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-query": "^3.39.3",
