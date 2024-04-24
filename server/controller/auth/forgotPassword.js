@@ -23,7 +23,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     });
     console.log("second");
     // 3) Send it to user's email
-    const resetURL = `https://${"localhost:3000"}/resetpassword/${resetToken}`;
+    const resetURL = `http://${"localhost:4000"}/reset-password?token=${resetToken}`;
   
     // const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
   

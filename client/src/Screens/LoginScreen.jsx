@@ -39,12 +39,13 @@ const LoginScreen = () => {
 
   const mutateFormData = async (formData) => {
     try {
-      const response = await fetch('http://localhost:8080/users/login', {
+      const response = await fetch('/api/users/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', 
         },
         body: JSON.stringify(formData),
+        
       });
       console.log('hello world')
 
@@ -52,7 +53,7 @@ const LoginScreen = () => {
         throw new Error('Failed to log in');
       }
 
-      const data = await response.json();
+      await response.json();
       toast.success('Logged in successfully!');
       navigate('/'); // Redirect here
     } catch (error) {
