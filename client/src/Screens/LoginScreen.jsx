@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import fetena_logo from '../assets/fetena_logo.png';
-import { Form, Input,Button } from "antd";
+import { Form, Input, Button } from "antd";
 import { Icon } from '@iconify/react';
-
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,24 +22,23 @@ const LoginScreen = () => {
       ...formData,
       [name]: value
     });
-    console.log(formData)
   };
 
-
-
   const handleSubmit = async (e) => {
+    console.log('handleSubmit first')
     e.preventDefault();
     try {
-      console.log('handl', formData)
       await mutateFormData(formData);
+      console.log('handleSubmit')
+
       navigate('/');
     } catch (error) {
       // Handle login error
     }
   };
+
   const mutateFormData = async (formData) => {
     try {
-      console.log(formData, 'space')
       const response = await fetch('http://localhost:8080/users/login', {
         method: 'POST',
         headers: {
@@ -48,16 +46,17 @@ const LoginScreen = () => {
         },
         body: JSON.stringify(formData),
       });
+      console.log('hello world')
 
       if (!response.ok) {
-        throw new Error('Failed to submit form');
+        throw new Error('Failed to log in');
       }
 
       const data = await response.json();
       toast.success('Logged in successfully!');
-    navigate('/'); // Redirect here
+      navigate('/'); // Redirect here
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error logging in:', error);
       toast.error('Failed to log in. Please try again later.');
     }
   };
@@ -67,36 +66,32 @@ const LoginScreen = () => {
   return (
     <div className='flex flex-col items-center justify-center h-screen gap-4'>
       <div className='flex flex-col items-center justify-center gap-2'>
-        <Link to={"/"}>
-        <img
-          className='w-40'
-          src={fetena_logo}
-          alt='Fetena.com Logo'
+        <Link to="/">
+          <img
+            className='w-40'
+            src={fetena_logo}
+            alt='Fetena.com Logo'
           />
-          </Link>
+        </Link>
         <h1 className='text-3xl font-bold'>Log In</h1>
         <p>
           Don't have an account?{" "}
-          <Link to={'/register'} className='text-primary-500 hover:underline'>Sign up</Link>
+          <Link to='/register' className='text-primary-500 hover:underline'>Sign up</Link>
         </p>
       </div>
       <div className='flex flex-col gap-4 shadow-md px-16 py-8 rounded-lg'>
-        <h2 className='text-md font-semibold '>Log In with your Credentials</h2>
-        <Form onSubmit={handleSubmit}>
+        <h2 className='text-md font-semibold'>Log In with your Credentials</h2>
+        <Form>
           <Form.Item
             name='email'
             rules={[
               {
                 type: "email",
-                message: "The input is not valid E-mail!",
+                message: "Please input a valid email address!",
               },
               {
                 required: true,
-                message: "Please input your E-mail!",
-              },
-              {
-                pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: "Please input a valid email address!",
+                message: "Please input your email!",
               },
             ]}
           >
@@ -104,7 +99,7 @@ const LoginScreen = () => {
               className='max-w-[300px] min-w-[100px]'
               prefix={<Icon icon='mdi-light:email' />}
               type='email'
-              placeholder='E-mail'
+              placeholder='Email'
               onChange={handleChange}
               name="email"
               value={formData.email}
@@ -115,11 +110,7 @@ const LoginScreen = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your Password!",
-              },
-              {
-                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                message: "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+                message: "Please input your password!",
               },
             ]}
           >
@@ -132,16 +123,12 @@ const LoginScreen = () => {
               value={formData.password}
             />
           </Form.Item>
-          <Link to={'/forgot-password'} className='text-primary-500 hover:underline'>Forgot Password?</Link>
-
-          {/* <Button type="submit" onClick={handleSubmit}
-      className={`bg-primary-500 text-white hover:bg-white hover:text-primary-500 hover:border hover:border-primary-500 px-8`}
-     >
-      Submit
-    </Button> */}
- <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
+          <Link to='/forgot-password' className='text-primary-500 hover:underline'>Forgot Password?</Link>
+          <button onClick={handleSubmit}>
+          Log In
+          </button>
+           
+      
         </Form>
       </div>
     </div>

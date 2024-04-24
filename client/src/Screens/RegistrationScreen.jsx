@@ -9,7 +9,6 @@ import { useMutation } from 'react-query';
 
 
 
-
 const RegistrationScreen = () => {
   const [step, setStep] = useState(1);
   const [disableSocials,setDisableSocials] = useState(false)
