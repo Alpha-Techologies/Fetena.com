@@ -2,14 +2,15 @@ const express = require("express");
 
 const {
   logout,
-  // forgotPassword,
-  // updatePassword,
-  // resetPassword,
+  forgotPassword,
+  updatePassword,
+  resetPassword,
   restrictTo,
   signUp,
   protect,
-  activateAccount
-} = require("../controller/authController");
+  activateAccount,
+  login,
+} = require("../controller/auth");
 
 const {
   getAllUsers,
@@ -25,10 +26,8 @@ const {
 } = require("../controller/userController");
 
 const {zip} = require("../utils/zip")
-
 const { validationRules, checkId } = require("../lib/validation");
-const { login } = require("../controller/auth/login");
-const { updatePassword, forgotPassword, resetPassword } = require("../controller/auth");
+
 
 
 // const {
@@ -53,17 +52,19 @@ router
 
 // router.get("/", protect, getAllUsers);
 router.get("/me", protect, getMe, getUser);
-router.get("/logout", logout);
+router.get("/logout",protect, logout);
 router.get("/myEdits", protect);//getMyEdits
 
 router.post("/signup",validationRules[2], signUp);
-router.post("/login", validationRules[3], login);
+router.post("/login", validationRules[3], login
+);
 router.post("/forgotPassword", validationRules[4], forgotPassword);
 router.post("/resetPassword/:token", resetPassword);
 
 
 router.patch("/updatePassword", protect, updatePassword);
-router.patch("/updateMe", protect, updateMe);
+router.patch("/updateMe", protect, updateMe
+);
 router.patch("/deleteMe", protect, deleteMe);
 router.post("/verify-email", activateAccount); 
 // router.patch("/activate/:token", activateAccount);

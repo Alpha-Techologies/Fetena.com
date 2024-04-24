@@ -8,7 +8,7 @@ const Email = require("../../utils/sendMail");
 exports.forgotPassword = catchAsync(async (req, res, next) => {
     // 1) Get user based on POSTed email
     const { email } = req.body;
-    console.log({ email });
+
     const user = await User.findOne({
       email,
     });
@@ -22,7 +22,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     await user.save({
       validateBeforeSave: false,
     });
-    console.log("second");
+
     // 3) Send it to user's email
     const resetURL = `http://${"localhost:4000"}/reset-password?token=${resetToken}`;
   
@@ -30,7 +30,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   
     try {
       await new Email(user, resetURL).sendPasswordReset();
-      console.log(resetURL);
   
       res.status(200).json({
         status: "success",
