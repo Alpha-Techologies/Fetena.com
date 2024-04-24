@@ -12,10 +12,10 @@ const {
 mongoose
   // .connect("mongodb://mongo:27017/beach-resort?retryWrites=true", { //create connection
   .connect("mongodb://localhost:27017/beach-resort?retryWrites=true", { //create connection
-    useNewUrlParser: true,
+    // useNewUrlParser: true,
     // useCreateIndex: true,
     // useFindAndModify: false,
-    useUnifiedTopology: true, //To use the new Server Discover and Monitoring engine
+    // useUnifiedTopology: true, //To use the new Server Discover and Monitoring engine
   })
 
 mongoose.set('debug', 
