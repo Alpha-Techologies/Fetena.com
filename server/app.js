@@ -22,6 +22,12 @@ const limiter = rateLimit({
 });
 const methodOverride = require("method-override");
 
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:4000");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
+
 app.use(cookieParser(process.env.JWT_SECRET))
 // app.set('trust proxy', true)
 app.use(helmet());
@@ -63,10 +69,10 @@ app.use((req, res, next) => {
 
 
 const userRouter = require("./routes/userRoutes");
-const { signedCookies } = require("cookie-parser");
+
 // const roomRouter = require("./routes/roomRoutes");
 
-app.use("/users", userRouter);
+app.use("/api/users", userRouter);
 // app.use("/rooms", roomRouter);
 
 app.all("*", (req, res, next) => {

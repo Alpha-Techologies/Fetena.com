@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vitejs/plugin-react-swc": "^3.6.0",
     "antd": "^5.16.2",
     "hamburger-react": "^2.5.0",
     "otp-input-react": "^0.3.0",
