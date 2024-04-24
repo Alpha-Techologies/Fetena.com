@@ -67,11 +67,13 @@ const LoginScreen = () => {
   return (
     <div className='flex flex-col items-center justify-center h-screen gap-4'>
       <div className='flex flex-col items-center justify-center gap-2'>
+        <Link to={"/"}>
         <img
-          className='w-20'
+          className='w-40'
           src={fetena_logo}
           alt='Fetena.com Logo'
-        />
+          />
+          </Link>
         <h1 className='text-3xl font-bold'>Log In</h1>
         <p>
           Don't have an account?{" "}
@@ -130,6 +132,7 @@ const LoginScreen = () => {
               value={formData.password}
             />
           </Form.Item>
+          <Link to={'/forgot-password'} className='text-primary-500 hover:underline'>Forgot Password?</Link>
 
           {/* <Button type="submit" onClick={handleSubmit}
       className={`bg-primary-500 text-white hover:bg-white hover:text-primary-500 hover:border hover:border-primary-500 px-8`}

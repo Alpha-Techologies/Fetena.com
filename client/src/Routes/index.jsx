@@ -8,6 +8,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import Home from "../Screens/Home";
 import RegistrationScreen from "../Screens/RegistrationScreen";
 import LoginScreen from "../Screens/LoginScreen";
+import ForgotPasswordScreen from "../Screens/ForgotPasswordScreen";
+import OTPScreen from "../Screens/OTPScreen";
+import VerifyEmailScreen from "../Screens/VerifyEmailScreen";
+import ResetPasswordScreen from "../Screens/ResetPasswordScreen";
 import DashboardScreen from "../Screens/DashboardScreen";
 import ProtectedRoutes from '../Screens/ProtectedRoutes';
 import VerifyEmail from "../Screens/VerifyEmail";
@@ -33,22 +37,38 @@ const AllRoutes = () => {
           element={<LoginScreen />}
         />
         <Route
+        path='forgot-password'
+        element={<ForgotPasswordScreen />}
+      />
+      <Route
+        path='verify-otp'
+        element={<OTPScreen />}
+      />
+      <Route
+        path='verify-email'
+        element={<VerifyEmailScreen />}
+      />
+      <Route
+        path='reset-password'
+        element={<ResetPasswordScreen/>}
+      />
+      <Route
           path='register'
           element={<RegistrationScreen />}
         />
 
-<Route
+        <Route
           path='activate'
           element={<VerifyEmail />}
         />
+      
         <Route
           path='/dashboard'
           element={
             <ProtectedRoutes isAuthenticated={isAuthenticated}>
               <DashboardScreen />
             </ProtectedRoutes>
-          }
-        >
+          }>
           <Route
             path=''
             element={<DashboardPage />}
