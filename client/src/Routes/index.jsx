@@ -49,7 +49,7 @@ const AllRoutes = () => {
         element={<VerifyEmailScreen />}
       />
       <Route
-        path='reset-password'
+        path='reset-password/*'
         element={<ResetPasswordScreen/>}
       />
       <Route

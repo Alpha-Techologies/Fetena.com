@@ -1,21 +1,73 @@
 import { useState } from "react";
 import fetena_logo from "../assets/fetena_logo.png";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Form, Input, Button } from "antd";
+import { useMutation } from "react-query";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ResetPasswordScreen = () => {
  
   const [form] = Form.useForm();
 
+  const location = useLocation()
+  const currentUrl = location.pathname
+  const parts = currentUrl.split('/');
+  const token = parts[parts.length - 1];
+
   const [isDisabled, setIsDisabled] = useState(true);
+
+  const [formData, setFormData] = useState({
+    password: "",
+    confirmPassword: ""
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   const [Loading, setLoading] = useState(false);
     const regEx = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,}$/;
     
-const handleSubmit = (values) => {
-    console.log(values)
-}
+const handleSubmit = async (e) => {
+    console.log("handleSubmit first", formData);
+    e.preventDefault();
+    try {
+      await mutateFormData(formData);
+      console.log("handleSubmit");
+    } catch (error) {
+      // Handle login error
+    }
+  }
+  const mutateFormData = async (formData) => {
+    try {
+      const response = await fetch( `http://localhost:8080/users/resetpassword/${token}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      console.log("hello world");
+
+      if (!response.ok) {
+        throw new Error("Submission Error! ");
+      }
+
+      const data = await response.json();
+      toast.success("Reset Email Sent!");
+    } catch (error) {
+      console.error("Error logging in:", error);
+      toast.error("Submission Error! Please try again later.");
+    }
+  };
+
+  const mutation = useMutation(mutateFormData);
 
   const handleConfirmPassword = (rule, value, callback) => {
     const password = form.getFieldValue("password");
@@ -75,6 +127,9 @@ const handleSubmit = (values) => {
             ]}>
             <Input.Password
               className='w-full'
+              name='password'
+              onChange={handleChange}
+              value={formData.password}
               required
             />
           </Form.Item>
@@ -94,6 +149,8 @@ const handleSubmit = (values) => {
             ]}>
             <Input.Password
               name='confirmPassword'
+              onChange={handleChange}
+              value={formData.confirmPassword}
               className='w-full'
               required
             />
@@ -105,6 +162,7 @@ const handleSubmit = (values) => {
             colon={false}>
             <Button
               type='default'
+              onClick={handleSubmit}
               className='bg-primary-500 text-white hover:text-primary-500 hover:bg-white text-lg flex items-center justify-center px-10 py-5 '
               htmlType='submit'
               disabled={isDisabled}>
