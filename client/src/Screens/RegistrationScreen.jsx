@@ -58,7 +58,7 @@ const RegistrationScreen = () => {
       console.log('Form submitted successfully:', data);
       // Handle success behavior, such as displaying a success message
       toast.success('Form submitted successfully!');
-      setFormSubmitted(true); // Set form submission status to true
+     // Set form submission status to true
     },
     onError: (error) => {
       console.error('Error submitting form:', error);
@@ -175,7 +175,9 @@ const idPhotoTypeMenu = (
     // Submit form data to server
     // setDisable(true)
     mutate(formData);
-    toast.success("An login link has been sent to your email!")
+    setStep(step + 1);
+
+    // toast.success("An login link has been sent to your email!")
   };
 
   return (
@@ -192,12 +194,9 @@ const idPhotoTypeMenu = (
 
       <div className='flex flex-col gap-4 shadow-md px-16 py-8 rounded-lg'>
 
+{ step !== 5 &&
+      (<nav className="flex gap-2 px-2 text-base justify-center items-center font-medium leading-5 text-white whitespace-nowrap max-md:flex-wrap">
 
-      <nav className="flex gap-2 px-2 text-base justify-center items-center font-medium leading-5 text-white whitespace-nowrap max-md:flex-wrap">
-    {/* {
-          bg-blue-900
-          text-white
-        } */}
       <React.Fragment>
         
   <div className={`${step >= 1 ? " bg-blue-900 text-white" : "bg-blue-100 text-blue-900"} flex justify-center items-center px-3.5  rounded-full h-[34px] w-[34px] `}>
@@ -228,7 +227,7 @@ const idPhotoTypeMenu = (
             </React.Fragment>
    
   </nav>
-
+)}
 
 
 
@@ -371,30 +370,53 @@ required
 
 {step === 4 && (
           <section className="flex flex-col justify-center items-center mt-8">
-          <img
+          {/* <img
             loading="lazy"
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/f036dfadbcb5962fc51b133ce1f5e0f003ad5000218eb6b4df54e7ec1cff714a?apiKey=da0e5699a0964f23ab3a2091e7f935a3&"
             alt="Submit form icon"
             className="max-w-full aspect-[1.1] w-[157px]"
-          />
-                          <h2 className='text-lg font-semibold text-left'>
-                          Submit your form</h2>
+          /> */}
+                          <h2 className='text-lg font-semibold text-left mb-4'>
+                          Are you sure to submit your information?</h2>
 
       
-          <p className="self-stretch mt-5 w-full leading-[167%] text-slate-500">
+          {/* <p className="self-stretch mt-5 w-full leading-[167%] text-slate-500">
             Are you sure to submit your information?
-          </p>
+          </p> */}
          
         </section>
           )}
 
 
+
+
+{step === 5 && (
+    <section className="flex flex-col justify-center items-center mt-8">
+      <img
+        loading="lazy"
+        src="https://cdn.builder.io/api/v1/image/assets/TEMP/f036dfadbcb5962fc51b133ce1f5e0f003ad5000218eb6b4df54e7ec1cff714a?apiKey=da0e5699a0964f23ab3a2091e7f935a3&"
+        alt="Submit form icon"
+        className="max-w-full aspect-[1.1] w-[157px]"
+      />
+      <h2 className='text-lg font-semibold text-left mt-4'>
+      An login link has been sent to your email!
+      </h2>
+     
+    </section>
+  )
+}
+
+
+
+
+
+
 <div  className={` ${disableSocials ? "hidden" : ""}`}>
 
-          <Divider> or </Divider>
+          {/* <Divider> or </Divider> */}
 </div>
 
-          <div className={` ${disableSocials ? "hidden" : ""} flex flex-col gap-2`}>
+          {/* <div className={` ${disableSocials ? "hidden" : ""} flex flex-col gap-2`}>
             <h2 className='text-md font-semibold'>Sign Up with your Socials</h2>
             <div className='flex justify-center items-center gap-4 border border-[#DCDFE4] px-8 rounded-[8px] py-1 cursor-pointer '>
               <Icon icon='devicon:google' />
@@ -404,9 +426,9 @@ required
               <Icon icon='devicon:linkedin' />
               <span>Continue with LinkedIn</span>
             </div>
-          </div>
+          </div> */}
           <div className="flex justify-between gap-32 mt-4">
-            {step !== 1 && (
+            {step !== 1 && step !== 5 && (
               <Button onClick={handlePrev} className='hover:bg-primary-500 hover:text-white bg-white text-primary-500 border border-primary-500 px-8'>Previous</Button>
             )}
             {step <= 3 && <Button onClick={handleNext} className='bg-primary-500 text-white hover:bg-white hover:text-primary-500 hover:border hover:border-primary-500 px-8'>Next</Button>}

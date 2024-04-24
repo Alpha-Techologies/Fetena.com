@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react'; // Import useState hook
 import { useMutation } from 'react-query';
 import { Link, useLocation } from 'react-router-dom'; // Import useLocation hook
 import Button from '../Components/Button';
-
+import fetena_logo from '../assets/fetena_logo.png'
 const VerifyEmail = () => {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ const VerifyEmail = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ verificationToken, email }),
+                body: JSON.stringify({ token:verificationToken, email }),
             });
 
             if (!response.ok) {
@@ -52,8 +52,18 @@ const VerifyEmail = () => {
     }, []);
 
     return (
-        <div>
-            <h2>Account Confirmed</h2>
+
+
+
+        
+        <div className='flex flex-col items-center justify-center h-screen gap-4'>
+          <div className='flex flex-col items-center justify-center gap-4'>
+            <img className='w-20' src={fetena_logo} alt='Fetena.com Logo' />
+            <h1 className='text-3xl font-bold'>Account Confirmed</h1>
+            <p>
+              Login to your account and start using Fetena.com
+              
+            </p>
             {loading ? (
                 <p>Loading...</p>
             ) : error ? (
@@ -63,7 +73,26 @@ const VerifyEmail = () => {
                     <Button text="Login" />
                 </Link>
             )}
-        </div>
+          </div>
+          </div>
+
+
+
+
+
+
+        // <div>
+        //     <h2>Account Confirmed</h2>
+        //     {loading ? (
+        //         <p>Loading...</p>
+        //     ) : error ? (
+        //         <p>Error occurred while verifying email.</p>
+        //     ) : (
+        //         <Link to="/sign-in">
+        //             <Button text="Login" />
+        //         </Link>
+        //     )}
+        // </div>
     );
 };
 
