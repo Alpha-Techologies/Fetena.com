@@ -37,9 +37,25 @@ const AllRoutes = () => {
           element={<RegistrationScreen />}
         />
 
-<Route
+        <Route
           path='activate'
           element={<VerifyEmail />}
+        />
+        <Route
+          path='forgot-password'
+          element={<ForgotPasswordScreen />}
+        />
+        <Route
+          path='verify-otp'
+          element={<OTPScreen />}
+        />
+        <Route
+          path='verify-email'
+          element={<VerifyEmailScreen />}
+        />
+        <Route
+          path='reset-password'
+          element={<ResetPasswordScreen />}
         />
         <Route
           path='/dashboard'
@@ -47,8 +63,7 @@ const AllRoutes = () => {
             <ProtectedRoutes isAuthenticated={isAuthenticated}>
               <DashboardScreen />
             </ProtectedRoutes>
-          }
-        >
+          }>
           <Route
             path=''
             element={<DashboardPage />}
