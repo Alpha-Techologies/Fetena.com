@@ -6,7 +6,7 @@ const logger = require("./../utils/logger");
 /* get database authentication keys */
 const { dbAuth } = require("./db_Authentication");
 
-mongoose.connect("mongodb://0.0.0.0:27017/exam-management?retryWrites=true", {
+mongoose.connect("mongodb://localhost:27017/exam-management?retryWrites=true", {
   // .connect("mongodb://mongo:27017/beach-resort?retryWrites=true", { //create connection
   //create connection
   useNewUrlParser: true,

@@ -31,7 +31,7 @@ const LoginScreen = () => {
       await mutateFormData(formData);
       console.log("handleSubmit");
 
-      navigate("/");
+    
     } catch (error) {
       // Handle login error
     }
