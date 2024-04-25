@@ -27,6 +27,7 @@ const attachCookiesToResponse = ({ res, user, refreshToken }) => {
     sameSite: 'None',
     maxAge: 1000 * 60 * 15,
   });
+  
 };
 
 module.exports = {

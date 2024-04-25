@@ -10,7 +10,6 @@ const crypto = require("crypto");
 
 
 exports.login = catchAsync(async (req, res, next) => {
-    console.log('user login', req.body)
     const { email, password } = req.body;
     // 1) Check if email and password exist
     if (!email || !password) {
@@ -20,7 +19,6 @@ exports.login = catchAsync(async (req, res, next) => {
     const user = await User.findOne({
       email,
     }).select("+password");
-    console.log({user})
 
     if(!user){
         return next(new APIError('User Not Found.', StatusCodes.NOT_FOUND))

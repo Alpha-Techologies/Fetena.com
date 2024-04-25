@@ -10,13 +10,16 @@ const VerifyEmail = () => {
 
     const verifyToken = async ({ verificationToken, email }) => {
         try {
-            const response = await fetch('http://localhost:8080/users/verify-email', {
-                method: 'POST', // Change the method to POST
+            const response = await fetch(
+              "http://localhost:8080/api/users/verify-email",
+              {
+                method: "POST", // Change the method to POST
                 headers: {
-                    'Content-Type': 'application/json',
+                  "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ token:verificationToken, email }),
-            });
+                body: JSON.stringify({ token: verificationToken, email }),
+              }
+            );
 
             if (!response.ok) {
                 setLoading(false);

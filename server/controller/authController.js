@@ -9,7 +9,11 @@ const APIError = require("../utils/apiError");
 const Email = require("./../utils/sendMail");
 const { isTokenValid } = require("../utils/jwt");
 
-const {forgetPassword, resetPassword, updatePassword} = require('../controller/auth');
+const {
+  forgetPassword,
+  resetPassword,
+  updatePassword,
+} = require("../controller/auth");
 const { StatusCodes } = require("http-status-codes");
 
 // const signToken = (id) => {
@@ -38,118 +42,6 @@ const { StatusCodes } = require("http-status-codes");
 
 //   // Remove password from output
 //   user.password = undefined;
-
-
-
-exports.signUp = catchAsync(async (req, res, next) => {
-  
-  const { email, password } = req.body;
-
-  const user = await User.findOne({
-    email,
-  });
-  if (user) {
-    console.log("signup");
-    return next(new APIError(`Email already registered`, 400));
-  }
-
-  // req.body.activationToken = 
-  const newUser = await new User(req.body);
-  if (!newUser) {
-    return next(new APIError(`User cannot be created at the moment`, 400));
-  }
-
-  // await user.save({
-  //   validateBeforeSave: false,
-  // });
-
-  await newUser.save();
-
-
-  //verification steps
-  const activationToken = newUser.createActivationToken();
-  await newUser.save({
-    validateBeforeSave: false,
-  });
-  
-
-  // await newUser.save();
-
-  const activationURL = `http://${"localhost:4000"}/activate?token=${activationToken}&email=${email}`;
-
-  try {
-    await new Email(newUser, activationURL).sendPasswordReset();
-    console.log(activationURL);
-
-    res.status(200).json({
-      status: "success",
-      message: activationToken,
-      //       message: 'Token sent to email!'//remove from sending the token
-    });
-  } catch (err) {
-    newUser.activationToken = undefined;
-    newUser.activationTokenExpires = undefined;
-    await newUser.save({
-      validateBeforeSave: false,
-    });
-    console.log(err);
-
-
-    return next(
-      new APIError("There was an error sending the email. Try again later!"),
-      500
-    );
-  }
-  // createSendToken(newUser, 200, res);
-  // res.end();
-});
-
-
-exports.logout = catchAsync(async (req, res, next) => {
-
-  res.cookie("jwt", "loggedout", {
-    expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true,
-  });
-  res.status(200).json({
-    status: "success",
-  });
-});
-
-exports.protect = catchAsync(async (req, res, next) => {
-  const { refreshToken, accessToken } = req.signedCookies;
-  try {
-    if (accessToken) {
-      const payload = isTokenValid(accessToken);
-      req.user = payload.user;
-      return next();
-    }
-    const payload = isTokenValid(refreshToken);
-    console.log(payload.refreshToken, payload.user._id, "here");
-
-    const userId = new ObjectId(payload.user._id);
-    const existingToken = await TokenModel.findOne({
-      user: userId,
-      refreshToken: payload.refreshToken,
-    });
-
-    if (!existingToken || !existingToken?.isValid) {
-      throw new Error("Invalid token or session expired");
-    }
-
-    attachCookiesToResponse({
-      res,
-      user: payload.user,
-      refreshToken: existingToken.refreshToken,
-    });
-    req.user = payload.user;
-    next();
-  } catch (error) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ message: "Authentication Invalid! No logged in session" });
-  }
-});
 
 // // Only for rendered pages, no errors!
 // exports.isLoggedIn = async (req, res, next) => {
@@ -181,19 +73,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 //   }
 //   next();
 // };
-
-exports.restrictTo = (...roles) => {
-  return (req, res, next) => {
-    console.log("role: " + req.user.role);
-    // roles ['admin', 'lead-guide'].role='user'
-    if (!roles.includes(req.user.role)) {
-      return next(
-        new APIError("You do not have permission to perform this action", 403)
-      );
-    }
-    next();
-  };
-};
 
 // exports.forgotPassword = catchAsync(async (req, res, next) => {
 //   // 1) Get user based on POSTed email
@@ -274,33 +153,9 @@ exports.restrictTo = (...roles) => {
 //   createSendToken(user, 200, res);
 // });
 
-exports.activateAccount = catchAsync(async (req, res, next) => {
-  const { token, email } = req.body;
-
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    next(new APIError("Verification Failed.", StatusCodes.UNAUTHORIZED))
-    
-  }
-  
-  if (user.activationToken !== token) {
-    next(new APIError("Verification Failed.", StatusCodes.UNAUTHORIZED))
-
-  }
-
-  user.isVerified = true;
-  user.verified = Date.now();
-  user.activationToken = "";
-
-  await user.save();
-
-  res.status(StatusCodes.OK).json({ success: true, message: "Email verified" });
-});
 
 // exports.updatePassword = catchAsync(async (req, res, next) => {
 //   const { passwordCurrent, password } = req.body;
-
 
 //   // 1) Get user from collection
 //   const user = await User.findById(req.user.id).select("+password");
@@ -316,5 +171,5 @@ exports.activateAccount = catchAsync(async (req, res, next) => {
 //   await user.save();
 
 //   // 4) Log user in, send JWT
-  // createSendToken(user, 200, res);
+// createSendToken(user, 200, res);
 // });
