@@ -47,7 +47,7 @@ const handleSubmit = async (e) => {
   const mutateFormData = async (formData) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/users/resetpassword/${token}`,
+        `/api/users/resetpassword/${token}`,
         {
           method: "POST",
           headers: {

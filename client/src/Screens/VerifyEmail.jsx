@@ -11,7 +11,7 @@ const VerifyEmail = () => {
     const verifyToken = async ({ verificationToken, email }) => {
         try {
             const response = await fetch(
-              "http://localhost:8080/api/users/verify-email",
+              "/api/users/verify-email",
               {
                 method: "POST", // Change the method to POST
                 headers: {

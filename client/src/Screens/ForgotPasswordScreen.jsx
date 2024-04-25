@@ -36,7 +36,7 @@ const ForgotPasswordScreen = () => {
 
   const mutateFormData = async (formData) => {
     try {
-      const response = await fetch("http://localhost:8080/api/users/forgotpassword", {
+      const response = await fetch("/api/users/forgotpassword", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
