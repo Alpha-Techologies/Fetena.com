@@ -46,13 +46,16 @@ const handleSubmit = async (e) => {
   }
   const mutateFormData = async (formData) => {
     try {
-      const response = await fetch( `http://localhost:8080/users/resetpassword/${token}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/users/resetpassword/${token}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       console.log("hello world");
 
       if (!response.ok) {
