@@ -36,9 +36,9 @@ exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
 
     // currentTime, pathname, method
-    const {currentTime,_parsedOriginalUrl} = req
-    console.log(currentTime)
-    console.log(_parsedOriginalUrl.pathname)
+    // const {currentTime,_parsedOriginalUrl} = req
+    // console.log(currentTime)
+    // console.log(_parsedOriginalUrl.pathname)
 
     const page = req.query.page * 1 || 1;
     const limit = req.query.limit * 1 || 9;

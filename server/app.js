@@ -10,6 +10,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean") // remove the html tags that are needed
 const hpp = require("hpp");
 const cookieParser = require('cookie-parser')
+
 require("dotenv").config({
   path: "./config.env"
 });
@@ -69,11 +70,15 @@ app.use((req, res, next) => {
 
 
 const userRouter = require("./routes/userRoutes");
+const examRouter = require("./routes/examRoutes");
+const questionRouter = require("./routes/questionRoutes");
+const answerRouter = require("./routes/answerRoutes");
 
-// const roomRouter = require("./routes/roomRoutes");
 
 app.use("/api/users", userRouter);
-// app.use("/rooms", roomRouter);
+app.use("/api/exams", examRouter);
+app.use("/api/questions", questionRouter);
+app.use("/api/answers", answerRouter);
 
 app.all("*", (req, res, next) => {
   next(new APIError(`Can't find ${req.originalUrl} in server plus`, 404));
