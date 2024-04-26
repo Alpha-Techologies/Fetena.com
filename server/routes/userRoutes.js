@@ -25,10 +25,10 @@ const {
   // getProfile,
 } = require("../controller/userController");
 
-const {zip} = require("../utils/zip")
+const { fileUpload } = require("../controller/profile/fileUpload");
+
+const { zip } = require("../utils/zip");
 const { validationRules, checkId } = require("../lib/validation");
-
-
 
 // const {
 //   getUserProfile,
@@ -44,29 +44,25 @@ router.param("id", checkId);
 router.param("token", checkId);
 router.param("filename", checkId);
 
-
-router
-    .route("/backup")
-    .get(zip)
-  
+router.route("/backup").get(zip);
 
 // router.get("/", protect, getAllUsers);
 router.get("/me", protect, getMe, getUser);
-router.get("/logout",protect, logout);
-router.get("/myEdits", protect);//getMyEdits
+router.get("/logout", protect, logout);
+router.get("/myEdits", protect); //getMyEdits
 
-router.post("/signup",validationRules[2], signUp);
-router.post("/login", validationRules[3], login
-);
+router.post("/signup", validationRules[2], signUp);
+router.post("/login", validationRules[3], login);
 router.post("/forgotPassword", validationRules[4], forgotPassword);
 router.post("/resetPassword/:token", resetPassword);
 
-
 router.patch("/updatePassword", protect, updatePassword);
-router.patch("/updateMe", protect, updateMe
-);
+router.patch("/updateMe", protect, updateMe);
 router.patch("/deleteMe", protect, deleteMe);
-router.post("/verify-email", activateAccount); 
+router.post("/verify-email", activateAccount);
+
+router.post("/uploads", fileUpload);
+
 // router.patch("/activate/:token", activateAccount);
 // verify-email
 
@@ -116,13 +112,9 @@ router.post("/verify-email", activateAccount);
 
 router
   .route("/:id")
-//   .get(protect, restrictTo("manager", "reception", "user"), getUser) //getUser
-//   .post() //
-  .patch(
-    protect,
-    restrictTo("manager"),
-    toggleUserRole
-  ) //toggleUserRole
+  //   .get(protect, restrictTo("manager", "reception", "user"), getUser) //getUser
+  //   .post() //
+  .patch(protect, restrictTo("manager"), toggleUserRole); //toggleUserRole
 //   .delete(protect, restrictTo("manager"), deleteUser); //deleteUser
 
 module.exports = router;
