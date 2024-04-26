@@ -26,9 +26,8 @@ const fileUpload = catchAsync(async (req, res, next) => {
   );
   await profilePhoto.mv(imagePath);
   return res
-    .status(StatusCodes.OK)
-
-    .json({ image: { src: `/uploads/${profilePhoto.name}` } });
+  .status(StatusCodes.OK)
+  .json({ image: { src: `/uploads/${profilePhoto.name}` } });
 });
 
 // const uploadProductImage = async (req, res) => {
