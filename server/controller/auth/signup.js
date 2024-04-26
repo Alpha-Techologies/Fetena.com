@@ -28,9 +28,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
     );
   }
 
-  // await user.save({
-  //   validateBeforeSave: false,
-  // });
+  // file upload
 
   await newUser.save();
 

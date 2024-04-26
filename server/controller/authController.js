@@ -153,7 +153,6 @@ const { StatusCodes } = require("http-status-codes");
 //   createSendToken(user, 200, res);
 // });
 
-
 // exports.updatePassword = catchAsync(async (req, res, next) => {
 //   const { passwordCurrent, password } = req.body;
 

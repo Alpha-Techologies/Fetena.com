@@ -51,35 +51,24 @@ class APIFeatures {
         return this
     }
     populate() {
-        // let rockPopulateObj = [{
-        //         path: "mineral.mineral"
-        //     },
-        //     {
-        //         path: "location.location"
-        //     },
-        //     {
-        //         path: "industry.industry"
-        //     },
-        //     {
-        //         path: "references"
-        //     },
-        //     {
-        //         path: "heldBy"
-        //     },
-        // ]
-
+        let questionPopulated = [
+            { path: "questions",
+                options: {strictPopulate: false}
+        },
+            // { path:"invigilatorID"}
+        ]
         // if (this.queryString.fields) {
         //     const result = this.queryString.fields.split(',');
-        //     rockPopulateObj = rockPopulateObj.filter((value) => {
+        //     rockPopulateObj = questionPopulated.filter((value) => {
         //         if (result.includes(`${value.path.split(".")[0]}`)) {
         //             return value
         //         }
         //     });
         // }
 
-        // this.query = this.query.populate(
-        //     rockPopulateObj,
-        // )
+        this.query = this.query.populate(
+            questionPopulated,
+        )
         return this;
     }
 }
