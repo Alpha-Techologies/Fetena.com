@@ -12,7 +12,6 @@ const fileUpload =
   // path for the file
   // maxSize
 
-  // catchAsync(
   async ({file, name, filePath, maxSize}) => {
 
   if (!file) {
@@ -25,7 +24,7 @@ const fileUpload =
     //   new APIError(`Please upload image smaller than` + {maxSize}, StatusCodes.BAD_REQUEST)
     // );
     return (
-      new APIError(`Please upload image smaller than` + {maxSize}, StatusCodes.BAD_REQUEST)
+      new APIError(`Please upload file smaller than` + {maxSize}, StatusCodes.BAD_REQUEST)
     );
   }
   // const localPath = photo.path;
@@ -35,11 +34,9 @@ const fileUpload =
   );
   await file.mv(imagePath);
 
-  return `/uploads/` + `${filePath}/` + `${name}`
-
+  return `/uploads/` + `${filePath}/` + `${name}`;
+  
 }
-// );
-
 // const uploadProductImage = async (req, res) => {
 //   const result = await cloudinary.uploader.upload(
 //     req.files.image.tempFilePath,
