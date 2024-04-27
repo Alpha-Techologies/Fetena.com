@@ -1,4 +1,4 @@
-import fetena_logo from "../assets/fetena_logo.png";
+import fetena_logo from "../../assets/fetena_logo.png";
 import { Button, Form, Input } from "antd";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";

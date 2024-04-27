@@ -1,9 +1,8 @@
-
 import { useState } from "react";
-import fetena_logo from "../assets/fetena_logo.png";
+import fetena_logo from "../../assets/fetena_logo.png";
 import { Icon } from "@iconify/react";
 import OTPInput, { ResendOTP } from "otp-input-react";
-import Button from "../Components/Button";
+import Button from "../../Components/Button";
 import { Link } from "react-router-dom";
 
 const VerifyEmailScreen = () => {
@@ -30,6 +29,6 @@ const VerifyEmailScreen = () => {
         text={"Verify Me"}
       />
     </div>
-  )
-}
-export default VerifyEmailScreen
+  );
+};
+export default VerifyEmailScreen;

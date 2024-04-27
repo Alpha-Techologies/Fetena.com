@@ -1,5 +1,5 @@
 import { useState } from "react";
-import fetena_logo from "../assets/fetena_logo.png";
+import fetena_logo from "../../assets/fetena_logo.png";
 import { Icon } from "@iconify/react";
 import { Link, useLocation } from "react-router-dom";
 import { Form, Input, Button } from "antd";

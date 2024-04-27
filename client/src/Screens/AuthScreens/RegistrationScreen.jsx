@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-
 import { Link } from "react-router-dom";
-import fetena_logo from "../assets/fetena_logo.png";
+import fetena_logo from "../../assets/fetena_logo.png";
 import { Button, Form, Input, Divider, Dropdown, Menu } from "antd";
 import { Icon } from "@iconify/react";
-import Progress from "../Components/ProgressBar";
+import Progress from "../../Components/ProgressBar";
 import { toast } from "react-toastify";
-import { useMutation } from "react-query";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../Redux/features/authActions";
 
 const RegistrationScreen = () => {
   const [step, setStep] = useState(1);
   const [disableSocials, setDisableSocials] = useState(false);
   const [disable, setDisable] = useState(false);
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -29,38 +30,31 @@ const RegistrationScreen = () => {
   });
 
   const submitFormData = async (formData) => {
-    try {
-      const response = await fetch("http://localhost:8080/api/users/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
+    dispatch(registerUser(formData)).then((res) => {
+      console.log(res, "response");
+      if (res.payload.status === "success") {
+        toast.success("Registration Successful!");
+        setStep(step + 1);
+      } else {
+        // console.log(res.payload.message);
+        toast.error(res.payload.message);
       }
-
-      return await response.json();
-    } catch (error) {
-      throw new Error("Failed to submit form");
-    }
+    });
   };
 
-  const { mutate, isLoading, isError } = useMutation(submitFormData, {
-    onSuccess: (data) => {
-      console.log("Form submitted successfully:", data);
-      // Handle success behavior, such as displaying a success message
-      toast.success("Form submitted successfully!");
-      // Set form submission status to true
-    },
-    onError: (error) => {
-      console.error("Error submitting form:", error);
-      // Handle error behavior, such as displaying an error message
-      toast.error("Failed to submit form. Please try again later.");
-    },
-  });
+  // const { mutate, isLoading, isError } = useMutation(submitFormData, {
+  //   onSuccess: (data) => {
+  //     console.log("Form submitted successfully:", data);
+  //     // Handle success behavior, such as displaying a success message
+  //     toast.success("Form submitted successfully!");
+  //     // Set form submission status to true
+  //   },
+  //   onError: (error) => {
+  //     console.error("Error submitting form:", error);
+  //     // Handle error behavior, such as displaying an error message
+  //     toast.error("Failed to submit form. Please try again later.");
+  //   },
+  // });
 
   const handleChange = (changedValues) => {
     setFormData((prevData) => ({
@@ -166,8 +160,9 @@ const RegistrationScreen = () => {
   const handleSubmit = (values) => {
     // Submit form data to server
     // setDisable(true)
-    mutate(formData);
-    setStep(step + 1);
+    // mutate(formData);
+    submitFormData(formData);
+    console.log(formData, values, "formData, values");
 
     // toast.success("An login link has been sent to your email!")
   };
@@ -176,11 +171,13 @@ const RegistrationScreen = () => {
     <div className='p-8 flex justify-center text-center'>
       <div className='flex flex-col items-center justify-center h-screen gap-4'>
         <div className='flex flex-col items-center justify-center gap-2'>
-          <img
-            className='w-20'
-            src={fetena_logo}
-            alt='Fetena.com Logo'
-          />
+          <Link to={"/"}>
+            <img
+              className='w-20'
+              src={fetena_logo}
+              alt='Fetena.com Logo'
+            />
+          </Link>
           <h1 className='text-3xl font-bold'>Sign Up</h1>
           <p>
             Already have an account?{" "}
