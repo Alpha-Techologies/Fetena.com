@@ -3,7 +3,7 @@ const APIError = require("./../utils/apiError");
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const APIFeatures = require("./../utils/apiFeatures");
-const factory = require("../Controller/handlerFactory");
+const factory = require("../controller/handlerFactory");
 
 // const RockTemp = require("../models/rockTempModel");
 

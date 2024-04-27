@@ -31,7 +31,7 @@ const LoginScreen = () => {
       await mutateFormData(formData);
       console.log("handleSubmit");
 
-      navigate("/");
+    
     } catch (error) {
       // Handle login error
     }
@@ -39,7 +39,7 @@ const LoginScreen = () => {
 
   const mutateFormData = async (formData) => {
     try {
-      const response = await fetch("http://localhost:8080/api/users/login", {
+      const response = await fetch("/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,6 +53,7 @@ const LoginScreen = () => {
       }
 
       await response.json();
+      console.log(response);
       toast.success('Logged in successfully!');
       navigate('/'); // Redirect here
     } catch (error) {

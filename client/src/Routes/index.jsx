@@ -16,6 +16,7 @@ import DashboardScreen from "../Screens/DashboardScreens/DashboardScreen";
 import ProtectedRoutes from "../Screens/ProtectedRoutes";
 import VerifyEmail from "../Screens/AuthScreens/VerifyEmail";
 
+
 //Pages
 import DashboardPage from "../Pages/DashboardPage";
 import ProfilePage from "../Pages/ProfilePage";
@@ -26,6 +27,7 @@ const AllRoutes = () => {
   return (
     <>
       <Routes>
+    
         <Route
           index
           path='/'
