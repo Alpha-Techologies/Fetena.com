@@ -1,25 +1,25 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const QuestionSchema = new mongoose.Schema({
   questionText: {
     type: String,
-    required: true
+    required: true,
   },
   questionType: {
     type: String,
     required: true,
-    enum: ['Multiple Choice', 'True/False', 'Short Answer', 'Essay']
+    enum: ["Multiple Choice", "True/False", "Short Answer", "Essay"],
   },
   tag: {
     type: String,
-    trim: true
+    trim: true,
   },
   flag: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
-const Question = mongoose.model('Question', QuestionSchema);
+const Question = mongoose.model("Question", QuestionSchema);
 
 module.exports = Question;

@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import fetena_logo from "../../assets/fetena_logo.png";
+import fetena_logo from "../../assets/fetena_logo_primary.svg";
 import { Button, Form, Input, Divider, Dropdown, Menu } from "antd";
-import { Icon } from "@iconify/react";
-import Progress from "../../Components/ProgressBar";
+import auth_bg from "../../assets/auth_bg.jpg";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../Redux/features/authActions";
+import Loading from "../../Components/Loading";
 
 const RegistrationScreen = () => {
   const [step, setStep] = useState(1);
   const [disableSocials, setDisableSocials] = useState(false);
   const [disable, setDisable] = useState(false);
   const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -32,29 +33,18 @@ const RegistrationScreen = () => {
   const submitFormData = async (formData) => {
     dispatch(registerUser(formData)).then((res) => {
       console.log(res, "response");
-      if (res.payload.status === "success") {
+      if (res.meta.requestStatus === 'fulfilled') {
         toast.success("Registration Successful!");
         setStep(step + 1);
       } else {
         // console.log(res.payload.message);
         toast.error(res.payload.message);
       }
+    }).catch((error) => {
+      console.log(error);
+      toast.error("Something is wrong!");
     });
   };
-
-  // const { mutate, isLoading, isError } = useMutation(submitFormData, {
-  //   onSuccess: (data) => {
-  //     console.log("Form submitted successfully:", data);
-  //     // Handle success behavior, such as displaying a success message
-  //     toast.success("Form submitted successfully!");
-  //     // Set form submission status to true
-  //   },
-  //   onError: (error) => {
-  //     console.error("Error submitting form:", error);
-  //     // Handle error behavior, such as displaying an error message
-  //     toast.error("Failed to submit form. Please try again later.");
-  //   },
-  // });
 
   const handleChange = (changedValues) => {
     setFormData((prevData) => ({
@@ -162,34 +152,37 @@ const RegistrationScreen = () => {
     // setDisable(true)
     // mutate(formData);
     submitFormData(formData);
-    console.log(formData, values, "formData, values");
 
     // toast.success("An login link has been sent to your email!")
   };
 
   return (
-    <div className='p-8 flex justify-center text-center'>
+    <div
+      style={{
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${auth_bg})`,
+      }}
+      className='p-8 flex justify-center text-center bg-no-repeat bg-cover '>
       <div className='flex flex-col items-center justify-center h-screen gap-4'>
         <div className='flex flex-col items-center justify-center gap-2'>
           <Link to={"/"}>
             <img
-              className='w-20'
+              className='w-40'
               src={fetena_logo}
               alt='Fetena.com Logo'
             />
           </Link>
-          <h1 className='text-3xl font-bold'>Sign Up</h1>
-          <p>
+          <h1 className='text-3xl font-bold text-white'>Sign Up</h1>
+          <p className="text-white">
             Already have an account?{" "}
             <Link
               to={"/sign-in"}
-              className='text-primary-500 hover:underline'>
+              className='text-primary-100 hover:underline hover:text-white'>
               Sign in
             </Link>
           </p>
         </div>
 
-        <div className='flex flex-col gap-4 shadow-md px-16 py-8 rounded-lg'>
+        <div className='flex flex-col gap-4 shadow-md px-16 py-8 rounded-lg bg-white '>
           {step !== 5 && (
             <nav className='flex gap-2 px-2 text-base justify-center items-center font-medium leading-5 text-white whitespace-nowrap max-md:flex-wrap'>
               <React.Fragment>
@@ -454,12 +447,7 @@ const RegistrationScreen = () => {
 
             {step === 4 && (
               <section className='flex flex-col justify-center items-center mt-8'>
-                {/* <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/f036dfadbcb5962fc51b133ce1f5e0f003ad5000218eb6b4df54e7ec1cff714a?apiKey=da0e5699a0964f23ab3a2091e7f935a3&"
-            alt="Submit form icon"
-            className="max-w-full aspect-[1.1] w-[157px]"
-          /> */}
+                {loading && <Loading className='w-12 h-12' />}
                 <h2 className='text-lg font-semibold text-left mb-4'>
                   Are you sure to submit your information?
                 </h2>
@@ -479,7 +467,7 @@ const RegistrationScreen = () => {
                   className='max-w-full aspect-[1.1] w-[157px]'
                 />
                 <h2 className='text-lg font-semibold text-left mt-4'>
-                  An login link has been sent to your email!
+                  A login link has been sent to your email!
                 </h2>
               </section>
             )}

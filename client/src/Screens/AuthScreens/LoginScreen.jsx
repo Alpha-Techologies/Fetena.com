@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import fetena_logo from "../../assets/fetena_logo.png";
-import { Form, Input, Button } from "antd";
+import fetena_logo from "../../assets/fetena_logo_primary.svg";
+// import Logo from "../../assets/fetena_logo_primary.js";
+import auth_bg from "../../assets/auth_bg.jpg";
+import { Form, Input } from "antd";
 import { Icon } from "@iconify/react";
-import { useMutation } from "react-query";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../Redux/features/authActions";
+import Button from "../../Components/Button";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -27,114 +32,102 @@ const LoginScreen = () => {
   const handleSubmit = async (e) => {
     console.log("handleSubmit first");
     e.preventDefault();
-    try {
-      await mutateFormData(formData);
-      console.log("handleSubmit");
-
-    
-    } catch (error) {
-      // Handle login error
-    }
-  };
-
-  const mutateFormData = async (formData) => {
-    try {
-      const response = await fetch("/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+      dispatch(loginUser(formData)).then((res) => {
+        console.log(res, "response");
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success("Logged in successfully!");
+          navigate('/'); // Redirect here
+        } else {
+          // console.log(res.payload.message);
+          toast.error(res.payload.message);
+        }
+      }).catch((error) => {
+        console.log(error);
+        toast.error("Something is wrong!")
       });
-      console.log("hello world");
 
-      if (!response.ok) {
-        throw new Error("Failed to log in");
-      }
-
-      await response.json();
-      console.log(response);
-      toast.success('Logged in successfully!');
-      navigate('/'); // Redirect here
-    } catch (error) {
-      console.error("Error logging in:", error);
-      toast.error("Failed to log in. Please try again later.");
-    }
   };
 
-  const mutation = useMutation(mutateFormData);
 
   return (
-    <div className='flex flex-col items-center justify-center h-screen gap-4'>
-      <div className='flex flex-col items-center justify-center gap-2'>
-        <Link to='/'>
-          <img
-            className='w-40'
-            src={fetena_logo}
-            alt='Fetena.com Logo'
-          />
-        </Link>
-        <h1 className='text-3xl font-bold'>Log In</h1>
-        <p>
-          Don't have an account?{" "}
-          <Link
-            to='/register'
-            className='text-primary-500 hover:underline'>
-            Sign up
+      <div
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${auth_bg})`,
+        }}
+        className={` flex flex-col items-center justify-center h-screen gap-4  bg-no-repeat bg-cover `}>
+        <div className='flex flex-col items-center justify-center gap-2'>
+          <Link to='/'>
+            <img className="w-40" src={fetena_logo} alt="" />
           </Link>
-        </p>
-      </div>
-      <div className='flex flex-col gap-4 shadow-md px-16 py-8 rounded-lg'>
-        <h2 className='text-md font-semibold'>Log In with your Credentials</h2>
-        <Form>
-          <Form.Item
-            name='email'
-            rules={[
-              {
-                type: "email",
-                message: "Please input a valid email address!",
-              },
-              {
-                required: true,
-                message: "Please input your email!",
-              },
-            ]}>
-            <Input
-              className='max-w-[300px] min-w-[100px]'
-              prefix={<Icon icon='mdi-light:email' />}
-              type='email'
-              placeholder='Email'
-              onChange={handleChange}
+          <h1 className='text-3xl font-bold text-white'>Log In</h1>
+          <p className='text-white'>
+            Don't have an account?{" "}
+            <Link
+              to='/register'
+              className='text-primary-100 hover:underline hover:text-white'>
+              Sign up
+            </Link>
+          </p>
+        </div>
+        <div className='flex flex-col justify-center gap-4 shadow-md px-16 py-8 w-2/5 rounded-lg bg-white'>
+          <h2 className='text-md font-semibold'>
+            Log In with your Credentials
+          </h2>
+          <Form>
+            <Form.Item
               name='email'
-              value={formData.email}
-            />
-          </Form.Item>
-          <Form.Item
-            name='password'
-            rules={[
-              {
-                required: true,
-                message: "Please input your password!",
-              },
-            ]}>
-            <Input
-              prefix={<Icon icon='mdi-light:lock' />}
-              type='password'
-              placeholder='Password'
-              onChange={handleChange}
+              rules={[
+                {
+                  type: "email",
+                  message: "Please input a valid email address!",
+                },
+                {
+                  required: true,
+                  message: "Please input your email!",
+                },
+              ]}>
+              <Input
+                className='w-full'
+                prefix={<Icon icon='mdi-light:email' />}
+                type='email'
+                placeholder='Email'
+                onChange={handleChange}
+                name='email'
+                value={formData.email}
+              />
+            </Form.Item>
+            <Form.Item
               name='password'
-              value={formData.password}
-            />
-          </Form.Item>
-          <Link
-            to='/forgot-password'
-            className='text-primary-500 hover:underline'>
-            Forgot Password?
-          </Link>
-          <button onClick={handleSubmit}>Log In</button>
-        </Form>
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+              ]}>
+              <Input
+              prefix={<Icon icon='mdi-light:lock' />}
+              className="w-full"
+                type='password'
+                placeholder='Password'
+                onChange={handleChange}
+                name='password'
+                value={formData.password}
+              />
+            </Form.Item>
+            <div className='flex flex-col justify-between gap-2'>
+              <Link
+                to='/forgot-password'
+                className='text-primary-500 hover:underline'>
+                Forgot Password?
+              </Link>
+              <Button
+                text={"Log In"}
+                onClick={handleSubmit}
+              />
+            </div>
+          </Form>
+        </div>
       </div>
-    </div>
   );
 };
 

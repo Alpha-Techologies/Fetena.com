@@ -26,3 +26,15 @@ export const verifyEmail = createAsyncThunk(
         }
     }
 );
+
+export const loginUser = createAsyncThunk(
+    "auth/loginUser",
+    async (user, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.post(`${url}/login`, user);
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);

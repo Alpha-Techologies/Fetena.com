@@ -10,7 +10,7 @@ import RegistrationScreen from "../Screens/AuthScreens/RegistrationScreen";
 import LoginScreen from "../Screens/AuthScreens/LoginScreen";
 import ForgotPasswordScreen from "../Screens/AuthScreens/ForgotPasswordScreen";
 import OTPScreen from "../Screens/AuthScreens/OTPScreen";
-import VerifyEmailScreen from "../Screens/AuthScreens/VerifyEmailScreen";
+// import VerifyEmailScreen from "../Screens/AuthScreens/VerifyEmailScreen";
 import ResetPasswordScreen from "../Screens/AuthScreens/ResetPasswordScreen";
 import DashboardScreen from "../Screens/DashboardScreens/DashboardScreen";
 import ProtectedRoutes from "../Screens/ProtectedRoutes";
@@ -45,10 +45,10 @@ const AllRoutes = () => {
           path='verify-otp'
           element={<OTPScreen />}
         />
-        <Route
+        {/* <Route
           path='verify-email'
           element={<VerifyEmailScreen />}
-        />
+        /> */}
         <Route
           path='reset-password/*'
           element={<ResetPasswordScreen />}

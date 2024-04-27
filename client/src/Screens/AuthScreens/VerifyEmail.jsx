@@ -20,7 +20,7 @@ const VerifyEmail = () => {
         console.log(res, "response");
         if (res.payload.success) {
           toast.success("Email verified successfully! Login to your account!");
-          navigate("/login");
+          navigate("/sign-in");
         } else {
           // console.log(res.payload.message);
           toast.error(res.payload.message);
@@ -38,7 +38,7 @@ const VerifyEmail = () => {
     const email = query.get("email");
     if (token && email) {
       setLoading(true); // Set loading to true before mutating
-      verifyToken({ verificationToken: token, email });
+      verifyToken({ token, email });
     } else {
       setError(true);
     }
