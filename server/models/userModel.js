@@ -65,35 +65,14 @@ const user = new mongoose.Schema(
       default: Date.now(),
     },
     profilePhoto: {
-      url: {
-        type: {
-          String,
-        },
+        type: String,
         default: null,
         trim: true,
-      },
-
     },
     idPhoto: {
-      url: {
-        type: {
-          String,
-        },
+        type: String,
         default: null,
         trim: true,
-      },
-
-      // id: {
-      //   type: mongoose.Schema.Types.ObjectId,
-      //   trim: true,
-      // },
-      // contentType: {
-      //   type: {
-      //     String,
-      //   },
-      //   default: null,
-      //   trim: true,
-      // },
     },
     createdAt: {
       type: Date,
