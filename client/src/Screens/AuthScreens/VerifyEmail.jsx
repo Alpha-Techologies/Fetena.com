@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"; // Import useState hook
-import { useMutation } from "react-query";
 import { Link, useLocation, useNavigate } from "react-router-dom"; // Import useLocation hook
 import Button from "../../Components/Button";
-import fetena_logo from "../../assets/fetena_logo.png";
+import fetena_logo from "../../assets/fetena_logo_primary.svg";
+import auth_bg from "../../assets/auth_bg.jpg";
 import { useDispatch } from "react-redux";
 import { verifyEmail } from "../../Redux/features/authActions";
 import { toast } from "react-toastify";
@@ -50,19 +50,23 @@ const VerifyEmail = () => {
   }, []);
 
   return (
-    <div className='flex flex-col items-center justify-center h-screen gap-4'>
+    <div
+      style={{
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${auth_bg})`,
+      }}
+      className='flex flex-col items-center justify-center h-screen gap-4 bg-cover bg-no-repeat '>
       <div className='flex flex-col items-center justify-center gap-4'>
         <img
-          className='w-20'
+          className='w-40'
           src={fetena_logo}
           alt='Fetena.com Logo'
         />
-        <h1 className='text-3xl font-bold'>Account Confirmed</h1>
-        <p>Login to your account and start using Fetena.com</p>
+        <h1 className='text-3xl font-bold text-white'>Account Confirmed</h1>
+        <p className="text-white">Login to your account and start using Fetena.com</p>
         {loading ? (
-          <p>Loading...</p>
+          <p className="text-white">Loading...</p>
         ) : error ? (
-          <p>Error occurred while verifying email.</p>
+          <p className="text-white">Error occurred while verifying email.</p>
         ) : (
           <Link to='/sign-in'>
             <Button text='Login' />
@@ -71,18 +75,6 @@ const VerifyEmail = () => {
       </div>
     </div>
 
-    // <div>
-    //     <h2>Account Confirmed</h2>
-    //     {loading ? (
-    //         <p>Loading...</p>
-    //     ) : error ? (
-    //         <p>Error occurred while verifying email.</p>
-    //     ) : (
-    //         <Link to="/sign-in">
-    //             <Button text="Login" />
-    //         </Link>
-    //     )}
-    // </div>
   );
 };
 

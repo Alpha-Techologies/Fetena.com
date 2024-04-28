@@ -38,3 +38,28 @@ export const loginUser = createAsyncThunk(
         }
     }
 );
+
+export const forgotPassword = createAsyncThunk(
+    "auth/forgotPassword",
+    async (user, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.post(`${url}/forgotpassword`, user);
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+
+export const resetPassword = createAsyncThunk(
+    "auth/resetPassword",
+    async ({formData, token}, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.put(`${url}/resetpassword/${token}`, formData);
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
