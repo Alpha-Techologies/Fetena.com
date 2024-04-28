@@ -27,14 +27,16 @@ const fileUpload =
       new APIError(`Please upload file smaller than` + {maxSize}, StatusCodes.BAD_REQUEST)
     );
   }
-  // const localPath = photo.path;
+
+  const newFileName = name + path.extname(file.name); // You can generate a new name however you like
+
   const imagePath = path.join(
     __dirname,
-    `../../public/uploads/` + `${filePath}/` + `${name}`
+    `../../public/uploads/` + `${filePath}/` + `${newFileName}`
   );
   await file.mv(imagePath);
 
-  return `/uploads/` + `${filePath}/` + `${name}`;
+  return `/uploads/` + `${filePath}/` + `${newFileName}`;
   
 }
 // const uploadProductImage = async (req, res) => {
