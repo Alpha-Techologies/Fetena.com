@@ -1,5 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser, verifyEmail, loginUser, forgotPassword, resetPassword } from "./authActions";
+import {
+  registerUser,
+  verifyEmail,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+  logoutUser,
+} from "./authActions";
 
 const initialState = {
   isAuthenticated: false,
@@ -66,6 +73,11 @@ const authSlice = createSlice({
       .addCase(resetPassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(logoutUser, (state) => {
+        state.isAuthenticated = false;
+        state.user = null;
+        state.error = null;
       });
   },
 });

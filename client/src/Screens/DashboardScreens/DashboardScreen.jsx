@@ -6,12 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Outlet, Link } from "react-router-dom";
 import fetena_logo from "../../assets/fetena_logo.png";
+import { logoutUser } from "../../Redux/features/authActions";
 const { Header, Content, Footer, Sider } = Layout;
 
 const DashboardScreen = () => {
   const [collapsed, setCollapsed] = useState(false);
   const { loading } = useSelector((state) => state.data);
-  const {user} = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   function getItem(label, key, icon, children, type, danger, disabled) {
     return {
@@ -42,7 +44,7 @@ const DashboardScreen = () => {
       <Icon icon='mdi:create-new-folder-outline' />
     ),
     getItem(
-      <span onClick={() => {}}>Logout</span>,
+      <span onClick={() => {dispatch(logoutUser())}}>Logout</span>,
       "6",
       <Icon icon='humbleicons:logout' />,
       null,
@@ -87,14 +89,11 @@ const DashboardScreen = () => {
           </h1>
           <div className='flex items-center justify-center gap-4'>
             <Link to='notifications'>
-              <Badge
-                size='small'>
                 <Avatar
                   className='cursor-pointer flex items-center justify-center'
                   size='large'
                   icon={<Icon icon='iconamoon:notification' />}
                 />
-              </Badge>
             </Link>
             <Link to='profile'>
               <Avatar

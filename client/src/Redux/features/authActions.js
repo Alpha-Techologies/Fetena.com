@@ -1,7 +1,7 @@
 import { createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const url = 'http://localhost:8080/api/users';
+const url = '/api/users';
 
 export const registerUser = createAsyncThunk(
     "auth/registerUser",
@@ -63,3 +63,5 @@ export const resetPassword = createAsyncThunk(
         }
     }
 );
+
+export const logoutUser = createAction("auth/logoutUser");
