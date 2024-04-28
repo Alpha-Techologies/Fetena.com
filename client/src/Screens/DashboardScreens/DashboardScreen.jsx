@@ -61,11 +61,11 @@ const DashboardScreen = () => {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
         theme='light'>
-        <div className='demo-logo-vertical p-4'>
+        <div className='demo-logo-vertical p-4 flex justify-center '>
           <img
             src={fetena_logo}
             alt='Fetena.com Logo'
-            className=''
+            className='w-24'
           />
         </div>
         <Menu
