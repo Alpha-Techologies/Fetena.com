@@ -1,7 +1,7 @@
 import { Button, Form, Input } from "antd";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import auth_bg from "../../assets/auth_bg.jpg";
 import fetena_logo from "../../assets/fetena_logo_primary.svg";
 
@@ -10,15 +10,24 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { forgotPassword } from "../../Redux/features/authActions";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../../Components/Spinner";
+
 
 const ForgotPasswordScreen = () => {
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const { loading, isAuthenticated } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  });
+
   const [formData, setFormData] = useState({
     email: "",
   });
-  const dispatch = useDispatch();
 
-  const { loading } = useSelector((state) => state.auth);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -8,8 +8,22 @@ import FeatureSection2 from "../../Components/FeatureSection2";
 import NavBar from "../../Components/NavBar";
 import Footer from "../../Components/Footer";
 import TestimonySection from "../../Components/TestimonySection";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Home = () => {
+
+  const navigate = useNavigate()
+
+  const { isAuthenticated } = useSelector((state) => state.auth)
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  });
+
   const featuresData = {
     title: "For Examiners or Examinees",
     description:

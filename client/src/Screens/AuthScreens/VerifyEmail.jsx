@@ -3,16 +3,25 @@ import { Link, useLocation, useNavigate } from "react-router-dom"; // Import use
 import Button from "../../Components/Button";
 import fetena_logo from "../../assets/fetena_logo_primary.svg";
 import auth_bg from "../../assets/auth_bg.jpg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { verifyEmail } from "../../Redux/features/authActions";
 import { toast } from "react-toastify";
 
 const VerifyEmail = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  });
+
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const location = useLocation(); // Use useLocation hook to get query parameters
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const verifyToken = async (user) => {
     try {

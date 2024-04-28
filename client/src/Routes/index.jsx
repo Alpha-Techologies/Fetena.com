@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 
 // Screens
 import Home from "../Screens/LandingPageScreens/Home";
@@ -21,13 +22,13 @@ import VerifyEmail from "../Screens/AuthScreens/VerifyEmail";
 import DashboardPage from "../Pages/DashboardPage";
 import ProfilePage from "../Pages/ProfilePage";
 import NotFoundPage from "../Pages/NotFoundPage";
+import ExamsPage from "../Pages/ExamsPage";
 
 const AllRoutes = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   return (
     <>
       <Routes>
-    
         <Route
           index
           path='/'
@@ -45,10 +46,6 @@ const AllRoutes = () => {
           path='verify-otp'
           element={<OTPScreen />}
         />
-        {/* <Route
-          path='verify-email'
-          element={<VerifyEmailScreen />}
-        /> */}
         <Route
           path='reset-password/*'
           element={<ResetPasswordScreen />}
@@ -77,6 +74,10 @@ const AllRoutes = () => {
           <Route
             path='profile'
             element={<ProfilePage />}
+          />
+          <Route
+            path='exams'
+            element={<ExamsPage />}
           />
           <Route
             path='*'

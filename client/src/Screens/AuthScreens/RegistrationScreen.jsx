@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import fetena_logo from "../../assets/fetena_logo_primary.svg";
 import { Button, Form, Input, Divider, Dropdown, Menu } from "antd";
 import auth_bg from "../../assets/auth_bg.jpg";
@@ -8,11 +8,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../Redux/features/authActions";
 import Loading from "../../Components/Loading";
 
+
 const RegistrationScreen = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+
+  const {isAuthenticated } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  });
+
+
   const [step, setStep] = useState(1);
   const [disableSocials, setDisableSocials] = useState(false);
   const [disable, setDisable] = useState(false);
-  const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({

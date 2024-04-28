@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import fetena_logo from "../../assets/fetena_logo_primary.svg";
 // import Logo from "../../assets/fetena_logo_primary.js";
@@ -8,13 +8,20 @@ import { Icon } from "@iconify/react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../Redux/features/authActions";
-import Button from "../../Components/Button";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  console.log(isAuthenticated, "isAuthenticated");
+  
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard'); 
+    }
+  })
 
   const [formData, setFormData] = useState({
     email: "",
@@ -36,7 +43,7 @@ const LoginScreen = () => {
         console.log(res, "response");
         if (res.meta.requestStatus === "fulfilled") {
           toast.success("Logged in successfully!");
-          navigate('/'); // Redirect here
+          navigate('/dashboard'); // Redirect here
         } else {
           // console.log(res.payload.message);
           toast.error(res.payload.message);
@@ -104,7 +111,7 @@ const LoginScreen = () => {
                   message: "Please input your password!",
                 },
               ]}>
-              <Input
+              <Input.Password
               prefix={<Icon icon='mdi-light:lock' />}
               className="w-full"
                 type='password'
@@ -120,10 +127,7 @@ const LoginScreen = () => {
                 className='text-primary-500 hover:underline'>
                 Forgot Password?
               </Link>
-              <Button
-                text={"Log In"}
-                onClick={handleSubmit}
-              />
+              <button className="bg-primary-500 hover:bg-primary-900 text-white font-bold py-2 px-4 rounded" onClick={handleSubmit}>Log in</button>
             </div>
           </Form>
         </div>

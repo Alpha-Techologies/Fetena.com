@@ -1,11 +1,55 @@
 import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import { Avatar, Layout, Menu, theme, Badge } from "antd";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import { Outlet, Link } from "react-router-dom";
 import fetena_logo from "../../assets/fetena_logo.png";
+const { Header, Content, Footer, Sider } = Layout;
 
 const DashboardScreen = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const { loading } = useSelector((state) => state.data);
+  const {user} = useSelector((state) => state.auth);
+
+  function getItem(label, key, icon, children, type, danger, disabled) {
+    return {
+      key,
+      icon,
+      children,
+      label,
+      danger,
+      disabled,
+      type,
+    };
+  }
+  const menuItems = [
+    getItem(
+      <Link to=''>Dashboard</Link>,
+      "1",
+      <Icon icon='akar-icons:dashboard' />
+    ),
+    getItem(
+      <Link to='exams'>Exams</Link>,
+      "2",
+      <Icon className="w-4 h-4" icon='healthicons:i-exam-multiple-choice-outline' />
+    ),
+    { type: "divider" },
+    getItem(
+      <Link to='create-project'>Join Organization</Link>,
+      "5",
+      <Icon icon='mdi:create-new-folder-outline' />
+    ),
+    getItem(
+      <span onClick={() => {}}>Logout</span>,
+      "6",
+      <Icon icon='humbleicons:logout' />,
+      null,
+      null,
+      true
+    ),
+  ];
 
   return (
     <Layout
@@ -28,7 +72,7 @@ const DashboardScreen = () => {
           theme='light'
           defaultSelectedKeys={["1"]}
           mode='inline'
-          items={adminItems}
+          items={menuItems}
         />
       </Sider>
       <Layout>
@@ -36,10 +80,10 @@ const DashboardScreen = () => {
           className='flex justify-between items-center'
           style={{
             padding: 16,
-            background: colorBgContainer,
+            background: "white",
           }}>
           <h1 className='text-2xl'>
-            {"Hello there, "}
+            {"Hello there, " + user.email}
           </h1>
           <div className='flex items-center justify-center gap-4'>
             <Link to='notifications'>
@@ -65,8 +109,7 @@ const DashboardScreen = () => {
           style={{
             margin: "0 16px",
           }}>
-          <ToastContainer />
-          {isLoading ? (
+          {loading ? (
             <div className='flex items-center justify-center h-full'>
               <ReactLoading
                 type='balls'
