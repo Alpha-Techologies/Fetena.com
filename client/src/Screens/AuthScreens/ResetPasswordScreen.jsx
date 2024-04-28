@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import fetena_logo from "../../assets/fetena_logo_primary.svg";
 import auth_bg from "../../assets/auth_bg.jpg";
 import { Icon } from "@iconify/react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Form, Input, Button } from "antd";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,13 +11,23 @@ import { resetPassword } from "../../Redux/features/authActions";
 
 const ResetPasswordScreen = () => {
  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { isAuthenticated } = useSelector((state) => state.auth)
+  
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  });
+
   const [form] = Form.useForm();
 
   const location = useLocation()
   const currentUrl = location.pathname
   const parts = currentUrl.split('/');
   const token = parts[parts.length - 1];
-  const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
 
   const [isDisabled, setIsDisabled] = useState(true);
