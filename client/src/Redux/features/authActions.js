@@ -64,4 +64,10 @@ export const resetPassword = createAsyncThunk(
     }
 );
 
-export const logoutUser = createAction("auth/logoutUser");
+export const logoutUser = createAsyncThunk(
+    "auth/logoutUser",
+    async () => {
+        const { data } = await axios.get(`${url}/logout`);
+        return data;
+    }
+)
