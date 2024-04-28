@@ -30,21 +30,72 @@ const RegistrationScreen = () => {
     idPhoto: null, // Separate state for the second image
   });
 
+  const [formatedFormData, setFormatedFormData] = useState({
+    profilePhoto: formData.profilePhoto,
+    data: {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      role: formData.role,
+      email: formData.email,
+      gender: formData.gender,
+      dateOfBirth: formData.dateOfBirth,
+      phoneNumber: formData.phoneNumber,
+      password: formData.password,
+      passwordConfirm: formData.passwordConfirm,
+      idPhotoType: formData.idPhotoType
+    },
+    idPhoto: formData.idPhoto
+  })
+
+
+
+
   const submitFormData = async (formData) => {
-    dispatch(registerUser(formData)).then((res) => {
-      console.log(res, "response");
-      if (res.meta.requestStatus === 'fulfilled') {
-        toast.success("Registration Successful!");
-        setStep(step + 1);
-      } else {
-        // console.log(res.payload.message);
-        toast.error(res.payload.message);
-      }
-    }).catch((error) => {
-      console.log(error);
-      toast.error("Something is wrong!");
-    });
+    const formDataToSend = new FormData();
+  
+    // Append form fields to formDataToSend
+    formDataToSend.append("data", JSON.stringify({
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      role: formData.role,
+      email: formData.email,
+      gender: formData.gender,
+      dateOfBirth: formData.dateOfBirth,
+      phoneNumber: formData.phoneNumber,
+      password: formData.password,
+      passwordConfirm: formData.passwordConfirm,
+      idPhotoType: formData.idPhotoType
+    }));
+  
+    // Append profile photo if exists
+    if (formData.profilePhoto) {
+      formDataToSend.append("profilePhoto", formData.profilePhoto);
+    }
+  
+    // Append ID photo if exists
+    if (formData.idPhoto) {
+      formDataToSend.append("idPhoto", formData.idPhoto);
+    }
+  
+    console.log(formDataToSend); // Check the formDataToSend object in the console
+  
+    // Dispatch the action with the formatted form data
+    dispatch(registerUser(formDataToSend))
+      .then((res) => {
+        console.log(res, "response");
+        if (res.meta.requestStatus === 'fulfilled') {
+          toast.success("Registration Successful!");
+          setStep(step + 1);
+        } else {
+          toast.error(res.payload.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Something is wrong!");
+      });
   };
+  
 
   const handleChange = (changedValues) => {
     setFormData((prevData) => ({
