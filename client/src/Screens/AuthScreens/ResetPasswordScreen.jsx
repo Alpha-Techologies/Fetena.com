@@ -75,6 +75,7 @@ const handleSubmit = async (e) => {
     }
   };
 
+
   const handleStrongPassword = (rule, value, callback) => {
     if (value !== "" && !regEx.test(value)) {
       setIsDisabled(true);
@@ -83,9 +84,10 @@ const handleSubmit = async (e) => {
       );
     } else {
       setIsDisabled(false);
-      callback();
+      callback();[]
     }
   };
+
 
   return (
     <div
@@ -172,6 +174,7 @@ const handleSubmit = async (e) => {
               {loading ? "Loading..." : " Reset Password "}
             </Button>
           </Form.Item>
+
         </Form>
       </div>
     </div>
