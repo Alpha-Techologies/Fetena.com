@@ -118,7 +118,7 @@ const ProfilePage = () => {
         items={items}
       />
       {current === "personal" && (
-        <div className='flex flex-col gap-4 bg-white p-4 rounded-br-md rounded-bl-md'>
+        <div className='flex flex-col gap-4 bg-red-100 p-4 rounded-br-md rounded-bl-md'>
           <Form
             name='profileDetails'
             form={form}
