@@ -10,3 +10,15 @@ export const getMe = createAsyncThunk(
         return data;
     }
 );
+
+export const updateMe = createAsyncThunk(
+    "data/updateMe",
+    async (user, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.patch(`${url}/updateMe`, user);
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
