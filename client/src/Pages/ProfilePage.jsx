@@ -3,7 +3,7 @@ import { Menu, Button, Form, Input, Select, InputNumber } from "antd";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getMe } from "../Redux/features/dataActions";
+import { getMe, updateMe } from "../Redux/features/dataActions";
 const { Option } = Select;
 
 const items = [
@@ -58,20 +58,6 @@ const ProfilePage = () => {
     // });
     fetchData();
   }, []);
-
-  // dispatch(getMe()).then((res) => {
-  //   console.log(res, "res");
-  //   setUser(res.payload.data.data[0]);
-  //   setInitialValues({
-  //       firstName: res.payload.data.data[0].firstName,
-  //       lastName: res.payload.data.data[0].lastName,
-  //       email: res.payload.data.data[0].email,
-  //       phoneNumber: res.payload.data.data[0].phoneNumber,
-  //   });
-  //   form.setFieldsValue({
-  //     ...initialValues,
-  //   });
-  // });
   
   
 
@@ -99,16 +85,31 @@ const ProfilePage = () => {
 
   const onFinishProfile = async (values) => {
     setIsLoading(true);
-    dispatch(UpdateUser({ ...values, _id })).then((res) => {
-      if (res.payload.success) {
+    dispatch(updateMe(values)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
         setIsLoading(false);
         setIsInputDisabled(true);
-        dispatch(FetchCurrentUser(_id));
-        return notify(res.payload.message);
+        dispatch(getMe()).then((res) => {
+          setUser(res.payload.data.data[0]);
+          // setInitialValues({
+          //   firstName: res.payload.data.data[0].firstName,
+          //   lastName: res.payload.data.data[0].lastName,
+          //   email: res.payload.data.data[0].email,
+          //   phoneNumber: res.payload.data.data[0].phoneNumber,
+          // });
+          // form.setFieldsValue({
+          //   ...initialValues,
+          // });
+        });
+        toast.success("Profile updated successfully!")
       } else {
         setIsLoading(false);
         return notify(res.payload.message);
       }
+    }).catch((error) => {
+      console.log(error);
+      setIsLoading(false);
+      toast.error("Something is wrong!");
     });
   };
 
@@ -176,7 +177,7 @@ const ProfilePage = () => {
         items={items}
       />
       {current === "personal" && (
-        <div className='flex flex-col gap-4 bg-red-100 p-4 rounded-br-md rounded-bl-md'>
+        <div className='flex flex-col gap-4 p-4 bg-white rounded-br-md rounded-bl-md'>
           <Form
             name='profileDetails'
             form={form}
