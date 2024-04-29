@@ -65,14 +65,23 @@ const user = new mongoose.Schema(
       default: Date.now(),
     },
     profilePhoto: {
-        type: String,
-        default: null,
-        trim: true,
+      type: String,
+      default: null,
+      trim: true,
     },
     idPhoto: {
-        type: String,
-        default: null,
-        trim: true,
+      type: String,
+      default: null,
+      trim: true,
+    },
+    idPhotoType: {
+      type: String,
+      required: true,
+      default: "National",
+      enum: {
+        values: ["National", "Kebele", "Passport", "License", "SchoolId"],
+        message: "Id Type must be of the Provided Types.",
+      },
     },
     createdAt: {
       type: Date,
@@ -84,7 +93,7 @@ const user = new mongoose.Schema(
     },
     role: {
       type: String,
-      required:false,
+      required: false,
       default: "user",
       enum: {
         values: ["manager", "receptionist", "user"],
@@ -158,7 +167,7 @@ user.pre("save", function (next) {
 
       // override the cleartext password with the hashed one
       user.password = hash;
-      // user.passwordConfirm = hash; 
+      // user.passwordConfirm = hash;
       next();
     });
   });

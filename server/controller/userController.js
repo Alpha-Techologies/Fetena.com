@@ -64,35 +64,44 @@ exports.filterUserUpdateFields = (...allowedFields) => {
 exports.updateMe = factory.updateOne(User);
 
 /// update profile picture
-exports.updateProfilePhoto = catchAsync(async (req, res, next) => {
+exports.updateIdPhoto = catchAsync(async (req, res, next) => {
   if (!req.files) {
     return next(new APIError("There is no file", 404));
   }
 
-  const profilePhoto = req.files.profilePhoto;
+  if (!req.body.data) {
+    return next(new APIError("There is no ID Type", StatusCodes.BAD_REQUEST));
+  }
+  const parsedBody = JSON.parse(req.body.data);
+  const { idPhotoType } = parsedBody;
 
-  if (!profilePhoto.mimetype.startsWith("image")) {
+  const idPhoto = req.files.idPhoto;
+
+  if (!idPhoto.mimetype.startsWith("image")) {
     return next(
-      new APIError("Please a Proper Profile Photo", StatusCodes.BAD_REQUEST)
+      new APIError("Please a Proper Id Photo", StatusCodes.BAD_REQUEST)
     );
   }
 
   const user = await User.findOne({
     _id: req.user.id,
   });
-  console.log(user);
+
   const email = user.email;
 
   if (!user) {
     return next(new APIError(`User does not exist`, StatusCodes.BAD_REQUEST));
   }
 
-  user.profilePhoto = await fileUpload({
-    file: profilePhoto,
-    name: `profilePhoto_` + email,
+  user.idPhoto = await fileUpload({
+    file: idPhoto,
+    name: `idPhoto_` + email,
     filePath: "profiles",
     maxSize: 1024 * 1024,
   });
+
+  // update the type of id
+  user.idPhotoType = idPhotoType;
 
   await user.save();
 
