@@ -26,8 +26,8 @@ const ProfilePage = () => {
   const [form] = Form.useForm();
   const [form1] = Form.useForm();
 
-  useEffect(() => {
-    const fetchData = async () => {
+
+  const fetchData = async () => {
       try {
         const res = await dispatch(getMe());
         console.log(res, "res");
@@ -46,19 +46,29 @@ const ProfilePage = () => {
         console.log(error);
       }
     };
-    // dispatch(getMe()).then((res) => {
-    //   console.log(res, "res");
-    //   setUser(res.payload.data.data[0]);
-    //   setInitialValues({
-    //     firstName: res.payload.data.data[0].firstName,
-    //     lastName: res.payload.data.data[0].lastName,
-    //     email: res.payload.data.data[0].email,
-    //     phoneNumber: res.payload.data.data[0].phoneNumber,
-    //   });
-    // });
-    fetchData();
-  }, []);
-  
+
+
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const res = await dispatch(getMe());
+          const userData = res.payload.data.data[0];
+          setUser(userData);
+          form.setFieldsValue({
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: userData.email,
+            phoneNumber: userData.phoneNumber,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    
+      fetchData();
+    }, []);
+    
   
 
   console.log(initialValues.firstName, "initialValues");

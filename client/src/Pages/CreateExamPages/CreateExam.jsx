@@ -17,8 +17,16 @@ const tabListNoTitle = [
 const CreateExam = () => {
   const [activeTabKey, setActiveTabKey] = useState("Basic Info");
   const [basicInfoForm] = Form.useForm();
-  const [examQuestionTypes, setExamQuestionTypes] = useState([]); // New state to store selected question types
+  const [examQuestions, setExamQuestions] = useState([]);
+  const [Question, setQuestion] = useState({
+    questionNo: "",
+    question: "",
+    type: "",
+    options: null,
+    correctAnswer: false
 
+
+  }); 
 
   const handleChange = (key, changedValues) => {
     if (key === "Basic Info") {
@@ -27,43 +35,62 @@ const CreateExam = () => {
   };
 
 
-  // Function to handle change in the selected exam question type
-  const handleQuestionTypeChange = (value) => {
-    setExamQuestionTypes([...examQuestionTypes, value]); // Add the selected question type to the array
-    console.log(  )
-  };
-
-
   const onTabChange = (key) => {
-
-    basicInfoForm
-    .validateFields()
-    .then(() => {
-      // Basic Info form is valid, allow switching to Exam Questions tab
-      setActiveTabKey(key);
-    })
-    .catch((errorInfo) => {
-      // Basic Info form has errors, prevent tab switch and display toast notification
-      toast.error("Please complete all required fields in Basic Info");
-      setActiveTabKey("Basic Info"); // Prevent tab switch
-    });
-
-    
-  };
-
-  const handleSave = () => {
-    basicInfoForm
-      .validateFields()
-      .then(() => {
-        // Basic Info form is valid, allow switching to Exam Questions tab
-        setActiveTabKey("Exam Questions");
-      })
-      .catch((errorInfo) => {
-        // Basic Info form has errors, prevent tab switch and display toast notification
-        toast.error("Please complete all required fields in Basic Info");
-        setActiveTabKey("Basic Info"); // Prevent tab switch
+    if (activeTabKey === "Basic Info") {
+      basicInfoForm
+        .validateFields()
+        .then(() => {
+          // Basic Info form is valid, allow switching to Exam Questions tab
+          setActiveTabKey(key);
+        })
+        .catch((errorInfo) => {
+          // Basic Info form has errors, prevent tab switch and display toast notification
+          toast.error("Please complete all required fields in Basic Info");
+        });
+    } else if (activeTabKey === "Exam Questions") {
+      // Save the current question to the examQuestions state
+      setExamQuestions([...examQuestions, Question]);
+      // Reset the Question state for the next question
+      setQuestion({
+        questionNo: "",
+        question: "",
+        type: "",
+        options: null,
+        correctAnswer: false,
       });
+      setActiveTabKey(key);
+    }
   };
+  
+  const handleSave = () => {
+    if (activeTabKey === "Basic Info") {
+      basicInfoForm
+        .validateFields()
+        .then(() => {
+          // Basic Info form is valid, allow switching to Exam Questions tab
+          setActiveTabKey("Exam Questions");
+        })
+        .catch((errorInfo) => {
+          // Basic Info form has errors, prevent tab switch and display toast notification
+          toast.error("Please complete all required fields in Basic Info");
+        });
+    } else if (activeTabKey === "Exam Questions") {
+      // Save the current question to the examQuestions state
+      setExamQuestions([...examQuestions, Question]);
+      // Reset the Question state for the next question
+      setQuestion({
+        questionNo: "",
+        question: "",
+        type: "",
+        options: null,
+        correctAnswer: false,
+      });
+    }
+  };
+  
+
+
+
   
 // Define a function to render the form based on the selected exam question type
 const renderQuestionForm = (type, index) => {
@@ -213,7 +240,7 @@ const renderQuestionForm = (type, index) => {
       {activeTabKey === "Exam Questions" && (
         <div>
           {/* Render the question forms */}
-          {examQuestionTypes.map((type, index) => renderQuestionForm(type, index))}
+          {examQuestions.map((type, index) => renderQuestionForm(type, index))}
 
           {/* Render the question choices section */}
           <Card title="Question Choices">
