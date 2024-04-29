@@ -28,8 +28,9 @@ const VerifyEmail = () => {
       dispatch(verifyEmail(user)).then((res) => {
         console.log(res, "response");
         if (res.payload.success) {
+          setLoading(false)
           toast.success("Email verified successfully! Login to your account!");
-          navigate("/sign-in");
+          // navigate("/sign-in");
         } else {
           // console.log(res.payload.message);
           toast.error(res.payload.message);

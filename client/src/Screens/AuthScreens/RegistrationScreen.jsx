@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import fetena_logo from "../../assets/fetena_logo_primary.svg";
 import { Button, Form, Input, Divider, Dropdown, Menu } from "antd";
+import { DownOutlined, UserOutlined } from '@ant-design/icons';
+import { message, Space, Tooltip } from 'antd';
 import auth_bg from "../../assets/auth_bg.jpg";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -124,6 +126,8 @@ const RegistrationScreen = () => {
     }));
   };
 
+  
+
   const handleFileChange = (e, fieldName) => {
     const file = e.target.files[0];
     setFormData((prevData) => ({
@@ -181,8 +185,18 @@ const RegistrationScreen = () => {
       }
     }
 
+    // if (step === 3) {
+    //   if (formData.firstName && formData.lastName && formData.dateOfBirth) {
+    //     setStep(step + 1);
+    //     setDisableSocials(true);
+    //   } else {
+    //     // Instead of alert("Please fill in all required fields before proceeding.");
+    //     toast.error("Please fill in all required fields before proceeding.");
+    //   }
+    // }
+
     if (step === 3) {
-      if (formData.firstName && formData.lastName && formData.dateOfBirth) {
+      if (formData.idPhotoType && formData.idPhoto && formData.profilePhoto) {
         setStep(step + 1);
         setDisableSocials(true);
       } else {
@@ -196,20 +210,56 @@ const RegistrationScreen = () => {
     setStep(step - 1);
   };
 
-  // Menu for the gender dropdown
+
+  const handleGenderMenuClick = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      gender: e.key, // Update the gender state when a menu item is clicked
+    }));
+  };
+
   const genderMenu = (
-    <Menu onClick={(e) => handleChange({ gender: e.key })}>
-      <Menu.Item key='male'>Male</Menu.Item>
-      <Menu.Item key='female'>Female</Menu.Item>
+    <Menu onClick={handleGenderMenuClick}>
+      <Menu.Item key="male" icon={<UserOutlined />}>
+        Male
+      </Menu.Item>
+      <Menu.Item key="female" icon={<UserOutlined />}>
+        Female
+      </Menu.Item>
     </Menu>
   );
 
+  
+  const handleIdTypeMenuClick = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      idPhotoType : e.key, // Update the gender state when a menu item is clicked
+    }));
+  };
+
   const idPhotoTypeMenu = (
-    <Menu onClick={(e) => handleChange({ idPhotoType: e.key })}>
-      <Menu.Item key='government'>Government Id</Menu.Item>
-      <Menu.Item key='passport'>Passport</Menu.Item>
+    <Menu onClick={handleIdTypeMenuClick}>
+      <Menu.Item key="national" icon={<UserOutlined />}>
+        National Id
+      </Menu.Item>
+      <Menu.Item key="kebele" icon={<UserOutlined />}>
+        Kebele / Woreda Id
+      </Menu.Item>
+      <Menu.Item key="passport" icon={<UserOutlined />}>
+        Passport
+      </Menu.Item>
+      <Menu.Item key="licence" icon={<UserOutlined />}>
+        Driver's Licence
+      </Menu.Item>
+      <Menu.Item key="school" icon={<UserOutlined />}>
+        School Id
+      </Menu.Item>
     </Menu>
   );
+
+
+
+
   const handleSubmit = (values) => {
     // Submit form data to server
     // setDisable(true)
@@ -318,6 +368,7 @@ const RegistrationScreen = () => {
                   <div className='flex gap-4'>
                     <Form.Item
                       name='firstName'
+                      label="First Name"
                       rules={[
                         { type: "text", message: "Please input a valid name" },
                         {
@@ -332,6 +383,7 @@ const RegistrationScreen = () => {
                     </Form.Item>
                     <Form.Item
                       name='lastName'
+                      label="Last Name"
                       rules={[
                         { type: "text", message: "Please input a valid name" },
                         {
@@ -349,6 +401,7 @@ const RegistrationScreen = () => {
                   <div className='flex gap-4'>
                     <Form.Item
                       name='dateOfBirth'
+                      label="Date of Birth"
                       rules={[
                         {
                           required: true,
@@ -363,21 +416,20 @@ const RegistrationScreen = () => {
                       />
                     </Form.Item>
 
-                    <Form.Item
-                      name='gender'
-                      rules={[
+                    <Form.Item name="gender" label="Gender" rules={[
                         {
                           required: true,
                           message: "Please select your gender!",
                         },
                       ]}>
-                      <Dropdown.Button
-                        overlay={genderMenu}
-                        trigger={["click"]}
-                        placement='bottomCenter'>
-                        {formData.gender ? formData.gender : "Select Gender"}
-                      </Dropdown.Button>
-                    </Form.Item>
+          <Dropdown overlay={genderMenu}>
+            <Button>
+              {formData.gender || "Select gender"} <DownOutlined />
+            </Button>
+          </Dropdown>
+        </Form.Item>
+
+                   
                   </div>
                 </div>
               </div>
@@ -388,82 +440,125 @@ const RegistrationScreen = () => {
                   Contact Details
                 </h2>
                 <div>
+                <Form.Item
+  name='email'
+  label='Email'
+  rules={[
+    {
+      type: 'email',
+      message: 'Please input a valid email address!',
+    },
+    {
+      required: true,
+      message: 'Please input your email address!',
+    },
+  ]}
+>
+  <Input
+    name='email'
+    type='email'
+    placeholder='Enter your email address'
+  />
+</Form.Item>
+
                   <Form.Item
-                    name='email'
-                    rules={[
-                      { type: "email", message: "Please input a valid email!" },
-                      { required: true, message: "Please input your Email!" },
-                    ]}>
-                    <Input
-                      name='email'
-                      placeholder='Email'
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name='phoneNumber'
-                    rules={[
-                      {
-                        type: "tel",
-                        message: "Please input a valid phone number!",
-                      },
-                      {
-                        required: true,
-                        message: "Please input your Phone Number!",
-                      },
-                    ]}>
-                    <Input
-                      name='phoneNumber'
-                      type='tel'
-                      placeholder='Phone Number'
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name='password'
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your Password!",
-                      },
-                    ]}>
-                    <Input
-                      name='password'
-                      type='password'
-                      placeholder='Password'
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name='passwordConfirm'
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please confirm your password!",
-                      },
-                      ({ getFieldValue }) => ({
-                        validator(_, value) {
-                          if (!value || getFieldValue("password") === value) {
-                            return Promise.resolve();
-                          }
-                          return Promise.reject(
-                            new Error("The two passwords do not match!")
-                          );
-                        },
-                      }),
-                    ]}>
-                    <Input
-                      name='passwordConfirm'
-                      type='password'
-                      placeholder='Confirm Password'
-                    />
-                  </Form.Item>
+  name='phoneNumber'
+  label='Phone Number'
+  rules={[
+    {
+      pattern: /^[0-9]{10}$/,
+      message: 'Please input a valid 10-digit phone number!',
+    },
+    {
+      required: true,
+      message: 'Please input your Phone Number!',
+    },
+  ]}
+>
+  <Input
+    name='phoneNumber'
+    type='tel'
+    placeholder='Enter your phone number'
+  />
+</Form.Item>
+
+<Form.Item
+  name='password'
+  label='Password'
+  rules={[
+    {
+      required: true,
+      message: 'Please input your password!',
+    },
+    {
+      min: 8,
+      message: 'Password must be at least 8 characters long!',
+    },
+    {
+      pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character!',
+    },
+  ]}
+>
+  <Input
+    name='password'
+    type='password'
+    placeholder='Enter your password'
+  />
+</Form.Item>
+
+
+<Form.Item
+  name='passwordConfirm'
+  label='Confirm Password'
+  dependencies={['password']}
+  hasFeedback
+  rules={[
+    {
+      required: true,
+      message: 'Please confirm your password!',
+    },
+    ({ getFieldValue }) => ({
+      validator(_, value) {
+        if (!value || getFieldValue('password') === value) {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error('The two passwords do not match!'));
+      },
+    }),
+  ]}
+>
+  <Input
+    name='passwordConfirm'
+    type='password'
+    placeholder='Confirm your password'
+  />
+</Form.Item>
+
                 </div>
               </div>
             )}
 
             {step === 3 && (
               <div className='step'>
-                <h2 className='text-lg font-semibold text-left'>
+                <h2 className='text-lg font-semibold text-left mb-8'>
                   Photo upload
                 </h2>
+                <Form.Item name="
+idPhotoType
+" label="Type Of ID" rules={[
+                        {
+                          required: true,
+                          message: "Please select your ID type!",
+                        },
+                      ]}>
+          <Dropdown overlay={idPhotoTypeMenu}>
+            <Button>
+              {formData.idPhotoType || "select your ID type"} <DownOutlined />
+            </Button>
+          </Dropdown>
+        </Form.Item>
+
                 <div className='mt-4'>
                   <label className='flex flex-col gap-2 items-start'>
                     <span className='font-semibold'>Photo of yourself</span>
