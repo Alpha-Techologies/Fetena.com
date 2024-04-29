@@ -23,6 +23,7 @@ import DashboardPage from "../Pages/DashboardPage";
 import ProfilePage from "../Pages/ProfilePage";
 import NotFoundPage from "../Pages/NotFoundPage";
 import ExamsPage from "../Pages/ExamsPage";
+import CreateExam from "../Pages/CreateExamPages/CreateExam";
 
 const AllRoutes = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -78,6 +79,10 @@ const AllRoutes = () => {
           <Route
             path='exams'
             element={<ExamsPage />}
+          />
+          <Route
+            path='create-exam'
+            element={<CreateExam />}
           />
           <Route
             path='*'
