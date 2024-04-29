@@ -3,6 +3,7 @@ import { Menu, Button, Form, Input, Select, InputNumber } from "antd";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { getMe } from "../Redux/features/dataActions";
 const { Option } = Select;
 
 const items = [
@@ -19,21 +20,78 @@ const items = [
 ];
 
 const ProfilePage = () => {
-  const [current, setCurrent] = useState("personal");
-  const { name, email, _id } = useSelector((state) => state.auth.user);
+  const [user, setUser] = useState({});
+  const [initialValues, setInitialValues] = useState({});
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
+  const [form1] = Form.useForm();
 
-  const [initialValues, setInitialValues] = useState({
-    name: name,
-    email: email,
-  });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await dispatch(getMe());
+        console.log(res, "res");
+        setUser(res.payload.data.data[0]);
+        setInitialValues({
+        firstName: res.payload.data.data[0].firstName,
+        lastName: res.payload.data.data[0].lastName,
+        email: res.payload.data.data[0].email,
+          phoneNumber: res.payload.data.data[0].phoneNumber,
+        });
+        form.setFieldsValue({
+          ...initialValues,
+        });
+      } catch (error) {
+        // Handle error if necessary
+        console.log(error);
+      }
+    };
+    // dispatch(getMe()).then((res) => {
+    //   console.log(res, "res");
+    //   setUser(res.payload.data.data[0]);
+    //   setInitialValues({
+    //     firstName: res.payload.data.data[0].firstName,
+    //     lastName: res.payload.data.data[0].lastName,
+    //     email: res.payload.data.data[0].email,
+    //     phoneNumber: res.payload.data.data[0].phoneNumber,
+    //   });
+    // });
+    fetchData();
+  }, []);
+
+  // dispatch(getMe()).then((res) => {
+  //   console.log(res, "res");
+  //   setUser(res.payload.data.data[0]);
+  //   setInitialValues({
+  //       firstName: res.payload.data.data[0].firstName,
+  //       lastName: res.payload.data.data[0].lastName,
+  //       email: res.payload.data.data[0].email,
+  //       phoneNumber: res.payload.data.data[0].phoneNumber,
+  //   });
+  //   form.setFieldsValue({
+  //     ...initialValues,
+  //   });
+  // });
+  
+  
+
+  console.log(initialValues.firstName, "initialValues");
+
+  const [current, setCurrent] = useState("personal");
+
+  // const [initialValues, setInitialValues] = useState({
+  //   firstName: user.firstName,
+  //   lastName: user.lastName,
+  //   email: user.email,
+  //   phoneNumber: user.phoneNumber
+  // });
+  console.log(initialValues, "initialValues");
   const [isLoading, setIsLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
-  const [form] = Form.useForm();
-  const [form1] = Form.useForm();
+
   const regEx = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,}$/;
-  // // console.log(user, "user");
+
   const onClick = (e) => {
     // console.log("click ", e);
     setCurrent(e.key);
@@ -134,12 +192,23 @@ const ProfilePage = () => {
             style={{
               maxWidth: 600,
             }}
-            initialValues={{ ...initialValues, prefix: "251" }}
+            initialValues={{ ...user }}
             onFinish={onFinishProfile}>
             <Form.Item
-              label='Name'
-              name='name'
-              rules={[{ required: true, message: "Please input your name!" }]}>
+              label='First Name'
+              name='firstName'
+              rules={[
+                { required: true, message: "Please input your First Name!" },
+              ]}>
+              <Input disabled={isInputDisabled} />
+            </Form.Item>
+
+            <Form.Item
+              label='Last Name'
+              name='lastName'
+              rules={[
+                { required: true, message: "Please input your Last Name!" },
+              ]}>
               <Input disabled={isInputDisabled} />
             </Form.Item>
 
@@ -147,6 +216,14 @@ const ProfilePage = () => {
               label='Email'
               name='email'
               rules={[{ required: true, message: "Please input your email!" }]}>
+              <Input disabled={isInputDisabled} />
+            </Form.Item>
+            <Form.Item
+              label='Phone Number'
+              name='phoneNumber'
+              rules={[
+                { required: true, message: "Please input your Phone Number!" },
+              ]}>
               <Input disabled={isInputDisabled} />
             </Form.Item>
 
