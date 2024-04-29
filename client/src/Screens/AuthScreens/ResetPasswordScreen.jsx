@@ -13,6 +13,7 @@ const ResetPasswordScreen = () => {
  
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { isAuthenticated } = useSelector((state) => state.auth)
   
@@ -24,10 +25,7 @@ const ResetPasswordScreen = () => {
 
   const [form] = Form.useForm();
 
-  const location = useLocation()
-  const currentUrl = location.pathname
-  const parts = currentUrl.split('/');
-  const token = parts[parts.length - 1];
+  
   const loading = useSelector((state) => state.auth.loading);
 
   const [isDisabled, setIsDisabled] = useState(true);
@@ -49,10 +47,13 @@ const ResetPasswordScreen = () => {
     
 const handleSubmit = async (e) => {
     e.preventDefault();
+    const query = new URLSearchParams(location.search)
+    const token = query.get('token') || '';
     dispatch(resetPassword({formData, token})).then((res) => {
       console.log(res, "response");
       if (res.meta.requestStatus === "fulfilled") {
         toast.success("Password Reset Successful!");
+        navigate('/sign-in')
       } else {
         console.log(res.payload.message);
         toast.error(res.payload.message);
