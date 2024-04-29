@@ -22,6 +22,7 @@ const {
   updateMe,
   getUser,
   filterUserUpdateFields,
+  updateProfilePhoto,
   // getProfile,
 } = require("../controller/userController");
 
@@ -65,6 +66,7 @@ router.patch(
 );
 router.patch("/deleteMe", protect, deleteMe);
 router.post("/verify-email", activateAccount);
+router.patch("/updateProfilePhoto", protect, updateProfilePhoto);
 
 router.post("/uploads", fileUpload);
 
