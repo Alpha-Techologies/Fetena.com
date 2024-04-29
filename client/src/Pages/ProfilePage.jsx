@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Menu, Button, Form, Input, Select, InputNumber } from "antd";
+import { Menu, Button, Form, Input, Select, InputNumber,Dropdown  } from "antd";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -15,8 +15,7 @@ const items = [
   {
     label: "Security",
     key: "security",
-    icon: <Icon icon='material-symbols-light:security' />,
-  },
+    icon: <Icon icon='material-symbols-light:security' />,}
 ];
 
 const ProfilePage = () => {
@@ -25,27 +24,7 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [form1] = Form.useForm();
-
-
-  const fetchData = async () => {
-      try {
-        const res = await dispatch(getMe());
-        console.log(res, "res");
-        setUser(res.payload.data.data[0]);
-        setInitialValues({
-        firstName: res.payload.data.data[0].firstName,
-        lastName: res.payload.data.data[0].lastName,
-        email: res.payload.data.data[0].email,
-          phoneNumber: res.payload.data.data[0].phoneNumber,
-        });
-        form.setFieldsValue({
-          ...initialValues,
-        });
-      } catch (error) {
-        // Handle error if necessary
-        console.log(error);
-      }
-    };
+  const [idPhoto,setIdPhoto] = useState();
 
 
 
@@ -341,6 +320,13 @@ const ProfilePage = () => {
           </Form>
         </div>
       )}
+
+
+
+
+
+  
+      
     </div>
   );
 };
