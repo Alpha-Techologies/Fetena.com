@@ -76,7 +76,7 @@ exports.getAll = (Model) =>
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    console.log(req.params, req.body);
+    // console.log(req.params, req.body);
     let doc = await Model.updateOne(
       {
         _id: req.params.id,
