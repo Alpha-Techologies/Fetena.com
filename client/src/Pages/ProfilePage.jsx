@@ -67,6 +67,7 @@ const ProfilePage = () => {
       };
     
       fetchData();
+      console.log('hello user',user)
     }, []);
     
   
@@ -187,12 +188,18 @@ const ProfilePage = () => {
         items={items}
       />
       {current === "personal" && (
-        <div className='flex flex-col gap-4 p-4 bg-white rounded-br-md rounded-bl-md'>
+        <div className='flex flex-col gap-4 p-4 bg-white rounded-br-md rounded-bl-md items-center'>
+<img
+  className="block mx-auto my-2 w-32 h-32 object-cover rounded-full border-4 border-blue-200"
+  src={`http://localhost:8080/${user.profilePhoto}`}
+  alt="profile"
+/>
+
           <Form
             name='profileDetails'
             form={form}
             labelCol={{
-              flex: "110px",
+              flex: "150px",
             }}
             labelAlign='left'
             labelWrap
@@ -205,6 +212,8 @@ const ProfilePage = () => {
             }}
             initialValues={{ ...user }}
             onFinish={onFinishProfile}>
+              <div className="grid grid-cols-2 gap-x-4 ">
+
             <Form.Item
               label='First Name'
               name='firstName'
@@ -237,6 +246,8 @@ const ProfilePage = () => {
               ]}>
               <Input disabled={isInputDisabled} />
             </Form.Item>
+            </div>
+
 
             <Form.Item
               label=' '
@@ -258,11 +269,12 @@ const ProfilePage = () => {
                 {isLoading ? "Loading..." : "Save"}
               </Button>
             </Form.Item>
+            
           </Form>
         </div>
       )}
       {current === "security" && (
-        <div className='flex flex-col gap-4 bg-white p-4 rounded-br-md rounded-bl-md'>
+        <div className='flex flex-col p-4 gap-4 bg-white items-start rounded-br-md rounded-bl-md'>
           <Form
             name='passwordChange'
             form={form1}

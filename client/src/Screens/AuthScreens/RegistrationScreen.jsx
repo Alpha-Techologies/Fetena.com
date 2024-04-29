@@ -238,19 +238,19 @@ const RegistrationScreen = () => {
 
   const idPhotoTypeMenu = (
     <Menu onClick={handleIdTypeMenuClick}>
-      <Menu.Item key="national" icon={<UserOutlined />}>
+      <Menu.Item key="National" icon={<UserOutlined />}>
         National Id
       </Menu.Item>
-      <Menu.Item key="kebele" icon={<UserOutlined />}>
+      <Menu.Item key="Kebele" icon={<UserOutlined />}>
         Kebele / Woreda Id
       </Menu.Item>
-      <Menu.Item key="passport" icon={<UserOutlined />}>
+      <Menu.Item key="Passport" icon={<UserOutlined />}>
         Passport
       </Menu.Item>
-      <Menu.Item key="licence" icon={<UserOutlined />}>
+      <Menu.Item key="Licence" icon={<UserOutlined />}>
         Driver's Licence
       </Menu.Item>
-      <Menu.Item key="school" icon={<UserOutlined />}>
+      <Menu.Item key="SchoolId" icon={<UserOutlined />}>
         School Id
       </Menu.Item>
     </Menu>

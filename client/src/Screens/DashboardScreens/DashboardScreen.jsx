@@ -86,7 +86,7 @@ const DashboardScreen = () => {
             background: "white",
           }}>
           <h1 className='text-2xl'>
-            {"Hello there, " + user.email}
+            {"Hello there, " + user.firstName + " " + user.lastName +"!"}
           </h1>
           <div className='flex items-center justify-center gap-4'>
             <Link to='notifications'>
