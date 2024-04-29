@@ -1,6 +1,8 @@
 const { StatusCodes } = require("http-status-codes");
 const catchAsync = require("../../utils/catchAsync");
 const { attachCookiesToResponse, isTokenValid } = require("../../utils/jwt");
+const APIError = require("../../utils/apiError");
+const { TokenModel } = require("../../models/Token.model");
 
 exports.protect = catchAsync(async (req, res, next) => {
   const { refreshToken, accessToken } = req.signedCookies;
@@ -10,6 +12,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     if (accessToken) {
       const payload = isTokenValid(accessToken);
       req.user = payload.user;
+      req.params.id = payload.user.id;
       return next();
     }
     const payload = isTokenValid(refreshToken);
@@ -35,10 +38,11 @@ exports.protect = catchAsync(async (req, res, next) => {
       refreshToken: existingToken.refreshToken,
     });
     req.user = payload.user;
+    req.params.id = payload.user.id;
     next();
   } catch (error) {
-    return res
-      .status(StatusCodes.UNAUTHORIZED)
-      .json({ message: "Authentication Invalid! No logged in session" });
+    return next(
+      new APIError("Authentication Invalid", StatusCodes.UNAUTHORIZED)
+    );
   }
 });

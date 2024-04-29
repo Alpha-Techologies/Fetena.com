@@ -58,7 +58,12 @@ router.post("/forgotPassword", validationRules[4], forgotPassword);
 router.post("/resetPassword/:token", resetPassword);
 
 router.patch("/updatePassword", protect, updatePassword);
-router.patch("/updateMe", protect, updateMe);
+router.patch(
+  "/updateMe",
+  protect,
+  // filterUserUpdateFields("firstName", "lastName", "email", "phoneNumber"),
+  updateMe
+);
 router.patch("/deleteMe", protect, deleteMe);
 router.post("/verify-email", activateAccount);
 router.patch("/updateProfilePhoto", protect, updateProfilePhoto);
