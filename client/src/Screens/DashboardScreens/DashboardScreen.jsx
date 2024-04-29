@@ -7,11 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet, Link } from "react-router-dom";
 import fetena_logo from "../../assets/fetena_logo.png";
 import { logoutUser } from "../../Redux/features/authActions";
+import Loading from "../../Components/Loading";
 const { Header, Content, Footer, Sider } = Layout;
 
 const DashboardScreen = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const { loading } = useSelector((state) => state.data);
+  // const { loading } = useSelector((state) => state.data);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -108,12 +109,12 @@ const DashboardScreen = () => {
           style={{
             margin: "0 16px",
           }}>
-          {loading ? (
+          {
+          // TODO: loading screen issue becasue of infinte loop useEffect from the parent component into the child pages
+            
+            false ? (
             <div className='flex items-center justify-center h-full'>
-              <ReactLoading
-                type='balls'
-                color='#21BFD4'
-              />
+              <Loading />
             </div>
           ) : (
             <Outlet />

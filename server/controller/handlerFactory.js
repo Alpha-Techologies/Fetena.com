@@ -9,7 +9,6 @@ const dbConn = require("../config/db_Connection");
 require("events").EventEmitter.prototype._maxListeners = 70;
 require("events").defaultMaxListeners = 70;
 
-
 exports.getOne = (Model) =>
   catchAsync(async (req, res, next) => {
     let query = new APIFeatures(Model.findById(req.params.id), req.query)
@@ -34,7 +33,6 @@ exports.getOne = (Model) =>
 
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
-
     // currentTime, pathname, method
     // const {currentTime,_parsedOriginalUrl} = req
     // console.log(currentTime)
@@ -78,8 +76,7 @@ exports.getAll = (Model) =>
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
-
-    console.log(req.params)
+    // console.log(req.params, req.body);
     let doc = await Model.updateOne(
       {
         _id: req.params.id,
