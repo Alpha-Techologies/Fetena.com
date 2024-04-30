@@ -142,6 +142,10 @@ const user = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Question'
     }],
+    organizationsFollowed: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Organization'
+    }]
     // activationTokenExpires: {
     //   type: Date,
     // },

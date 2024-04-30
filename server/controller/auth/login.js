@@ -3,7 +3,7 @@ const APIError = require("../../utils/apiError");
 const createTokenUser = require("../../utils/createTokenUser");
 const { attachCookiesToResponse } = require("../../utils/jwt");
 const catchAsync = require("../../utils/catchAsync");
-const User = require("../../models/userModel");
+const User = require("../../models/user.model");
 const { TokenModel } = require("../../models/Token.model");
 const crypto = require("crypto");
 

@@ -1,7 +1,7 @@
 const catchAsync = require("./../utils/catchAsync");
 const APIError = require("./../utils/apiError");
 const bcrypt = require("bcryptjs");
-const User = require("../models/userModel");
+const User = require("../models/user.model");
 const APIFeatures = require("./../utils/apiFeatures");
 const factory = require("../controller/handlerFactory");
 const { fileUpload } = require("./profile/fileUpload");

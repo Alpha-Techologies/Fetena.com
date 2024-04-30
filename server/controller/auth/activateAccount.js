@@ -1,5 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
-const User = require("../../models/userModel");
+const User = require("../../models/user.model");
 const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
 const crypto = require("crypto");
