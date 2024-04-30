@@ -129,6 +129,10 @@ const user = new mongoose.Schema(
       type: String,
       default: undefined,
     },
+    adminOf: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Question'
+    }],
     // activationTokenExpires: {
     //   type: Date,
     // },
