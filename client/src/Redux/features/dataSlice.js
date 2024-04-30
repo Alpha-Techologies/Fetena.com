@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getMe, updateMe } from "./dataActions";
 
 const initialState = {
   loading: false,
@@ -9,7 +10,29 @@ const dataSlice = createSlice({
   name: "data",
   initialState,
   reducers: {},
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getMe.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMe.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(getMe.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateMe.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateMe.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateMe.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      });
+  },
 });
 
 export const {} = dataSlice.actions;
