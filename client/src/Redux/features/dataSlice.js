@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMe, updateMe } from "./dataActions";
+import { getMe, updateMe, updatePassword } from "./dataActions";
 
 const initialState = {
   loading: false,
@@ -29,6 +29,16 @@ const dataSlice = createSlice({
         state.loading = false;
       })
       .addCase(updateMe.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updatePassword.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updatePassword.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updatePassword.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
