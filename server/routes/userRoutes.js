@@ -24,6 +24,7 @@ const {
   filterUserUpdateFields,
   updateIdPhoto,
   followOrganization,
+  addAsAdmin
   // getProfile,
 } = require("../controller/userController");
 
@@ -71,6 +72,8 @@ router.patch("/updateIdPhoto", protect, updateIdPhoto);
 
 router.post("/uploads", fileUpload);
 router.post("/follow", followOrganization);
+router.post("/addAdmin", addAsAdmin);
+
 
 // router.patch("/activate/:token", activateAccount);
 // verify-email
