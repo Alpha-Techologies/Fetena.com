@@ -135,3 +135,37 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+
+exports.followOrganization = catchAsync(async (req, res, next) => {
+
+    const {organizationId} = req.body
+    const user = await User.findOne({
+      //kkk replace with req.user.id
+      _id: "662e998e1b1c9802c2665e13",
+    });
+
+    user.followOrganization(organizationId) 
+
+    res.status(204).json({
+      status: "success",
+      data: null,
+    });
+  
+  })
+
+exports.addAsAdmin = catchAsync(async (req, res, next) => {
+
+  const {organizationId} = req.body
+  const user = await User.findOne({
+    //kkk replace with req.user.id
+    _id: "662e998e1b1c9802c2665e13",
+  });
+
+  user.addAsAdmin(organizationId) 
+
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
+
+})

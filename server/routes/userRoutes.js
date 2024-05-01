@@ -23,6 +23,7 @@ const {
   getUser,
   filterUserUpdateFields,
   updateIdPhoto,
+  followOrganization,
   // getProfile,
 } = require("../controller/userController");
 
@@ -69,6 +70,7 @@ router.post("/verify-email", activateAccount);
 router.patch("/updateIdPhoto", protect, updateIdPhoto);
 
 router.post("/uploads", fileUpload);
+router.post("/follow", followOrganization);
 
 // router.patch("/activate/:token", activateAccount);
 // verify-email

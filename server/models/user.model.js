@@ -140,15 +140,12 @@ const user = new mongoose.Schema(
     },
     adminOf: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Question'
+      ref: 'Organization'
     }],
     organizationsFollowed: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Organization'
     }]
-    // activationTokenExpires: {
-    //   type: Date,
-    // },
   },
   {
     toJSON: {
@@ -235,25 +232,21 @@ user.methods.createActivationToken = function () {
   return activationToken;
 };
 
-// user.toggleMessage = function (id) {
-//   this.unreadMessage.shift(id);
-//   this.save();
-//   return this;
-// };
+user.methods.followOrganization = function (id) {
+  this.organizationsFollowed = [id, ...this.organizationsFollowed];
+  this.save();
+  return this;
+};
 
-// user.methods.toggleMessageCount = function (unreadCount) {
-//   this.messageCount = unreadCount;
-//   this.save();
-//   return this;
-// }; //to be reviewed
+user.methods.addAsAdmin = function (id) {
+  this.adminOf = [id, ...this.adminOf];
+  this.save();
+  return this;
+};
 
 user.virtual("fullName").get(function () {
   return this.firstName + " " + this.lastName;
 });
-
-// user.virtual("unreadCount").get(function () {
-//   // return this.unreadMessage.length;
-// });
 
 const User = new mongoose.model("user", user);
 
