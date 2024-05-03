@@ -70,9 +70,8 @@ router.patch("/deleteMe", protect, deleteMe);
 router.post("/verify-email", activateAccount);
 router.patch("/updateIdPhoto", protect, updateIdPhoto);
 
-router.post("/uploads", fileUpload);
-router.post("/follow", followOrganization);
-router.post("/addAdmin", addAsAdmin);
+router.post("/follow", protect, followOrganization);
+router.post("/addAdmin", protect, addAsAdmin);
 
 
 // router.patch("/activate/:token", activateAccount);
