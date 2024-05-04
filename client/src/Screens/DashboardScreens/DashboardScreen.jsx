@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
-import { Avatar, Layout, Menu, theme, Badge } from "antd";
+import { Avatar, Layout, Menu, Badge, Dropdown, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,6 +9,8 @@ import fetena_logo from "../../assets/fetena_logo.png";
 import { logoutUser } from "../../Redux/features/authActions";
 import Loading from "../../Components/Loading";
 const { Header, Content, Footer, Sider } = Layout;
+
+
 
 const DashboardScreen = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -27,7 +29,7 @@ const DashboardScreen = () => {
       type,
     };
   }
-  const menuItems = [
+  const sidebarItems = [
     getItem(
       <Link to=''>Dashboard</Link>,
       "1",
@@ -36,22 +38,65 @@ const DashboardScreen = () => {
     getItem(
       <Link to='exams'>Exams</Link>,
       "2",
-      <Icon className="w-4 h-4" icon='healthicons:i-exam-multiple-choice-outline' />
+      <Icon
+        className='w-4 h-4'
+        icon='healthicons:i-exam-multiple-choice-outline'
+      />
     ),
     { type: "divider" },
-    getItem(
-      <Link to='create-project'>Join Organization</Link>,
-      "5",
-      <Icon icon='mdi:create-new-folder-outline' />
-    ),
-    getItem(
-      <span onClick={() => {dispatch(logoutUser())}}>Logout</span>,
-      "6",
-      <Icon icon='humbleicons:logout' />,
-      null,
-      null,
-      true
-    ),
+  ];
+
+  const workspaceDropdownItems = [
+    {
+      label: <Link>Personal Workspace</Link>,
+      key: "1",
+      icon: <Icon icon='ep:user' />,
+    },
+    {
+      type: "divider",
+    },
+    {
+      label: "Your Organizations",
+      disabled: true,
+    },
+    {
+      type: "divider",
+    },
+    {
+      label: (
+        <span
+          className='text-primary-500 cursor-pointer'
+          >
+          Join Organization
+        </span>
+      ),
+      key: "3",
+      icon: <Icon className="text-primary-500" icon='material-symbols:add' />,
+    },
+  ];
+
+  const profileDropdownItems = [
+    {
+      label: <Link to={"profile"}>Profile</Link>,
+      key: "1",
+      icon: <Icon icon='ep:user' />,
+    },
+    {
+      type: "divider",
+    },
+    {
+      label: (
+        <span
+          className="text-error-500 cursor-pointer"
+          onClick={() => {
+            dispatch(logoutUser());
+          }}>
+          Logout
+        </span>
+      ),
+      key: "3",
+      icon: <Icon className="text-error-500" icon='carbon:logout' />,
+    },
   ];
 
   return (
@@ -64,18 +109,20 @@ const DashboardScreen = () => {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
         theme='light'>
-        <div className='demo-logo-vertical p-4 flex justify-center '>
+        <Link
+          to={""}
+          className='demo-logo-vertical p-4 flex justify-center '>
           <img
             src={fetena_logo}
             alt='Fetena.com Logo'
             className='w-24'
           />
-        </div>
+        </Link>
         <Menu
           theme='light'
           defaultSelectedKeys={["1"]}
           mode='inline'
-          items={menuItems}
+          items={sidebarItems}
         />
       </Sider>
       <Layout>
@@ -86,23 +133,45 @@ const DashboardScreen = () => {
             background: "white",
           }}>
           <h1 className='text-2xl'>
-            {"Hello there, " + user.firstName + " " + user.lastName +"!"}
+            {"Hello there, " + user.firstName + " " + user.lastName + "!"}
           </h1>
           <div className='flex items-center justify-center gap-4'>
+            <Dropdown
+              menu={{
+                items: workspaceDropdownItems,
+              }}
+              trigger={["click"]}>
+              <div className='text-primary-500 border border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md flex items-center justify-center cursor-pointer gap-2'>
+                <div className="flex items-center justify-center gap-2">
+                  <Icon icon='octicon:organization-24' />
+                  Personal Workspace
+                </div>
+                <Icon icon='gridicons:dropdown' />
+              </div>
+            </Dropdown>
             <Link to='notifications'>
-                <Avatar
-                  className='cursor-pointer flex items-center justify-center'
-                  size='large'
-                  icon={<Icon icon='iconamoon:notification' />}
-                />
-            </Link>
-            <Link to='profile'>
               <Avatar
                 className='cursor-pointer flex items-center justify-center'
                 size='large'
-                icon={<Icon icon='ep:user' />}
+                icon={<Icon icon='iconamoon:notification' />}
               />
             </Link>
+            <Dropdown
+              menu={{
+                items: profileDropdownItems,
+              }}
+              trigger={["click"]}>
+              <Avatar
+                className='cursor-pointer flex items-center justify-center'
+                size='large'
+                icon={
+                  <img
+                    src={`http://localhost:8080/${user.profilePhoto}`}
+                    alt='avatar'
+                  />
+                }
+              />
+            </Dropdown>
           </div>
         </Header>
         <Content
@@ -110,15 +179,16 @@ const DashboardScreen = () => {
             margin: "0 16px",
           }}>
           {
-          // TODO: loading screen issue becasue of infinte loop useEffect from the parent component into the child pages
-            
+            // TODO: loading screen issue becasue of infinte loop useEffect from the parent component into the child pages
+
             false ? (
-            <div className='flex items-center justify-center h-full'>
-              <Loading />
-            </div>
-          ) : (
-            <Outlet />
-          )}
+              <div className='flex items-center justify-center h-full'>
+                <Loading />
+              </div>
+            ) : (
+              <Outlet />
+            )
+          }
         </Content>
         <Footer
           style={{

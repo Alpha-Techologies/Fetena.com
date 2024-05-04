@@ -3,7 +3,8 @@ import { Menu, Button, Form, Input, Select, InputNumber,Dropdown  } from "antd";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getMe, updateMe, updatePassword } from "../Redux/features/dataActions";
+import { updateMe, updatePassword } from "../Redux/features/dataActions";
+import { getMe } from "../Redux/features/authActions";
 const { Option } = Select;
 
 const items = [

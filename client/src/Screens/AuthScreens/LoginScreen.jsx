@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../Redux/features/authActions";
+import { loginUser, getMe } from "../../Redux/features/authActions";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
@@ -43,6 +43,11 @@ const LoginScreen = () => {
         console.log(res, "response");
         if (res.meta.requestStatus === "fulfilled") {
           toast.success("Logged in successfully!");
+          dispatch(getMe()).catch((error) => {
+            console.log(error);
+            toast.error("Something is wrong in logging in!");
+          });
+          
           navigate('/dashboard'); // Redirect here
         } else {
           // console.log(res.payload.message);
