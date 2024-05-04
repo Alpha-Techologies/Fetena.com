@@ -22,3 +22,15 @@ export const updateMe = createAsyncThunk(
         }
     }
 )
+
+export const updatePassword = createAsyncThunk(
+    "data/updatePassword",
+    async (user, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.patch(`${url}/updatePassword`, user);
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+)

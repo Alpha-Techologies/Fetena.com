@@ -3,7 +3,7 @@ import { Menu, Button, Form, Input, Select, InputNumber,Dropdown  } from "antd";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getMe, updateMe } from "../Redux/features/dataActions";
+import { getMe, updateMe, updatePassword } from "../Redux/features/dataActions";
 const { Option } = Select;
 
 const items = [
@@ -28,27 +28,37 @@ const ProfilePage = () => {
 
 
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const res = await dispatch(getMe());
-          const userData = res.payload.data.data[0];
-          setUser(userData);
-          form.setFieldsValue({
-            firstName: userData.firstName,
-            lastName: userData.lastName,
-            email: userData.email,
-            phoneNumber: userData.phoneNumber,
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      };
-    
-      fetchData();
-      console.log('hello user',user)
-    }, []);
-    
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await dispatch(getMe());
+        console.log(res, "res");
+        const userData = res.payload.data.data[0];
+        setUser(userData);
+        form.setFieldsValue({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          phoneNumber: userData.phoneNumber,
+        });
+      } catch (error) {
+        // Handle error if necessary
+        console.log(error);
+      }
+    };
+    // dispatch(getMe()).then((res) => {
+    //   console.log(res, "res");
+    //   setUser(res.payload.data.data[0]);
+    //   setInitialValues({
+    //     firstName: res.payload.data.data[0].firstName,
+    //     lastName: res.payload.data.data[0].lastName,
+    //     email: res.payload.data.data[0].email,
+    //     phoneNumber: res.payload.data.data[0].phoneNumber,
+    //   });
+    // });
+    fetchData();
+  }, []);
+  
   
 
   console.log(initialValues.firstName, "initialValues");
@@ -105,16 +115,20 @@ const ProfilePage = () => {
 
   const onFinishPassword = (values) => {
     setIsLoading(true);
-    dispatch(UserChangePassword({ ...values, _id })).then((res) => {
-      if (res.payload.success) {
+    dispatch(updatePassword({password: values.password, passwordCurrent: values.passwordCurrent })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
         setIsLoading(false);
         form1.resetFields();
-        return notify(res.payload.message);
+        toast.success("Password updated successfully!");
       } else {
         setIsLoading(false);
-        return notify(res.payload.message);
+        toast.error(res.payload.message);
       }
-    });
+    }).catch((error) => {
+      console.log(error);
+      setIsLoading(false);
+      toast.error("Something is wrong!");
+    })
   };
 
   const prefixSelector = (
@@ -131,7 +145,7 @@ const ProfilePage = () => {
   );
 
   const handleConfirmPassword = (rule, value, callback) => {
-    const password = form1.getFieldValue("newPassword");
+    const password = form1.getFieldValue("password");
     if (value && password !== value) {
       setIsDisabled(true);
       callback("The two passwords that you entered do not match!");
@@ -270,7 +284,7 @@ const ProfilePage = () => {
             onFinish={onFinishPassword}>
             <Form.Item
               label='Current Password'
-              name='oldPassword'
+              name='passwordCurrent'
               rules={[
                 {
                   required: true,
@@ -282,7 +296,7 @@ const ProfilePage = () => {
 
             <Form.Item
               label='New Password'
-              name='newPassword'
+              name='password'
               hasFeedback
               rules={[
                 {
