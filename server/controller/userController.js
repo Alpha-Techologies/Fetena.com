@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 const APIFeatures = require("./../utils/apiFeatures");
 const factory = require("../controller/handlerFactory");
+const { fileUpload } = require("./profile/fileUpload");
+const { StatusCodes } = require("http-status-codes");
 
 // const RockTemp = require("../models/rockTempModel");
 
@@ -34,7 +36,7 @@ exports.getProfile = catchAsync(async (req, res, next) => {
 
 exports.getUserProfile = catchAsync(async (req, res, next) => {
   req.filename = req.user.photo.filename;
-  next()
+  next();
 });
 
 exports.filterUserUpdateFields = (...allowedFields) => {
@@ -49,17 +51,55 @@ exports.filterUserUpdateFields = (...allowedFields) => {
     }
 
     // Filtered out unwanted fields names that are not allowed to be updated
-    const filteredBody = filterObj(req.body, ...allowedFields, );
+    const filteredBody = filterObj(req.body, ...allowedFields);
     // console.log(...allowedFields)
     // if (req.file) filteredBody.photo = req.file.filename;
     // req.body = filteredBody
-    next()
-  }
-}
+    next();
+  };
+};
 
 // update the users account
 // restrict to the user-himself
 exports.updateMe = factory.updateOne(User);
+
+/// update profile picture
+exports.updateProfilePhoto = catchAsync(async (req, res, next) => {
+  if (!req.files) {
+    return next(new APIError("There is no file", 404));
+  }
+
+  const profilePhoto = req.files.profilePhoto;
+
+  if (!profilePhoto.mimetype.startsWith("image")) {
+    return next(
+      new APIError("Please a Proper Profile Photo", StatusCodes.BAD_REQUEST)
+    );
+  }
+
+  const user = await User.findOne({
+    _id: req.user.id,
+  });
+  console.log(user);
+  const email = user.email;
+
+  if (!user) {
+    return next(new APIError(`User does not exist`, StatusCodes.BAD_REQUEST));
+  }
+
+  user.profilePhoto = await fileUpload({
+    file: profilePhoto,
+    name: `profilePhoto_` + email,
+    filePath: "profiles",
+    maxSize: 1024 * 1024,
+  });
+
+  await user.save();
+
+  res.status(StatusCodes.CREATED).json({
+    status: "success",
+  });
+});
 
 // update the users account type
 // restrict to the admin

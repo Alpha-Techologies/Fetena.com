@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import fetena_logo from "../../assets/fetena_logo_primary.svg";
 import { Button, Form, Input, Divider, Dropdown, Menu } from "antd";
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
-import { message, Space, Tooltip } from 'antd';
 import auth_bg from "../../assets/auth_bg.jpg";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -239,19 +238,19 @@ const RegistrationScreen = () => {
 
   const idPhotoTypeMenu = (
     <Menu onClick={handleIdTypeMenuClick}>
-      <Menu.Item key="national" icon={<UserOutlined />}>
+      <Menu.Item key="National" icon={<UserOutlined />}>
         National Id
       </Menu.Item>
-      <Menu.Item key="kebele" icon={<UserOutlined />}>
+      <Menu.Item key="Kebele" icon={<UserOutlined />}>
         Kebele / Woreda Id
       </Menu.Item>
-      <Menu.Item key="passport" icon={<UserOutlined />}>
+      <Menu.Item key="Passport" icon={<UserOutlined />}>
         Passport
       </Menu.Item>
-      <Menu.Item key="licence" icon={<UserOutlined />}>
+      <Menu.Item key="Licence" icon={<UserOutlined />}>
         Driver's Licence
       </Menu.Item>
-      <Menu.Item key="school" icon={<UserOutlined />}>
+      <Menu.Item key="SchoolId" icon={<UserOutlined />}>
         School Id
       </Menu.Item>
     </Menu>
