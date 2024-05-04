@@ -1,7 +1,7 @@
 var Minizip = require('minizip-asm.js');
 const fs = require('fs');
 // const Room = require("../models/roomModel.js")
-const User = require("../models/userModel.js")
+const User = require("../models/user.model.js")
 const APIFeatures = require("./apiFeatures.js");
 const logger = require('./logger');
 

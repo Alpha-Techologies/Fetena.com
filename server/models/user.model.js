@@ -65,14 +65,23 @@ const user = new mongoose.Schema(
       default: Date.now(),
     },
     profilePhoto: {
-        type: String,
-        default: null,
-        trim: true,
+      type: String,
+      default: null,
+      trim: true,
     },
     idPhoto: {
-        type: String,
-        default: null,
-        trim: true,
+      type: String,
+      default: null,
+      trim: true,
+    },
+    idPhotoType: {
+      type: String,
+      required: true,
+      default: "National",
+      enum: {
+        values: ["National", "Kebele", "Passport", "License", "SchoolId"],
+        message: "Id Type must be of the Provided Types.",
+      },
     },
     createdAt: {
       type: Date,
@@ -84,7 +93,7 @@ const user = new mongoose.Schema(
     },
     role: {
       type: String,
-      required:false,
+      required: false,
       default: "user",
       enum: {
         values: ["manager", "receptionist", "user"],
@@ -129,9 +138,14 @@ const user = new mongoose.Schema(
       type: String,
       default: undefined,
     },
-    // activationTokenExpires: {
-    //   type: Date,
-    // },
+    adminOf: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Organization'
+    }],
+    organizationsFollowed: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Organization'
+    }]
   },
   {
     toJSON: {
@@ -158,7 +172,7 @@ user.pre("save", function (next) {
 
       // override the cleartext password with the hashed one
       user.password = hash;
-      // user.passwordConfirm = hash; 
+      // user.passwordConfirm = hash;
       next();
     });
   });
@@ -218,25 +232,21 @@ user.methods.createActivationToken = function () {
   return activationToken;
 };
 
-// user.toggleMessage = function (id) {
-//   this.unreadMessage.shift(id);
-//   this.save();
-//   return this;
-// };
+user.methods.followOrganization = function (id) {
+  this.organizationsFollowed = [id, ...this.organizationsFollowed];
+  this.save();
+  return this;
+};
 
-// user.methods.toggleMessageCount = function (unreadCount) {
-//   this.messageCount = unreadCount;
-//   this.save();
-//   return this;
-// }; //to be reviewed
+user.methods.addAsAdmin = function (id) {
+  this.adminOf = [id, ...this.adminOf];
+  this.save();
+  return this;
+};
 
 user.virtual("fullName").get(function () {
   return this.firstName + " " + this.lastName;
 });
-
-// user.virtual("unreadCount").get(function () {
-//   // return this.unreadMessage.length;
-// });
 
 const User = new mongoose.model("user", user);
 
