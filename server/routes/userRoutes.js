@@ -24,7 +24,8 @@ const {
   filterUserUpdateFields,
   updateIdPhoto,
   followOrganization,
-  addAsAdmin
+  addAsAdmin,
+  unfollowOrganization,
   // getProfile,
 } = require("../controller/userController");
 
@@ -71,9 +72,9 @@ router.post("/verify-email", activateAccount);
 router.patch("/updateIdPhoto", protect, updateIdPhoto);
 
 router.post("/uploads", fileUpload);
-router.post("/follow", followOrganization);
+router.post("/follow/:id", protect, followOrganization);
+router.post("/unfollow/:id", protect, unfollowOrganization);
 router.post("/addAdmin", addAsAdmin);
-
 
 // router.patch("/activate/:token", activateAccount);
 // verify-email
@@ -124,9 +125,9 @@ router.post("/addAdmin", addAsAdmin);
 
 router
   .route("/:id")
-  //   .get(protect, restrictTo("manager", "reception", "user"), getUser) //getUser
+  .get(protect, getUser) //getUser
   //   .post() //
-  .patch(protect, restrictTo("manager"), toggleUserRole); //toggleUserRole
-//   .delete(protect, restrictTo("manager"), deleteUser); //deleteUser
+  .patch(protect, restrictTo(), toggleUserRole) //toggleUserRole
+  .delete(protect, restrictTo(), deleteUser); //deleteUser
 
 module.exports = router;
