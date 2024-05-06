@@ -26,8 +26,15 @@ const OrganizationSchema = new mongoose.Schema({
   },
   examiners: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      status: {
+        type: String,
+        enum: ["active", "inactive", "pending"],
+        default: "pending",
+      },
     },
   ],
 });
