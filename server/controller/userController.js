@@ -73,7 +73,7 @@ exports.updateIdPhoto = catchAsync(async (req, res, next) => {
     return next(new APIError("There is no ID Type", StatusCodes.BAD_REQUEST));
   }
   const parsedBody = JSON.parse(req.body.data);
-  const { idPhotoType } = parsedBody;
+  // const { idPhotoType } = parsedBody;
 
   const idPhoto = req.files.idPhoto;
 
@@ -101,7 +101,7 @@ exports.updateIdPhoto = catchAsync(async (req, res, next) => {
   });
 
   // update the type of id
-  user.idPhotoType = idPhotoType;
+  // user.idPhotoType = idPhotoType;
 
   await user.save();
 
