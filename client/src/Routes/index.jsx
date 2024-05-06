@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getMe } from "../Redux/features/authActions";
 
 // Screens
 import Home from "../Screens/LandingPageScreens/Home";
@@ -11,7 +11,6 @@ import RegistrationScreen from "../Screens/AuthScreens/RegistrationScreen";
 import LoginScreen from "../Screens/AuthScreens/LoginScreen";
 import ForgotPasswordScreen from "../Screens/AuthScreens/ForgotPasswordScreen";
 import OTPScreen from "../Screens/AuthScreens/OTPScreen";
-// import VerifyEmailScreen from "../Screens/AuthScreens/VerifyEmailScreen";
 import ResetPasswordScreen from "../Screens/AuthScreens/ResetPasswordScreen";
 import DashboardScreen from "../Screens/DashboardScreens/DashboardScreen";
 import ProtectedRoutes from "../Screens/ProtectedRoutes";
@@ -26,6 +25,15 @@ import ExamsPage from "../Pages/ExamsPage";
 import CreateExam from "../Pages/CreateExamPages/CreateExam";
 
 const AllRoutes = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getMe()).then((res) => {
+      console.log(res);
+    })
+  }, [dispatch]);
+
+
   const { isAuthenticated } = useSelector((state) => state.auth);
   return (
     <>
