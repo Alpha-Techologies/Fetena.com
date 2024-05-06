@@ -7,12 +7,10 @@ const { TokenModel } = require("../../models/Token.model");
 exports.protect = catchAsync(async (req, res, next) => {
   const { refreshToken, accessToken } = req.signedCookies;
 
-  console.log(refreshToken, accessToken);
   try {
     if (accessToken) {
       const payload = isTokenValid(accessToken);
       req.user = payload.user;
-      req.params.id = payload.user.id;
       return next();
     }
     const payload = isTokenValid(refreshToken);
@@ -38,7 +36,6 @@ exports.protect = catchAsync(async (req, res, next) => {
       refreshToken: existingToken.refreshToken,
     });
     req.user = payload.user;
-    req.params.id = payload.user.id;
     next();
   } catch (error) {
     return next(

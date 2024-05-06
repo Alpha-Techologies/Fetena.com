@@ -11,6 +11,7 @@ require("events").defaultMaxListeners = 70;
 
 exports.getOne = (Model) =>
   catchAsync(async (req, res, next) => {
+    console.log(req.params, 'does not give');
     let query = new APIFeatures(Model.findById(req.params.id), req.query)
       .filter()
       .field()

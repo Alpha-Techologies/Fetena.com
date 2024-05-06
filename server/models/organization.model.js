@@ -1,35 +1,37 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const OrganizationSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   address: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   isVerified: {
     type: Boolean,
-    default: false
+    default: false,
   },
   website: String,
   phone: Number,
   email: String,
-  adminUsers: [{
+  adminUser: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }],
-  examiners: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }]
+    ref: "User",
+  },
+  examiners: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
-const Organization = mongoose.model('Organization', OrganizationSchema);
+const Organization = mongoose.model("Organization", OrganizationSchema);
 
 module.exports = Organization;

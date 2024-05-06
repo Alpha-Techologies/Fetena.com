@@ -6,6 +6,7 @@ const APIFeatures = require("./../utils/apiFeatures");
 const factory = require("../controller/handlerFactory");
 const { fileUpload } = require("./../utils/fileUpload");
 const { StatusCodes } = require("http-status-codes");
+const Organization = require("../models/organization.model");
 
 // const RockTemp = require("../models/rockTempModel");
 
@@ -130,42 +131,67 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     active: false,
   });
 
-  res.status(204).json({
+  res.status(StatusCodes.ACCEPTED).json({
     status: "success",
     data: null,
   });
 });
 
 exports.followOrganization = catchAsync(async (req, res, next) => {
-
-    const {organizationId} = req.body
-    const user = await User.findOne({
-      //kkk replace with req.user.id
-      _id: "662e998e1b1c9802c2665e13",
-    });
-
-    user.followOrganization(organizationId) 
-
-    res.status(204).json({
-      status: "success",
-      data: null,
-    });
-  
-  })
-
-exports.addAsAdmin = catchAsync(async (req, res, next) => {
-
-  const {organizationId} = req.body
+  const  organizationId  = req.params.id;
   const user = await User.findOne({
     //kkk replace with req.user.id
-    _id: "662e998e1b1c9802c2665e13",
+    _id: req.user.id,
   });
 
-  user.addAsAdmin(organizationId) 
+  const organization = await Organization.findOne({ _id: organizationId });
+
+  if (!organization) {
+    next(new APIError("Organization does not exist.", StatusCodes.BAD_REQUEST));
+  }
+
+  await user.followOrganization(organizationId);
+
+  // await user.save();
+
+  res.status(StatusCodes.ACCEPTED).json({
+    status: "success",
+    data: null,
+  });
+});
+
+exports.unfollowOrganization = catchAsync(async (req, res, next) => {
+  const  organizationId  = req.params.id;
+  const user = await User.findOne({
+    //kkk replace with req.user.id
+    _id: req.user.id,
+  });
+
+  const organization = await Organization.findOne({ _id: organizationId });
+
+  if (!organization) {
+    next(new APIError("Organization does not exist.", StatusCodes.BAD_REQUEST));
+  }
+
+  await user.unfollowOrganization(organizationId);
+
+  res.status(StatusCodes.ACCEPTED).json({
+    status: "success",
+    data: null,
+  });
+});
+
+exports.addAsAdmin = catchAsync(async (req, res, next) => {
+  const { organizationId } = req.body;
+  const user = await User.findOne({
+    //kkk replace with req.user.id
+    _id: req.user.id,
+  });
+
+  user.addAsAdmin(organizationId);
 
   res.status(204).json({
     status: "success",
     data: null,
   });
-
-})
+});
