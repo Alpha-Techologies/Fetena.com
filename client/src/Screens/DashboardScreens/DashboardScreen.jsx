@@ -33,17 +33,60 @@ const DashboardScreen = () => {
     getItem(
       <Link to=''>Dashboard</Link>,
       "1",
-      <Icon icon='akar-icons:dashboard' />
+      <Icon
+        className='w-5 h-5'
+        icon='akar-icons:dashboard'
+      />
+    ),
+    getItem(
+      <Link to='exams'>Organizations</Link>,
+      "2",
+      <Icon
+        className='w-5 h-5'
+        icon='grommet-icons:organization'
+      />
     ),
     getItem(
       <Link to='exams'>Exams</Link>,
-      "2",
+      "3",
       <Icon
-        className='w-4 h-4'
+        className='w-5 h-5'
         icon='healthicons:i-exam-multiple-choice-outline'
       />
     ),
+    getItem(
+      <Link to='exams'>Results</Link>,
+      "4",
+      <Icon
+        className='w-5 h-5'
+        icon='ph:exam'
+      />
+    ),
+    getItem(
+      <Link to='exams'>Certifications</Link>,
+      "5",
+      <Icon
+        className='w-5 h-5'
+        icon='la:award'
+      />
+    ),
     { type: "divider" },
+    getItem(
+      <Link to='exams'>Training Videos</Link>,
+      "6",
+      <Icon
+        className='w-5 h-5'
+        icon='healthicons:i-training-class-outline'
+      />
+    ),
+    getItem(
+      <Link to='exams'>Support</Link>,
+      "7",
+      <Icon
+        className='w-5 h-5'
+        icon='material-symbols:contact-support-outline'
+      />
+    ),
   ];
 
   const workspaceDropdownItems = [
