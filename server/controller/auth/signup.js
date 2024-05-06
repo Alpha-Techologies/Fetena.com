@@ -3,7 +3,7 @@ const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
 const Email = require("../../utils/sendMail");
 const { StatusCodes } = require("http-status-codes");
-const { fileUpload } = require("./../profile/fileUpload")
+const { fileUpload } = require("../../utils/fileUpload");
 
 exports.signUp = catchAsync(async (req, res, next) => {
 

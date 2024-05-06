@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
 const APIFeatures = require("./../utils/apiFeatures");
 const factory = require("../controller/handlerFactory");
-const { fileUpload } = require("./profile/fileUpload");
+const { fileUpload } = require("./../utils/fileUpload");
 const { StatusCodes } = require("http-status-codes");
 
 // const RockTemp = require("../models/rockTempModel");

@@ -1,9 +1,9 @@
 const path = require("path");
-const catchAsync = require("./../../utils/catchAsync");
+const catchAsync = require("./catchAsync");
 
 // const fs = require('fs');
 const { StatusCodes } = require("http-status-codes");
-const APIError = require("../../utils/apiError");
+const APIError = require("./apiError");
 const { CLIENT_RENEG_LIMIT } = require("tls");
 
 const fileUpload =
@@ -13,17 +13,16 @@ const fileUpload =
   // maxSize
 
   async ({ file, name, filePath, maxSize }) => {
-      if (!file) {
-          return new APIError("Please provide a file", 404);
-        }
-        if (file.size > maxSize) {
-            return new APIError(
-                `Please upload file smaller than` + { maxSize },
-                // console.log("uploaded")
+    if (!file) {
+      return new APIError("Please provide a file", 404);
+    }
+    if (file.size > maxSize) {
+      return new APIError(
+        `Please upload file smaller than` + { maxSize },
         StatusCodes.BAD_REQUEST
       );
     }
-    console.log("upp")
+    console.log("upp");
     const newFileName = name + path.extname(file.name); // You can generate a new name however you like
 
     const imagePath = path.join(
@@ -31,12 +30,9 @@ const fileUpload =
       `../../public/uploads/` + `${filePath}/` + `${newFileName}`
     );
     await file.mv(imagePath);
-    
+
     return `/uploads/` + `${filePath}/` + `${newFileName}`;
   };
-
-
-
 
 // const uploadProductImage = async (req, res) => {
 //   const result = await cloudinary.uploader.upload(
