@@ -1,5 +1,8 @@
+const {default: Together} = require('together-ai');
+
 class TogetherManager {
-    constructor(apiKey, model = null, maxTokens = 1000, streamTokens = false) {
+    constructor(apiKey, model = null, maxTokens = 0, streamTokens = false) {
+
       this.together = new Together({
         auth: apiKey,
       });
@@ -20,7 +23,23 @@ class TogetherManager {
           max_tokens: this.maxTokens,
           stream_tokens: this.streamTokens,
         });
-        return result;
+        
+        if (this.streamTokens) {
+          const reader = result.getReader();
+          let output = '';
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+              break;
+            }
+            // console.log(typeof(JSON.parse(nesw TextDecoder().decode(value).replaceAll('\\', ''))))
+            output += (new TextDecoder().decode(value)).replaceAll('\\', '');
+          }
+          return output;
+        } else {
+          return result.replaceAll('\\', '');
+        }
+
       } catch (error) {
         console.error("Error occurred during inference:", error);
         return null;
@@ -40,6 +59,7 @@ class TogetherManager {
     }
   }
   
+  module.exports = TogetherManager
   // Example usage:
   // const apiKey = process.env.TOGETHER_API_KEY;
   // const togetherManager = new TogetherManager(apiKey, 'togethercomputer/llama-2-70b-chat', 1000, true);

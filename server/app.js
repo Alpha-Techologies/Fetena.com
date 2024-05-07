@@ -12,7 +12,7 @@ const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
 
 require("dotenv").config({
-  path: "./config.env",
+  path: "./.env",
 });
 
 const limiter = rateLimit({
@@ -73,12 +73,13 @@ app.use((req, res, next) => {
 const userRouter = require("./routes/userRoutes");
 const examRouter = require("./routes/examRoutes");
 const questionRouter = require("./routes/questionRoutes");
+const userAnswerRouter = require("./routes/userAnswerRoutes");
 // const answerRouter = require("./routes/answerRoutes");
 
 app.use("/api/users", userRouter);
 app.use("/api/exams", examRouter);
 app.use("/api/questions", questionRouter);
-// app.use("/api/answers", answerRouter);
+app.use("/api/useranswers", userAnswerRouter);
 
 app.all("*", (req, res, next) => {
   next(new APIError(`Can't find ${req.originalUrl} in server plus`, 404));
