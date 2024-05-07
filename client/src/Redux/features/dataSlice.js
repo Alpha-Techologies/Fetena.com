@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { updateMe, updatePassword } from "./dataActions";
+import {
+  createOrganization,
+  getOrganizations,
+  updateMe,
+  updatePassword,
+} from "./dataActions";
 
 const initialState = {
   loading: false,
@@ -29,6 +34,26 @@ const dataSlice = createSlice({
         state.loading = false;
       })
       .addCase(updatePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(createOrganization.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createOrganization.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(createOrganization.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getOrganizations.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOrganizations.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(getOrganizations.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

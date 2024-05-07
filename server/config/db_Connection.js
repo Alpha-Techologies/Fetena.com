@@ -9,7 +9,7 @@ const { dbAuth } = require("./db_Authentication");
 mongoose.connect("mongodb://0.0.0.0:27017/exam-management?retryWrites=true", {
   // .connect("mongodb://mongo:27017/beach-resort?retryWrites=true", { //create connection
   //create connection
-  useNewUrlParser: true,
+  // useNewUrlParser: true,
   // useCreateIndex: true,
   // useFindAndModify: false,
   useUnifiedTopology: true, //To use the new Server Discover and Monitoring engine

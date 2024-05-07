@@ -23,6 +23,9 @@ import ProfilePage from "../Pages/ProfilePage";
 import NotFoundPage from "../Pages/NotFoundPage";
 import ExamsPage from "../Pages/ExamsPage";
 import CreateExam from "../Pages/CreateExamPages/CreateExam";
+import OrganizationsPage from "../Pages/OrganizationsPage";
+import ResultsPage from "../Pages/ResultsPage";
+import CreateOrganization from "../Pages/CreateOrganization";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -91,6 +94,18 @@ const AllRoutes = () => {
           <Route
             path='create-exam'
             element={<CreateExam />}
+          />
+          <Route
+            path='organizations'
+            element={<OrganizationsPage />}
+          />
+          <Route
+            path='create-organization'
+            element={<CreateOrganization />}
+          />
+          <Route
+            path='results'
+            element={<ResultsPage />}
           />
           <Route
             path='*'

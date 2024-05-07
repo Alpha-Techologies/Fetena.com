@@ -15,7 +15,7 @@ exports.createOrganization = catchAsync(async (req, res, next) => {
 
   user.addAsAdmin(doc._id);
 
-  await user.save();
+  // await user.save();
 
   res.status(StatusCodes.CREATED).json({
     sucess: true,
