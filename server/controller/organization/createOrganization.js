@@ -42,6 +42,7 @@ exports.createOrganization = catchAsync(async (req, res, next) => {
   await newOrganization.save();
   // await user.save();
 
+
   res.status(StatusCodes.CREATED).json({
     sucess: true,
     data: newOrganization,
