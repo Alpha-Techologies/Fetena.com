@@ -20,6 +20,7 @@ const OrganizationSchema = new mongoose.Schema({
   website: String,
   phone: Number,
   email: String,
+  logo: String,
   adminUser: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

@@ -1,5 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const APIError = require("../../utils/apiError");
+const User = require("../../models/user.model");
 
 // roles -> ["sysAdmin", "orgAdmin"]
 exports.restrictTo = (isOrgOperation) => {

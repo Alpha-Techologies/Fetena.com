@@ -8,6 +8,7 @@ const {
   activateExaminer,
   joinOrganization,
   deactivateExaminer,
+  updateOrganizationLogo,
 } = require("../controller/organization");
 const { protect, restrictTo } = require("../controller/auth");
 
@@ -25,7 +26,10 @@ organizationRouter
   .delete(protect, deleteOrganization);
 
 organizationRouter
-.route("/join").post(protect, joinOrganization);
+  .route("/updateLogo/:id")
+  .patch(protect, restrictTo(true), updateOrganizationLogo);
+
+organizationRouter.route("/join").post(protect, joinOrganization);
 
 organizationRouter
   .route("/activate")
