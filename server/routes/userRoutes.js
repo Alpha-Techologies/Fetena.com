@@ -64,6 +64,7 @@ router.patch("/updatePassword", protect, updatePassword);
 router.patch(
   "/updateMe",
   protect,
+  getMe,
   // filterUserUpdateFields("firstName", "lastName", "email", "phoneNumber"),
   updateMe
 );
