@@ -1,9 +1,9 @@
-const {createOrganization} = require("./createOrganization");
-const {deleteOrganization} = require("./deleteOrganization");
-const {updateOrganization} = require("./updateOrganization");
-const {getOneOrganization, getAllOrganization } = require("./getOrganization");
-const { activateExaminee } = require("./activateExaminee");
-const { deactivateExaminee } = require("./deactivateExaminee");
+const { createOrganization } = require("./createOrganization");
+const { deleteOrganization } = require("./deleteOrganization");
+const { updateOrganization } = require("./updateOrganization");
+const { getOneOrganization, getAllOrganization } = require("./getOrganization");
+const { activateExaminer } = require("./activateExaminer");
+const { deactivateExaminer } = require("./deactivateExaminer");
 const { joinOrganization } = require("./joinOrganization");
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
   updateOrganization,
   getOneOrganization,
   getAllOrganization,
-  activateExaminee,
-  deactivateExaminee,
-  joinOrganization
+  activateExaminer,
+  deactivateExaminer,
+  joinOrganization,
 };

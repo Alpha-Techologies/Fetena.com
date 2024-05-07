@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   server:
@@ -22,7 +22,7 @@ services:
       - app-network
   mongo:
     image: mongo:latest
-    command: mongod --quiet --logpath /dev/null 
+    command: mongod --quiet --logpath /dev/null
     # environment:  // If Mongo Authorization is need to be enabled
     #   MONGO_INITDB_ROOT_USERNAME: root
     #   MONGO_INITDB_ROOT_PASSWORD: rootpassword
@@ -38,7 +38,7 @@ services:
       dockerfile: DockerFile
     image: client
     container_name: react-client
-    command: npm run dev 
+    command: npm run dev
     volumes:
       - ./client/:/usr/src/app
       - /usr/src/app/node_modules
@@ -52,11 +52,11 @@ services:
       - app-network
 
 networks:
-    app-network:
-        driver: bridge
+  app-network:
+    driver: bridge
 
 volumes:
-    data-volume:
-    node_modules:
-    web-root:
-      driver: local
+  data-volume:
+  node_modules:
+  web-root:
+    driver: local

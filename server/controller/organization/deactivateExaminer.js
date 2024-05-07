@@ -1,6 +1,7 @@
 const Organization = require("../../models/organization.model");
+const catchAsync = require("../../utils/catchAsync");
 
-exports.deactivateExaminee = catchAsync(async (req, res, next) => {
+exports.deactivateExaminer = catchAsync(async (req, res, next) => {
   const { organizationId, userId } = req.body;
 
   const organization = await Organization.findOne({ _id: organizationId });

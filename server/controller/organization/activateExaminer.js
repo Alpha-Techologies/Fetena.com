@@ -2,7 +2,7 @@ const Organization = require("../../models/organization.model");
 const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
 
-exports.activateExaminee = catchAsync(async (req, res, next) => {
+exports.activateExaminer = catchAsync(async (req, res, next) => {
   const { organizationId, userId } = req.body;
 
   const organization = await Organization.findOne({ _id: organizationId });
