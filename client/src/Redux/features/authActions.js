@@ -71,3 +71,8 @@ export const logoutUser = createAsyncThunk(
         return data;
     }
 )
+
+export const getMe = createAsyncThunk("data/getMe", async () => {
+  const { data } = await axios.get(`${url}/me`);
+  return data;
+});

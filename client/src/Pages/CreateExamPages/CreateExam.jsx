@@ -1,4 +1,4 @@
-import { Card, Form, Input, Button, Select, InputNumber, Radio } from "antd";
+import { Card, Form, Input, Button, Select, InputNumber } from "antd";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -45,6 +45,7 @@ const CreateExam = () => {
         })
         .catch((errorInfo) => {
           // Basic Info form has errors, prevent tab switch and display toast notification
+          console.log(errorInfo);
           toast.error("Please complete all required fields in Basic Info");
         });
     } else if (activeTabKey === "Exam Questions") {
@@ -72,6 +73,7 @@ const CreateExam = () => {
         })
         .catch((errorInfo) => {
           // Basic Info form has errors, prevent tab switch and display toast notification
+          console.log(errorInfo);
           toast.error("Please complete all required fields in Basic Info");
         });
     } else if (activeTabKey === "Exam Questions") {
@@ -243,13 +245,13 @@ const renderQuestionForm = (type, index) => {
           {examQuestions.map((type, index) => renderQuestionForm(type, index))}
 
           {/* Render the question choices section */}
-          <Card title="Question Choices">
+          {/* <Card title="Question Choices">
             <Radio.Group onChange={(e) => handleQuestionTypeChange(e.target.value)}>
               <Radio value="trueFalse">True/False Question</Radio>
               <Radio value="choose">Choose Question</Radio>
               <Radio value="fillBlank">Fill the Blank Question</Radio>
             </Radio.Group>
-          </Card>
+          </Card> */}
         </div>
       )}
     </div>

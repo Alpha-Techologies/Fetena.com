@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const { type } = require("os");
+const OrganizationFollower = require("./organizationFollower.model");
 
 const user = new mongoose.Schema(
   {
@@ -65,14 +67,23 @@ const user = new mongoose.Schema(
       default: Date.now(),
     },
     profilePhoto: {
-        type: String,
-        default: null,
-        trim: true,
+      type: String,
+      default: null,
+      trim: true,
     },
     idPhoto: {
-        type: String,
-        default: null,
-        trim: true,
+      type: String,
+      default: null,
+      trim: true,
+    },
+    idPhotoType: {
+      type: String,
+      required: true,
+      default: "National",
+      enum: {
+        values: ["National", "Kebele", "Passport", "License", "SchoolId"],
+        message: "Id Type must be of the Provided Types.",
+      },
     },
     createdAt: {
       type: Date,
@@ -84,7 +95,7 @@ const user = new mongoose.Schema(
     },
     role: {
       type: String,
-      required:false,
+      required: false,
       default: "user",
       enum: {
         values: ["manager", "receptionist", "user"],
@@ -129,9 +140,22 @@ const user = new mongoose.Schema(
       type: String,
       default: undefined,
     },
-    // activationTokenExpires: {
-    //   type: Date,
-    // },
+    isSystemAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    adminOf: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Organization",
+      },
+    ],
+    organizationsFollowed: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Organization",
+      },
+    ],
   },
   {
     toJSON: {
@@ -158,7 +182,7 @@ user.pre("save", function (next) {
 
       // override the cleartext password with the hashed one
       user.password = hash;
-      // user.passwordConfirm = hash; 
+      // user.passwordConfirm = hash;
       next();
     });
   });
@@ -218,25 +242,61 @@ user.methods.createActivationToken = function () {
   return activationToken;
 };
 
-// user.toggleMessage = function (id) {
-//   this.unreadMessage.shift(id);
-//   this.save();
-//   return this;
-// };
+user.methods.unfollowOrganization = async function (id) {
+  this.organizationsFollowed = this.organizationsFollowed.filter(
+    (orgId) => orgId.toString() !== id
+  );
 
-// user.methods.toggleMessageCount = function (unreadCount) {
-//   this.messageCount = unreadCount;
-//   this.save();
-//   return this;
-// }; //to be reviewed
+  const organizationFollowed = await OrganizationFollower.findOne({
+    organization: id,
+  });
+
+  if (organizationFollowed) {
+    organizationFollowed.follower = organizationFollowed.follower.filter(
+      (follower) => follower.toString() !== this._id.toString()
+    );
+
+    await organizationFollowed.save();
+  }
+  this.save();
+  return this;
+};
+
+user.methods.followOrganization = async function (id) {
+  // if already followed return
+  if (this.organizationsFollowed.includes(id)) return this;
+
+  this.organizationsFollowed.push(id);
+
+  const organizationFollowed = await OrganizationFollower.findOne({
+    organization: id,
+  });
+
+
+  if (organizationFollowed) {
+    organizationFollowed.follower.push(this._id);
+    await organizationFollowed.save();
+  } else {
+    const newOrganizationFollower = new OrganizationFollower({
+      organization: id,
+      follower: [this._id],
+    });
+    await newOrganizationFollower.save();
+  }
+
+  this.save();
+  return this;
+};
+
+user.methods.addAsAdmin = function (id) {
+  this.adminOf.push(id);
+  this.save();
+  return this;
+};
 
 user.virtual("fullName").get(function () {
   return this.firstName + " " + this.lastName;
 });
-
-// user.virtual("unreadCount").get(function () {
-//   // return this.unreadMessage.length;
-// });
 
 const User = new mongoose.model("user", user);
 

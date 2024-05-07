@@ -3,7 +3,8 @@ import { Menu, Button, Form, Input, Select, InputNumber,Dropdown  } from "antd";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getMe, updateMe, updatePassword } from "../Redux/features/dataActions";
+import { updateMe, updatePassword } from "../Redux/features/dataActions";
+import { getMe } from "../Redux/features/authActions";
 const { Option } = Select;
 
 const items = [
@@ -34,6 +35,13 @@ const ProfilePage = () => {
         const res = await dispatch(getMe());
         console.log(res, "res");
         const userData = res.payload.data.data[0];
+        console.log(userData, "userData");
+        setInitialValues({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          phoneNumber: userData.phoneNumber,
+        })
         setUser(userData);
         form.setFieldsValue({
           firstName: userData.firstName,

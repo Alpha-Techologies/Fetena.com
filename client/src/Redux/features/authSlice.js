@@ -6,6 +6,7 @@ import {
   forgotPassword,
   resetPassword,
   logoutUser,
+  getMe
 } from "./authActions";
 
 const initialState = {
@@ -24,7 +25,7 @@ const authSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -34,7 +35,7 @@ const authSlice = createSlice({
       .addCase(verifyEmail.pending, (state) => {
         state.loading = true;
       })
-      .addCase(verifyEmail.fulfilled, (state, action) => {
+      .addCase(verifyEmail.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(verifyEmail.rejected, (state, action) => {
@@ -46,8 +47,8 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.isAuthenticated = true;
-        state.user = action.payload.user;
+        // state.isAuthenticated = true;
+        // state.user = action.payload.user;
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -57,7 +58,7 @@ const authSlice = createSlice({
       .addCase(forgotPassword.pending, (state) => {
         state.loading = true;
       })
-      .addCase(forgotPassword.fulfilled, (state, action) => {
+      .addCase(forgotPassword.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(forgotPassword.rejected, (state, action) => {
@@ -67,7 +68,7 @@ const authSlice = createSlice({
       .addCase(resetPassword.pending, (state) => {
         state.loading = true;
       })
-      .addCase(resetPassword.fulfilled, (state, action) => {
+      .addCase(resetPassword.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(resetPassword.rejected, (state, action) => {
@@ -77,7 +78,7 @@ const authSlice = createSlice({
       .addCase(logoutUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(logoutUser.fulfilled, (state, action) => {
+      .addCase(logoutUser.fulfilled, (state) => {
         state.loading = false;
         state.isAuthenticated = false;
         state.user = null;
@@ -86,6 +87,29 @@ const authSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(getMe.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMe.fulfilled, (state, action) => {
+        console.log(action.payload.data.data[0]);
+        state.loading = false;
+        state.isAuthenticated = true;
+        state.user = {
+          firstName: action.payload.data.data[0].firstName,
+          lastName: action.payload.data.data[0].lastName,
+          email: action.payload.data.data[0].email,
+          role: action.payload.data.data[0].role,
+          profilePhoto: action.payload.data.data[0].profilePhoto,
+          _id: action.payload.data.data[0]._id
+        };
+        state.error = null;
+      })
+      .addCase(getMe.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+        state.isAuthenticated = false;
+        // state.user = null;
       });
   },
 });

@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMe, updateMe, updatePassword } from "./dataActions";
+import {
+  createOrganization,
+  getOrganizations,
+  updateMe,
+  updatePassword,
+} from "./dataActions";
 
 const initialState = {
   loading: false,
@@ -12,20 +17,10 @@ const dataSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getMe.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getMe.fulfilled, (state, action) => {
-        state.loading = false;
-      })
-      .addCase(getMe.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
       .addCase(updateMe.pending, (state) => {
         state.loading = true;
       })
-      .addCase(updateMe.fulfilled, (state, action) => {
+      .addCase(updateMe.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(updateMe.rejected, (state, action) => {
@@ -35,10 +30,30 @@ const dataSlice = createSlice({
       .addCase(updatePassword.pending, (state) => {
         state.loading = true;
       })
-      .addCase(updatePassword.fulfilled, (state, action) => {
+      .addCase(updatePassword.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(updatePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(createOrganization.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createOrganization.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(createOrganization.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getOrganizations.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOrganizations.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(getOrganizations.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

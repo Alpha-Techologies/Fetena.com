@@ -2,7 +2,7 @@
 const { promisify } = require("util");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-const User = require("../models/userModel");
+const User = require("../models/user.model");
 const catchAsync = require("../utils/catchAsync");
 const APIError = require("../utils/apiError");
 // const factory = require("../controller/handlerFactory");
