@@ -42,7 +42,7 @@ const DashboardScreen = () => {
       <Link to='exams'>Organizations</Link>,
       "2",
       <Icon
-        className='w-5 h-5'
+        className='w-4 h-4'
         icon='grommet-icons:organization'
       />
     ),
