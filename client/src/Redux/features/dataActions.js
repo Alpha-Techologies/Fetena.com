@@ -41,12 +41,11 @@ export const createOrganization = createAsyncThunk(
 
 export const getOrganizations = createAsyncThunk(
     "data/getOrganizations",
-    async ({page, searchText, sort, sortOption}, { rejectWithValue }) => {
+    async ({page, searchText, sort, sortOption, limit, field}, { rejectWithValue }) => {
         try {
             const string = `${url}/organizations?page=${page}&${searchText[0]}=${searchText[1]}&sort=${sort}${sortOption}`;
+            const { data } = await axios.get(`${url}/organizations?page=${page}&${searchText[0]}=${searchText[1]}&sort=${sort}${sortOption}&limit=${limit}&fields=${field}`);
             console.log(string, "string");
-            const { data } = await axios.get(`${url}/organizations?page=${page}&${searchText[0]}=${searchText[1]}&sort=${sort}${searchText[1]}`);
-            console.log(data);
             return data;
         } catch (error) {
             return rejectWithValue(error.response.data);

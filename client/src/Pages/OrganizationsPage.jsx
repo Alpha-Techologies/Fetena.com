@@ -43,7 +43,7 @@ const OrganizationsPage = () => {
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    dispatch(getOrganizations({page: 1, searchText:['name', searchText], sort:"", sortOption: ""}))
+    dispatch(getOrganizations({page: 1, searchText:['name', searchText], sort:"", sortOption: "name", limit: 10, field:''}))
       .then((res) => {
         console.log(res, 'res');
         if (res.meta.requestStatus === "fulfilled") {
@@ -52,6 +52,7 @@ const OrganizationsPage = () => {
           console.log(
             res.payload.data.paginationData.totalPages,
             pages,
+            pagesTemp,
             "pages"
           );
           setOrganizations(res.payload.data.data);
@@ -73,6 +74,8 @@ const OrganizationsPage = () => {
         searchText: ["name", value],
         sort: sortOrder,
         sortOption: sortOption,
+        limit: 10,
+        field: ''
       })
     )
       .then((res) => {
@@ -90,7 +93,7 @@ const OrganizationsPage = () => {
 
   const onSortOptionChange = (value) => {
     setSortOption(value);
-    dispatch(getOrganizations({page:1, searchText:['name', searchText], sort: sortOrder, sortOption: value}))
+    dispatch(getOrganizations({page:1, searchText:['name', searchText], sort: sortOrder, sortOption: value, limit:10, field: ''}))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           console.log(res.payload.data.data, "payload data");
@@ -107,7 +110,7 @@ const OrganizationsPage = () => {
   };
 
   const onSortOrderChange = (value) => {
-    dispatch(getOrganizations({page: 1, searchText: ['name', searchText], sort: value, sortOption: sortOption}))
+    dispatch(getOrganizations({page: 1, searchText: ['name', searchText], sort: value, sortOption: sortOption, limit: 10, field: ''}))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           console.log(res.payload.data.data, "payload data");
@@ -126,7 +129,7 @@ const OrganizationsPage = () => {
   const onPaginationChange = (page) => {
     console.log(page, "current page");
     setCurrent(page);
-    dispatch(getOrganizations({page: page, searchText: ['name', searchText], sort: sortOrder, sortOption: sortOption}))
+    dispatch(getOrganizations({page: page, searchText: ['name', searchText], sort: sortOrder, sortOption: sortOption, limit: 10, field:''}))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           setPages(res.payload.data.paginationData.totalPages);
@@ -281,7 +284,7 @@ const OrganizationsPage = () => {
       </div>
       <Pagination
         current={current}
-        total={pages}
+        total={pages*10}
         onChange={onPaginationChange}
       />
     </div>

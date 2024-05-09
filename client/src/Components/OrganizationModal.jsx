@@ -1,51 +1,78 @@
-import { Modal, Select } from 'antd';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { getOrganizations } from '../Redux/features/dataActions';
+import { Modal, Select } from "antd";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { getOrganizations } from "../Redux/features/dataActions";
+import { toast } from "react-toastify";
 
 const OrganizationModal = ({ orgModal, setOrgModal }) => {
-  
-  const [searchOptions, setSearchOptions] = useState([])
-  const dispatch = useDispatch()
+  const [searchOptions, setSearchOptions] = useState([]);
+  const [selectedValue, setSelectedValue] = useState("");
+  const dispatch = useDispatch();
+  const maxInfinity = Infinity;
 
-  const onSearchChange = (value) => {
-    console.log(value, 'change value');
+  useEffect(() => {
     dispatch(
       getOrganizations({
         page: 1,
-        searchText: ["name", value.target.value],
+        searchText: ["name", ""],
         sort: "",
         sortOption: "",
+        limit: maxInfinity,
+        field: "name",
       })
     )
       .then((res) => {
         console.log(res, "res");
         if (res.meta.requestStatus === "fulfilled") {
-          const dataTemp = res.payload.data.data;
-          setSearchOptions(dataTemp);
-          
+          const orgTemp = res.payload.data.data;
+          const searchOptTemp = [];
+          for (const org of orgTemp) {
+            searchOptTemp.push({
+              value: org._id,
+              label: org.name,
+            });
+          }
+          console.log(searchOptTemp, "searchOptTemp");
+          setSearchOptions(searchOptTemp);
         }
       })
       .catch((error) => {
         console.log(error);
         toast.error("There is some error while fetching organizations!");
       });
-  }
+  }, []);
+
+  const handleSelectChange = (value) => {
+    setSelectedValue(value);
+  };
+
+  const handleJoinOrganization = () => {
+    setOrgModal(false);
+    setSelectedValue("");
+  };
+
+  const handleCancel = () => {
+    setOrgModal(false);
+    setSelectedValue("");
+  };
 
   return (
     <Modal
-          title='Join an Organization'
+      title='Join an Organization'
       centered
       open={orgModal}
-      onOk={() => setOrgModal(false)}
-      onCancel={() => setOrgModal(false)}>
+      onOk={() => {
+        handleJoinOrganization();
+      }}
+      onCancel={() => handleCancel()}>
       <Select
         showSearch
         className='w-full'
+        value={selectedValue}
+        onChange={handleSelectChange}
         placeholder='Search to Select'
         optionFilterProp='children'
-        onKeyDown={onSearchChange}
         filterOption={(input, option) => (option?.label ?? "").includes(input)}
         filterSort={(optionA, optionB) =>
           (optionA?.label ?? "")
@@ -56,9 +83,15 @@ const OrganizationModal = ({ orgModal, setOrgModal }) => {
       />
 
       <p className='my-2'>
-        Didn't find your organization? <Link to='create-organization' onClick={() => setOrgModal(false)} className='text-primary-500 hover:underline cursor-pointer'>Create</Link>
+        Didn't find your organization?{" "}
+        <Link
+          to='create-organization'
+          onClick={() => setOrgModal(false)}
+          className='text-primary-500 hover:underline cursor-pointer'>
+          Create
+        </Link>
       </p>
     </Modal>
   );
-}
-export default OrganizationModal
+};
+export default OrganizationModal;
