@@ -1,6 +1,8 @@
 import { Card, Form, Input, Button, Select, InputNumber } from "antd";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import { Icon } from "@iconify/react";
 
 
 const tabListNoTitle = [
@@ -119,7 +121,11 @@ const renderQuestionForm = (type, index) => {
 
   return (
     <div className="flex flex-col gap-4 my-4">
-      <div className="flex justify-between">
+          <div className="flex gap-4 items-center ">
+      <Link to='/dashboard/exams'>
+        <Icon icon="fluent-emoji-high-contrast:left-arrow"  className="text-2xl text-primary-500" />
+            
+            </Link>
         <h1 className="text-3xl font-bold">Create Exam</h1>
       </div>
       <div>

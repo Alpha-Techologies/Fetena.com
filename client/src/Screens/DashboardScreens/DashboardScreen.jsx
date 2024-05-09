@@ -66,7 +66,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='exams'>Certifications</Link>,
+      <Link to='certifications'>Certifications</Link>,
       "5",
       <Icon
         className='w-5 h-5'
@@ -75,7 +75,7 @@ const DashboardScreen = () => {
     ),
     { type: "divider" },
     getItem(
-      <Link to='exams'>Training Videos</Link>,
+      <Link to='trainingVideos'>Training Videos</Link>,
       "6",
       <Icon
         className='w-5 h-5'
@@ -83,7 +83,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='exams'>Support</Link>,
+      <Link to='support'>Support</Link>,
       "7",
       <Icon
         className='w-5 h-5'
@@ -191,7 +191,7 @@ const DashboardScreen = () => {
             padding: 16,
             background: "white",
           }}>
-          <h1 className='text-2xl'>
+          <h1 className='text-xl font-semibold text-primary-500'>
             {"Hello there, " + user.firstName + " " + user.lastName + "!"}
           </h1>
           <div className='flex items-center justify-center gap-4'>
