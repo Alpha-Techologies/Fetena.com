@@ -26,11 +26,11 @@ import CreateExam from "../Pages/CreateExamPages/CreateExam";
 import OrganizationsPage from "../Pages/OrganizationsPage";
 import ResultsPage from "../Pages/ResultsPage";
 import CreateOrganization from "../Pages/CreateOrganization";
+import OrganizationsDetails from "../Pages/OrganizationsDetails";
 import ExamDetailPage from "../Pages/ExamDetailPage";
 import CertificationsPage from "../Pages/CertificationsPage";
 import TrainingVideosPage from "../Pages/TrainingVideosPage";
 import SupportPage from "../Pages/SupportPage";
-
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -109,6 +109,10 @@ const AllRoutes = () => {
             element={<OrganizationsPage />}
           />
          
+          <Route
+            path='organizations/*'
+            element={<OrganizationsDetails />}
+          />
           <Route
             path='create-organization'
             element={<CreateOrganization />}

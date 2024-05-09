@@ -1,17 +1,76 @@
-import { Modal, Select } from 'antd';
-import { Link } from 'react-router-dom';
+import { Modal, Select } from "antd";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { getOrganizations } from "../Redux/features/dataActions";
+import { toast } from "react-toastify";
 
-const OrganizationModal = ({orgModal, setOrgModal}) => {
+const OrganizationModal = ({ orgModal, setOrgModal }) => {
+  const [searchOptions, setSearchOptions] = useState([]);
+  const [selectedValue, setSelectedValue] = useState("");
+  const dispatch = useDispatch();
+  const maxInfinity = Infinity;
+
+  useEffect(() => {
+    dispatch(
+      getOrganizations({
+        page: 1,
+        searchText: ["name", ""],
+        sort: "",
+        sortOption: "",
+        limit: maxInfinity,
+        field: "name",
+      })
+    )
+      .then((res) => {
+        console.log(res, "res");
+        if (res.meta.requestStatus === "fulfilled") {
+          const orgTemp = res.payload.data.data;
+          const searchOptTemp = [];
+          for (const org of orgTemp) {
+            searchOptTemp.push({
+              value: org._id,
+              label: org.name,
+            });
+          }
+          console.log(searchOptTemp, "searchOptTemp");
+          setSearchOptions(searchOptTemp);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("There is some error while fetching organizations!");
+      });
+  }, []);
+
+  const handleSelectChange = (value) => {
+    setSelectedValue(value);
+  };
+
+  const handleJoinOrganization = () => {
+    setOrgModal(false);
+    setSelectedValue("");
+  };
+
+  const handleCancel = () => {
+    setOrgModal(false);
+    setSelectedValue("");
+  };
+
   return (
     <Modal
-          title='Join an Organization'
+      title='Join an Organization'
       centered
       open={orgModal}
-      onOk={() => setOrgModal(false)}
-      onCancel={() => setOrgModal(false)}>
+      onOk={() => {
+        handleJoinOrganization();
+      }}
+      onCancel={() => handleCancel()}>
       <Select
         showSearch
         className='w-full'
+        value={selectedValue}
+        onChange={handleSelectChange}
         placeholder='Search to Select'
         optionFilterProp='children'
         filterOption={(input, option) => (option?.label ?? "").includes(input)}
@@ -20,38 +79,19 @@ const OrganizationModal = ({orgModal, setOrgModal}) => {
             .toLowerCase()
             .localeCompare((optionB?.label ?? "").toLowerCase())
         }
-        options={[
-          {
-            value: "1",
-            label: "Not Identified",
-          },
-          {
-            value: "2",
-            label: "Closed",
-          },
-          {
-            value: "3",
-            label: "Communicated",
-          },
-          {
-            value: "4",
-            label: "Identified",
-          },
-          {
-            value: "5",
-            label: "Resolved",
-          },
-          {
-            value: "6",
-            label: "Cancelled",
-          },
-        ]}
+        options={searchOptions}
       />
 
       <p className='my-2'>
-        Didn't find your organization? <Link to='create-organization' onClick={() => setOrgModal(false)} className='text-primary-500 hover:underline cursor-pointer'>Create</Link>
+        Didn't find your organization?{" "}
+        <Link
+          to='create-organization'
+          onClick={() => setOrgModal(false)}
+          className='text-primary-500 hover:underline cursor-pointer'>
+          Create
+        </Link>
       </p>
     </Modal>
   );
-}
-export default OrganizationModal
+};
+export default OrganizationModal;

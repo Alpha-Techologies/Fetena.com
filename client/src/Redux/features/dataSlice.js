@@ -4,6 +4,9 @@ import {
   getOrganizations,
   updateMe,
   updatePassword,
+  followOrganization,
+  unfollowOrganization,
+  getOneOrganization
 } from "./dataActions";
 
 const initialState = {
@@ -56,7 +59,38 @@ const dataSlice = createSlice({
       .addCase(getOrganizations.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(followOrganization.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(followOrganization.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(followOrganization.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(unfollowOrganization.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(unfollowOrganization.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(unfollowOrganization.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getOneOrganization.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOneOrganization.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(getOneOrganization.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
+    
   },
 });
 
