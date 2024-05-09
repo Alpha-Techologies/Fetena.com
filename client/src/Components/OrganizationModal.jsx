@@ -1,7 +1,38 @@
 import { Modal, Select } from 'antd';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { getOrganizations } from '../Redux/features/dataActions';
 
-const OrganizationModal = ({orgModal, setOrgModal}) => {
+const OrganizationModal = ({ orgModal, setOrgModal }) => {
+  
+  const [searchOptions, setSearchOptions] = useState([])
+  const dispatch = useDispatch()
+
+  const onSearchChange = (value) => {
+    console.log(value, 'change value');
+    dispatch(
+      getOrganizations({
+        page: 1,
+        searchText: ["name", value.target.value],
+        sort: "",
+        sortOption: "",
+      })
+    )
+      .then((res) => {
+        console.log(res, "res");
+        if (res.meta.requestStatus === "fulfilled") {
+          const dataTemp = res.payload.data.data;
+          setSearchOptions(dataTemp);
+          
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("There is some error while fetching organizations!");
+      });
+  }
+
   return (
     <Modal
           title='Join an Organization'
@@ -14,38 +45,14 @@ const OrganizationModal = ({orgModal, setOrgModal}) => {
         className='w-full'
         placeholder='Search to Select'
         optionFilterProp='children'
+        onKeyDown={onSearchChange}
         filterOption={(input, option) => (option?.label ?? "").includes(input)}
         filterSort={(optionA, optionB) =>
           (optionA?.label ?? "")
             .toLowerCase()
             .localeCompare((optionB?.label ?? "").toLowerCase())
         }
-        options={[
-          {
-            value: "1",
-            label: "Not Identified",
-          },
-          {
-            value: "2",
-            label: "Closed",
-          },
-          {
-            value: "3",
-            label: "Communicated",
-          },
-          {
-            value: "4",
-            label: "Identified",
-          },
-          {
-            value: "5",
-            label: "Resolved",
-          },
-          {
-            value: "6",
-            label: "Cancelled",
-          },
-        ]}
+        options={searchOptions}
       />
 
       <p className='my-2'>

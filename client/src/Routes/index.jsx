@@ -26,6 +26,7 @@ import CreateExam from "../Pages/CreateExamPages/CreateExam";
 import OrganizationsPage from "../Pages/OrganizationsPage";
 import ResultsPage from "../Pages/ResultsPage";
 import CreateOrganization from "../Pages/CreateOrganization";
+import OrganizationsDetails from "../Pages/OrganizationsDetails";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -98,6 +99,10 @@ const AllRoutes = () => {
           <Route
             path='organizations'
             element={<OrganizationsPage />}
+          />
+          <Route
+            path='organizations/*'
+            element={<OrganizationsDetails />}
           />
           <Route
             path='create-organization'
