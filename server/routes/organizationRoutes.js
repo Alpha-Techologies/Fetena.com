@@ -29,14 +29,14 @@ organizationRouter
   .route("/updateLogo/:id")
   .patch(protect, restrictTo(true), updateOrganizationLogo);
 
-organizationRouter.route("/join").post(protect, joinOrganization);
+organizationRouter.route("/join/:id").post(protect, joinOrganization);
 
 organizationRouter
-  .route("/activate")
+  .route("/activate/:id")
   .post(protect, restrictTo(true), activateExaminer);
 
 organizationRouter
-  .route("/deactivate")
+  .route("/deactivate/:id")
   .post(protect, restrictTo(true), deactivateExaminer);
 
 module.exports = organizationRouter;
