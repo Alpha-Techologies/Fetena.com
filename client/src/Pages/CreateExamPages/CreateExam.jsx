@@ -91,9 +91,6 @@ const CreateExam = () => {
   };
   
 
-
-
-  
 // Define a function to render the form based on the selected exam question type
 const renderQuestionForm = (type, index) => {
   switch (type) {

@@ -30,7 +30,7 @@ const OrganizationsDetails = () => {
   return (
     <div>
       <div className='my-4 bg-white rounded h-full flex'>
-        <div className='flex gap-2 items-center w-[70%] my-0'>
+        <div className='flex gap-2 items-center w-[80%] my-0'>
           <img
             className='w-1/2 rounded-full cursor-pointer'
             src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
@@ -76,9 +76,11 @@ const OrganizationsDetails = () => {
               />
             </div>
           </div>
-        </div>
+              </div>
+              
+            <Divider className="bg-primary-500 h-40 my-auto" type="vertical" />
         
-        <div className='flex flex-col items-start justify-center w-1/2 my-0 border-l-2 pl-2'>
+        <div className='flex flex-col items-start justify-center w-1/2 my-0 pl-2'>
           <div className='flex gap-4'>
             <p className='font-semibold'>Email:</p>
             <p>{organizationDetail.email === "" ? "N/A" : organizationDetail.email }</p>

@@ -220,7 +220,7 @@ const OrganizationsPage = () => {
         </span>
       </div>
 
-      <div className='flex flex-wrap gap-8'>
+      <div className='flex flex-wrap gap-4'>
         {isLoading ? (
           <Loading />
         ) : (
@@ -233,14 +233,16 @@ const OrganizationsPage = () => {
               key={index}
               loading={loading}>
               <div className='flex gap-2'>
-                <Link to={`${organization._id}`}>
+                <Link
+                  className='w-[20%]'
+                  to={`${organization._id}`}>
                   <img
                     className='w-12 h-12 rounded-full cursor-pointer'
                     src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
                     alt=''
                   />
                 </Link>
-                <div className='flex flex-col items-start justify-center'>
+                <div className='flex flex-col items-start justify-center w-full'>
                   <div className='flex gap-2 items-center'>
                     <Link
                       to={`${organization._id}`}
@@ -284,7 +286,7 @@ const OrganizationsPage = () => {
       </div>
       <Pagination
         current={current}
-        total={pages*10}
+        total={pages * 10}
         onChange={onPaginationChange}
       />
     </div>
