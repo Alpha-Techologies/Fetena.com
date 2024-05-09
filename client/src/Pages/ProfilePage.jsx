@@ -1,9 +1,10 @@
 import { Icon } from "@iconify/react";
-import { Menu, Button, Form, Input, Select, InputNumber } from "antd";
+import { Menu, Button, Form, Input, Select, InputNumber,Dropdown  } from "antd";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { getMe, updateMe } from "../Redux/features/dataActions";
+import { updateMe, updatePassword } from "../Redux/features/dataActions";
+import { getMe } from "../Redux/features/authActions";
 const { Option } = Select;
 
 const items = [
@@ -15,8 +16,7 @@ const items = [
   {
     label: "Security",
     key: "security",
-    icon: <Icon icon='material-symbols-light:security' />,
-  },
+    icon: <Icon icon='material-symbols-light:security' />,}
 ];
 
 const ProfilePage = () => {
@@ -25,21 +25,22 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [form1] = Form.useForm();
+  const [idPhoto,setIdPhoto] = useState();
+
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await dispatch(getMe());
         console.log(res, "res");
-        setUser(res.payload.data.data[0]);
-        setInitialValues({
-        firstName: res.payload.data.data[0].firstName,
-        lastName: res.payload.data.data[0].lastName,
-        email: res.payload.data.data[0].email,
-          phoneNumber: res.payload.data.data[0].phoneNumber,
-        });
+        const userData = res.payload.data.data[0];
+        setUser(userData);
         form.setFieldsValue({
-          ...initialValues,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          phoneNumber: userData.phoneNumber,
         });
       } catch (error) {
         // Handle error if necessary
@@ -115,16 +116,20 @@ const ProfilePage = () => {
 
   const onFinishPassword = (values) => {
     setIsLoading(true);
-    dispatch(UserChangePassword({ ...values, _id })).then((res) => {
-      if (res.payload.success) {
+    dispatch(updatePassword({password: values.password, passwordCurrent: values.passwordCurrent })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
         setIsLoading(false);
         form1.resetFields();
-        return notify(res.payload.message);
+        toast.success("Password updated successfully!");
       } else {
         setIsLoading(false);
-        return notify(res.payload.message);
+        toast.error(res.payload.message);
       }
-    });
+    }).catch((error) => {
+      console.log(error);
+      setIsLoading(false);
+      toast.error("Something is wrong!");
+    })
   };
 
   const prefixSelector = (
@@ -141,7 +146,7 @@ const ProfilePage = () => {
   );
 
   const handleConfirmPassword = (rule, value, callback) => {
-    const password = form1.getFieldValue("newPassword");
+    const password = form1.getFieldValue("password");
     if (value && password !== value) {
       setIsDisabled(true);
       callback("The two passwords that you entered do not match!");
@@ -177,12 +182,18 @@ const ProfilePage = () => {
         items={items}
       />
       {current === "personal" && (
-        <div className='flex flex-col gap-4 p-4 bg-white rounded-br-md rounded-bl-md'>
+        <div className='flex flex-col gap-4 p-4 bg-white rounded-br-md rounded-bl-md items-center'>
+<img
+  className="block mx-auto my-2 w-32 h-32 object-cover rounded-full border-4 border-blue-200"
+  src={`http://localhost:8080/${user.profilePhoto}`}
+  alt="profile"
+/>
+
           <Form
             name='profileDetails'
             form={form}
             labelCol={{
-              flex: "110px",
+              flex: "150px",
             }}
             labelAlign='left'
             labelWrap
@@ -195,6 +206,8 @@ const ProfilePage = () => {
             }}
             initialValues={{ ...user }}
             onFinish={onFinishProfile}>
+              <div className="grid grid-cols-2 gap-x-4 ">
+
             <Form.Item
               label='First Name'
               name='firstName'
@@ -227,6 +240,8 @@ const ProfilePage = () => {
               ]}>
               <Input disabled={isInputDisabled} />
             </Form.Item>
+            </div>
+
 
             <Form.Item
               label=' '
@@ -248,11 +263,12 @@ const ProfilePage = () => {
                 {isLoading ? "Loading..." : "Save"}
               </Button>
             </Form.Item>
+            
           </Form>
         </div>
       )}
       {current === "security" && (
-        <div className='flex flex-col gap-4 bg-white p-4 rounded-br-md rounded-bl-md'>
+        <div className='flex flex-col p-4 gap-4 bg-white items-start rounded-br-md rounded-bl-md'>
           <Form
             name='passwordChange'
             form={form1}
@@ -269,7 +285,7 @@ const ProfilePage = () => {
             onFinish={onFinishPassword}>
             <Form.Item
               label='Current Password'
-              name='oldPassword'
+              name='passwordCurrent'
               rules={[
                 {
                   required: true,
@@ -281,7 +297,7 @@ const ProfilePage = () => {
 
             <Form.Item
               label='New Password'
-              name='newPassword'
+              name='password'
               hasFeedback
               rules={[
                 {
@@ -319,6 +335,13 @@ const ProfilePage = () => {
           </Form>
         </div>
       )}
+
+
+
+
+
+  
+      
     </div>
   );
 };
