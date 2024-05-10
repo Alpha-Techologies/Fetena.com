@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
-import { Avatar, Layout, Menu, Badge, Dropdown, Space } from "antd";
+import { Avatar, Layout, Menu, Badge, Dropdown, FloatButton, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import OrganizationModal from "../../Components/OrganizationModal";
 
 import { Outlet, Link } from "react-router-dom";
 import fetena_logo from "../../assets/fetena_logo.png";
@@ -14,9 +15,11 @@ const { Header, Content, Footer, Sider } = Layout;
 
 const DashboardScreen = () => {
   const [collapsed, setCollapsed] = useState(false);
-  // const { loading } = useSelector((state) => state.data);
+  const [orgModal, setOrgModal] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  
 
   function getItem(label, key, icon, children, type, danger, disabled) {
     return {
@@ -39,7 +42,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='exams'>Organizations</Link>,
+      <Link to='organizations'>Organizations</Link>,
       "2",
       <Icon
         className='w-4 h-4'
@@ -55,7 +58,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='exams'>Results</Link>,
+      <Link to='results'>Results</Link>,
       "4",
       <Icon
         className='w-5 h-5'
@@ -63,7 +66,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='exams'>Certifications</Link>,
+      <Link to='certifications'>Certifications</Link>,
       "5",
       <Icon
         className='w-5 h-5'
@@ -72,7 +75,7 @@ const DashboardScreen = () => {
     ),
     { type: "divider" },
     getItem(
-      <Link to='exams'>Training Videos</Link>,
+      <Link to='trainingVideos'>Training Videos</Link>,
       "6",
       <Icon
         className='w-5 h-5'
@@ -80,7 +83,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='exams'>Support</Link>,
+      <Link to='support'>Support</Link>,
       "7",
       <Icon
         className='w-5 h-5'
@@ -109,6 +112,10 @@ const DashboardScreen = () => {
       label: (
         <span
           className='text-primary-500 cursor-pointer'
+          onClick={() => {
+            setOrgModal(true)
+            console.log(orgModal);
+          }}
           >
           Join Organization
         </span>
@@ -147,6 +154,15 @@ const DashboardScreen = () => {
       style={{
         minHeight: "100vh",
       }}>
+      <OrganizationModal
+        orgModal={orgModal}
+        setOrgModal={setOrgModal}
+      />
+
+      <FloatButton
+        icon={<Icon icon='mingcute:document-line' />}
+        tooltip='Enter Exam Key'
+      />
       <Sider
         collapsible
         collapsed={collapsed}
@@ -175,7 +191,7 @@ const DashboardScreen = () => {
             padding: 16,
             background: "white",
           }}>
-          <h1 className='text-2xl'>
+          <h1 className='text-xl font-semibold text-primary-500'>
             {"Hello there, " + user.firstName + " " + user.lastName + "!"}
           </h1>
           <div className='flex items-center justify-center gap-4'>
@@ -185,7 +201,7 @@ const DashboardScreen = () => {
               }}
               trigger={["click"]}>
               <div className='text-primary-500 border border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md flex items-center justify-center cursor-pointer gap-2'>
-                <div className="flex items-center justify-center gap-2">
+                <div className='flex items-center justify-center gap-2'>
                   <Icon icon='octicon:organization-24' />
                   Personal Workspace
                 </div>

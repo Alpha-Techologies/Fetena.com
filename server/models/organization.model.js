@@ -14,7 +14,7 @@ const OrganizationSchema = new mongoose.Schema({
     required: true,
   },
   isVerified: {
-    type: Boolean,
+    type: String,
     default: false,
   },
   website: String,
