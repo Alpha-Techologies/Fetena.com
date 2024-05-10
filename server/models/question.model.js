@@ -5,26 +5,39 @@ const QuestionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  questionChoice: [{
-    type: String,
-    required: true,
-  }],
+  questionChoice: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
   answerText: {
     type: String,
-    required: true
   },
   questionType: {
     type: String,
     required: true,
-    enum: ["Multiple Choice", "True/False", "Short Answer", "Essay"],
+    enum: [
+      "Multiple Choice",
+      "True/False",
+      "Short Answer",
+      "Essay",
+      "Matching",
+    ],
   },
-  tag:[{
-    type: String,
-    trim: true,
-  }],
+  tag: [
+    {
+      type: String,
+      trim: true,
+    },
+  ],
   flag: {
     type: Boolean,
     default: false,
+  },
+  points: {
+    type: Number,
+    required: true,
   },
 });
 
