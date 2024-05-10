@@ -57,7 +57,7 @@ const {Meta} = Card
         <Card
         
         
-        className="hover:shadow-md transition-all ease-in-out duration-300"
+        className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200"
             style={{
               width: 300,
               // marginTop: 16,

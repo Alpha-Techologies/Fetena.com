@@ -1,3 +1,4 @@
+// Importing necessary components, hooks, functions, and libraries
 import {
   Input,
   Avatar,
@@ -6,19 +7,21 @@ import {
   Switch,
   Pagination,
   Select,
-} from "antd";
-import { useState, useEffect } from "react";
-import { getOrganizations, followOrganization, unfollowOrganization } from "../Redux/features/dataActions";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { Icon } from "@iconify/react";
-import Loading from "../Components/Loading";
-import { getMe } from "../Redux/features/authActions";
-import { Link } from "react-router-dom";
+} from "antd"; // Ant Design UI components
+import { useState, useEffect } from "react"; // React hooks for managing state and side effects
+import { getOrganizations, followOrganization, unfollowOrganization } from "../Redux/features/dataActions"; // Redux actions for fetching organizations and managing organization follow/unfollow
+import { useDispatch, useSelector } from "react-redux"; // Redux hooks for dispatching actions and accessing state
+import { toast } from "react-toastify"; // Library for displaying notifications
+import { Icon } from "@iconify/react"; // Icon component
+import Loading from "../Components/Loading"; // Custom loading component
+import { getMe } from "../Redux/features/authActions"; // Redux action for fetching user information
+import { Link } from "react-router-dom"; // Component for navigating to different routes
 
+// Destructuring components from Ant Design
 const { Search } = Input;
 const { Meta } = Card;
 
+// Options for sorting organizations
 const sortOptions = [
   {
     value: "name",
@@ -30,44 +33,66 @@ const sortOptions = [
   },
 ];
 
-const OrganizationsPage = () => {
-  const [loading, setLoading] = useState(true);
-  const [pages, setPages] = useState(1);
-  const [current, setCurrent] = useState(1);
-  const [organizations, setOrganizations] = useState([]);
-  const [searchText, setSearchText] = useState("");
-  const [sortOption, setSortOption] = useState("name");
-  const [sortOrder, setSortOrder] = useState("");
-  const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.data.isLoading);
-  const user = useSelector((state) => state.auth.user);
+// Tab options for filtering organizations
+const tabListNoTitle = [
+  {
+    key: "All",
+    label: "All",
+  },
+  {
+    key: "Featured",
+    label: "Featured",
+  },
+  {
+    key: "Following",
+    label: "Following",
+  },
+];
 
+// Main component for the Organizations page
+const OrganizationsPage = () => {
+  // State variables using React hooks
+  const [loading, setLoading] = useState(true); // Loading state
+  const [pages, setPages] = useState(1); // Total pages of organizations
+  const [current, setCurrent] = useState(1); // Current page number
+  const [organizations, setOrganizations] = useState([]); // List of organizations
+  const [searchText, setSearchText] = useState(""); // Search text
+  const [sortOption, setSortOption] = useState("name"); // Selected sorting option
+  const [sortOrder, setSortOrder] = useState(""); // Sorting order
+  const dispatch = useDispatch(); // Redux dispatch function
+  const isLoading = useSelector((state) => state.data.isLoading); // Loading state from Redux
+  const user = useSelector((state) => state.auth.user); // User information from Redux
+  const [activeTabKey, setActiveTabKey] = useState("All"); // Active tab key
+
+  // Function to handle tab changes
+  const onTabChange = (key) => {
+    setActiveTabKey(key); // Update active tab key
+  };
+
+  // Effect hook to fetch organizations when component mounts
   useEffect(() => {
-    dispatch(getOrganizations({page: 1, searchText:['name', searchText], sort:"", sortOption: "name", limit: 10, field:''}))
+    // Dispatch action to fetch organizations
+    dispatch(getOrganizations({ page: 1, searchText: ['name', searchText], sort: "", sortOption: "name", limit: 10, field: '' }))
       .then((res) => {
-        console.log(res, 'res');
+        // Process response if successful
         if (res.meta.requestStatus === "fulfilled") {
+          // Update state with fetched organizations and pagination data
           const pagesTemp = res.payload.data.paginationData.totalPages;
           setPages(pagesTemp);
-          console.log(
-            res.payload.data.paginationData.totalPages,
-            pages,
-            pagesTemp,
-            "pages"
-          );
           setOrganizations(res.payload.data.data);
-          setLoading(false);
+          setLoading(false); // Update loading state
         }
       })
       .catch((error) => {
         console.log(error);
-        toast.error("There is some error while fetching organizations!");
+        toast.error("There is some error while fetching organizations!"); // Notify user of error
       });
   }, []);
 
+  // Function to handle search
   const onSearch = (value, _e, info) => {
-  
-    setSearchText(value)
+    setSearchText(value); // Update search text
+    // Dispatch action to fetch organizations based on search query
     dispatch(
       getOrganizations({
         page: 1,
@@ -80,115 +105,201 @@ const OrganizationsPage = () => {
     )
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
+          // Update state with fetched organizations and pagination data
           setPages(res.payload.data.paginationData.totalPages);
           setOrganizations(res.payload.data.data);
-          setLoading(false);
+          setLoading(false); // Update loading state
+          setActiveTabKey("All"); // Switch to "All" tab
         }
       })
       .catch((error) => {
         console.log(error);
-        toast.error("There is some error while fetching organizations!");
+        toast.error("There is some error while fetching organizations!"); // Notify user of error
       });
   };
 
+  // Function to handle sorting option change
   const onSortOptionChange = (value) => {
-    setSortOption(value);
-    dispatch(getOrganizations({page:1, searchText:['name', searchText], sort: sortOrder, sortOption: value, limit:10, field: ''}))
+    setSortOption(value); // Update sorting option
+    // Dispatch action to fetch organizations with updated sorting option
+    dispatch(getOrganizations({ page: 1, searchText: ['name', searchText], sort: sortOrder, sortOption: value, limit: 10, field: '' }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          console.log(res.payload.data.data, "payload data");
-
+          // Update state with fetched organizations and pagination data
           setPages(res.payload.data.paginationData.totalPages);
           setOrganizations(res.payload.data.data);
-          setLoading(false);
+          setLoading(false); // Update loading state
         }
       })
       .catch((error) => {
         console.log(error);
-        toast.error("There is some error while fetching organizations!");
+        toast.error("There is some error while fetching organizations!"); // Notify user of error
       });
   };
 
+  // Function to handle sorting order change
   const onSortOrderChange = (value) => {
-    dispatch(getOrganizations({page: 1, searchText: ['name', searchText], sort: value, sortOption: sortOption, limit: 10, field: ''}))
+    // Dispatch action to fetch organizations with updated sorting order
+    dispatch(getOrganizations({ page: 1, searchText: ['name', searchText], sort: value, sortOption: sortOption, limit: 10, field: '' }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          console.log(res.payload.data.data, "payload data");
-
+          // Update state with fetched organizations and pagination data
           setPages(res.payload.data.paginationData.totalPages);
           setOrganizations(res.payload.data.data);
-          setLoading(false);
+          setLoading(false); // Update loading state
         }
       })
       .catch((error) => {
         console.log(error);
-        toast.error("There is some error while fetching organizations!");
+        toast.error("There is some error while fetching organizations!"); // Notify user of error
       });
   };
 
+  // Function to handle pagination change
   const onPaginationChange = (page) => {
-    console.log(page, "current page");
-    setCurrent(page);
-    dispatch(getOrganizations({page: page, searchText: ['name', searchText], sort: sortOrder, sortOption: sortOption, limit: 10, field:''}))
+    setCurrent(page); // Update current page number
+    // Dispatch action to fetch organizations for the selected page
+    dispatch(getOrganizations({ page: page, searchText: ['name', searchText], sort: sortOrder, sortOption: sortOption, limit: 10, field: '' }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
+          // Update state with fetched organizations and pagination data
           setPages(res.payload.data.paginationData.totalPages);
           setOrganizations(res.payload.data.data);
-          setLoading(false);
+          setLoading(false); // Update loading state
         }
       })
       .catch((error) => {
         console.log(error);
-        toast.error("There is some error while fetching organizations!");
+        toast.error("There is some error while fetching organizations!"); // Notify user of error
       });
   };
 
-  const handleFollowOrganization  = (id) => {
+
+
+const filterOrganization= (key) => { 
+ 
+  if (key === 'verified') {
+    dispatch(getOrganizations({ page: 1, searchText: ['name', searchText], sort: "", sortOption: "name", limit: 10, field: '',isVerified:"true" }))
+    .then((res) => {
+      // Process response if successful
+      if (res.meta.requestStatus === "fulfilled") {
+        // Update state with fetched organizations and pagination data
+        const pagesTemp = res.payload.data.paginationData.totalPages;
+        setPages(pagesTemp);
+        setOrganizations(res.payload.data.data);
+        setLoading(false); // Update loading state
+        console.log("messi")
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      toast.error("There is some error while fetching organizations!"); // Notify user of error
+    });
+  }
+
+  
+  else if (key === 'unverified') {
+    dispatch(getOrganizations({ page: 1, searchText: ['name', searchText], sort: "", sortOption: "name", limit: 10, field: '',isVerified:false }))
+    .then((res) => {
+      // Process response if successful
+      if (res.meta.requestStatus === "fulfilled") {
+        // Update state with fetched organizations and pagination data
+        const pagesTemp = res.payload.data.paginationData.totalPages;
+        setPages(pagesTemp);
+        setOrganizations(res.payload.data.data);
+        setLoading(false); // Update loading state
+        console.log("messi")
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      toast.error("There is some error while fetching organizations!"); // Notify user of error
+    });
+  }
+ 
+
+ }
+
+
+
+
+
+  // Function to handle organization follow action
+  const handleFollowOrganization = (id) => {
+    // Dispatch action to follow organization
     dispatch(followOrganization(id)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        toast.success("Organization followed successfully");
+        toast.success("Organization followed successfully"); // Notify user of success
         dispatch(getMe()).catch((error) => {
           console.log(error);
-          toast.error("Something is wrong updating the user!");
+          toast.error("Something is wrong updating the user!"); // Notify user of error
         })
       }
     }).catch((error) => {
-      console.log(error); 
-      toast.error("Something is wrong following organizations!");
+      console.log(error);
+      toast.error("Something is wrong following organizations!"); // Notify user of error
     })
   };
 
-  const handleUnfollowOrganization  = (id) => {
+  // Function to handle organization unfollow action
+  const handleUnfollowOrganization = (id) => {
+    // Dispatch action to unfollow organization
     dispatch(unfollowOrganization(id))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          toast.success("Organization unfollowed successfully");
+          toast.success("Organization unfollowed successfully"); // Notify user of success
           dispatch(getMe()).catch((error) => {
             console.log(error);
-            toast.error("Something is wrong updating the user!");
+            toast.error("Something is wrong updating the user!"); // Notify user of error
           });
         }
       })
       .catch((error) => {
         console.log(error);
-        toast.error("Something is wrong unfollowing organizations!");
+        toast.error("Something is wrong unfollowing organizations!"); // Notify user of error
       });
   }
 
+  // JSX to render the Organizations page
   return (
     <div className='flex flex-col gap-4 items-start my-4'>
+      {/* Title */}
       <h1 className='text-3xl font-bold justify-self-start'>Organizations</h1>
-      <div className='flex justify-start w-full gap-4'>
+      {/* Search input and sorting options */}
+      <div className='flex justify-start w-3/5 gap-4 '>
         <Search
           placeholder='Search Organizations'
           allowClear
           enterButton='Search'
-          size='large'
+          size='medium'
           onSearch={onSearch}
         />
-
+         {/* Filtering options */}
+         <span className='flex  items-center'>
+          <span className='w-full font-semibold text-blue-800'>Filter:</span>
+        
+          <Select
+            defaultValue=''
+            className='h-full'
+            style={{
+              width: 120,
+            }}
+            onChange={(value) => filterOrganization(value)}
+            options={[
+              {
+                value: "verified",
+                label: "Verified",
+              },
+              {
+                value: "unverified",
+                label: "Unverified",
+              },
+            ]}
+          />
+        </span>
+        {/* Sorting options */}
         <span className='flex gap-2 items-center'>
-          <span className='w-full'>Sort by:</span>
+          <span className='w-full font-semibold text-blue-800'>Sort by:</span>
           <Select
             defaultValue='name'
             className='h-full'
@@ -198,7 +309,6 @@ const OrganizationsPage = () => {
             onChange={onSortOptionChange}
             options={sortOptions}
           />
-
           <Select
             defaultValue=''
             className='h-full'
@@ -219,75 +329,123 @@ const OrganizationsPage = () => {
           />
         </span>
       </div>
-
-      <div className='flex flex-wrap gap-8'>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          organizations.map((organization, index) => (
+      {/* Rendering organizations based on the active tab */}
+      {activeTabKey === "All" && (
+        <div className='flex flex-wrap gap-8'>
+          {/* Display loading component if data is loading */}
+          {isLoading ? (
+            <Loading />
+          ) : (
+            // Render organization cards
             <Card
-              style={{
-                width: 300,
-                marginTop: 16,
-              }}
-              key={index}
-              loading={loading}>
-              <div className='flex gap-2'>
-                <Link to={`${organization._id}`}>
-                  <img
-                    className='w-12 h-12 rounded-full cursor-pointer'
-                    src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
-                    alt=''
-                  />
-                </Link>
-                <div className='flex flex-col items-start justify-center'>
-                  <div className='flex gap-2 items-center'>
-                    <Link
-                      to={`${organization._id}`}
-                      className='text-lg font-semibold cursor-pointer'>
-                      {organization.name}
-                    </Link>
-                    {organization.isVerified && (
-                      <Icon
-                        className='text-blue-500'
-                        icon='mdi:verified'
-                      />
-                    )}
-                  </div>
-                  <p className='text-sm text-gray-500 line-clamp-2 text-left'>
-                    {organization.description}
-                  </p>
-                </div>
+              style={{ width: "100%" }}
+              tabList={tabListNoTitle}
+              activeTabKey={activeTabKey}
+              onTabChange={onTabChange}
+              tabProps={{ size: "middle" }}
+            >
+              {/* Grid layout for organization cards */}
+              <div className='grid grid-cols-4 gap-4'>
+                {organizations.map((organization, index) => (
+                  <Card
+                    style={{
+                      width: 300,
+                      // marginTop: 16,
+                    }}
+                    className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200"
+                    key={index}
+                    loading={loading}>
+                    {/* Organization details */}
+                    <div className='flex gap-2'>
+                      <Link to={`${organization._id}`}>
+                        <img
+                          className='w-12 h-12 rounded-full cursor-pointer'
+                          src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
+                          alt=''
+                        />
+                      </Link>
+                      <div className='flex flex-col items-start justify-center'>
+                        <div className='flex gap-2 items-center'>
+                          <Link
+                            to={`${organization._id}`}
+                            className='text-lg font-semibold cursor-pointer'>
+                            {organization.name}
+                          </Link>
+                          {/* Render verified icon if organization is verified */}
+                          {organization.isVerified && (
+                            <Icon
+                              className='text-blue-500'
+                              icon='mdi:verified'
+                            />
+                          )}
+                        </div>
+                        <p className='text-sm text-gray-500 line-clamp-2 text-left'>
+                          {organization.description}
+                        </p>
+                      </div>
+                    </div>
+                    {/* Organization address and follow/unfollow button */}
+                    <div className='flex justify-between m-2'>
+                      <span className='text-sm italic text-gray-600'>
+                        {organization.address}
+                      </span>
+                      {/* Render follow/unfollow button based on user's interaction */}
+                      {user.organizationsFollowed.includes(organization._id) ? (
+                        <div
+                          onClick={() => handleUnfollowOrganization(organization._id)}
+                          className='flex justify-end items-center cursor-pointer gap-1 text-gray-500'>
+                          <Icon icon='mdi:tick' /> Following
+                        </div>
+                      ) : (
+                        <div
+                          onClick={() => handleFollowOrganization(organization._id)}
+                          className='flex justify-end items-center cursor-pointer gap-1 text-blue-600 font-semibold'>
+                          <Icon icon='material-symbols:add' />
+                          Follow
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                ))}
               </div>
-              <div className='flex justify-between my-2'>
-                <span className='text-sm italic text-gray-500'>
-                  {organization.address}
-                </span>
-                {user.organizationsFollowed.includes(organization._id) ? (
-                  <div
-                    onClick={() => handleUnfollowOrganization(organization._id)}
-                    className='flex justify-end items-center cursor-pointer gap-1 text-gray-500'>
-                    <Icon icon='mdi:tick' /> Following
-                  </div>
-                ) : (
-                  <div
-                    onClick={() => handleFollowOrganization(organization._id)}
-                    className='flex justify-end items-center cursor-pointer gap-1 text-primary-500'>
-                    <Icon icon='material-symbols:add' />
-                    Follow
-                  </div>
-                )}
-              </div>
+              {/* Pagination component */}
+              <Pagination
+                className="mt-8"
+                current={current}
+                total={pages * 10}
+                onChange={onPaginationChange}
+              />
             </Card>
-          ))
-        )}
-      </div>
-      <Pagination
-        current={current}
-        total={pages*10}
-        onChange={onPaginationChange}
-      />
+          )}
+        </div>
+      )}
+      {/* Placeholder for Featured organizations */}
+      {activeTabKey === "Featured" && (
+        <Card
+          style={{ width: "100%" }}
+          tabList={tabListNoTitle}
+          activeTabKey={activeTabKey}
+          onTabChange={onTabChange}
+          tabProps={{ size: "middle" }}
+        >
+          Featured
+        </Card>
+      )}
+      {/* Placeholder for Following organizations */}
+      {activeTabKey === "Following" && (
+        <Card
+          style={{ width: "100%" }}
+          tabList={tabListNoTitle}
+          activeTabKey={activeTabKey}
+          onTabChange={onTabChange}
+          tabProps={{ size: "middle" }}
+        >
+          Following
+        </Card>
+      )}
     </div>
   );
 };
+
+// Exporting the component
 export default OrganizationsPage;

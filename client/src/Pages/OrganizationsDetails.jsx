@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { Card, Divider } from "antd";
 import { Icon } from "@iconify/react";
 import Button from "../Components/Button";
+import { Link } from "react-router-dom";
 
 const OrganizationsDetails = () => {
   const { "*": id } = useParams();
@@ -30,7 +31,12 @@ const OrganizationsDetails = () => {
   return (
     <div>
       <div className='my-4 bg-white rounded h-full flex'>
+      <Link to='/dashboard/organizations' className="p-4">
+        <Icon icon="fluent-emoji-high-contrast:left-arrow"  className="text-3xl text-primary-500" />
+            
+            </Link>
         <div className='flex gap-2 items-center w-[70%] my-0'>
+          
           <img
             className='w-1/2 rounded-full cursor-pointer'
             src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
