@@ -16,7 +16,15 @@ class APIFeatures {
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
         queryStr =JSON.parse(queryStr);
        for(let i in queryStr){
-        queryStr[i] = new RegExp([queryStr[i]],"i");
+        // code to be removed
+        // queryStr[i] = new RegExp([queryStr[i]],"i");        
+            // Convert boolean strings to actual boolean values
+            if (queryStr[i] === "true" || queryStr[i] === "false") {
+                queryStr[i] = JSON.parse(queryStr[i]);
+            } else {
+                // Convert other string values to case-insensitive regular expressions
+                queryStr[i] = new RegExp(queryStr[i], "i");
+            }
        }
        console.log(queryStr);
         this.query = this.query.find((queryStr))
@@ -51,15 +59,32 @@ class APIFeatures {
         return this
     }
     populate() {
-        let questionPopulated = [
+        let populated = [
             { path: "questions",
-                options: {strictPopulate: false}
-        },
-            // { path:"invigilatorID"}
+            options: {strictPopulate: false}
+            },{ path:"invigilatorID",
+            options: {strictPopulate: false}
+            },{ path: "questions",
+            options: {strictPopulate: false}
+            },{ path: "adminUser",
+            options: {strictPopulate: false}
+            },{ path: "examiners.user",
+            options: {strictPopulate: false}
+            },{ path: "questionID",
+            options: {strictPopulate: false}
+            },{ path: "adminOf",
+            options: {strictPopulate: false}
+            },{ path: "organizationsFollowed",
+            options: {strictPopulate: false}
+            },{ path: "follower",
+            options: {strictPopulate: false}
+            },{ path: "organization",
+            options: {strictPopulate: false}
+            }
         ]
         // if (this.queryString.fields) {
         //     const result = this.queryString.fields.split(',');
-        //     rockPopulateObj = questionPopulated.filter((value) => {
+        //     rockPopulateObj = populated.filter((value) => {
         //         if (result.includes(`${value.path.split(".")[0]}`)) {
         //             return value
         //         }
@@ -67,7 +92,7 @@ class APIFeatures {
         // }
 
         this.query = this.query.populate(
-            questionPopulated,
+            populated,
         )
         return this;
     }
