@@ -5,6 +5,10 @@ const QuestionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  questionChoice: [{
+    type: String,
+    required: true,
+  }],
   answerText: {
     type: String,
     required: true
@@ -14,10 +18,10 @@ const QuestionSchema = new mongoose.Schema({
     required: true,
     enum: ["Multiple Choice", "True/False", "Short Answer", "Essay"],
   },
-  tag: {
+  tag:[{
     type: String,
     trim: true,
-  },
+  }],
   flag: {
     type: Boolean,
     default: false,
