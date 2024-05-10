@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const ExamSchema = new mongoose.Schema({
+
   examName: {
     type: String,
     required: true,
@@ -32,9 +33,13 @@ const ExamSchema = new mongoose.Schema({
     type: String,
     trim: true
   }],
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   invigilatorID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'User'
   },
   questions: [{
     type: mongoose.Schema.Types.ObjectId,
