@@ -1,22 +1,6 @@
 const {default: Together} = require('together-ai');
 const { createParser} = require('eventsource-parser');
 
-
-const onParse = (event) => {
-  if (event.type === 'event') {
-    const data = event.data;
-    if (data === '[DONE]') {
-      return;
-    }
-    try {
-      const text = JSON.parse(data).choices[0].text ?? '';
-      console.log({ text });
-      // setLlmResponse((prev) => prev + text);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-};
 class TogetherManager {
     constructor(apiKey, maxTokens = 10, streamTokens = false) {
 
@@ -30,6 +14,7 @@ class TogetherManager {
       this.top_k = 50,
       this.top_p = 0.7,
       this.repetition_penalty = 1
+      this.response = ""
     }
   
     async performInference(prompt) {
@@ -51,7 +36,7 @@ class TogetherManager {
         
         if (this.streamTokens) {
           const reader = result.getReader();
-          const parser = createParser(onParse);
+          const parser = createParser(this.onParse);
           let output = '';
           while (true) {
             const { done, value } = await reader.read();
@@ -61,9 +46,13 @@ class TogetherManager {
             // console.log(typeof(JSON.parse(nesw TextDecoder().decode(value).replaceAll('\\', ''))))
 
             let chunkValue = (new TextDecoder().decode(value));
-            let chunk = parser.feed(chunkValue)?.text;
-            console.log(chunk)
-            output += " " + chunk
+            // console.log('chunkValue', chunkValue)
+            // let chunk = parser.feed(chunkValue);
+            let chunk = parser.feed(chunkValue);
+            // console.log('chunk',chunk)
+
+            // output += " " + chunkValue
+            output += " " + this.response
           }
           return output;
         } else {
@@ -75,6 +64,23 @@ class TogetherManager {
         return null;
       }
     }
+
+    onParse = (event) => {
+      if (event.type === 'event') {
+        const data = event.data;
+        if (data === '[DONE]') {
+          return;
+        }
+        try {
+          const text = JSON.parse(data).choices[0].text ?? '';
+          console.log({ text });
+          this.response += text
+          // setLlmResponse((prev) => prev + text);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    };
   
     updateModel(model) {
       this.model = model;

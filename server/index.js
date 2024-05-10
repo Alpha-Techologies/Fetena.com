@@ -3,7 +3,6 @@
 // const cors = require('cors')
 
 // const db = require('./db')
-// const movieRouter = require('./routes/movie-router')
 
 // const app = express()
 const app = require("./app");
