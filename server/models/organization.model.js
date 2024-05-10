@@ -20,14 +20,22 @@ const OrganizationSchema = new mongoose.Schema({
   website: String,
   phone: Number,
   email: String,
+  logo: String,
   adminUser: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
   examiners: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      status: {
+        type: String,
+        enum: ["active", "inactive", "pending"],
+        default: "pending",
+      },
     },
   ],
 });

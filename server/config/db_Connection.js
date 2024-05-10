@@ -12,7 +12,7 @@ mongoose.connect("mongodb://0.0.0.0:27017/exam-management?retryWrites=true", {
   // useNewUrlParser: true,
   // useCreateIndex: true,
   // useFindAndModify: false,
-  useUnifiedTopology: true, //To use the new Server Discover and Monitoring engine
+  // useUnifiedTopology: true, //To use the new Server Discover and Monitoring engine
 });
 
 mongoose.set("debug", function (collectionName, methodName, ...methodArgs) {
