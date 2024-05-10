@@ -16,7 +16,16 @@ class APIFeatures {
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
         queryStr =JSON.parse(queryStr);
        for(let i in queryStr){
-        queryStr[i] = new RegExp([queryStr[i]],"i");
+        // code to be removed
+        // queryStr[i] = new RegExp([queryStr[i]],"i");
+
+                // Convert boolean strings to actual boolean values
+            if (queryStr[i] === "true" || queryStr[i] === "false") {
+                queryStr[i] = JSON.parse(queryStr[i]);
+            } else {
+                // Convert other string values to case-insensitive regular expressions
+                queryStr[i] = new RegExp(queryStr[i], "i");
+            }
        }
        console.log(queryStr);
         this.query = this.query.find((queryStr))
