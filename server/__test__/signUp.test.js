@@ -81,7 +81,7 @@ describe('signUp Controller', () => {
   it('should handle invalid file types', async () => {
     const req = {
       files: {
-        profilePhoto: { mimetype: 'application/pdf' }, // Invalid profile photo
+        profilePhoto: { mimetype: 'text/plain' }, // Invalid profile photo
         idPhoto: { mimetype: 'text/plain' } // Invalid ID photo
       },
       body: {
