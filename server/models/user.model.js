@@ -298,6 +298,6 @@ user.virtual("fullName").get(function () {
   return this.firstName + " " + this.lastName;
 });
 
-const User = new mongoose.model("user", user);
+const User = new mongoose.model("User", user);
 
 module.exports = User;
