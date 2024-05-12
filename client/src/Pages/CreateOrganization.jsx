@@ -2,8 +2,11 @@ import { Button, Form, Input, Radio, Tag } from "antd";
 import { createOrganization } from "../Redux/features/dataActions";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CreateOrganization = () => {
+  const navigate = useNavigate();
+
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const initialValues = {
@@ -21,6 +24,9 @@ const CreateOrganization = () => {
         if (res.meta.requestStatus === "fulfilled") {
           form.resetFields();
           toast.success("Organization created successfully");
+          navigate('/dashboard/organizations'); // Redirect here
+
+
         } else {
           toast.error(res.payload.message);
         }
