@@ -64,6 +64,26 @@ export const getOrganizations = createAsyncThunk(
     }
 )
 
+
+// Thunk action creator for fetching organizations
+export const getFilteredOrganizations = createAsyncThunk(
+    "data/getOrganizations", // Action type
+    async ({page, searchText, sort, sortOption, limit, field,isVerified}, { rejectWithValue }) => { // Async function to fetch organizations
+        try {
+            // Constructing the URL with query parameters
+            const string = `${url}/organizations?page=${page}&${searchText[0]}=${searchText[1]}&sort=${sort}${sortOption}`;
+            // Making a GET request to fetch organizations
+            const { data } = await axios.get(`${url}/organizations?page=${page}&${searchText[0]}=${searchText[1]}&sort=${sort}${sortOption}&limit=${limit}&fields=${field}&isVerified=${isVerified}`);
+            console.log(string, "string");
+            return data; // Returning fetched organizations data if successful
+        } catch (error) {
+            return rejectWithValue(error.response.data); // Handling errors and rejecting with error message
+        }
+    }
+)
+
+
+
 // Thunk action creator for following an organization
 export const followOrganization = createAsyncThunk(
     "data/followOrganization", // Action type
