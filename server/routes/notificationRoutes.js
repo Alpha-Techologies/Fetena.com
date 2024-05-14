@@ -13,7 +13,7 @@ const { protect } = require("../controller/auth");
 
 notificationRouter
   .route("/")
-  .get(protect, addUserToBody, getNotification)
+  .get(protect, addOptionToBody, getNotification)
   .post(protect, addUserToBody, createNotification);
 
 notificationRouter
