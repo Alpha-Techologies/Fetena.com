@@ -22,7 +22,10 @@ const DashboardScreen = () => {
   const [workspaceDropdownItems, setWorkspaceDropdownItems] = useState([
     
   ]);
+  const [currentWorkspace, setCurrentWorkspace] = useState('personal');
   const { user } = useSelector((state) => state.auth);
+  const [userRole, setUserRole] = useState('examinee');
+  const [organization, setOrganization] = useState({});
 
   
 
@@ -37,7 +40,8 @@ const DashboardScreen = () => {
       type,
     };
   }
-  const sidebarItems = [
+
+  const examineeSidebarItems = [
     getItem(
       <Link to=''>Dashboard</Link>,
       "1",
@@ -97,11 +101,100 @@ const DashboardScreen = () => {
     ),
   ];
 
-  
+  const examinerSidebarItems = [
+  ]
+
+  const orgAdminSidebarItems = [
+    getItem(
+      <Link to=''>Dashboard</Link>,
+      "1",
+      <Icon
+        className='w-5 h-5'
+        icon='akar-icons:dashboard'
+      />
+    ),
+    getItem(
+      <Link to='exams'>Exams</Link>,
+      "2",
+      <Icon
+        className='w-5 h-5'
+        icon='healthicons:i-exam-multiple-choice-outline'
+      />
+    ),
+    getItem(
+      <Link to='exams'>Activity Log</Link>,
+      "3",
+      <Icon
+        className='w-4 h-4'
+        icon='octicon:log-24'
+      />
+    ),
+    getItem(
+      <Link to='results'>Staff</Link>,
+      "4",
+      <Icon
+        className='w-5 h-5'
+        icon='fluent:people-team-16-regular'
+      />
+    ),
+    getItem(
+      <Link to='certifications'>Settings</Link>,
+      "5",
+      <Icon
+        className='w-5 h-5'
+        icon='uil:setting'
+      />
+    ),
+    { type: "divider" },
+    getItem(
+      <Link to='trainingVideos'>Training Videos</Link>,
+      "6",
+      <Icon
+        className='w-5 h-5'
+        icon='healthicons:i-training-class-outline'
+      />
+    ),
+    getItem(
+      <Link to='support'>Support</Link>,
+      "7",
+      <Icon
+        className='w-5 h-5'
+        icon='material-symbols:contact-support-outline'
+      />
+    ),
+  ];
+
+  const changeWorkspace = (workspace) => {
+    if (workspace === 'personal') {
+      setUserRole('examinee');
+      setCurrentWorkspace(workspace);
+      return;
+    }
+    setCurrentWorkspace(workspace);
+    console.log(currentWorkspace);
+    dispatch(getOneOrganization({id: workspace, field: ''}))
+    .then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        console.log(res);
+        setOrganization(res.payload.data.data[0]);
+        if (res.payload.data.data[0].adminUser._id === user._id) {
+          setUserRole('orgAdmin');
+        } else {
+          setUserRole('examiner');
+        }
+      } else {
+        toast.error('There is an error while switching workspace!');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      toast.error("There is some error in the server!");
+    });
+  }
 
   const setupWorkspaceItems = () => {
     setWorkspaceDropdownItems([{
-      label: <Link>Personal Workspace</Link>,
+      label: <span onClick={() => changeWorkspace('personal')}>Personal Workspace</span>,
       key: "1",
       icon: <Icon icon='ep:user' />,
     },
@@ -116,39 +209,25 @@ const DashboardScreen = () => {
       type: "divider",
     }])
     let itemsSoFar = workspaceDropdownItems.length + 1;
-    console.log(itemsSoFar, 'initial items so far');
 
     // const userOrganizations = user.adminOf
 
     for (let i = 0; i < user.adminOf.length; i++) {
-        dispatch(getOneOrganization({id: user.adminOf[i], field: 'name'}))
-          .then((res) => {
-            if (res.meta.requestStatus === "fulfilled") {
-              console.log(res.payload);
-              setWorkspaceDropdownItems((prevItems) => [
-                ...prevItems, {
-                  label: (
-                    <Link
-                      to={`organizations/${res.payload.data.data[0]._id}`}>
-                      {res.payload.data.data[0].name}
-                    </Link>
-                  ),
-                  key: ++itemsSoFar,
-                  icon: <Icon icon='grommet-icons:organization' />,
-                }
-              ])
-              console.log(itemsSoFar);
-            } else {
-              toast.error(res.payload.message);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            toast.error("Something is wrong");
-          });
+      setWorkspaceDropdownItems((prevItems) => [
+        ...prevItems,
+        {
+          label: (
+            <span onClick={() => changeWorkspace(user.adminOf[i]._id)}>
+              {user.adminOf[i].name}
+            </span>
+          ),
+          key: ++itemsSoFar,
+          icon: <Icon icon='grommet-icons:organization' />,
+        },
+      ]);
+        
     }
 
-    console.log(itemsSoFar);
 
     const joinOrgItem = {
       label: (
@@ -231,7 +310,8 @@ const DashboardScreen = () => {
           theme='light'
           defaultSelectedKeys={["1"]}
           mode='inline'
-          items={sidebarItems}
+          items={userRole === 'examinee' ? examineeSidebarItems : userRole === 'orgAdmin' ? orgAdminSidebarItems : examinerSidebarItems      
+          }
         />
       </Sider>
       <Layout>
@@ -252,10 +332,10 @@ const DashboardScreen = () => {
                 items: workspaceDropdownItems,
               }}
               trigger={["click"]}>
-              <div className='text-primary-500 border border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md flex items-center justify-center cursor-pointer gap-2'>
+              <div className='text-primary-500 border w-full border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md flex items-center justify-center cursor-pointer gap-2'>
                 <div className='flex items-center justify-center gap-2'>
                   <Icon icon='octicon:organization-24' />
-                  Personal Workspace
+                  {currentWorkspace === 'personal' ? 'Personal Workspace' : organization.name}
                 </div>
                 <Icon icon='gridicons:dropdown' />
               </div>
