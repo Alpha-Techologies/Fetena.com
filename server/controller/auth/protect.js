@@ -21,7 +21,11 @@ exports.protect = catchAsync(async (req, res, next) => {
       refreshToken: payload.refreshToken,
     });
 
-    if (!existingToken || !existingToken?.isValid) {
+    if (
+      !existingToken ||
+      !existingToken?.isValid ||
+      !isTokenValid(existingToken?.refreshToken)
+    ) {
       return next(
         new APIError(
           "Invalid token or session expired",

@@ -6,10 +6,18 @@ const {
   updateNotification,
   addUserToBody,
   createNotification,
+  addOptionToBody,
+  authorizeNotificationUpdate,
 } = require("../controller/notification/index");
+const { protect } = require("../controller/auth");
 
-notificationRouter.get("/", protect, getNotification);
-notificationRouter.patch("/:id", protect, updateNotification);
-notificationRouter.post("/", protct, addUserToBody, createNotification);
+notificationRouter
+  .route("/")
+  .get(protect, addUserToBody, getNotification)
+  .post(protect, addUserToBody, createNotification);
+
+notificationRouter
+  .route("/:id")
+  .patch(protect, authorizeNotificationUpdate, updateNotification);
 
 module.exports = notificationRouter;

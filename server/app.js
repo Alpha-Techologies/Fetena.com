@@ -10,6 +10,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean"); // remove the html tags that are needed
 const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
+const socketIo = require("socket.io");
 
 require("dotenv").config({
   path: "./config.env",
@@ -75,8 +76,23 @@ const examRouter = require("./routes/examRoutes");
 const questionRouter = require("./routes/questionRoutes");
 const organizationRouter = require("./routes/organizationRoutes");
 const notificationRouter = require("./routes/notificationRoutes");
-// const answerRouter = require("./routes/answerRoutes");
+const initSocket = require("./sockets");
+// socket.io
+const server = require("http").createServer(app);
+// specifiy the port for connection for the socket
 
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  },
+});
+
+server.listen(3000);
+//intialize the socket
+initSocket(io);
+
+// // const answerRouter = require("./routes/answerRoutes");
 app.use("/api/users", userRouter);
 app.use("/api/exams", examRouter);
 app.use("/api/questions", questionRouter);
