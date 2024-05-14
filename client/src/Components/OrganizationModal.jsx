@@ -33,7 +33,6 @@ const OrganizationModal = ({ orgModal, setOrgModal }) => {
               label: org.name,
             });
           }
-          console.log(searchOptTemp, "searchOptTemp");
           setSearchOptions(searchOptTemp);
         }
       })

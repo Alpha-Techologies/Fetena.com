@@ -9,7 +9,7 @@ import {
   Select,
 } from "antd"; // Ant Design UI components
 import { useState, useEffect } from "react"; // React hooks for managing state and side effects
-import { getOrganizations, followOrganization, unfollowOrganization } from "../Redux/features/dataActions"; // Redux actions for fetching organizations and managing organization follow/unfollow
+import { getOrganizations, followOrganization, unfollowOrganization,getFilteredOrganizations } from "../Redux/features/dataActions"; // Redux actions for fetching organizations and managing organization follow/unfollow
 import { useDispatch, useSelector } from "react-redux"; // Redux hooks for dispatching actions and accessing state
 import { toast } from "react-toastify"; // Library for displaying notifications
 import { Icon } from "@iconify/react"; // Icon component
@@ -176,50 +176,38 @@ const OrganizationsPage = () => {
 
 
 
-const filterOrganization= (key) => { 
- 
-  if (key === 'verified') {
-    dispatch(getOrganizations({ page: 1, searchText: ['name', searchText], sort: "", sortOption: "name", limit: 10, field: '',isVerified:"true" }))
-    .then((res) => {
-      // Process response if successful
-      if (res.meta.requestStatus === "fulfilled") {
-        // Update state with fetched organizations and pagination data
-        const pagesTemp = res.payload.data.paginationData.totalPages;
-        setPages(pagesTemp);
-        setOrganizations(res.payload.data.data);
-        setLoading(false); // Update loading state
-        console.log("messi")
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      toast.error("There is some error while fetching organizations!"); // Notify user of error
-    });
+  const filterOrganization = (key) => {
+    if (key === 'verified') {
+      dispatch(getFilteredOrganizations({ page: 1, searchText: ['name', searchText], sort: "", sortOption: "name", limit: 10, field: '', isVerified: true }))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            const pagesTemp = res.payload.data.paginationData.totalPages;
+            setPages(pagesTemp);
+            setOrganizations(res.payload.data.data);
+            setLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("There is some error while fetching organizations!");
+        });
+    } else if (key === 'unverified') {
+      dispatch(getFilteredOrganizations({ page: 1, searchText: ['name', searchText], sort: "", sortOption: "name", limit: 10, field: '', isVerified: false }))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            const pagesTemp = res.payload.data.paginationData.totalPages;
+            setPages(pagesTemp);
+            setOrganizations(res.payload.data.data);
+            setLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("There is some error while fetching organizations!");
+        });
+    }
   }
-
   
-  else if (key === 'unverified') {
-    dispatch(getOrganizations({ page: 1, searchText: ['name', searchText], sort: "", sortOption: "name", limit: 10, field: '',isVerified:false }))
-    .then((res) => {
-      // Process response if successful
-      if (res.meta.requestStatus === "fulfilled") {
-        // Update state with fetched organizations and pagination data
-        const pagesTemp = res.payload.data.paginationData.totalPages;
-        setPages(pagesTemp);
-        setOrganizations(res.payload.data.data);
-        setLoading(false); // Update loading state
-        console.log("messi")
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      toast.error("There is some error while fetching organizations!"); // Notify user of error
-    });
-  }
- 
-
- }
-
 
 
 
@@ -332,7 +320,6 @@ const filterOrganization= (key) => {
       {/* Rendering organizations based on the active tab */}
       {activeTabKey === "All" && (
         <div className='flex flex-wrap gap-8'>
-          {/* Display loading component if data is loading */}
           {isLoading ? (
             <Loading />
           ) : (
@@ -344,70 +331,75 @@ const filterOrganization= (key) => {
               onTabChange={onTabChange}
               tabProps={{ size: "middle" }}
             >
-              {/* Grid layout for organization cards */}
-              <div className='grid grid-cols-4 gap-4'>
-                {organizations.map((organization, index) => (
-                  <Card
-                    style={{
-                      width: 300,
-                      // marginTop: 16,
-                    }}
-                    className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200"
-                    key={index}
-                    loading={loading}>
-                    {/* Organization details */}
-                    <div className='flex gap-2'>
-                      <Link to={`${organization._id}`}>
-                        <img
-                          className='w-12 h-12 rounded-full cursor-pointer'
-                          src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
-                          alt=''
-                        />
-                      </Link>
-                      <div className='flex flex-col items-start justify-center'>
-                        <div className='flex gap-2 items-center'>
-                          <Link
-                            to={`${organization._id}`}
-                            className='text-lg font-semibold cursor-pointer'>
-                            {organization.name}
-                          </Link>
-                          {/* Render verified icon if organization is verified */}
-                          {organization.isVerified && (
-                            <Icon
-                              className='text-blue-500'
-                              icon='mdi:verified'
-                            />
-                          )}
-                        </div>
-                        <p className='text-sm text-gray-500 line-clamp-2 text-left'>
-                          {organization.description}
-                        </p>
-                      </div>
-                    </div>
-                    {/* Organization address and follow/unfollow button */}
-                    <div className='flex justify-between m-2'>
-                      <span className='text-sm italic text-gray-600'>
-                        {organization.address}
-                      </span>
-                      {/* Render follow/unfollow button based on user's interaction */}
-                      {user.organizationsFollowed.includes(organization._id) ? (
-                        <div
-                          onClick={() => handleUnfollowOrganization(organization._id)}
-                          className='flex justify-end items-center cursor-pointer gap-1 text-gray-500'>
-                          <Icon icon='mdi:tick' /> Following
-                        </div>
-                      ) : (
-                        <div
-                          onClick={() => handleFollowOrganization(organization._id)}
-                          className='flex justify-end items-center cursor-pointer gap-1 text-blue-600 font-semibold'>
-                          <Icon icon='material-symbols:add' />
-                          Follow
-                        </div>
-                      )}
-                    </div>
-                  </Card>
-                ))}
-              </div>
+   {organizations.length > 0 ? (
+  <div className='grid grid-cols-4 gap-4 '>
+    {organizations.map((organization, index) => (
+      <Card
+        style={{ width: 300 }}
+        className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200"
+        key={index}
+        loading={loading}
+      >
+        {/* Organization details */}
+        <div className='flex gap-2'>
+          <Link to={`${organization._id}`}>
+            <img
+              className='w-12 h-12 rounded-full cursor-pointer'
+              src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
+              alt=''
+            />
+          </Link>
+          <div className='flex flex-col items-start justify-center'>
+            <div className='flex gap-2 items-center'>
+              <Link
+                to={`${organization._id}`}
+                className='text-lg font-semibold cursor-pointer'
+              >
+                {organization.name}
+              </Link>
+              {/* Render verified icon if organization is verified */}
+              {organization.isVerified && (
+                <Icon
+                  className='text-blue-500'
+                  icon='mdi:verified'
+                />
+              )}
+            </div>
+            <p className='text-sm text-gray-500 line-clamp-2 text-left'>
+              {organization.description}
+            </p>
+          </div>
+        </div>
+        {/* Organization address and follow/unfollow button */}
+        <div className='flex justify-between m-2'>
+          <span className='text-sm italic text-gray-600'>
+            {organization.address}
+          </span>
+          {/* Render follow/unfollow button based on user's interaction */}
+          {user.organizationsFollowed.includes(organization._id) ? (
+            <div
+              onClick={() => handleUnfollowOrganization(organization._id)}
+              className='flex justify-end items-center cursor-pointer gap-1 text-gray-500'>
+              <Icon icon='mdi:tick' /> Following
+            </div>
+          ) : (
+            <div
+              onClick={() => handleFollowOrganization(organization._id)}
+              className='flex justify-end items-center cursor-pointer gap-1 text-blue-600 font-semibold'>
+              <Icon icon='material-symbols:add' />
+              Follow
+            </div>
+          )}
+        </div>
+      </Card>
+    ))}
+  </div>
+) : (
+  <div className="w-full text-center">No data</div>
+)}
+
+
+            
               {/* Pagination component */}
               <Pagination
                 className="mt-8"

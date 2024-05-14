@@ -9,15 +9,20 @@ import { Outlet, Link } from "react-router-dom";
 import fetena_logo from "../../assets/fetena_logo.png";
 import { logoutUser } from "../../Redux/features/authActions";
 import Loading from "../../Components/Loading";
+import { getOneOrganization } from "../../Redux/features/dataActions";
+import { toast } from "react-toastify";
 const { Header, Content, Footer, Sider } = Layout;
 
 
 
 const DashboardScreen = () => {
+  const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
   const [orgModal, setOrgModal] = useState(false);
+  const [workspaceDropdownItems, setWorkspaceDropdownItems] = useState([
+    
+  ]);
   const { user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
 
   
 
@@ -92,8 +97,10 @@ const DashboardScreen = () => {
     ),
   ];
 
-  const workspaceDropdownItems = [
-    {
+  
+
+  const setupWorkspaceItems = () => {
+    setWorkspaceDropdownItems([{
       label: <Link>Personal Workspace</Link>,
       key: "1",
       icon: <Icon icon='ep:user' />,
@@ -107,23 +114,66 @@ const DashboardScreen = () => {
     },
     {
       type: "divider",
-    },
-    {
+    }])
+    let itemsSoFar = workspaceDropdownItems.length + 1;
+    console.log(itemsSoFar, 'initial items so far');
+
+    // const userOrganizations = user.adminOf
+
+    for (let i = 0; i < user.adminOf.length; i++) {
+        dispatch(getOneOrganization({id: user.adminOf[i], field: 'name'}))
+          .then((res) => {
+            if (res.meta.requestStatus === "fulfilled") {
+              console.log(res.payload);
+              setWorkspaceDropdownItems((prevItems) => [
+                ...prevItems, {
+                  label: (
+                    <Link
+                      to={`organizations/${res.payload.data.data[0]._id}`}>
+                      {res.payload.data.data[0].name}
+                    </Link>
+                  ),
+                  key: ++itemsSoFar,
+                  icon: <Icon icon='grommet-icons:organization' />,
+                }
+              ])
+              console.log(itemsSoFar);
+            } else {
+              toast.error(res.payload.message);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            toast.error("Something is wrong");
+          });
+    }
+
+    console.log(itemsSoFar);
+
+    const joinOrgItem = {
       label: (
         <span
           className='text-primary-500 cursor-pointer'
           onClick={() => {
-            setOrgModal(true)
+            setOrgModal(true);
             console.log(orgModal);
-          }}
-          >
+          }}>
           Join Organization
         </span>
       ),
-      key: "3",
-      icon: <Icon className="text-primary-500" icon='material-symbols:add' />,
-    },
-  ];
+      key: ++itemsSoFar,
+      icon: (
+        <Icon
+          className='text-primary-500'
+          icon='material-symbols:add'
+        />
+      ),
+    }
+
+    setWorkspaceDropdownItems((prevItems) => [
+      ...prevItems, joinOrgItem
+    ])
+  }
 
   const profileDropdownItems = [
     {
@@ -196,6 +246,8 @@ const DashboardScreen = () => {
           </h1>
           <div className='flex items-center justify-center gap-4'>
             <Dropdown
+              onClick={() => setupWorkspaceItems()}
+              overlayClassName="overflow-auto h-64"
               menu={{
                 items: workspaceDropdownItems,
               }}
