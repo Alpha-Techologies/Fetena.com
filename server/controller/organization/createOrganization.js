@@ -5,9 +5,26 @@ const catchAsync = require("../../utils/catchAsync");
 const factory = require("../handlerFactory");
 
 exports.createOrganization = catchAsync(async (req, res, next) => {
+
+  if (!req.files) {
+    return next(new APIError("There is no file", StatusCodes.BAD_REQUEST));
+  }
+
+  if (!req.body.data) {
+    return next(new APIError("There is no user data", StatusCodes.BAD_REQUEST));
+  }
+
+  const orgLogo = req.files.logo;
+  const parsedBody = JSON.parse(req.body.data);
+
   const userId = req.user.id;
 
-  const newOrganization = { adminUser: userId, ...req.body };
+  if (!orgLogo.mimetype.startsWith("image")) {
+    return next(
+      new APIError("Please upload a Proper Logo", StatusCodes.BAD_REQUEST)
+    );
+  }
+
 
   const doc = await Organization.create(newOrganization);
 
