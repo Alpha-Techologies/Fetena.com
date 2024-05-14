@@ -8,11 +8,11 @@ const { fileUpload } = require("../profile/fileUpload");
 
 exports.createOrganization = catchAsync(async (req, res, next) => {
   if (!req.files) {
-    return next(APIError("There is no file", StatusCodes.BAD_REQUEST));
+    return next(new APIError("There is no file", StatusCodes.BAD_REQUEST));
   }
 
   if (!req.body.data) {
-    return next(APIError("There is no user data", StatusCodes.BAD_REQUEST));
+    return next(new APIError("There is no user data", StatusCodes.BAD_REQUEST));
   }
 
   const orgLogo = req.files.logo;
@@ -22,7 +22,7 @@ exports.createOrganization = catchAsync(async (req, res, next) => {
 
   if (!orgLogo.mimetype.startsWith("image")) {
     return next(
-      APIError("Please upload a Proper Logo", StatusCodes.BAD_REQUEST)
+      new APIError("Please upload a Proper Logo", StatusCodes.BAD_REQUEST)
     );
   }
 
