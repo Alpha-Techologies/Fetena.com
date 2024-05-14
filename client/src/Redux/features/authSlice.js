@@ -6,7 +6,7 @@ import {
   forgotPassword,
   resetPassword,
   logoutUser,
-  getMe
+  getMe,
 } from "./authActions";
 
 const initialState = {
@@ -101,7 +101,9 @@ const authSlice = createSlice({
           email: action.payload.data.data[0].email,
           role: action.payload.data.data[0].role,
           profilePhoto: action.payload.data.data[0].profilePhoto,
-          _id: action.payload.data.data[0]._id
+          _id: action.payload.data.data[0]._id,
+          organizationsFollowed:
+            action.payload.data.data[0].organizationsFollowed,
         };
         state.error = null;
       })

@@ -8,7 +8,7 @@ exports.logout = catchAsync(async (req, res, next) => {
   //   httpOnly: true,
   // });
   await TokenModel.findOneAndDelete({ user: req.user._id });
-  
+
   res.cookie("accessToken", "logout", {
     httpOnly: true,
     expires: new Date(Date.now()),
@@ -20,5 +20,6 @@ exports.logout = catchAsync(async (req, res, next) => {
   // res.status(StatusCodes.OK).json({ msg: "user logged out!" });
   res.status(StatusCodes.OK).json({
     status: "success",
+    data: null,
   });
 });

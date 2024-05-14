@@ -50,7 +50,7 @@ router.param("filename", checkId);
 
 router.route("/backup").get(zip);
 
-// router.get("/", protect, getAllUsers);
+router.get("/", protect, getAllUsers);
 router.get("/me", protect, getMe, getUser);
 router.get("/logout", protect, logout);
 router.get("/myEdits", protect); //getMyEdits
@@ -64,6 +64,7 @@ router.patch("/updatePassword", protect, updatePassword);
 router.patch(
   "/updateMe",
   protect,
+  getMe,
   // filterUserUpdateFields("firstName", "lastName", "email", "phoneNumber"),
   updateMe
 );
