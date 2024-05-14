@@ -15,7 +15,7 @@ const OrganizationsDetails = () => {
   const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(getOneOrganization(id))
+    dispatch(getOneOrganization({id, field: ''}))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           const dataTemp = res.payload.data.data[0];
