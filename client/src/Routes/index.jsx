@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getMe } from "../Redux/features/authActions";
 
 // Screens
 import Home from "../Screens/LandingPageScreens/Home";
@@ -11,7 +11,6 @@ import RegistrationScreen from "../Screens/AuthScreens/RegistrationScreen";
 import LoginScreen from "../Screens/AuthScreens/LoginScreen";
 import ForgotPasswordScreen from "../Screens/AuthScreens/ForgotPasswordScreen";
 import OTPScreen from "../Screens/AuthScreens/OTPScreen";
-// import VerifyEmailScreen from "../Screens/AuthScreens/VerifyEmailScreen";
 import ResetPasswordScreen from "../Screens/AuthScreens/ResetPasswordScreen";
 import DashboardScreen from "../Screens/DashboardScreens/DashboardScreen";
 import ProtectedRoutes from "../Screens/ProtectedRoutes";
@@ -24,8 +23,25 @@ import ProfilePage from "../Pages/ProfilePage";
 import NotFoundPage from "../Pages/NotFoundPage";
 import ExamsPage from "../Pages/ExamsPage";
 import CreateExam from "../Pages/CreateExamPages/CreateExam";
+import OrganizationsPage from "../Pages/OrganizationsPage";
+import ResultsPage from "../Pages/ResultsPage";
+import CreateOrganization from "../Pages/CreateOrganization";
+import OrganizationsDetails from "../Pages/OrganizationsDetails";
+import ExamDetailPage from "../Pages/ExamDetailPage";
+import CertificationsPage from "../Pages/CertificationsPage";
+import TrainingVideosPage from "../Pages/TrainingVideosPage";
+import SupportPage from "../Pages/SupportPage";
 
 const AllRoutes = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getMe()).then((res) => {
+      console.log(res);
+    })
+  }, [dispatch]);
+
+
   const { isAuthenticated } = useSelector((state) => state.auth);
   return (
     <>
@@ -80,9 +96,43 @@ const AllRoutes = () => {
             path='exams'
             element={<ExamsPage />}
           />
+           <Route
+            path='exams/:id'
+            element={<ExamDetailPage />}
+          />
           <Route
             path='create-exam'
             element={<CreateExam />}
+          />
+          <Route
+            path='organizations'
+            element={<OrganizationsPage />}
+          />
+         
+          <Route
+            path='organizations/*'
+            element={<OrganizationsDetails />}
+          />
+          <Route
+            path='create-organization'
+            element={<CreateOrganization />}
+          />
+          <Route
+            path='results'
+            element={<ResultsPage />}
+          />
+          <Route
+            path='certifications'
+            element={<CertificationsPage />}
+          />
+           <Route
+            path='trainingVideos'
+            element={<TrainingVideosPage />}
+          />
+
+<Route
+            path='support'
+            element={<SupportPage />}
           />
           <Route
             path='*'

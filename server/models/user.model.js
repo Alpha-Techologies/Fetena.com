@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const { type } = require("os");
+const OrganizationFollower = require("./organizationFollower.model");
 
 const user = new mongoose.Schema(
   {
@@ -138,14 +140,22 @@ const user = new mongoose.Schema(
       type: String,
       default: undefined,
     },
-    adminOf: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Organization'
-    }],
-    organizationsFollowed: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Organization'
-    }]
+    isSystemAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    adminOf: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Organization",
+      },
+    ],
+    organizationsFollowed: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Organization",
+      },
+    ],
   },
   {
     toJSON: {
@@ -232,14 +242,54 @@ user.methods.createActivationToken = function () {
   return activationToken;
 };
 
-user.methods.followOrganization = function (id) {
-  this.organizationsFollowed = [id, ...this.organizationsFollowed];
+user.methods.unfollowOrganization = async function (id) {
+  this.organizationsFollowed = this.organizationsFollowed.filter(
+    (orgId) => orgId.toString() !== id
+  );
+
+  const organizationFollowed = await OrganizationFollower.findOne({
+    organization: id,
+  });
+
+  if (organizationFollowed) {
+    organizationFollowed.follower = organizationFollowed.follower.filter(
+      (follower) => follower.toString() !== this._id.toString()
+    );
+
+    await organizationFollowed.save();
+  }
+  this.save();
+  return this;
+};
+
+user.methods.followOrganization = async function (id) {
+  // if already followed return
+  if (this.organizationsFollowed.includes(id)) return this;
+
+  this.organizationsFollowed.push(id);
+
+  const organizationFollowed = await OrganizationFollower.findOne({
+    organization: id,
+  });
+
+
+  if (organizationFollowed) {
+    organizationFollowed.follower.push(this._id);
+    await organizationFollowed.save();
+  } else {
+    const newOrganizationFollower = new OrganizationFollower({
+      organization: id,
+      follower: [this._id],
+    });
+    await newOrganizationFollower.save();
+  }
+
   this.save();
   return this;
 };
 
 user.methods.addAsAdmin = function (id) {
-  this.adminOf = [id, ...this.adminOf];
+  this.adminOf.push(id);
   this.save();
   return this;
 };
@@ -248,6 +298,6 @@ user.virtual("fullName").get(function () {
   return this.firstName + " " + this.lastName;
 });
 
-const User = new mongoose.model("user", user);
+const User = new mongoose.model("User", user);
 
 module.exports = User;

@@ -1,6 +1,8 @@
-import { Card, Form, Input, Button, Select, InputNumber, Radio } from "antd";
+import { Card, Form, Input, Button, Select, InputNumber } from "antd";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import { Icon } from "@iconify/react";
 
 
 const tabListNoTitle = [
@@ -17,8 +19,16 @@ const tabListNoTitle = [
 const CreateExam = () => {
   const [activeTabKey, setActiveTabKey] = useState("Basic Info");
   const [basicInfoForm] = Form.useForm();
-  const [examQuestionTypes, setExamQuestionTypes] = useState([]); // New state to store selected question types
+  const [examQuestions, setExamQuestions] = useState([]);
+  const [Question, setQuestion] = useState({
+    questionNo: "",
+    question: "",
+    type: "",
+    options: null,
+    correctAnswer: false
 
+
+  }); 
 
   const handleChange = (key, changedValues) => {
     if (key === "Basic Info") {
@@ -27,43 +37,64 @@ const CreateExam = () => {
   };
 
 
-  // Function to handle change in the selected exam question type
-  const handleQuestionTypeChange = (value) => {
-    setExamQuestionTypes([...examQuestionTypes, value]); // Add the selected question type to the array
-    console.log(  )
-  };
-
-
   const onTabChange = (key) => {
-
-    basicInfoForm
-    .validateFields()
-    .then(() => {
-      // Basic Info form is valid, allow switching to Exam Questions tab
-      setActiveTabKey(key);
-    })
-    .catch((errorInfo) => {
-      // Basic Info form has errors, prevent tab switch and display toast notification
-      toast.error("Please complete all required fields in Basic Info");
-      setActiveTabKey("Basic Info"); // Prevent tab switch
-    });
-
-    
-  };
-
-  const handleSave = () => {
-    basicInfoForm
-      .validateFields()
-      .then(() => {
-        // Basic Info form is valid, allow switching to Exam Questions tab
-        setActiveTabKey("Exam Questions");
-      })
-      .catch((errorInfo) => {
-        // Basic Info form has errors, prevent tab switch and display toast notification
-        toast.error("Please complete all required fields in Basic Info");
-        setActiveTabKey("Basic Info"); // Prevent tab switch
+    if (activeTabKey === "Basic Info") {
+      basicInfoForm
+        .validateFields()
+        .then(() => {
+          // Basic Info form is valid, allow switching to Exam Questions tab
+          setActiveTabKey(key);
+        })
+        .catch((errorInfo) => {
+          // Basic Info form has errors, prevent tab switch and display toast notification
+          console.log(errorInfo);
+          toast.error("Please complete all required fields in Basic Info");
+        });
+    } else if (activeTabKey === "Exam Questions") {
+      // Save the current question to the examQuestions state
+      setExamQuestions([...examQuestions, Question]);
+      // Reset the Question state for the next question
+      setQuestion({
+        questionNo: "",
+        question: "",
+        type: "",
+        options: null,
+        correctAnswer: false,
       });
+      setActiveTabKey(key);
+    }
   };
+  
+  const handleSave = () => {
+    if (activeTabKey === "Basic Info") {
+      basicInfoForm
+        .validateFields()
+        .then(() => {
+          // Basic Info form is valid, allow switching to Exam Questions tab
+          setActiveTabKey("Exam Questions");
+        })
+        .catch((errorInfo) => {
+          // Basic Info form has errors, prevent tab switch and display toast notification
+          console.log(errorInfo);
+          toast.error("Please complete all required fields in Basic Info");
+        });
+    } else if (activeTabKey === "Exam Questions") {
+      // Save the current question to the examQuestions state
+      setExamQuestions([...examQuestions, Question]);
+      // Reset the Question state for the next question
+      setQuestion({
+        questionNo: "",
+        question: "",
+        type: "",
+        options: null,
+        correctAnswer: false,
+      });
+    }
+  };
+  
+
+
+
   
 // Define a function to render the form based on the selected exam question type
 const renderQuestionForm = (type, index) => {
@@ -93,7 +124,11 @@ const renderQuestionForm = (type, index) => {
 
   return (
     <div className="flex flex-col gap-4 my-4">
-      <div className="flex justify-between">
+          <div className="flex gap-4 items-center ">
+      <Link to='/dashboard/exams'>
+        <Icon icon="fluent-emoji-high-contrast:left-arrow"  className="text-2xl text-primary-500" />
+            
+            </Link>
         <h1 className="text-3xl font-bold">Create Exam</h1>
       </div>
       <div>
@@ -213,16 +248,16 @@ const renderQuestionForm = (type, index) => {
       {activeTabKey === "Exam Questions" && (
         <div>
           {/* Render the question forms */}
-          {examQuestionTypes.map((type, index) => renderQuestionForm(type, index))}
+          {examQuestions.map((type, index) => renderQuestionForm(type, index))}
 
           {/* Render the question choices section */}
-          <Card title="Question Choices">
+          {/* <Card title="Question Choices">
             <Radio.Group onChange={(e) => handleQuestionTypeChange(e.target.value)}>
               <Radio value="trueFalse">True/False Question</Radio>
               <Radio value="choose">Choose Question</Radio>
               <Radio value="fillBlank">Fill the Blank Question</Radio>
             </Radio.Group>
-          </Card>
+          </Card> */}
         </div>
       )}
     </div>
