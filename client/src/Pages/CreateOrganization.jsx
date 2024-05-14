@@ -1,4 +1,4 @@
-import { Button, Form, Input, Radio, Tag } from "antd";
+import { Button, Form, Input, Radio, Tag,Card } from "antd";
 import { createOrganization } from "../Redux/features/dataActions";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -42,6 +42,11 @@ const CreateOrganization = () => {
       <h1 className='text-3xl font-bold justify-self-start'>
         Create Organization
       </h1>
+      <Card
+              style={{ width: "60%" }}
+              className="px-4"
+             
+            >
       <Form
         className='w-full'
         form={form}
@@ -93,6 +98,7 @@ const CreateOrganization = () => {
           </Button>
         </Form.Item>
       </Form>
+      </Card>
     </div>
   );
 };
