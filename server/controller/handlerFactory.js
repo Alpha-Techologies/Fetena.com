@@ -11,7 +11,6 @@ require("events").defaultMaxListeners = 70;
 
 exports.getOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    console.log(req.params, "does not give");
     let query = new APIFeatures(Model.findById(req.params.id), req.query)
       .filter()
       .field()
@@ -41,7 +40,9 @@ exports.getAll = (Model) =>
 
     const page = req.query.page * 1 || 1;
     const limit = req.query.limit * 1 || 10;
-    let count = new APIFeatures(Model.find({}), req.query).filter().count();
+    let count = new APIFeatures(Model.find(req.options || {}), req.query)
+      .filter()
+      .count();
     let total = await count.query;
 
     let query = new APIFeatures(Model.find({}), req.query)
