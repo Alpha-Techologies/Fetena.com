@@ -15,6 +15,7 @@
     "@reduxjs/toolkit": "^2.2.3",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "antd": "^5.16.2",
+    "antd-img-crop": "^4.22.0",
     "axios": "^1.6.8",
     "hamburger-react": "^2.5.0",
     "otp-input-react": "^0.3.0",
