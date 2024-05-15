@@ -23,8 +23,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
     if (
       !existingToken ||
-      !existingToken?.isValid ||
-      !isTokenValid(existingToken?.refreshToken)
+      !existingToken?.isValid
     ) {
       return next(
         new APIError(

@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
-import { Avatar, Layout, Menu, Badge, Dropdown, FloatButton, Modal } from "antd";
+import {
+  Avatar,
+  Layout,
+  Menu,
+  Badge,
+  Dropdown,
+  FloatButton,
+  Modal,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import OrganizationModal from "../../Components/OrganizationModal";
@@ -13,21 +21,15 @@ import { getOneOrganization } from "../../Redux/features/dataActions";
 import { toast } from "react-toastify";
 const { Header, Content, Footer, Sider } = Layout;
 
-
-
 const DashboardScreen = () => {
   const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
   const [orgModal, setOrgModal] = useState(false);
-  const [workspaceDropdownItems, setWorkspaceDropdownItems] = useState([
-    
-  ]);
-  const [currentWorkspace, setCurrentWorkspace] = useState('personal');
+  const [workspaceDropdownItems, setWorkspaceDropdownItems] = useState([]);
+  const [currentWorkspace, setCurrentWorkspace] = useState("personal");
   const { user } = useSelector((state) => state.auth);
-  const [userRole, setUserRole] = useState('examinee');
+  const [userRole, setUserRole] = useState("examinee");
   const [organization, setOrganization] = useState({});
-
-  
 
   function getItem(label, key, icon, children, type, danger, disabled) {
     return {
@@ -101,8 +103,7 @@ const DashboardScreen = () => {
     ),
   ];
 
-  const examinerSidebarItems = [
-  ]
+  const examinerSidebarItems = [];
 
   const orgAdminSidebarItems = [
     getItem(
@@ -165,52 +166,65 @@ const DashboardScreen = () => {
   ];
 
   const changeWorkspace = (workspace) => {
-    if (workspace === 'personal') {
-      setUserRole('examinee');
+    if (workspace === "personal") {
+      setUserRole("examinee");
       setCurrentWorkspace(workspace);
+      toast.success("Workspace switched successfully!", {
+        position: 'bottom-right'
+      });
       return;
     }
     setCurrentWorkspace(workspace);
     console.log(currentWorkspace);
-    dispatch(getOneOrganization({id: workspace, field: ''}))
-    .then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        console.log(res);
-        setOrganization(res.payload.data.data[0]);
-        if (res.payload.data.data[0].adminUser._id === user._id) {
-          setUserRole('orgAdmin');
+    dispatch(getOneOrganization({ id: workspace, field: "" }))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          console.log(res);
+          setOrganization(res.payload.data.data[0]);
+          toast.success("Workspace switched successfully!", {
+            position: "bottom-right",
+          });
+          if (res.payload.data.data[0].adminUser._id === user._id) {
+            setUserRole("orgAdmin");
+          } else {
+            setUserRole("examiner");
+          }
         } else {
-          setUserRole('examiner');
+          toast.error("There is an error while switching workspace!", {
+            position: "bottom-right",
+          });
         }
-      } else {
-        toast.error('There is an error while switching workspace!');
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      toast.error("There is some error in the server!");
-    });
-  }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("There is some error in the server!");
+      });
+  };
 
   const setupWorkspaceItems = () => {
-    setWorkspaceDropdownItems([{
-      label: <span onClick={() => changeWorkspace('personal')}>Personal Workspace</span>,
-      key: "1",
-      icon: <Icon icon='ep:user' />,
-    },
-    {
-      type: "divider",
-    },
-    {
-      label: "Your Organizations",
-      disabled: true,
-    },
-    {
-      type: "divider",
-    }])
+    setWorkspaceDropdownItems([
+      {
+        label: (
+          <span onClick={() => changeWorkspace("personal")}>
+            Personal Workspace
+          </span>
+        ),
+        key: "1",
+        icon: <Icon icon='ep:user' />,
+      },
+      {
+        type: "divider",
+      },
+      {
+        label: "Your Organizations",
+        disabled: true,
+      },
+      {
+        type: "divider",
+      },
+    ]);
     let itemsSoFar = workspaceDropdownItems.length + 1;
 
-    // const userOrganizations = user.adminOf
 
     for (let i = 0; i < user.adminOf.length; i++) {
       setWorkspaceDropdownItems((prevItems) => [
@@ -225,9 +239,7 @@ const DashboardScreen = () => {
           icon: <Icon icon='grommet-icons:organization' />,
         },
       ]);
-        
     }
-
 
     const joinOrgItem = {
       label: (
@@ -247,12 +259,10 @@ const DashboardScreen = () => {
           icon='material-symbols:add'
         />
       ),
-    }
+    };
 
-    setWorkspaceDropdownItems((prevItems) => [
-      ...prevItems, joinOrgItem
-    ])
-  }
+    setWorkspaceDropdownItems((prevItems) => [...prevItems, joinOrgItem]);
+  };
 
   const profileDropdownItems = [
     {
@@ -266,7 +276,7 @@ const DashboardScreen = () => {
     {
       label: (
         <span
-          className="text-error-500 cursor-pointer"
+          className='text-error-500 cursor-pointer'
           onClick={() => {
             dispatch(logoutUser());
           }}>
@@ -274,7 +284,12 @@ const DashboardScreen = () => {
         </span>
       ),
       key: "3",
-      icon: <Icon className="text-error-500" icon='carbon:logout' />,
+      icon: (
+        <Icon
+          className='text-error-500'
+          icon='carbon:logout'
+        />
+      ),
     },
   ];
 
@@ -310,7 +325,12 @@ const DashboardScreen = () => {
           theme='light'
           defaultSelectedKeys={["1"]}
           mode='inline'
-          items={userRole === 'examinee' ? examineeSidebarItems : userRole === 'orgAdmin' ? orgAdminSidebarItems : examinerSidebarItems      
+          items={
+            userRole === "examinee"
+              ? examineeSidebarItems
+              : userRole === "orgAdmin"
+              ? orgAdminSidebarItems
+              : examinerSidebarItems
           }
         />
       </Sider>
@@ -324,18 +344,20 @@ const DashboardScreen = () => {
           <h1 className='text-xl font-semibold text-primary-500'>
             {"Hello there, " + user.firstName + " " + user.lastName + "!"}
           </h1>
-          <div className='flex items-center justify-center gap-4'>
+          <div className='inline-flex items-center justify-center gap-4'>
             <Dropdown
               onClick={() => setupWorkspaceItems()}
-              overlayClassName="overflow-auto h-64"
+              overlayClassName='overflow-auto h-64'
               menu={{
                 items: workspaceDropdownItems,
               }}
               trigger={["click"]}>
-              <div className='text-primary-500 border w-full border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md flex items-center justify-center cursor-pointer gap-2'>
-                <div className='flex items-center justify-center gap-2'>
+              <div className='text-primary-500 border w-full border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md inline-flex items-center cursor-pointer gap-2'>
+                <div className='inline-flex items-center justify-center gap-2 h-fit'>
                   <Icon icon='octicon:organization-24' />
-                  {currentWorkspace === 'personal' ? 'Personal Workspace' : organization.name}
+                  {currentWorkspace === "personal"
+                    ? "Personal Workspace"
+                    : organization.name}
                 </div>
                 <Icon icon='gridicons:dropdown' />
               </div>
@@ -353,7 +375,7 @@ const DashboardScreen = () => {
               }}
               trigger={["click"]}>
               <Avatar
-                className='cursor-pointer flex items-center justify-center'
+                className='cursor-pointer w-fit items-center justify-center'
                 size='large'
                 icon={
                   <img
