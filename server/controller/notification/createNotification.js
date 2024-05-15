@@ -4,7 +4,7 @@ const catchAsync = require("../../utils/catchAsync");
 
 const createNotification = factory.createOne(Notification);
 
-const addUserToBody = catchAsync((req, res, next) => {
+const addUserToBody = catchAsync(async (req, res, next) => {
   req.body.user = req.user.id;
   next();
 });
