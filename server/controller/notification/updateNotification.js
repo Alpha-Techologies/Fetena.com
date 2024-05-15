@@ -5,7 +5,7 @@ const catchAsync = require("../../utils/catchAsync");
 
 const updateNotification = factory.updateOne(Notification);
 
-const authorizeNotificationUpdate = catchAsync((req, res, next) => {
+const authorizeNotificationUpdate = catchAsync(async (req, res, next) => {
   if (req.body.user !== req.user.id) {
     return res.status(StatusCodes.FORBIDDEN).json({
       status: "fail",
