@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { toast } from "react-toastify";
 
 
-import Edit from "./components/Edit";
+
+import Preview from "./components/Preview";
 import ExamQuestionForm from "./components/ExamQuestionForm";
 import ExamToolsForm from "./components/ExamToolsForm";
 import ExamTypeForm from "./components/ExamTypeForm";
@@ -22,7 +24,7 @@ const tabListNoTitle = [
   { key: "Exam Type", label: "Exam Type >" },
   { key: "Exam Tools", label: "Exam Tools >" },
   { key: "Exam Questions", label: "Exam Questions >" },
-  { key: "Edit", label: "Edit" },
+  { key: "Preview", label: "Preview" },
 ];
 
 const CreateExam = () => {
@@ -31,7 +33,6 @@ const CreateExam = () => {
     const savedBasicInfo = localStorage.getItem("basicInfoValues");
     return savedBasicInfo ? JSON.parse(savedBasicInfo) : {
       examName: "",
-      examKey: "",
       duration: 1 ,
       examStartDate: null,
       organization: "org",
@@ -159,9 +160,16 @@ const CreateExam = () => {
   const handleQuestionsSave = (type) => {
 
     if ( type === "trueFalse") {
+
+      if ( !trueFalse.questionText || !trueFalse.questionChoice || !trueFalse.questionType || !trueFalse.correctAnswer || !trueFalse.points) {
+        console.log(trueFalse)
+        toast.error("Please enter all the fields")
+        return;
+      }
        
   // Append trueFalse to questionsCollection
   setQuestionsCollection(prevQuestions => [...prevQuestions, trueFalse]);
+  toast.success("Question saved successfully")
   // Reset trueFalse state to its default values
   setTrueFalse({
     questionText: "",
@@ -183,7 +191,15 @@ const CreateExam = () => {
         structuredChoose.questionChoice.push(choose.questionChoice[i]);
       }
 
+      if (!choose.questionText || !choose.questionChoice || !choose.questionType || !choose.correctAnswer || !choose.points) {
+        console.log(choose)
+        toast.error("Please enter all the fields")
+        return;
+      }
+
       setQuestionsCollection([...questionsCollection, structuredChoose]);
+      toast.success("Question saved successfully")
+
       setChoose({
         questionText: "",
         questionChoice: [],
@@ -193,7 +209,14 @@ const CreateExam = () => {
       });
     }
     else if (type === "shortAnswer") {
+
+      if(!shortAnswer.questionText || !shortAnswer.questionType || !shortAnswer.points) {
+        console.log(shortAnswer)
+        toast.error("Please enter all the fields")
+        return;
+      }
       setQuestionsCollection([...questionsCollection, shortAnswer]);
+      toast.success("Question saved successfully")
       setShortAnswer({
         questionText: "",
     questionType: "shortAnswer",
@@ -201,7 +224,13 @@ const CreateExam = () => {
       });
     }
     else if (type === "essay") {
+      if (!essay.questionText || !essay.questionType || !essay.points) {
+        console.log(essay)
+        toast.error("Please enter all the fields")
+        return;
+      }
       setQuestionsCollection([...questionsCollection, essay]);
+      toast.success("Question saved successfully")
       setEssay({
         questionText: "",
         questionType: "essay",
@@ -314,16 +343,23 @@ const CreateExam = () => {
     shortAnswerOnChange={shortAnswerOnChange}
     essayOnChange={essayOnChange}
     setQuestionType={setQuestionType}
-    setTrueFalse={setTrueFalse }
+    setEssay={setEssay}
+    essay={essay}
+    setShortAnswer={setShortAnswer}
+    shortAnswer={shortAnswer}
+    setChoose={setChoose}
+
+    setTrueFalse={setTrueFalse}
+  
   />
 )}
 
 
 
 
-{activeTabKey === "Edit" && (
-            <Edit 
-            f={basicInfoValues} 
+{activeTabKey === "Preview" && (
+            <Preview 
+            basicInfoValues={basicInfoValues} 
             setBasicInfoValues={setBasicInfoValues} 
             trueFalse={trueFalse} setTrueFalse={setTrueFalse} 
             choose={choose} setChoose={setChoose} 

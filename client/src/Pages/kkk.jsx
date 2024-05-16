@@ -6,8 +6,7 @@ import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 const { TextArea } = Input;
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import axios from "axios";
+
 
 
 
@@ -46,73 +45,6 @@ const handleQuestionsEdit = (questionType, index) => {
   setQuestionsCollection(updatedQuestionsCollection);
 };
 
-
-
-const submitExam = () => {
-    if (!basicInfoValues.examName) {
-        toast.error("Please enter the exam name");
-        return;
-    }
-    if (!basicInfoValues.duration) {
-        toast.error("Please enter the duration");
-        return;
-    }
-    if (!basicInfoValues.examStartDate) {
-        toast.error("Please enter the exam start date");
-        return;
-    }
-    if (!basicInfoValues.organization) {
-        toast.error("Please enter the organization");
-        return;
-    }
-    if (!basicInfoValues.privateAnswer) {
-        toast.error("Please enter the private answer");
-        return;
-    }
-    if (!basicInfoValues.privateScore) {
-        toast.error("Please enter the private score");
-        return;
-    }
-    if (!basicInfoValues.instruction) {
-        toast.error("Please enter the instruction");
-        return;
-    }
-    if (!basicInfoValues.examType) {
-        toast.error("Please enter the exam type");
-        return;
-    }
-    if (!basicInfoValues.material) {
-        toast.error("Please enter the material");
-        return;
-    }
-
-
- // Check if questions are available
- if (questionsCollection.length === 0) {
-    toast.error("Please add questions to submit the exam.");
-    return;
-}
-
-// // Prepare the data to send
-// const examData = {
-//     basicInfo: basicInfoValues,
-//     questions: questionsCollection
-// };
-
-// Make the Axios POST request
-axios.post('http://localhost:8080/api/questions', questionsCollection)
-    .then(response => {
-        // Handle success
-        console.log('Exam submitted successfully:', response.data);
-        toast.success("Exam submitted successfully.");
-    })
-    .catch(error => {
-        // Handle error
-        console.error('Error submitting exam:', error);
-        toast.error("Error submitting exam. Please try again later.");
-    });
-
-}
 
 
   return (
@@ -201,7 +133,7 @@ axios.post('http://localhost:8080/api/questions', questionsCollection)
 
 
 
-          <div className="flex flex-col gap-4 my-4 mt-8 ">
+          <div className="flex flex-col gap-4 my-4 ">
   {questionsCollection.map((question, index) => (
     <div key={index} className="mb-4">
   
@@ -212,23 +144,30 @@ axios.post('http://localhost:8080/api/questions', questionsCollection)
 
 
 
-<Card className="bg-gray-50 w-11/12 mx-auto my-2">
-<div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+<Card className="bg-gray-50 w-5/6 mx-auto my-2">
+  <div className="flex gap-8 items-center justify-between mx-4 border-b">
   <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
-    <p className="font-semibold text-blue-900">Points {question.points}</p>
+    <Form.Item label="points" rules={[{ required: true, type: "number", message: "Please input the points!" }]}>
+      <InputNumber min={1} value={question.points} onChange={(value) => trueFalseOnChange('points', value)} />
+    
+    </Form.Item>
   </div>
-  <div className="mt-4 mx-4 flex items-start">
-   <h3 className="font-semibold">{question.questionText}</h3>
+  <div className="mt-4 mx-4">
+    <Form.Item label="Question"  rules={[{ required: true, message: "Please enter the exam question!" }]}>
+      <Input value={question.questionText} onChange={(e) => trueFalseOnChange('questionText', e.target.value)} />
+    </Form.Item>
   </div>
-  <div className="mt-8 flex items-start mx-4 ">
-    <Form.Item label="Your Answer" className="w-48">
-      <Select >
+  <div className="mt-4 flex items-start mx-4">
+    <Form.Item label="Correct Answer"  rules={[{ required: true, message: "Please select the correct answer" }]}>
+      <Select value={question.correctAnswer} onChange={(value) => trueFalseOnChange('correctAnswer', value)}>
         <Select.Option value="true">True</Select.Option>
         <Select.Option value="false">False</Select.Option>
       </Select>
     </Form.Item>
   </div>
- 
+  <div className="flex justify-end">
+  <Button className="px-16 mx-4 border-blue-300" onClick={() => handleQuestionsSave("True/False", index)}>Edit</Button>
+  </div>
 </Card>
 
 
@@ -246,31 +185,33 @@ axios.post('http://localhost:8080/api/questions', questionsCollection)
 
 
 
-<Card className="bg-gray-50 w-11/12 mx-auto">
-  <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+<Card className="bg-gray-50 w-5/6 mx-auto">
+  <div className="flex gap-8 items-center justify-between mx-4 border-b">
     <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
-    <p className="font-semibold text-blue-900">Points {question.points}</p>
-
+    <Form.Item label="points" rules={[{ required: true, type: "number", message: "Please input the points!" }]}>
+      <InputNumber min={1} value={question.points} onChange={(value) => trueFalseOnChange('points', value)} />
+    </Form.Item>
   </div>
-  <div className="mt-4 mx-4 flex items-start border-b pb-4">
-  <h3 className="font-semibold">{question.questionText}</h3>
+  <div className="mt-4 mx-4">
+    <Form.Item label="Question" rules={[{ required: true, message: "Please enter the exam question!" }]}>
+      <Input value={question.questionText} onChange={(e) => chooseOnChange('questionText', e.target.value)} />
+    </Form.Item>
   </div>
   <div className="mt-4 w-full flex items-start mx-4 gap-4">
-    {/* <Form.Item label="Choice Number" rules={[{ required: true, message: "Please select the choice number" }]} className="w-48">
+    <Form.Item label="Choice Number" rules={[{ required: true, message: "Please select the choice number" }]} className="w-48">
       <Select onChange={(value) => setChoiceCount(value)} defaultValue={2}>
         {[2, 3, 4, 5].map((count) => (
           <Select.Option key={count} value={count}>{count}</Select.Option>
         ))}
       </Select>
-    </Form.Item> */}
+    </Form.Item>
     <div className="flex flex-col">
     <Radio.Group value={question.correctAnswer} onChange={(e) => chooseOnChange('correctAnswer', e.target.value)}>
   {Array.from({ length: choiceCount }).map((_, index) => (
-    <Form.Item key={index} label={`${String.fromCharCode(65 + index)}`} rules={[{ required: true, message: `Please enter choice ${String.fromCharCode(65 + index)}` }]}>
-      <div className="flex gap-4 justify-center">
-        <p className="font-semibold">{question.questionChoice[index]}</p>
-        {/* <Input onChange={(e) => chooseOnChange('questionChoice', { [index]: e.target.value })} value={question.questionChoice[index]} /> */}
-       <div className="flex gap-2 items-center"> <Radio></Radio><span className="text-blue-700"></span></div>
+    <Form.Item key={index} label={`Choice ${String.fromCharCode(65 + index)}`} rules={[{ required: true, message: `Please enter choice ${String.fromCharCode(65 + index)}` }]}>
+      <div className="flex gap-4">
+        <Input onChange={(e) => chooseOnChange('questionChoice', { [index]: e.target.value })} value={question.questionChoice[index]} />
+       <div className="flex gap-2 items-center"> <Radio value={question.questionChoice[index]} checked={question.questionChoice[index] === question.correctAnswer}></Radio><span className="text-blue-700">correct</span></div>
       </div>
     </Form.Item>
   ))}
@@ -278,7 +219,9 @@ axios.post('http://localhost:8080/api/questions', questionsCollection)
 
     </div>
   </div>
- 
+  <div className="flex justify-end">
+  <Button className="px-16 mx-4 border-blue-300" onClick={() => handleQuestionsSave("True/False", index)}>Edit</Button>
+  </div>
 </Card>
 
 
@@ -294,28 +237,34 @@ axios.post('http://localhost:8080/api/questions', questionsCollection)
 
 
 
-<Card className="bg-gray-50 w-11/12 mx-auto my-2">
-<div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-    <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
-    <p className="font-semibold text-blue-900">Points {question.points}</p>
-
-  </div>
+<Card className="bg-gray-50 w-5/6 mx-auto my-8">
+     <div className="flex gap-8 items-center justify-between mx-4 border-b">
+     <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
+       {/* <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}> */}
+       <Form.Item
+         label="points"
+         rules={[
+           { required: true, type: "number", message: "Please input the points!" },
+         ]}
+       >
+      <InputNumber min={1} value={question.points} onChange={(value) => trueFalseOnChange('points', value)} />
+       </Form.Item>
+     </div>
  
      
-     <div className="mt-4 mx-4 flex items-start ">
-  <h3 className="font-semibold">{question.questionText}</h3>
-  </div>
-
+ 
      <div className="mt-4 flex items-start mx-4 mb-4">
        <TextArea
          rows={4}
          placeholder="Enter your question here"
-       
-         
+         onChange={(e) => shortAnswerOnChange('questionText', e.target.value)}
+         value={question.questionText}
        />
      </div>
  
-    
+     <div className="flex justify-end">
+     <Button className="px-16 mx-4 border-blue-300" onClick={() => handleQuestionsSave("True/False", index)}>Edit</Button>
+     </div>
    </Card>
 
 
@@ -329,26 +278,32 @@ axios.post('http://localhost:8080/api/questions', questionsCollection)
         
 
 
-        <Card className="bg-gray-50 w-11/12 mx-auto my-8">
-         <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-    <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
-    <p className="font-semibold text-blue-900">Points {question.points}</p>
-
-  </div>
+        <Card className="bg-gray-50 w-5/6 mx-auto my-8">
+        <div className="flex gap-8 items-center justify-between mx-4 border-b">
+        <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
+          {/* <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}> */}
+          <Form.Item
+            label="points"
+            rules={[
+              { required: true, type: "number", message: "Please input the points!" },
+            ]}
+          >
+      <InputNumber min={1} value={question.points} onChange={(value) => trueFalseOnChange('points', value)} />
+          </Form.Item>
+        </div>
     
         
-        <div className="mt-4 mx-4 flex items-start">
-  <h3 className="font-semibold">{question.questionText}</h3>
-  </div>
-
-     <div className="mt-4 flex items-start mx-4 mb-4">
-       <TextArea
-         rows={4}
-         placeholder="Enter your question here"
-       
+    
+        <div className="mt-4 flex items-start mx-4 mb-4">
+          <TextArea
+            rows={4}
+            placeholder="Enter your question here"
          
-       />
-     </div>
+            onChange={(e) => essayOnChange('questionText', e.target.value)}
+            value={question.questionText}
+            // Assuming you want to update the 'answer' field in shortAnswer state
+          />
+        </div>
     
         <div className="flex justify-end">
         <Button className="px-16 mx-4 border-blue-300" onClick={() => handleQuestionsSave("True/False", index)}>Edit</Button>
@@ -366,15 +321,6 @@ axios.post('http://localhost:8080/api/questions', questionsCollection)
   ))}
 </div>
 
-
-<Card className=" mx-auto mt-8 mb-2 shadow-sm ">
-             <div className="flex gap-8 items-center justify-center">
-             <h3 className=" font-semibold text-lg">Total Questions <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
-             <h3 className=" font-semibold text-lg">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3>
-             <Button type="primary" className="px-16" onClick={submitExam}>Save & Submit</Button>
- 
-       </div>
- </Card>
 
 
 
