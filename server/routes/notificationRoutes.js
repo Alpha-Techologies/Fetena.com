@@ -7,11 +7,10 @@ const {
   authorizeNotificationUpdate,
 } = require("../controller/notification/index");
 const { protect } = require("../controller/auth");
-const { addOptionToBody } = require("../middleware");
 
 notificationRouter
   .route("/")
-  .get(protect, addOptionToBody('notify'), getNotification)
+  .get(protect, getNotification)
 
 
 notificationRouter

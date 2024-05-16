@@ -26,6 +26,7 @@ const {
   followOrganization,
   addAsAdmin,
   unfollowOrganization,
+  getUserOrganization,
   // getProfile,
 } = require("../controller/userController");
 
@@ -77,6 +78,7 @@ router.post("/follow/:id", protect, followOrganization);
 router.post("/unfollow/:id", protect, unfollowOrganization);
 router.post("/addAdmin", addAsAdmin);
 
+router.get("/organizations", protect, getUserOrganization);
 // router.patch("/activate/:token", activateAccount);
 // verify-email
 
