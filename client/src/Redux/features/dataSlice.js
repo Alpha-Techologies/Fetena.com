@@ -6,18 +6,27 @@ import {
   updatePassword,
   followOrganization,
   unfollowOrganization,
-  getOneOrganization
+  getOneOrganization,
+  switchWorkspace,
+  updateOrganization,
+  updateOrganizationLogo,
+  joinOrganization
 } from "./dataActions";
 
 const initialState = {
   loading: false,
   error: null,
+  workspace: null
 };
 
 const dataSlice = createSlice({
   name: "data",
   initialState,
-  reducers: {},
+  reducers: {
+    switchToPersonalWorkspace(state) {
+      state.workspace = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(updateMe.pending, (state) => {
@@ -89,11 +98,52 @@ const dataSlice = createSlice({
       .addCase(getOneOrganization.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(switchWorkspace.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(switchWorkspace.fulfilled, (state, action) => {
+        state.loading = false;
+        state.workspace = action.payload.data.data[0];
+      })
+      .addCase(switchWorkspace.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateOrganizationLogo.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateOrganizationLogo.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateOrganizationLogo.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateOrganization.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateOrganization.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateOrganization.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(joinOrganization.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(joinOrganization.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(joinOrganization.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
     
   },
 });
 
-export const {} = dataSlice.actions;
+export const {switchToPersonalWorkspace} = dataSlice.actions;
 
 export default dataSlice.reducer;

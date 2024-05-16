@@ -17,19 +17,36 @@ import { Outlet, Link } from "react-router-dom";
 import fetena_logo from "../../assets/fetena_logo.png";
 import { logoutUser } from "../../Redux/features/authActions";
 import Loading from "../../Components/Loading";
-import { getOneOrganization } from "../../Redux/features/dataActions";
+import { getOneOrganization, switchWorkspace } from "../../Redux/features/dataActions";
 import { toast } from "react-toastify";
+import { switchToPersonalWorkspace } from "../../Redux/features/dataSlice";
 const { Header, Content, Footer, Sider } = Layout;
 
 const DashboardScreen = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [orgModal, setOrgModal] = useState(false);
   const [workspaceDropdownItems, setWorkspaceDropdownItems] = useState([]);
   const [currentWorkspace, setCurrentWorkspace] = useState("personal");
   const { user } = useSelector((state) => state.auth);
+  const {workspace} = useSelector((state) => state.data);
   const [userRole, setUserRole] = useState("examinee");
   const [organization, setOrganization] = useState({});
+
+  useEffect(() => {
+    if (workspace === null) {
+      setUserRole('examinee')
+      setCurrentWorkspace('peronal')
+    } else if (workspace.adminUser._id === user._id) {
+      setUserRole('orgAdmin')
+      setCurrentWorkspace(workspace._id)
+    } else {
+      setUserRole('examiner')
+      setCurrentWorkspace(workspace._id)
+    }
+  }, []);
+
 
   function getItem(label, key, icon, children, type, danger, disabled) {
     return {
@@ -123,7 +140,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='exams'>Activity Log</Link>,
+      <Link to='activities'>Activity Log</Link>,
       "3",
       <Icon
         className='w-4 h-4'
@@ -131,7 +148,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='results'>Staff</Link>,
+      <Link to='staffs'>Staff</Link>,
       "4",
       <Icon
         className='w-5 h-5'
@@ -139,7 +156,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='certifications'>Settings</Link>,
+      <Link to='settings'>Settings</Link>,
       "5",
       <Icon
         className='w-5 h-5'
@@ -169,14 +186,16 @@ const DashboardScreen = () => {
     if (workspace === "personal") {
       setUserRole("examinee");
       setCurrentWorkspace(workspace);
+      dispatch(switchToPersonalWorkspace());
       toast.success("Workspace switched successfully!", {
         position: 'bottom-right'
       });
+      navigate('/dashboard')
       return;
     }
     setCurrentWorkspace(workspace);
     console.log(currentWorkspace);
-    dispatch(getOneOrganization({ id: workspace, field: "" }))
+    dispatch(switchWorkspace({ id: workspace, field: "" }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           console.log(res);
@@ -189,6 +208,7 @@ const DashboardScreen = () => {
           } else {
             setUserRole("examiner");
           }
+          navigate('/dashboard')
         } else {
           toast.error("There is an error while switching workspace!", {
             position: "bottom-right",
@@ -279,6 +299,7 @@ const DashboardScreen = () => {
           className='text-error-500 cursor-pointer'
           onClick={() => {
             dispatch(logoutUser());
+            dispatch(switchToPersonalWorkspace());
           }}>
           Logout
         </span>
@@ -355,9 +376,9 @@ const DashboardScreen = () => {
               <div className='text-primary-500 border w-full border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md inline-flex items-center cursor-pointer gap-2'>
                 <div className='inline-flex items-center justify-center gap-2 h-fit'>
                   <Icon icon='octicon:organization-24' />
-                  {currentWorkspace === "personal"
+                  {workspace === null
                     ? "Personal Workspace"
-                    : organization.name}
+                    : workspace.name}
                 </div>
                 <Icon icon='gridicons:dropdown' />
               </div>

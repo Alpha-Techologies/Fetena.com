@@ -125,3 +125,60 @@ export const getOneOrganization = createAsyncThunk(
     }
     }
 )
+
+export const switchWorkspace = createAsyncThunk(
+  "data/switchWorkspace",
+  async ({ id, field }, { rejectWithValue }) => {
+    // Async function to fetch a single organization
+    try {
+      // Making a GET request to fetch a single organization
+      const { data } = await axios.get(
+        `${url}/organizations/${id}?fields=${field}`
+      );
+      return data; // Returning fetched organization data if successful
+    } catch (error) {
+      return rejectWithValue(error.response.data); // Handling errors and rejecting with error message
+    }
+  }
+);
+
+export const updateOrganizationLogo = createAsyncThunk(
+  "data/updateOrganizationLogo",
+  async ({organizationLogo, id}, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.patch(`${url}/organizations/updateLogo/${id}`, organizationLogo);
+      return data; 
+    } catch (error) {
+      return rejectWithValue(error.response.data); 
+    }
+  }
+);
+
+export const updateOrganization = createAsyncThunk(
+  "data/updateOrganization",
+  async ({ organization, id }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.patch(
+        `${url}/organizations/${id}`,
+        organization
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const joinOrganization = createAsyncThunk(
+  "data/joinOrganization",
+  async (id, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `${url}/organizations/join/${id}`
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);

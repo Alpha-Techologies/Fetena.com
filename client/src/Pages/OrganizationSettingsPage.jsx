@@ -1,77 +1,101 @@
 import { Button, Form, Input, Radio, Tag, Card } from "antd";
-import { createOrganization } from "../Redux/features/dataActions";
-import { useDispatch } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateOrganization, updateOrganizationLogo, switchWorkspace } from "../Redux/features/dataActions";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { getMe } from "../Redux/features/authActions";
 
-const CreateOrganization = () => {
-  const navigate = useNavigate();
-
-  
+const OrganizationSettingsPage = () => {
+  const { workspace } = useSelector((state) => state.data);
+  const url = 'http://localhost:8080'
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const initialValues = {
-    name: "",
-    address: "",
-    description: "",
-    website: "",
-    phone: "",
-    email: "",
+  const navigate = useNavigate();
+  const fileInputRef = useRef();
+  let initialValues = {
+    name: workspace.name,
+    address: workspace.address,
+    description: workspace.description,
+    website: workspace.website,
+    phone: workspace.phone,
+    email: workspace.email,
   };
 
-  const [pictureData, setPictureData] = useState({});
+  const [pictureData, setPictureData] = useState({
+    logo: null
+  });
+
+  useEffect(() => {
+    if (workspace === null) {
+      navigate('dashboard')
+      return
+    }
+    dispatch(switchWorkspace({ id: workspace._id, field: "" }))
+  }, []);
 
   const handleFileChange = (e) => {
     console.log(e);
     const file = e.target.files[0];
-    const maxSizeInBytes = 2 * 1024 * 1024; // 10MB
+    const maxSizeInBytes = 1024 * 1024;
     if (file && file.size > maxSizeInBytes) {
       // File size exceeds the limit
       toast.error("File size is too large. Please select a smaller file.");
       e.target.value = null; // Reset the file input
       return;
     }
-    console.log(file, 'file');
-    setPictureData({logo: e.target.files[0]});
+    console.log(file, "file");
+    setPictureData({ logo: e.target.files[0] });
     // setFileList(e.fileList);
     // console.log(pictureData.logo);
   };
 
-  useEffect(() => {
-    console.log(pictureData.logo);
-  }, [pictureData.logo]);
-
 
   const handleSubmit = async (values) => {
-    console.log(values);
+    console.log(values, workspace);
     const formDataToSend = new FormData();
 
     // Append form fields to formDataToSend
     formDataToSend.append(
       "data",
       JSON.stringify({
-        name: values.name,
-        address: values.address,
-        description: values.description,
-        website: values.website,
-        phone: values.phone,
-        email: values.email,
+        
       })
     );
 
     if (pictureData.logo) {
       formDataToSend.append("logo", pictureData.logo);
-    }
-
-    dispatch(createOrganization(formDataToSend))
+      console.log('is it going here');
+      dispatch(updateOrganizationLogo({organizationLogo: formDataToSend, id: workspace._id}))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          form.resetFields();
-          toast.success("Organization created successfully");
-          navigate("/dashboard/organizations");
-          dispatch(getMe())// Redirect here
+          setPictureData({ logo: null });
+          fileInputRef.current.value = null;
+          console.log(pictureData);
+          toast.success("Logo uploaded successfully");
+        }
+        else {
+          toast.error(res.payload.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("There is some error in the server when uploading picture!");
+      });
+    }
+
+    dispatch(updateOrganization({organization: values, id: workspace._id}))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          initialValues = {
+            name: workspace.name,
+            address: workspace.address,
+            description: workspace.description,
+            website: workspace.website,
+            phone: workspace.phone,
+            email: workspace.email,
+          };
+          toast.success("Organization updated successfully");
+          // navigate("/dashboard/organizations"); // Redirect here
         } else {
           toast.error(res.payload.message);
         }
@@ -80,18 +104,29 @@ const CreateOrganization = () => {
         console.log(error);
         toast.error("Something is wrong");
       });
+    
+    dispatch(switchWorkspace({id: workspace._id, field: ""}))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+        } else {
+          toast.error("There is an error while switching workspace!", {
+            position: 'bottom-right'
+          });
+        }
+      }).catch((error) => {
+        console.log(error);
+        toast.error("There is some error in the server! " + error);
+      });
   };
 
-
   const onFinish = (values) => {
-    handleSubmit(values)
-    
+    handleSubmit(values);
   };
 
   return (
     <div className='flex flex-col gap-4 items-start my-4'>
       <h1 className='text-3xl font-bold justify-self-start'>
-        Create Organization
+        Organizations Settings
       </h1>
       <Card
         style={{ width: "60%" }}
@@ -127,18 +162,17 @@ const CreateOrganization = () => {
           <input
             type='file'
             accept='image/*'
+            ref={fileInputRef}
             onChange={handleFileChange} // Update this line
-            required
           />
-          {pictureData.logo && (
             <div className='flex items-center gap-2 mt-2'>
               <img
-                src={URL.createObjectURL(pictureData.logo)}
+                src={pictureData.logo ? URL.createObjectURL(pictureData.logo) : url + workspace.logo}
                 alt='Uploaded Photo'
                 className='uploaded-photo w-48 h-56'
               />
             </div>
-          )}
+          
           <Form.Item
             label='Email'
             name={"email"}>
@@ -158,12 +192,12 @@ const CreateOrganization = () => {
             <Button
               type='primary'
               htmlType='submit'>
-              Create Organization
+              Update Organization
             </Button>
           </Form.Item>
         </Form>
       </Card>
     </div>
   );
-};
-export default CreateOrganization;
+}
+export default OrganizationSettingsPage
