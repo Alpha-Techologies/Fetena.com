@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const morgan = require("morgan");
 const APIError = require("./utils/apiError");
 const globalErrorHandler = require("./controller/errorController");
 const helmet = require("helmet");
@@ -11,6 +10,7 @@ const xss = require("xss-clean"); // remove the html tags that are needed
 const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
 const socketIo = require("socket.io");
+const morganHTTP = require("./utils/morgan");
 
 require("dotenv").config({
   path: "./config.env",
@@ -33,6 +33,9 @@ const fileUpload = require("express-fileupload");
 
 // make the pulic folder accessable from the frontend
 app.use(express.static("public"));
+
+// Middleware to log all incoming requests
+app.use(morganHTTP);
 
 app.use(cookieParser(process.env.JWT_SECRET));
 // app.set('trust proxy', true)
@@ -60,9 +63,9 @@ app.use(
 );
 app.use(express.static("../public"));
 
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
+// if (process.env.NODE_ENV === "development") {
+//   app.use(morgan("dev"));
+// }
 
 app.use("/", limiter);
 

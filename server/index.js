@@ -6,6 +6,7 @@
 // const movieRouter = require('./routes/movie-router')
 
 // const app = express()
+const logger = require("./utils/logger");
 const app = require("./app");
 const apiPort = 8080
 
@@ -19,5 +20,5 @@ app.get('/', (req, res) => {
     res.send('Hello world!')
 })
 
-app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))
+app.listen(apiPort, () => logger.info(`Server running on port ${apiPort}`))
 
