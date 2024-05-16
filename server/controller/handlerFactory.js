@@ -153,6 +153,33 @@ exports.createOne = (Model) =>
     });
   });
 
+exports.createMany = (Model, returnOnlyId = false) =>
+  catchAsync(async (req, res, next) => {
+    const doc = await Model.insertMany(req.body);
+    if (!doc) {
+      return next(
+        new APIError(`An error occured while creating the document`, 404)
+      );
+    }
+
+    if (returnOnlyId) {
+      let id = doc.map((item) => item._id);
+      res.status(201).json({
+        status: "success",
+        data: {
+          data: id,
+        },
+      });
+    } else {
+      res.status(201).json({
+        status: "success",
+        data: {
+          data: doc,
+        },
+      });
+    }
+  });
+
 // exports.getOneMedia = (collectionName) =>
 //   catchAsync(async (req, res, next) => {
 //     console.log(req.params.filename);
