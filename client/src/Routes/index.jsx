@@ -96,7 +96,7 @@ const AllRoutes = () => {
             path='exams'
             element={<ExamsPage />}
           />
-           <Route
+          <Route
             path='exams/:id'
             element={<ExamDetailPage />}
           />
@@ -108,7 +108,7 @@ const AllRoutes = () => {
             path='organizations'
             element={<OrganizationsPage />}
           />
-         
+
           <Route
             path='organizations/*'
             element={<OrganizationsDetails />}
@@ -125,12 +125,12 @@ const AllRoutes = () => {
             path='certifications'
             element={<CertificationsPage />}
           />
-           <Route
+          <Route
             path='trainingVideos'
             element={<TrainingVideosPage />}
           />
 
-<Route
+          <Route
             path='support'
             element={<SupportPage />}
           />
@@ -139,6 +139,7 @@ const AllRoutes = () => {
             element={<NotFoundPage />}
           />
         </Route>
+        
         <Route
           path='*'
           element={<NotFoundPage />}

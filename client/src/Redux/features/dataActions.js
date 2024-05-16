@@ -115,10 +115,10 @@ export const unfollowOrganization = createAsyncThunk(
 // Thunk action creator for fetching a single organization
 export const getOneOrganization = createAsyncThunk( 
   "data/getOneOrganization", // Action type
-  async (id, { rejectWithValue }) => { // Async function to fetch a single organization
+  async ({id, field}, { rejectWithValue }) => { // Async function to fetch a single organization
     try {
       // Making a GET request to fetch a single organization
-      const { data } = await axios.get(`${url}/organizations/${id}`);
+      const { data } = await axios.get(`${url}/organizations/${id}?fields=${field}`);
       return data; // Returning fetched organization data if successful
     } catch (error) {
       return rejectWithValue(error.response.data); // Handling errors and rejecting with error message

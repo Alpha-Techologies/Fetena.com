@@ -66,10 +66,11 @@ class APIFeatures {
       { path: "invigilatorID", options: { strictPopulate: false } },
       { path: "questions", options: { strictPopulate: false } },
       { path: "adminUser", options: { strictPopulate: false } },
-      { path: "examiners.user", options: { strictPopulate: false } },
+      { path: "user", options: { strictPopulate: false } },
       { path: "questionID", options: { strictPopulate: false } },
       { path: "adminOf", options: { strictPopulate: false } },
       { path: "organizationsFollowed", options: { strictPopulate: false } },
+      { path: "organizationsJoined", options: { strictPopulate: false } },
       { path: "follower", options: { strictPopulate: false } },
       { path: "organization", options: { strictPopulate: false } },
     ];
@@ -85,6 +86,8 @@ class APIFeatures {
         }
         return false;
       });
+    } else {
+      populateObj = populated;
     }
 
     this.query = this.query.populate(populateObj);

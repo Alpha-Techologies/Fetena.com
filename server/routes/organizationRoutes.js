@@ -9,8 +9,10 @@ const {
   joinOrganization,
   deactivateExaminer,
   updateOrganizationLogo,
+  organizationStaff,
 } = require("../controller/organization");
 const { protect, restrictTo } = require("../controller/auth");
+const { addOptionToBody } = require("../middleware");
 
 const organizationRouter = express.Router();
 
@@ -18,6 +20,10 @@ organizationRouter
   .route("/")
   .get(protect, getAllOrganization)
   .post(protect, createOrganization);
+
+organizationRouter
+  .route("/staff/:id")
+  .get(protect, restrictTo(true), addOptionToBody("staff"), organizationStaff);
 
 organizationRouter
   .route("/:id")

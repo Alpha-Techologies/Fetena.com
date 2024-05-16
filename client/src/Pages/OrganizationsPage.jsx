@@ -40,10 +40,6 @@ const tabListNoTitle = [
     label: "All",
   },
   {
-    key: "Featured",
-    label: "Featured",
-  },
-  {
     key: "Following",
     label: "Following",
   },
@@ -63,6 +59,7 @@ const OrganizationsPage = () => {
   const isLoading = useSelector((state) => state.data.isLoading); // Loading state from Redux
   const user = useSelector((state) => state.auth.user); // User information from Redux
   const [activeTabKey, setActiveTabKey] = useState("All"); // Active tab key
+  const [followedOrganizations, setFollowedOrganizations] = useState([]);
 
   // Function to handle tab changes
   const onTabChange = (key) => {
@@ -87,6 +84,10 @@ const OrganizationsPage = () => {
         console.log(error);
         toast.error("There is some error while fetching organizations!"); // Notify user of error
       });
+    
+    for (let org of user.organizationsFollowed) {
+      setFollowedOrganizations((prevItems) => [...prevItems, org._id]);
+    }
   }, []);
 
   // Function to handle search
@@ -209,15 +210,13 @@ const OrganizationsPage = () => {
   }
   
 
-
-
-
   // Function to handle organization follow action
   const handleFollowOrganization = (id) => {
     // Dispatch action to follow organization
     dispatch(followOrganization(id)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         toast.success("Organization followed successfully"); // Notify user of success
+        setFollowedOrganizations((prevItems) => [...prevItems, id]);
         dispatch(getMe()).catch((error) => {
           console.log(error);
           toast.error("Something is wrong updating the user!"); // Notify user of error
@@ -236,6 +235,8 @@ const OrganizationsPage = () => {
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           toast.success("Organization unfollowed successfully"); // Notify user of success
+          const newArray = followedOrganizations.filter((orgId) => orgId !== id);
+          setFollowedOrganizations(newArray);
           dispatch(getMe()).catch((error) => {
             console.log(error);
             toast.error("Something is wrong updating the user!"); // Notify user of error
@@ -262,10 +263,10 @@ const OrganizationsPage = () => {
           size='medium'
           onSearch={onSearch}
         />
-         {/* Filtering options */}
-         <span className='flex  items-center'>
+        {/* Filtering options */}
+        <span className='flex  items-center'>
           <span className='w-full font-semibold text-blue-800'>Filter:</span>
-        
+
           <Select
             defaultValue=''
             className='h-full'
@@ -329,80 +330,79 @@ const OrganizationsPage = () => {
               tabList={tabListNoTitle}
               activeTabKey={activeTabKey}
               onTabChange={onTabChange}
-              tabProps={{ size: "middle" }}
-            >
-   {organizations.length > 0 ? (
-  <div className='grid grid-cols-4 gap-4 '>
-    {organizations.map((organization, index) => (
-      <Card
-        style={{ width: 300 }}
-        className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200"
-        key={index}
-        loading={loading}
-      >
-        {/* Organization details */}
-        <div className='flex gap-2'>
-          <Link to={`${organization._id}`}>
-            <img
-              className='w-12 h-12 rounded-full cursor-pointer'
-              src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
-              alt=''
-            />
-          </Link>
-          <div className='flex flex-col items-start justify-center'>
-            <div className='flex gap-2 items-center'>
-              <Link
-                to={`${organization._id}`}
-                className='text-lg font-semibold cursor-pointer'
-              >
-                {organization.name}
-              </Link>
-              {/* Render verified icon if organization is verified */}
-              {organization.isVerified && (
-                <Icon
-                  className='text-blue-500'
-                  icon='mdi:verified'
-                />
+              tabProps={{ size: "middle" }}>
+              {organizations.length > 0 ? (
+                <div className='grid grid-cols-4 gap-4 '>
+                  {organizations.map((organization, index) => (
+                    <Card
+                      style={{ width: 300 }}
+                      className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
+                      key={index}
+                      loading={loading}>
+                      {/* Organization details */}
+                      <div className='flex gap-2'>
+                        <Link to={`${organization._id}`}>
+                          <img
+                            className='w-12 h-12 rounded-full cursor-pointer'
+                            src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
+                            alt=''
+                          />
+                        </Link>
+                        <div className='flex flex-col items-start justify-center'>
+                          <div className='flex gap-2 items-center'>
+                            <Link
+                              to={`${organization._id}`}
+                              className='text-lg font-semibold cursor-pointer'>
+                              {organization.name}
+                            </Link>
+                            {/* Render verified icon if organization is verified */}
+                            {organization.isVerified && (
+                              <Icon
+                                className='text-blue-500'
+                                icon='mdi:verified'
+                              />
+                            )}
+                          </div>
+                          <p className='text-sm text-gray-500 line-clamp-2 text-left'>
+                            {organization.description}
+                          </p>
+                        </div>
+                      </div>
+                      {/* Organization address and follow/unfollow button */}
+                      <div className='flex justify-between m-2'>
+                        <span className='text-sm italic text-gray-600'>
+                          {organization.address}
+                        </span>
+                        {/* Render follow/unfollow button based on user's interaction */}
+                        {followedOrganizations.includes(organization._id) ? (
+                          <div
+                            onClick={() =>
+                              handleUnfollowOrganization(organization._id)
+                            }
+                            className='flex justify-end items-center cursor-pointer gap-1 text-gray-500'>
+                            <Icon icon='mdi:tick' /> Following
+                          </div>
+                        ) : (
+                          <div
+                            onClick={() =>
+                              handleFollowOrganization(organization._id)
+                            }
+                            className='flex justify-end items-center cursor-pointer gap-1 text-blue-600 font-semibold'>
+                            <Icon icon='material-symbols:add' />
+                            Follow
+                          </div>
+                        )}
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className='w-full text-center'>No data</div>
               )}
-            </div>
-            <p className='text-sm text-gray-500 line-clamp-2 text-left'>
-              {organization.description}
-            </p>
-          </div>
-        </div>
-        {/* Organization address and follow/unfollow button */}
-        <div className='flex justify-between m-2'>
-          <span className='text-sm italic text-gray-600'>
-            {organization.address}
-          </span>
-          {/* Render follow/unfollow button based on user's interaction */}
-          {user.organizationsFollowed.includes(organization._id) ? (
-            <div
-              onClick={() => handleUnfollowOrganization(organization._id)}
-              className='flex justify-end items-center cursor-pointer gap-1 text-gray-500'>
-              <Icon icon='mdi:tick' /> Following
-            </div>
-          ) : (
-            <div
-              onClick={() => handleFollowOrganization(organization._id)}
-              className='flex justify-end items-center cursor-pointer gap-1 text-blue-600 font-semibold'>
-              <Icon icon='material-symbols:add' />
-              Follow
-            </div>
-          )}
-        </div>
-      </Card>
-    ))}
-  </div>
-) : (
-  <div className="w-full text-center">No data</div>
-)}
 
-
-            
               {/* Pagination component */}
               <Pagination
-                className="mt-8"
+                className='mt-8'
                 current={current}
                 total={pages * 10}
                 onChange={onPaginationChange}
@@ -411,18 +411,7 @@ const OrganizationsPage = () => {
           )}
         </div>
       )}
-      {/* Placeholder for Featured organizations */}
-      {activeTabKey === "Featured" && (
-        <Card
-          style={{ width: "100%" }}
-          tabList={tabListNoTitle}
-          activeTabKey={activeTabKey}
-          onTabChange={onTabChange}
-          tabProps={{ size: "middle" }}
-        >
-          Featured
-        </Card>
-      )}
+
       {/* Placeholder for Following organizations */}
       {activeTabKey === "Following" && (
         <Card
@@ -430,9 +419,83 @@ const OrganizationsPage = () => {
           tabList={tabListNoTitle}
           activeTabKey={activeTabKey}
           onTabChange={onTabChange}
-          tabProps={{ size: "middle" }}
-        >
-          Following
+          tabProps={{ size: "middle" }}>
+          {user.organizationsFollowed.length > 0 ? (
+            <div className='grid grid-cols-4 gap-4 '>
+              {user.organizationsFollowed.map((organization, index) => (
+                <Card
+                  style={{ width: 300 }}
+                  className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
+                  key={index}
+                  loading={loading}>
+                  {/* Organization details */}
+                  <div className='flex gap-2'>
+                    <Link to={`${organization._id}`}>
+                      <img
+                        className='w-12 h-12 rounded-full cursor-pointer'
+                        src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
+                        alt=''
+                      />
+                    </Link>
+                    <div className='flex flex-col items-start justify-center'>
+                      <div className='flex gap-2 items-center'>
+                        <Link
+                          to={`${organization._id}`}
+                          className='text-lg font-semibold cursor-pointer'>
+                          {organization.name}
+                        </Link>
+                        {/* Render verified icon if organization is verified */}
+                        {organization.isVerified && (
+                          <Icon
+                            className='text-blue-500'
+                            icon='mdi:verified'
+                          />
+                        )}
+                      </div>
+                      <p className='text-sm text-gray-500 line-clamp-2 text-left'>
+                        {organization.description}
+                      </p>
+                    </div>
+                  </div>
+                  {/* Organization address and follow/unfollow button */}
+                  <div className='flex justify-between m-2'>
+                    <span className='text-sm italic text-gray-600'>
+                      {organization.address}
+                    </span>
+                    {/* Render follow/unfollow button based on user's interaction */}
+                    {followedOrganizations.includes(organization._id) ? (
+                      <div
+                        onClick={() =>
+                          handleUnfollowOrganization(organization._id)
+                        }
+                        className='flex justify-end items-center cursor-pointer gap-1 text-gray-500'>
+                        <Icon icon='mdi:tick' /> Following
+                      </div>
+                    ) : (
+                      <div
+                        onClick={() =>
+                          handleFollowOrganization(organization._id)
+                        }
+                        className='flex justify-end items-center cursor-pointer gap-1 text-blue-600 font-semibold'>
+                        <Icon icon='material-symbols:add' />
+                        Follow
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className='w-full text-center'>No data</div>
+          )}
+
+          {/* Pagination component */}
+          {/* <Pagination
+            className='mt-8'
+            current={current}
+            total={pages * 10}
+            onChange={onPaginationChange}
+          /> */}
         </Card>
       )}
     </div>
