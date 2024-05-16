@@ -4,14 +4,15 @@ const notificationRouter = express.Router();
 const {
   getNotification,
   updateNotification,
-  addOptionToBody,
   authorizeNotificationUpdate,
 } = require("../controller/notification/index");
 const { protect } = require("../controller/auth");
+const { addOptionToBody } = require("../middleware");
 
 notificationRouter
   .route("/")
-  .get(protect, addOptionToBody, getNotification)
+  .get(protect, addOptionToBody('notify'), getNotification)
+
 
 notificationRouter
   .route("/:id")

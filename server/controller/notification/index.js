@@ -1,9 +1,11 @@
-const {getNotification, addOptionToBody} = require("./getNotification");
-const {updateNotification, authorizeNotificationUpdate} = require("./updateNotification");
+const { getNotification, addOptionToBody } = require("./getNotification");
+const {
+  updateNotification,
+  authorizeNotificationUpdate,
+} = require("./updateNotification");
 
 module.exports = {
   getNotification,
   updateNotification,
-  addOptionToBody,
-  authorizeNotificationUpdate
+  authorizeNotificationUpdate,
 };
