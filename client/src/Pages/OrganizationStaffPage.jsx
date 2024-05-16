@@ -5,7 +5,6 @@ import { useSelector } from "react-redux"
 const OrganizationStaffPage = () => {
 
   const { workspace } = useSelector(state => state.data)
-  console.log(workspace.examiners);
 
   const columns = [
     {
