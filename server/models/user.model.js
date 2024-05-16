@@ -4,7 +4,7 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const { type } = require("os");
-const OrganizationFollower = require("./organizationFollower.model");
+const OrganizationFollower = require("./organization.follower.model");
 
 const user = new mongoose.Schema(
   {
