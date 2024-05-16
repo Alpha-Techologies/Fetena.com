@@ -11,19 +11,13 @@ const QuestionSchema = new mongoose.Schema({
       required: true,
     },
   ],
-  answerText: {
+  correctAnswer: {
     type: String,
   },
   questionType: {
     type: String,
     required: true,
-    enum: [
-      "Multiple Choice",
-      "True/False",
-      "Short Answer",
-      "Essay",
-      "Matching",
-    ],
+    enum: ["choose", "True/False", "shortAnswer", "essay", "matching"],
   },
   tag: [
     {
