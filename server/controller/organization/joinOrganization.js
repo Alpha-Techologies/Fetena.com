@@ -3,6 +3,7 @@ const Organization = require("../../models/organization.model");
 const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
 const Notification = require("../../models/notification.model");
+const OrganizationExaminer = require("../../models/organization.examiner.model");
 
 exports.joinOrganization = catchAsync(async (req, res, next) => {
   const organizationId = req.params.id;
@@ -10,10 +11,8 @@ exports.joinOrganization = catchAsync(async (req, res, next) => {
   const organization = await Organization.findOne({ _id: organizationId });
 
   if (!organization) {
-    next(new APIError("Organization not found", Statuscodes.BAD_REQUEST));
+    next(new APIError("Organization not found", StatusCodes.BAD_REQUEST));
   }
-
-  console.log(userId, organization.examiners);
 
   // user is the admin
   if (organization.adminUser.toString() === userId) {
@@ -25,14 +24,13 @@ exports.joinOrganization = catchAsync(async (req, res, next) => {
     );
   }
 
-  const isUserAlreadyMember = organization.examiners.find(
-    (examiner) => examiner.user.toString() === userId
-  );
+  const isUserAlreadyMember = await OrganizationExaminer.findOne({
+    organization: organizationId,
+    user: userId,
+  });
 
-  if (!isUserAlreadyMember) {
-    organization.examiners.push({ user: userId });
-    await organization.save();
-  } else {
+
+  if (isUserAlreadyMember) {
     return next(
       new APIError(
         "You are already a member of this organization or have requested to be so.",
@@ -40,6 +38,11 @@ exports.joinOrganization = catchAsync(async (req, res, next) => {
       )
     );
   }
+
+  await OrganizationExaminer.create({
+    user: userId,
+    organization: organizationId,
+  });
 
   let adminUserId = organization.adminUser.toString();
 
