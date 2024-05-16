@@ -5,6 +5,7 @@ const catchAsync = require("../utils/catchAsync");
 // const transaction = require("../utils/transaction");
 const APIFeatures = require("../utils/apiFeatures");
 const dbConn = require("../config/db_Connection");
+const OrganizationExaminer = require("../models/organization.examiner.model");
 // const dbAuth = require("../config/db_Authentication");
 require("events").EventEmitter.prototype._maxListeners = 70;
 require("events").defaultMaxListeners = 70;
@@ -40,12 +41,13 @@ exports.getAll = (Model) =>
 
     const page = req.query.page * 1 || 1;
     const limit = req.query.limit * 1 || 10;
+
     let count = new APIFeatures(Model.find(req.body.options || {}), req.query)
       .filter()
       .count();
     let total = await count.query;
 
-    let query = new APIFeatures(Model.find({}), req.query)
+    let query = new APIFeatures(Model.find(req.body.options || {}), req.query)
       .filter()
       .field()
       .sort()
