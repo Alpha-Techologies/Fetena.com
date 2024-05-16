@@ -144,12 +144,12 @@ const user = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    adminOf: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Organization",
-      },
-    ],
+    // adminOf: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Organization",
+    //   },
+    // ],
     organizationsFollowed: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -272,7 +272,6 @@ user.methods.followOrganization = async function (id) {
     organization: id,
   });
 
-
   if (organizationFollowed) {
     organizationFollowed.follower.push(this._id);
     await organizationFollowed.save();
@@ -288,11 +287,11 @@ user.methods.followOrganization = async function (id) {
   return this;
 };
 
-user.methods.addAsAdmin = function (id) {
-  this.adminOf.push(id);
-  this.save();
-  return this;
-};
+// user.methods.addAsAdmin = function (id) {
+//   this.adminOf.push(id);
+//   this.save();
+//   return this;
+// };
 
 user.virtual("fullName").get(function () {
   return this.firstName + " " + this.lastName;

@@ -197,4 +197,4 @@ exports.addAsAdmin = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getUserOrganization = factory.getAll(OrganizationExaminer, "addUser");
+exports.getUserOrganization = factory.getAll(OrganizationExaminer, "addExaminerStatus");

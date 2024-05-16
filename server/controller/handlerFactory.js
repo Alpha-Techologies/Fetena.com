@@ -42,6 +42,8 @@ exports.getAll = (Model, options = "") =>
     let opt = {};
     if (options === "addUser") opt = { user: req.user.id };
     if (options === "addOrganization") opt = { organization: req.params.id };
+    if (options === "addExaminerStatus")
+      opt = { user: req.user.id, status: "activated" };
 
     const page = req.query.page * 1 || 1;
     const limit = req.query.limit * 1 || 10;

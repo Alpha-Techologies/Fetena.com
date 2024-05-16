@@ -5,6 +5,7 @@ const catchAsync = require("../../utils/catchAsync");
 const factory = require("../handlerFactory");
 const APIError = require("../../utils/apiError");
 const { fileUpload } = require("../profile/fileUpload");
+const OrganizationExaminer = require("../../models/organization.examiner.model");
 
 exports.createOrganization = catchAsync(async (req, res, next) => {
   if (!req.files) {
@@ -28,9 +29,9 @@ exports.createOrganization = catchAsync(async (req, res, next) => {
 
   const newOrganization = await Organization(parsedBody);
 
-  const user = await User.findOne({ _id: userId });
+  // const user = await User.findOne({ _id: userId });
 
-  user.addAsAdmin(newOrganization._id);
+  // user.addAsAdmin(newOrganization._id);
 
   newOrganization.logo = await fileUpload({
     file: orgLogo,
@@ -42,9 +43,16 @@ exports.createOrganization = catchAsync(async (req, res, next) => {
   await newOrganization.save();
   // await user.save();
 
+  //add user to the organization examiner
+  const organizationExaminer = await OrganizationExaminer.create({
+    organization: newOrganization._id,
+    user: userId,
+    userType: "admin",
+    status: "activated",
+  });
 
   res.status(StatusCodes.CREATED).json({
     sucess: true,
-    data: newOrganization,
+    data: { organization: newOrganization, admin: organizationExaminer },
   });
 });
