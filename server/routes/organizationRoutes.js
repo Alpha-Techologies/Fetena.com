@@ -12,6 +12,7 @@ const {
   organizationStaff,
 } = require("../controller/organization");
 const { protect, restrictTo } = require("../controller/auth");
+const { addOptionToBody } = require("../middleware");
 
 const organizationRouter = express.Router();
 
@@ -22,7 +23,7 @@ organizationRouter
 
 organizationRouter
   .route("/staff/:id")
-  .get(protect, restrictTo(true), organizationStaff);
+  .get(protect, restrictTo(true), addOptionToBody("staff"), organizationStaff);
 
 organizationRouter
   .route("/:id")
