@@ -2,6 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const Organization = require("../../models/organization.model");
 const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
+const Notification = require("../../models/notification.model");
 
 exports.joinOrganization = catchAsync(async (req, res, next) => {
   const organizationId = req.params.id;
@@ -39,6 +40,13 @@ exports.joinOrganization = catchAsync(async (req, res, next) => {
       )
     );
   }
+
+  let adminUserId = organization.adminUser.toString();
+
+  await Notification.create({
+    user: adminUserId,
+    message: `User with id ${userId} has requested to join the organization `,
+  });
 
   res.status(StatusCodes.OK).json({
     status: "success",
