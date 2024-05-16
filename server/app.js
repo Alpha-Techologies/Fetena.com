@@ -102,7 +102,6 @@ app.use("/api/notifications", notificationRouter);
 app.all("*", (req, res, next) => {
   next(new APIError(`Can't find ${req.originalUrl} in server plus`, 404));
 });
-
 app.use(globalErrorHandler);
 
 module.exports = app;
