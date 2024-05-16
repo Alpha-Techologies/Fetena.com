@@ -20,10 +20,9 @@ const fileUpload =
 
     if (file.size > maxSize) {
       // return next(
-      //   new APIError(`Please upload image smaller than` + {maxSize}, StatusCodes.BAD_REQUEST)
-      // );
+      //   new APIError(`Please upload image smaller than` + {maxSize}, StatusCodes.BAD_REQUEST) // );
       return new APIError(
-        `Please upload file smaller than` + { maxSize },
+        `Please upload file smaller than ${maxSize}`,
         StatusCodes.BAD_REQUEST
       );
     }
