@@ -52,29 +52,30 @@ exports.createExam = catchAsync(async (req, res, next) => {
       }
 
       exam.material = MaterialLink;
-    } else if (req.files.examFile) {
-      const examFile = req.files.examFile;
-      // check if the examMaterial is a PDF
-      if (!examFile.mimetype.startsWith("application/pdf")) {
-        return next(
-          new APIError("Please upload a Proper PDF", StatusCodes.BAD_REQUEST)
-        );
-      }
-
-      const examFileLink = await fileUpload({
-        file: examFile,
-        name: `examFile_` + exam._id,
-        filePath: "examFiles",
-        maxSize: 4 * 1024 * 1024,
-      });
-
-      // check for error on the file
-      if (examFileLink instanceof Error) {
-        return next(examFileLink);
-      }
-
-      exam.examFile = examFileLink;
     }
+  if (req.files.examFile) {
+    const examFile = req.files.examFile;
+    // check if the examMaterial is a PDF
+    if (!examFile.mimetype.startsWith("application/pdf")) {
+      return next(
+        new APIError("Please upload a Proper PDF", StatusCodes.BAD_REQUEST)
+      );
+    }
+
+    const examFileLink = await fileUpload({
+      file: examFile,
+      name: `examFile_` + exam._id,
+      filePath: "examFiles",
+      maxSize: 4 * 1024 * 1024,
+    });
+
+    // check for error on the file
+    if (examFileLink instanceof Error) {
+      return next(examFileLink);
+    }
+
+    exam.examFile = examFileLink;
+  }
 
   await exam.save();
 

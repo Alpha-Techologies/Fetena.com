@@ -37,7 +37,8 @@ exports.updateExamResource = catchAsync(async (req, res, next) => {
     }
 
     exam.material = MaterialLink;
-  } else if (req.files.examFile) {
+  }
+  if (req.files.examFile) {
     const examFile = req.files.examFile;
     if (!examFile.mimetype.startsWith("application/pdf")) {
       return next(

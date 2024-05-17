@@ -68,6 +68,14 @@ const ExamSchema = new mongoose.Schema({
   examFile: {
     type: String,
   },
+  startDate: {
+    type: Date,
+  },
+  requiredField: [
+    {
+      type: String,
+    },
+  ],
 });
 
 const Exam = mongoose.model("Exam", ExamSchema);
