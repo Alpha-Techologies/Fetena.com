@@ -46,7 +46,6 @@ exports.createExam = catchAsync(async (req, res, next) => {
     }
 
     exam.material = MaterialLink;
-    console.log(MaterialLink);
   } else if (req.files.examFile) {
     const examFile = req.files.examFile;
     // check if the examMaterial is a PDF
@@ -72,7 +71,6 @@ exports.createExam = catchAsync(async (req, res, next) => {
   }
 
   await exam.save();
-  console.log(exam);
 
   res.status(201).json({
     status: "success",
