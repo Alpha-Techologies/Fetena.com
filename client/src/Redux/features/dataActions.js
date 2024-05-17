@@ -182,3 +182,43 @@ export const joinOrganization = createAsyncThunk(
     }
   }
 );
+
+export const organizationStaff = createAsyncThunk(
+  "data/organizationStaff",
+  async (id, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${url}/organizations/staff/${id}`);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const activateStaff = createAsyncThunk(
+  "data/activateStaff",
+  async ({ id, userId }, { rejectWithValue }) => {
+    console.log(id, userId, 'id, userId');
+    try {
+      const { data } = await axios.post(`${url}/organizations/activate/${id}`, {userId});
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deactivateStaff = createAsyncThunk(
+  "data/deactivateStaff",
+  async ({ id, userId }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `${url}/organizations/deactivate/${id}`,
+        {userId}
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);

@@ -10,7 +10,10 @@ import {
   switchWorkspace,
   updateOrganization,
   updateOrganizationLogo,
-  joinOrganization
+  joinOrganization,
+  organizationStaff,
+  activateStaff,
+  deactivateStaff
 } from "./dataActions";
 
 const initialState = {
@@ -137,6 +140,36 @@ const dataSlice = createSlice({
         state.loading = false;
       })
       .addCase(joinOrganization.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(organizationStaff.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(organizationStaff.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(organizationStaff.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(activateStaff.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(activateStaff.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(activateStaff.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(deactivateStaff.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deactivateStaff.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(deactivateStaff.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
