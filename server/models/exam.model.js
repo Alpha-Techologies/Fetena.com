@@ -1,52 +1,69 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const ExamSchema = new mongoose.Schema({
-
   examName: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
   duration: {
     type: Number,
     required: true,
-    min: [1, 'Duration must be at least 1 minute']
+    min: [1, "Duration must be at least 1 minute"],
   },
   examKey: {
     type: String,
-    required: true,
-    trim: true
+    trim: true,
   },
-  description: {
+  instruction: {
     type: String,
-    required: true
+    required: true,
+  },
+  securityLevel: {
+    type: String,
+    enum: ["low", "high"],
+    required: true,
+  },
+  examType: {
+    type: String,
+    enum: ["pdfUpload", "createOnline", "worksheet"],
+    required: true,
   },
   privateAnswer: {
     type: Boolean,
-    default: false
+    default: false,
   },
   privateScore: {
     type: Boolean,
-    default: false
+    default: false,
   },
-  toolsPermitted: [{
-    type: String,
-    trim: true
-  }],
+  toolsPermitted: [
+    {
+      type: String,
+      trim: true,
+    },
+  ],
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: "User",
   },
   invigilatorID: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: "User",
   },
-  questions: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Question'
-  }]
+  questions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Question",
+    },
+  ],
+  access: {
+    type: String,
+    enum: ["closed", "open"],
+    default: "closed",
+  },
 });
 
-const Exam = mongoose.model('Exam', ExamSchema);
+const Exam = mongoose.model("Exam", ExamSchema);
 
 module.exports = Exam;
