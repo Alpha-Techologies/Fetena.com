@@ -36,8 +36,8 @@ const CreateExam = () => {
       duration: 1 ,
       examStartDate: null,
       organization: "org",
-      privateAnswer: "",
-      privateScore: "",
+      privateAnswer: false,
+      privateScore: false,
       instruction: "",
       securityLevel: "low",
       examType: "",
@@ -45,7 +45,7 @@ const CreateExam = () => {
       formulasCollection: false,
       uploadMaterials: false,
       material: null,
-      
+      questions: [],
     };
   });
 
@@ -348,7 +348,7 @@ const CreateExam = () => {
     setShortAnswer={setShortAnswer}
     shortAnswer={shortAnswer}
     setChoose={setChoose}
-
+  
     setTrueFalse={setTrueFalse}
   
   />

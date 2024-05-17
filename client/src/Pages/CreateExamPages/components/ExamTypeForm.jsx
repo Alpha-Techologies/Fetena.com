@@ -15,8 +15,8 @@ const ExamTypeForm = ({setActiveTabKey}) => {
 
   <Form.Item  name="examType" rules={[{ required: true, message: "Please input the exam type!" }]}>
   <Radio.Group>
-    <Radio value="Pdf Upload"> Upload the question in pdf </Radio>
-    <Radio value="Create Online"> Create the exam online </Radio>
+    <Radio value="pdfUpload"> Upload the question in pdf </Radio>
+    <Radio value="createOnline"> Create the exam online </Radio>
     <Radio value="worksheet"> Create worksheet </Radio>
   </Radio.Group>
 </Form.Item>

@@ -18,6 +18,7 @@ const ExamQuestionForm = ({
   setQuestionType,
   shortAnswer,
   essay,
+  setActiveTabKey
 
 
 }) => {
@@ -188,7 +189,7 @@ const ExamQuestionForm = ({
              <div className="flex gap-8 items-center justify-center">
              <h3 className=" font-semibold text-lg">Total Questions <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
              <h3 className=" font-semibold text-lg">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3>
-             <Button type="primary" className="px-16" onClick={() => setactve}>Preview</Button>
+             <Button type="primary" className="px-16" onClick={() => setActiveTabKey("Preview")}>Preview</Button>
  
        </div>
  </Card>

@@ -22,30 +22,6 @@ const updateQuestionCount = () => { setQuestionCount(questionCount + 1) }
 
 const {user} = useSelector((state) => state.auth);
 
-const handleQuestionsEdit = (questionType, index) => {
-  const updatedQuestionsCollection = [...questionsCollection];
-  const updatedQuestion = updatedQuestionsCollection[index];
-
-  // Update the question properties based on the question type
-  if (questionType === "True/False") {
-    updatedQuestion.points = trueFalse.points;
-    updatedQuestion.questionText = trueFalse.questionText;
-    updatedQuestion.correctAnswer = trueFalse.correctAnswer;
-  } else if (questionType === "choose") {
-    updatedQuestion.points = choose.points;
-    updatedQuestion.questionText = choose.questionText;
-    updatedQuestion.questionChoice = choose.questionChoice;
-    updatedQuestion.correctAnswer = choose.correctAnswer;
-  } else if (questionType === "shortAnswer") {
-    // Update properties for short answer questions
-  } else if (questionType === "essay") {
-    // Update properties for essay questions
-  }
-
-  updatedQuestionsCollection[index] = updatedQuestion;
-  setQuestionsCollection(updatedQuestionsCollection);
-};
-
 
 
 const submitExam = () => {
@@ -81,11 +57,13 @@ const submitExam = () => {
         toast.error("Please enter the exam type");
         return;
     }
-    if (!basicInfoValues.material) {
-        toast.error("Please enter the material");
+    if (!basicInfoValues.material || !basicInfoValues.material.name) {
+        toast.error("Please upload the material");
         return;
     }
+    
 
+     
 
  // Check if questions are available
  if (questionsCollection.length === 0) {
@@ -103,14 +81,23 @@ const submitExam = () => {
 axios.post('http://localhost:8080/api/questions', questionsCollection)
     .then(response => {
         // Handle success
-        console.log('Exam submitted successfully:', response.data);
+        console.log('Exam submitted successfully:', response.data.data.data);
+        setBasicInfoValues({ ...basicInfoValues, questions: response.data.data.data });
+        console.log(basicInfoValues)
         toast.success("Exam submitted successfully.");
     })
     .catch(error => {
         // Handle error
         console.error('Error submitting exam:', error);
         toast.error("Error submitting exam. Please try again later.");
+    })
+    .finally(() => {
+        // Clear questionsCollection and remove from local storage
+        setQuestionsCollection([]);
+        localStorage.removeItem('questionsCollection');
     });
+
+    
 
 }
 
@@ -350,9 +337,7 @@ axios.post('http://localhost:8080/api/questions', questionsCollection)
        />
      </div>
     
-        <div className="flex justify-end">
-        <Button className="px-16 mx-4 border-blue-300" onClick={() => handleQuestionsSave("True/False", index)}>Edit</Button>
-        </div>
+       
       </Card>
 
 
