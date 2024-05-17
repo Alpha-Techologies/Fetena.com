@@ -21,6 +21,7 @@ exports.protect = catchAsync(async (req, res, next) => {
       refreshToken: payload.refreshToken,
     });
 
+
     if (!existingToken || !existingToken?.isValid) {
       return next(
         new APIError(

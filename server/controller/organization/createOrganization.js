@@ -51,6 +51,7 @@ exports.createOrganization = catchAsync(async (req, res, next) => {
     status: "activated",
   });
 
+
   res.status(StatusCodes.CREATED).json({
     sucess: true,
     data: { organization: newOrganization, admin: organizationExaminer },
