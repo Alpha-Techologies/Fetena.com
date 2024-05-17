@@ -7,6 +7,7 @@ const factory = require("../controller/handlerFactory");
 const { fileUpload } = require("./profile/fileUpload");
 const { StatusCodes } = require("http-status-codes");
 const Organization = require("../models/organization.model");
+const OrganizationExaminer = require("../models/organization.examiner.model");
 
 // const RockTemp = require("../models/rockTempModel");
 
@@ -138,7 +139,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 });
 
 exports.followOrganization = catchAsync(async (req, res, next) => {
-  const  organizationId  = req.params.id;
+  const organizationId = req.params.id;
   const user = await User.findOne({
     //kkk replace with req.user.id
     _id: req.user.id,
@@ -161,7 +162,7 @@ exports.followOrganization = catchAsync(async (req, res, next) => {
 });
 
 exports.unfollowOrganization = catchAsync(async (req, res, next) => {
-  const  organizationId  = req.params.id;
+  const organizationId = req.params.id;
   const user = await User.findOne({
     //kkk replace with req.user.id
     _id: req.user.id,
@@ -195,3 +196,5 @@ exports.addAsAdmin = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+
+exports.getUserOrganization = factory.getAll(OrganizationExaminer, "addExaminerStatus");

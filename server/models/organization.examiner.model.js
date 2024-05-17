@@ -2,7 +2,6 @@
 
 const mongoose = require("mongoose");
 
-
 const OrganizationExaminerSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -18,6 +17,11 @@ const OrganizationExaminerSchema = new mongoose.Schema({
     type: String,
     enum: ["pending", "activated", "deactivated"],
     default: "pending",
+  },
+  userType: {
+    type: String,
+    enum: ["examiner", "admin"],
+    default: "examiner",
   },
 });
 

@@ -32,22 +32,26 @@ exports.getOne = (Model) =>
     });
   });
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, options = "") =>
   catchAsync(async (req, res, next) => {
     // currentTime, pathname, method
     // const {currentTime,_parsedOriginalUrl} = req
     // console.log(currentTime)
     // console.log(_parsedOriginalUrl.pathname)
 
+    let opt = {};
+    if (options === "addUser") opt = { user: req.user.id };
+    if (options === "addOrganization") opt = { organization: req.params.id };
+    if (options === "addExaminerStatus")
+      opt = { user: req.user.id, status: "activated" };
+
     const page = req.query.page * 1 || 1;
     const limit = req.query.limit * 1 || 10;
 
-    let count = new APIFeatures(Model.find(req.body.options || {}), req.query)
-      .filter()
-      .count();
+    let count = new APIFeatures(Model.find(opt), req.query).filter().count();
     let total = await count.query;
 
-    let query = new APIFeatures(Model.find(req.body.options || {}), req.query)
+    let query = new APIFeatures(Model.find(opt), req.query)
       .filter()
       .field()
       .sort()
@@ -151,6 +155,33 @@ exports.createOne = (Model) =>
         data: doc,
       },
     });
+  });
+
+exports.createMany = (Model, returnOnlyId = false) =>
+  catchAsync(async (req, res, next) => {
+    const doc = await Model.insertMany(req.body);
+    if (!doc) {
+      return next(
+        new APIError(`An error occured while creating the document`, 404)
+      );
+    }
+
+    if (returnOnlyId) {
+      let id = doc.map((item) => item._id);
+      res.status(201).json({
+        status: "success",
+        data: {
+          data: id,
+        },
+      });
+    } else {
+      res.status(201).json({
+        status: "success",
+        data: {
+          data: doc,
+        },
+      });
+    }
   });
 
 // exports.getOneMedia = (collectionName) =>

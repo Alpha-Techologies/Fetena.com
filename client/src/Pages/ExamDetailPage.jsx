@@ -54,7 +54,6 @@ const ExamDetailPage = () => {
 <p className="font-semibold"><span className="font-bold text-blue-700">Question : </span>18</p>
 <p className="font-semibold"><span className="font-bold text-blue-700">Time limit : </span>27 Minutes</p>
 
-<p className="font-semibold"><span className="font-bold text-blue-700">Allowed Attempts : </span>Unlimited</p>
 
           </div>
 

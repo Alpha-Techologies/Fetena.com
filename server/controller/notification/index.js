@@ -1,4 +1,4 @@
-const { getNotification, addOptionToBody } = require("./getNotification");
+const { getNotification } = require("./getNotification");
 const {
   updateNotification,
   authorizeNotificationUpdate,

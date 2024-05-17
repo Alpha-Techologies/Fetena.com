@@ -68,7 +68,7 @@ class APIFeatures {
       { path: "adminUser", options: { strictPopulate: false } },
       { path: "user", options: { strictPopulate: false } },
       { path: "questionID", options: { strictPopulate: false } },
-      { path: "adminOf", options: { strictPopulate: false } },
+      // { path: "adminOf", options: { strictPopulate: false } },
       { path: "organizationsFollowed", options: { strictPopulate: false } },
       { path: "organizationsJoined", options: { strictPopulate: false } },
       { path: "follower", options: { strictPopulate: false } },
