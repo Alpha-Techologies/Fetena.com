@@ -257,3 +257,17 @@ export const getUserOrganizations = createAsyncThunk(
     }
   }
 );
+
+export const getNotifications = createAsyncThunk(
+  "data/getNotifications",
+  async (page, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        `${url}/notifications/?page=${page}&fields=message,createdAt,read`
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);

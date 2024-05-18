@@ -71,7 +71,7 @@ const CreateOrganization = () => {
           form.resetFields();
           toast.success("Organization created successfully");
           navigate("/dashboard/organizations");
-          dispatch(getMe())// Redirect here
+          dispatch(getMe())
         } else {
           toast.error(res.payload.message);
         }

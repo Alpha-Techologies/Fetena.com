@@ -34,6 +34,7 @@ import SupportPage from "../Pages/SupportPage";
 import ActivityLogPage from "../Pages/ActivityLogPage";
 import OrganizationStaffPage from "../Pages/OrganizationStaffPage";
 import OrganizationSettingsPage from "../Pages/OrganizationSettingsPage";
+import NotificationPage from "../Pages/NotificationsPage";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -94,6 +95,10 @@ const AllRoutes = () => {
           <Route
             path='profile'
             element={<ProfilePage />}
+          />
+          <Route
+            path='notifications'
+            element={<NotificationPage />}
           />
           <Route
             path='exams'

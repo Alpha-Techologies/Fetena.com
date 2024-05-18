@@ -481,10 +481,19 @@ const DashboardScreen = () => {
       <Sider
         collapsible
         collapsed={collapsed}
+        style={{
+          overflow: "auto",
+          height: "100vh",
+          position: "fixed",
+          left: 0,
+          top: 0,
+          bottom: 0,
+        }}
         onCollapse={(value) => setCollapsed(value)}
         theme='light'>
         <Link
           to={""}
+          onClick={() => dispatch(switchSidebar("1"))}
           className='demo-logo-vertical p-4 flex justify-center '>
           <img
             src={fetena_logo}
@@ -506,12 +515,19 @@ const DashboardScreen = () => {
           }
         />
       </Sider>
-      <Layout>
+      <Layout
+        style={{
+          marginLeft: collapsed ? 75 : 200,
+        }}>
         <Header
           className='flex justify-between items-center'
           style={{
             padding: 16,
             background: "white",
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            width: "100%",
           }}>
           <h1 className='text-xl font-semibold text-primary-500'>
             {"Hello there, " + user.firstName + " " + user.lastName + "!"}
@@ -562,7 +578,8 @@ const DashboardScreen = () => {
         </Header>
         <Content
           style={{
-            margin: "0 16px",
+            margin: "24px 16px 0",
+            overflow: "initial",
           }}>
           {
             // TODO: loading screen issue becasue of infinte loop useEffect from the parent component into the child pages

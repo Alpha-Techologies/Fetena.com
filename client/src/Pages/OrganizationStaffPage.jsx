@@ -36,6 +36,8 @@ const OrganizationStaffPage = () => {
             status: item.status,
           }));
           setStaffs(updatedStaffs);
+        } else {
+          toast.error(res.payload.message);
         }
       })
       .catch((error) => {
