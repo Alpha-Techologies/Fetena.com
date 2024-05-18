@@ -9,7 +9,7 @@ import { Icon } from "@iconify/react";
 
 const NotificationsPage = () => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(new Set());
+  const [data, setData] = useState([]);
   const {user} = useSelector((state) => state.auth);
   let totalPages = 0
   const dispatch = useDispatch();
@@ -25,12 +25,12 @@ const NotificationsPage = () => {
     .then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         totalPages = res.payload.data.paginationData.totalPages;
-        const updatedSet = new Set(data);
-        res.payload.data.data.forEach((item) => {
-          updatedSet.add(item);
-        });
-        setData(updatedSet);
-        console.log(data.length, 'data length');
+        // const updatedSet = new Set(data);
+        // res.payload.data.data.forEach((item) => {
+        //   updatedSet.add(item);
+        // });
+        setData([...data, ...res.payload.data.data]);
+        console.log(res.payload.data, data, 'data length');
         // const notificationData = res.payload.data.data;
         // console.log(notificationData, 'notification data');
         // setData([...data, notificationData]);
@@ -53,6 +53,8 @@ const NotificationsPage = () => {
     console.log('is it from here');
     loadMoreData();
   }, []);
+
+  // loadMoreData();
 
   const handleUpdateNotification = (id, notification) => {
     dispatch(updateNotification({id, notification}))
@@ -86,9 +88,9 @@ const NotificationsPage = () => {
           // border: "1px solid rgba(140, 140, 140, 0.35)",
         }}>
         <InfiniteScroll
-          dataLength={Array.from(data).length}
-          next={loadMoreData}
-          hasMore={Array.from(data).length < totalPages}
+          dataLength={data.length}
+          next={() => loadMoreData()}
+          hasMore={data.length < totalPages}
           loader={
             <Skeleton
               avatar
@@ -105,7 +107,7 @@ const NotificationsPage = () => {
             renderItem={(item) => (
               <List.Item
                 className='hover:bg-gray-50 cursor-pointer w-full px-8'
-                onClick={() => handleUpdateNotification(item._id, {read: true, user: user?._id})}
+                onClick={() => handleUpdateNotification(item._id, {read: true})}
                 key={item?._id}>
                 <List.Item.Meta
                   avatar={
