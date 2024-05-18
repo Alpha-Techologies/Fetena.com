@@ -51,6 +51,10 @@ const ExamSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  organization: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Organization",
+  },
   questions: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -68,6 +72,14 @@ const ExamSchema = new mongoose.Schema({
   examFile: {
     type: String,
   },
+  startDate: {
+    type: Date,
+  },
+  requiredField: [
+    {
+      type: String,
+    },
+  ],
 });
 
 const Exam = mongoose.model("Exam", ExamSchema);
