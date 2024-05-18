@@ -22,6 +22,7 @@ const initialState = {
   error: null,
   workspace: null,
   currentSidebar: "1",
+  currentUserOrganizationsIdAndRole: null,
 };
 
 const dataSlice = createSlice({
@@ -34,6 +35,9 @@ const dataSlice = createSlice({
     switchSidebar(state, action) {
       console.log(action, 'action');
       state.currentSidebar = action.payload;
+    },
+    currentUserOrganizationsIdAndRole(state, action) {
+      state.userOrganizationsIdAndRole = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -184,6 +188,7 @@ const dataSlice = createSlice({
       })
       .addCase(getUserOrganizations.fulfilled, (state, action) => {
         state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
       })
       .addCase(getUserOrganizations.rejected, (state, action) => {
         state.loading = false;
@@ -193,6 +198,6 @@ const dataSlice = createSlice({
   },
 });
 
-export const { switchToPersonalWorkspace, switchSidebar } = dataSlice.actions;
+export const { switchToPersonalWorkspace, switchSidebar, currentUserOrganizationsIdAndRole } = dataSlice.actions;
 
 export default dataSlice.reducer;

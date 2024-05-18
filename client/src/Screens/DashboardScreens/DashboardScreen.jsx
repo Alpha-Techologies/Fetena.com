@@ -17,12 +17,18 @@ import { Outlet, Link } from "react-router-dom";
 import fetena_logo from "../../assets/fetena_logo.png";
 import { logoutUser } from "../../Redux/features/authActions";
 import Loading from "../../Components/Loading";
-import { getOneOrganization, getUserOrganizations, switchWorkspace } from "../../Redux/features/dataActions";
+import {
+  getOneOrganization,
+  getUserOrganizations,
+  switchWorkspace,
+} from "../../Redux/features/dataActions";
 import { toast } from "react-toastify";
 import {
   switchToPersonalWorkspace,
   switchSidebar,
+  currentUserOrganizationsIdAndRole,
 } from "../../Redux/features/dataSlice";
+import { current } from "@reduxjs/toolkit";
 const { Header, Content, Footer, Sider } = Layout;
 
 const DashboardScreen = () => {
@@ -34,46 +40,47 @@ const DashboardScreen = () => {
   const [currentWorkspace, setCurrentWorkspace] = useState("personal");
   const { user } = useSelector((state) => state.auth);
   const { workspace } = useSelector((state) => state.data);
-  const {currentSidebar} = useSelector((state) => state.data);
+  const { currentSidebar } = useSelector((state) => state.data);
   const [userRole, setUserRole] = useState("examinee");
   const [organization, setOrganization] = useState({});
   const [userOrganizations, setUserOrganizations] = useState([]);
+  const [userOrganizationsIdAndRole, setUserOrganizationsIdAndRole] = useState(
+    []
+  );
   const [sidebarSelected, setSidebarSelected] = useState("1");
 
   const fetchUserOrganizations = () => {
-dispatch(getUserOrganizations())
-    .then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        console.log(res);
-        const userOrganizations = res.payload.data.data
-        setUserOrganizations(userOrganizations)
-        console.log(userOrganizations);
-      } else {
-        toast.error(res.payload.message)
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      toast.error("There is some error in the server!");
-    });
-  }
+    dispatch(getUserOrganizations())
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          console.log(res);
+          const userOrganizations = res.payload.data.data;
+          setUserOrganizations(userOrganizations);
+          console.log(userOrganizations);
+        } else {
+          toast.error(res.payload.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("There is some error in the server!");
+      });
+  };
 
   useEffect(() => {
     if (workspace === null) {
-      setUserRole('examinee')
-      setCurrentWorkspace('peronal')
+      setUserRole("examinee");
+      setCurrentWorkspace("peronal");
     } else if (workspace.adminUser._id === user._id) {
-      setUserRole('admin')
-      setCurrentWorkspace(workspace._id)
+      setUserRole("admin");
+      setCurrentWorkspace(workspace._id);
     } else {
-      setUserRole('examiner')
-      setCurrentWorkspace(workspace._id)
+      setUserRole("examiner");
+      setCurrentWorkspace(workspace._id);
     }
 
-    fetchUserOrganizations()
-
+    fetchUserOrganizations();
   }, []);
-
 
   function getItem(label, key, icon, children, type, danger, disabled) {
     return {
@@ -89,7 +96,11 @@ dispatch(getUserOrganizations())
 
   const examineeSidebarItems = [
     getItem(
-      <Link to='' onClick={() => dispatch(switchSidebar("1"))}>Dashboard</Link>,
+      <Link
+        to=''
+        onClick={() => dispatch(switchSidebar("1"))}>
+        Dashboard
+      </Link>,
       "1",
       <Icon
         className='w-5 h-5'
@@ -97,7 +108,11 @@ dispatch(getUserOrganizations())
       />
     ),
     getItem(
-      <Link to='organizations' onClick={() => setSidebarSelected("2")}>Organizations</Link>,
+      <Link
+        to='organizations'
+        onClick={() => setSidebarSelected("2")}>
+        Organizations
+      </Link>,
       "2",
       <Icon
         className='w-4 h-4'
@@ -105,7 +120,11 @@ dispatch(getUserOrganizations())
       />
     ),
     getItem(
-      <Link to='exams' onClick={() => dispatch(switchSidebar("3"))}>Exams</Link>,
+      <Link
+        to='exams'
+        onClick={() => dispatch(switchSidebar("3"))}>
+        Exams
+      </Link>,
       "3",
       <Icon
         className='w-5 h-5'
@@ -113,7 +132,11 @@ dispatch(getUserOrganizations())
       />
     ),
     getItem(
-      <Link to='results' onClick={() => dispatch(switchSidebar("4"))}>Results</Link>,
+      <Link
+        to='results'
+        onClick={() => dispatch(switchSidebar("4"))}>
+        Results
+      </Link>,
       "4",
       <Icon
         className='w-5 h-5'
@@ -121,7 +144,11 @@ dispatch(getUserOrganizations())
       />
     ),
     getItem(
-      <Link to='certifications' onClick={() => dispatch(switchSidebar("5"))}>Certifications</Link>,
+      <Link
+        to='certifications'
+        onClick={() => dispatch(switchSidebar("5"))}>
+        Certifications
+      </Link>,
       "5",
       <Icon
         className='w-5 h-5'
@@ -130,7 +157,11 @@ dispatch(getUserOrganizations())
     ),
     { type: "divider" },
     getItem(
-      <Link to='trainingVideos' onClick={() => dispatch(switchSidebar("6"))}>Training Videos</Link>,
+      <Link
+        to='trainingVideos'
+        onClick={() => dispatch(switchSidebar("6"))}>
+        Training Videos
+      </Link>,
       "6",
       <Icon
         className='w-5 h-5'
@@ -138,7 +169,11 @@ dispatch(getUserOrganizations())
       />
     ),
     getItem(
-      <Link to='support' onClick={() => dispatch(switchSidebar("7"))}>Support</Link>,
+      <Link
+        to='support'
+        onClick={() => dispatch(switchSidebar("7"))}>
+        Support
+      </Link>,
       "7",
       <Icon
         className='w-5 h-5'
@@ -149,7 +184,11 @@ dispatch(getUserOrganizations())
 
   const examinerSidebarItems = [
     getItem(
-      <Link to='' onClick={() => dispatch(switchSidebar("1"))}>Dashboard</Link>,
+      <Link
+        to=''
+        onClick={() => dispatch(switchSidebar("1"))}>
+        Dashboard
+      </Link>,
       "1",
       <Icon
         className='w-5 h-5'
@@ -170,7 +209,11 @@ dispatch(getUserOrganizations())
     ),
     { type: "divider" },
     getItem(
-      <Link to='trainingVideos' onClick={() => dispatch(switchSidebar("3"))}>Training Videos</Link>,
+      <Link
+        to='trainingVideos'
+        onClick={() => dispatch(switchSidebar("3"))}>
+        Training Videos
+      </Link>,
       "3",
       <Icon
         className='w-5 h-5'
@@ -178,7 +221,11 @@ dispatch(getUserOrganizations())
       />
     ),
     getItem(
-      <Link to='support' onClick={() => dispatch(switchSidebar("4"))}>Support</Link>,
+      <Link
+        to='support'
+        onClick={() => dispatch(switchSidebar("4"))}>
+        Support
+      </Link>,
       "4",
       <Icon
         className='w-5 h-5'
@@ -189,7 +236,11 @@ dispatch(getUserOrganizations())
 
   const orgAdminSidebarItems = [
     getItem(
-      <Link to='' onClick={() => dispatch(switchSidebar("1"))}>Dashboard</Link>,
+      <Link
+        to=''
+        onClick={() => dispatch(switchSidebar("1"))}>
+        Dashboard
+      </Link>,
       "1",
       <Icon
         className='w-5 h-5'
@@ -197,7 +248,11 @@ dispatch(getUserOrganizations())
       />
     ),
     getItem(
-      <Link to='exams' onClick={() => dispatch(switchSidebar("2"))}>Exams</Link>,
+      <Link
+        to='exams'
+        onClick={() => dispatch(switchSidebar("2"))}>
+        Exams
+      </Link>,
       "2",
       <Icon
         className='w-5 h-5'
@@ -205,7 +260,11 @@ dispatch(getUserOrganizations())
       />
     ),
     getItem(
-      <Link to='activities' onClick={() => dispatch(switchSidebar("3"))}>Activity Log</Link>,
+      <Link
+        to='activities'
+        onClick={() => dispatch(switchSidebar("3"))}>
+        Activity Log
+      </Link>,
       "3",
       <Icon
         className='w-4 h-4'
@@ -213,7 +272,11 @@ dispatch(getUserOrganizations())
       />
     ),
     getItem(
-      <Link to='staffs' onClick={() => dispatch(switchSidebar("4"))}>Staff</Link>,
+      <Link
+        to='staffs'
+        onClick={() => dispatch(switchSidebar("4"))}>
+        Staff
+      </Link>,
       "4",
       <Icon
         className='w-5 h-5'
@@ -221,7 +284,11 @@ dispatch(getUserOrganizations())
       />
     ),
     getItem(
-      <Link to='settings' onClick={() => dispatch(switchSidebar("5"))}>Settings</Link>,
+      <Link
+        to='settings'
+        onClick={() => dispatch(switchSidebar("5"))}>
+        Settings
+      </Link>,
       "5",
       <Icon
         className='w-5 h-5'
@@ -230,7 +297,11 @@ dispatch(getUserOrganizations())
     ),
     { type: "divider" },
     getItem(
-      <Link to='trainingVideos' onClick={() => dispatch(switchSidebar("6"))}>Training Videos</Link>,
+      <Link
+        to='trainingVideos'
+        onClick={() => dispatch(switchSidebar("6"))}>
+        Training Videos
+      </Link>,
       "6",
       <Icon
         className='w-5 h-5'
@@ -238,7 +309,11 @@ dispatch(getUserOrganizations())
       />
     ),
     getItem(
-      <Link to='support' onClick={() => dispatch(switchSidebar("7"))}>Support</Link>,
+      <Link
+        to='support'
+        onClick={() => dispatch(switchSidebar("7"))}>
+        Support
+      </Link>,
       "7",
       <Icon
         className='w-5 h-5'
@@ -253,9 +328,9 @@ dispatch(getUserOrganizations())
       setCurrentWorkspace(workspace);
       dispatch(switchToPersonalWorkspace());
       toast.success("Workspace switched successfully!", {
-        position: 'bottom-right'
+        position: "bottom-right",
       });
-      navigate('/dashboard')
+      navigate("/dashboard");
       return;
     }
     setCurrentWorkspace(workspace);
@@ -268,8 +343,8 @@ dispatch(getUserOrganizations())
           toast.success("Workspace switched successfully!", {
             position: "bottom-right",
           });
-          setUserRole(userRole)
-          navigate('/dashboard')
+          setUserRole(userRole);
+          navigate("/dashboard");
         } else {
           toast.error("There is an error while switching workspace!", {
             position: "bottom-right",
@@ -286,7 +361,11 @@ dispatch(getUserOrganizations())
     setWorkspaceDropdownItems([
       {
         label: (
-          <span onClick={() => changeWorkspace("personal", 'examinee')}>
+          <span
+            onClick={() => {
+              changeWorkspace("personal", "examinee");
+              dispatch(switchSidebar("1"));
+            }}>
             Personal Workspace
           </span>
         ),
@@ -305,14 +384,23 @@ dispatch(getUserOrganizations())
       },
     ]);
     let itemsSoFar = workspaceDropdownItems.length + 1;
-
+    let org = {}
 
     for (let i = 0; i < userOrganizations.length; i++) {
+      org[userOrganizations[i].organization._id] = userOrganizations[i].userType,
+      // setUserOrganizationsIdAndRole((prevItems) => [...prevItems, org]);
       setWorkspaceDropdownItems((prevItems) => [
         ...prevItems,
         {
           label: (
-            <span onClick={() => changeWorkspace(userOrganizations[i].organization._id, userOrganizations[i].userType)}>
+            <span
+              onClick={() => {
+                changeWorkspace(
+                  userOrganizations[i].organization._id,
+                  userOrganizations[i].userType
+                );
+                dispatch(switchSidebar("1"));
+              }}>
               {userOrganizations[i].organization?.name}
             </span>
           ),
@@ -343,6 +431,7 @@ dispatch(getUserOrganizations())
     };
 
     setWorkspaceDropdownItems((prevItems) => [...prevItems, joinOrgItem]);
+    dispatch(currentUserOrganizationsIdAndRole(org));
   };
 
   const profileDropdownItems = [
@@ -406,6 +495,7 @@ dispatch(getUserOrganizations())
         <Menu
           theme='light'
           defaultSelectedKeys={[currentSidebar]}
+          selectedKeys={[currentSidebar]}
           mode='inline'
           items={
             userRole === "examinee"
@@ -429,8 +519,8 @@ dispatch(getUserOrganizations())
           <div className='inline-flex items-center justify-center gap-4'>
             <Dropdown
               onClick={() => {
-                fetchUserOrganizations()
-                setupWorkspaceItems()
+                fetchUserOrganizations();
+                setupWorkspaceItems();
               }}
               overlayClassName='overflow-auto h-64'
               menu={{
@@ -440,9 +530,7 @@ dispatch(getUserOrganizations())
               <div className='text-primary-500 border w-full border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md inline-flex items-center cursor-pointer gap-2'>
                 <div className='inline-flex items-center justify-center gap-2 h-fit'>
                   <Icon icon='octicon:organization-24' />
-                  {workspace === null
-                    ? "Personal Workspace"
-                    : workspace.name}
+                  {workspace === null ? "Personal Workspace" : workspace.name}
                 </div>
                 <Icon icon='gridicons:dropdown' />
               </div>
