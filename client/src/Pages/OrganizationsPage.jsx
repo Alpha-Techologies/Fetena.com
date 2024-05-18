@@ -60,6 +60,7 @@ const OrganizationsPage = () => {
   const user = useSelector((state) => state.auth.user); // User information from Redux
   const [activeTabKey, setActiveTabKey] = useState("All"); // Active tab key
   const [followedOrganizations, setFollowedOrganizations] = useState([]);
+  const url = 'http://localhost:8080'
 
   // Function to handle tab changes
   const onTabChange = (key) => {
@@ -332,7 +333,7 @@ const OrganizationsPage = () => {
               onTabChange={onTabChange}
               tabProps={{ size: "middle" }}>
               {organizations.length > 0 ? (
-                <div className='grid grid-cols-4 gap-4 '>
+                <div className='flex flex-wrap gap-4 '>
                   {organizations.map((organization, index) => (
                     <Card
                       style={{ width: 300 }}
@@ -344,7 +345,7 @@ const OrganizationsPage = () => {
                         <Link to={`${organization._id}`}>
                           <img
                             className='w-12 h-12 rounded-full cursor-pointer'
-                            src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
+                            src={url + organization.logo}
                             alt=''
                           />
                         </Link>

@@ -11,7 +11,7 @@ import axios from "axios";
 
 
 
-const Preview = ({basicInfoValues, setBasicInfoValues, trueFalse, setTrueFalse, choose, setChoose, shortAnswer, setShortAnswer, essay, setEssay, questionsCollection, setQuestionsCollection, questionType, setQuestionType, choiceCount, setChoiceCount, trueFalseOnChange, chooseOnChange, essayOnChange, shortAnswerOnChange, handleQuestionsSave}) => {
+const Preview = ({setActiveTabKey,basicInfoValues, setBasicInfoValues, trueFalse, setTrueFalse, choose, setChoose, shortAnswer, setShortAnswer, essay, setEssay, questionsCollection, setQuestionsCollection, questionType, setQuestionType, choiceCount, setChoiceCount, trueFalseOnChange, chooseOnChange, essayOnChange, shortAnswerOnChange, handleQuestionsSave,setExamKey}) => {
 
   const totalPoints = questionsCollection.reduce((total, question) => total + (question.points || 0), 0);
 
@@ -24,82 +24,141 @@ const {user} = useSelector((state) => state.auth);
 
 
 
-const submitExam = () => {
-    if (!basicInfoValues.examName) {
-        toast.error("Please enter the exam name");
-        return;
-    }
-    if (!basicInfoValues.duration) {
-        toast.error("Please enter the duration");
-        return;
-    }
-    if (!basicInfoValues.examStartDate) {
-        toast.error("Please enter the exam start date");
-        return;
-    }
-    if (!basicInfoValues.organization) {
-        toast.error("Please enter the organization");
-        return;
-    }
-    if (!basicInfoValues.privateAnswer) {
-        toast.error("Please enter the private answer");
-        return;
-    }
-    if (!basicInfoValues.privateScore) {
-        toast.error("Please enter the private score");
-        return;
-    }
-    if (!basicInfoValues.instruction) {
-        toast.error("Please enter the instruction");
-        return;
-    }
-    if (!basicInfoValues.examType) {
-        toast.error("Please enter the exam type");
-        return;
-    }
-    if (!basicInfoValues.material || !basicInfoValues.material.name) {
-        toast.error("Please upload the material");
-        return;
-    }
-    
 
-     
+const submitExam = async () => {
+  if (!basicInfoValues.examName) {
+    toast.error("Please enter the exam name");
+    return;
+  }
+  if (!basicInfoValues.duration) {
+    toast.error("Please enter the duration");
+    return;
+  }
+  if (!basicInfoValues.examStartDate) {
+    toast.error("Please enter the exam start date");
+    return;
+  }
+  if (!basicInfoValues.organization) {
+    toast.error("Please enter the organization");
+    return;
+  }
+  if (!basicInfoValues.privateAnswer) {
+    toast.error("Please enter the private answer");
+    return;
+  }
+  if (!basicInfoValues.privateScore) {
+    toast.error("Please enter the private score");
+    return;
+  }
+  if (!basicInfoValues.instruction) {
+    toast.error("Please enter the instruction");
+    return;
+  }
+  if (!basicInfoValues.examType) {
+    toast.error("Please enter the exam type");
+    return;
+  }
+  if (!basicInfoValues.material || !basicInfoValues.material.name) {
+    toast.error("Please upload the material");
+    return;
+  }
 
- // Check if questions are available
- if (questionsCollection.length === 0) {
+  // Check if questions are available
+  if (questionsCollection.length === 0) {
     toast.error("Please add questions to submit the exam.");
     return;
+  }
+
+  try {
+    // Make the Axios POST request to save questions
+    const response = await axios.post('/api/questions', questionsCollection);
+
+    // Handle success
+    console.log('Questions submitted successfully:', response.data.data.data);
+
+    const updatedBasicInfoValues = { ...basicInfoValues, questions: response.data.data.data };
+    setBasicInfoValues(updatedBasicInfoValues);
+
+
+    const examDataToSend = new FormData();
+
+    examDataToSend.append(
+      "data",
+      JSON.stringify(
+        {
+          examName: updatedBasicInfoValues.examName,
+          duration: updatedBasicInfoValues.duration,
+          examStartDate: updatedBasicInfoValues.examStartDate,
+          organization: updatedBasicInfoValues.organization,
+          privateAnswer: updatedBasicInfoValues.privateAnswer,
+          privateScore: updatedBasicInfoValues.privateScore,
+          instruction: updatedBasicInfoValues.instruction,
+          securityLevel: updatedBasicInfoValues.securityLevel,
+          examType: updatedBasicInfoValues.examType,
+          access: updatedBasicInfoValues.access,
+          toolsPermitted: [
+            updatedBasicInfoValues.calculator && "calculator",
+            updatedBasicInfoValues.formulasCollection && "formulasCollection",
+            updatedBasicInfoValues.uploadMaterials && "uploadMaterials"
+          ].filter(Boolean), // Filters out any falsy values
+  
+          questions: response.data.data.data // Ensure the questions are from the response
+        }
+      )
+    )
+
+
+    if (updatedBasicInfoValues.material) {
+      examDataToSend.append("material", updatedBasicInfoValues.material);
+    }
+
+
+    // const newExamData = {
+    //   material: updatedBasicInfoValues.material,
+    //   data: JSON.stringify({
+    //     examName: updatedBasicInfoValues.examName,
+    //     duration: updatedBasicInfoValues.duration,
+    //     examStartDate: updatedBasicInfoValues.examStartDate,
+    //     organization: updatedBasicInfoValues.organization,
+    //     privateAnswer: updatedBasicInfoValues.privateAnswer,
+    //     privateScore: updatedBasicInfoValues.privateScore,
+    //     instruction: updatedBasicInfoValues.instruction,
+    //     securityLevel: updatedBasicInfoValues.securityLevel,
+    //     examType: updatedBasicInfoValues.examType,
+    //     access: updatedBasicInfoValues.access,
+    //     toolsPermitted: [
+    //       updatedBasicInfoValues.calculator && "calculator",
+    //       updatedBasicInfoValues.formulasCollection && "formulasCollection",
+    //       updatedBasicInfoValues.uploadMaterials && "uploadMaterials"
+    //     ].filter(Boolean), // Filters out any falsy values
+
+    //     questions: response.data.data.data // Ensure the questions are from the response
+    //   })
+    // };
+
+   
+    // Send examData to the /api/exams endpoint with authentication header
+    const examResponse = await axios.post('/api/exams', examDataToSend);
+
+    console.log('Exam data submitted successfully:', examResponse.data);
+    toast.success("Exam submitted successfully.");
+
+    // Clear questionsCollection and remove from local storage
+    setExamKey("abebe")
+    setQuestionsCollection([]);
+    setBasicInfoValues([]);
+    localStorage.removeItem('basicInfoValues');
+    localStorage.removeItem('questionsCollection');
+    setActiveTabKey('Success');
+  
+
+  } catch (error) {
+    // Handle error
+    console.error('Error submitting exam:', error);
+    toast.error("Error submitting exam. Please try again later.");
+  }
 }
 
-// // Prepare the data to send
-// const examData = {
-//     basicInfo: basicInfoValues,
-//     questions: questionsCollection
-// };
-
-// Make the Axios POST request
-axios.post('http://localhost:8080/api/questions', questionsCollection)
-    .then(response => {
-        // Handle success
-        console.log('Exam submitted successfully:', response.data.data.data);
-        setBasicInfoValues({ ...basicInfoValues, questions: response.data.data.data });
-        console.log(basicInfoValues)
-        toast.success("Exam submitted successfully.");
-    })
-    .catch(error => {
-        // Handle error
-        console.error('Error submitting exam:', error);
-        toast.error("Error submitting exam. Please try again later.");
-    })
-    .finally(() => {
-        // Clear questionsCollection and remove from local storage
-        setQuestionsCollection([]);
-        localStorage.removeItem('questionsCollection');
-    });
-
-    
-
-}
 
 
   return (

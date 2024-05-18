@@ -14,6 +14,8 @@ exports.createExam = catchAsync(async (req, res, next) => {
   //     return next(new APIError("There is no file", StatusCodes.BAD_REQUEST));
   //   }
 
+  console.log(req.files, req.body)
+
   if (!req.body.data) {
     return next(new APIError("There is no user data", StatusCodes.BAD_REQUEST));
   }
@@ -24,6 +26,7 @@ exports.createExam = catchAsync(async (req, res, next) => {
   const exam = new Exam(examData);
   exam.createdBy = exam.createdBy || req.user.id;
   exam.invigilatorID = exam.invigilatorID || req.user.id;
+
 
   // generate an exam key that will store a combination of characters and numbers and special characters that has a length of 6
   const examKey = generateRandomKey(6);
@@ -62,20 +65,20 @@ exports.createExam = catchAsync(async (req, res, next) => {
       );
     }
 
-    const examFileLink = await fileUpload({
-      file: examFile,
-      name: `examFile_` + exam._id,
-      filePath: "examFiles",
-      maxSize: 4 * 1024 * 1024,
-    });
+      const examFileLink = await fileUpload({
+        file: examFile,
+        name: `examFile_` + exam._id,
+        filePath: "examFiles",
+        maxSize: 4 * 1024 * 1024,
+      });
 
-    // check for error on the file
-    if (examFileLink instanceof Error) {
-      return next(examFileLink);
+      // check for error on the file
+      if (examFileLink instanceof Error) {
+        return next(examFileLink);
+      }
+
+      exam.examFile = examFileLink;
     }
-
-    exam.examFile = examFileLink;
-  }
 
   await exam.save();
 
