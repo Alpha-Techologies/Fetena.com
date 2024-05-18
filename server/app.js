@@ -66,9 +66,6 @@ app.use(
 );
 app.use(express.static("../public"));
 
-app.use(errorLogger.converter);
-app.use(errorLogger.notFound);
-app.use(errorLogger.handler);
 // if (process.env.NODE_ENV === "development") {
 //   app.use(morgan("dev"));
 // }
@@ -113,5 +110,8 @@ app.all("*", (req, res, next) => {
 });
 app.use(globalErrorHandler);
 
+app.use(errorLogger.converter);
+app.use(errorLogger.notFound);
+app.use(errorLogger.handler);
 
 module.exports = app;
