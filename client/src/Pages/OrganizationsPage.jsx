@@ -333,7 +333,7 @@ const OrganizationsPage = () => {
               onTabChange={onTabChange}
               tabProps={{ size: "middle" }}>
               {organizations.length > 0 ? (
-                <div className='grid grid-cols-4 gap-4 '>
+                <div className='flex flex-wrap gap-4 '>
                   {organizations.map((organization, index) => (
                     <Card
                       style={{ width: 300 }}

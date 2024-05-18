@@ -15,7 +15,8 @@ import {
   activateStaff,
   deactivateStaff,
   getUserOrganizations,
-  getNotifications
+  getNotifications,
+  updateNotification
 } from "./dataActions";
 
 const initialState = {
@@ -203,6 +204,17 @@ const dataSlice = createSlice({
         // state.userOrganizations = action.payload.data.data;
       })
       .addCase(getNotifications.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updateNotification.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateNotification.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+      })
+      .addCase(updateNotification.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

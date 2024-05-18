@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Avatar, Divider, List, Skeleton, Card } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useDispatch } from "react-redux";
-import { getNotifications } from "../Redux/features/dataActions";
+import { useDispatch, useSelector } from "react-redux";
+import { getNotifications, updateNotification } from "../Redux/features/dataActions";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { Icon } from "@iconify/react";
@@ -10,6 +10,7 @@ import { Icon } from "@iconify/react";
 const NotificationsPage = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(new Set());
+  const {user} = useSelector((state) => state.auth);
   let totalPages = 0
   const dispatch = useDispatch();
   let page = 1
@@ -53,6 +54,25 @@ const NotificationsPage = () => {
     loadMoreData();
   }, []);
 
+  const handleUpdateNotification = (id, notification) => {
+    dispatch(updateNotification({id, notification}))
+      .then((res) => {
+      console.log(res, 'updatenotification res');
+      if (res.meta.requestStatus === "fulfilled") {
+        toast.success("Notification set as read!", {
+          position: "bottom-right",
+        });
+        loadMoreData();
+      } else {
+        toast.error(res.payload.message);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      toast.error("There is some error in the server!");
+    });
+  };
+
   return (
     <>
       <div className='flex justify-between gap-4 items-center'>
@@ -85,6 +105,7 @@ const NotificationsPage = () => {
             renderItem={(item) => (
               <List.Item
                 className='hover:bg-gray-50 cursor-pointer w-full px-8'
+                onClick={() => handleUpdateNotification(item._id, {read: true, user: user?._id})}
                 key={item?._id}>
                 <List.Item.Meta
                   avatar={

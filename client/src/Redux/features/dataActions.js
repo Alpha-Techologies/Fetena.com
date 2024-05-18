@@ -271,3 +271,18 @@ export const getNotifications = createAsyncThunk(
     }
   }
 );
+
+export const updateNotification = createAsyncThunk(
+  "data/updateNotification",
+  async ({id, notification}, { rejectWithValue }) => {
+    console.log(id, notification);
+    try {
+      const { data } = await axios.get(
+        `${url}/notifications/${id}`, notification
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);

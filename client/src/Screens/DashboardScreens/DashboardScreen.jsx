@@ -44,11 +44,8 @@ const DashboardScreen = () => {
   const [userRole, setUserRole] = useState("examinee");
   const [organization, setOrganization] = useState({});
   const [userOrganizations, setUserOrganizations] = useState([]);
-  const [userOrganizationsIdAndRole, setUserOrganizationsIdAndRole] = useState(
-    []
-  );
-  const [sidebarSelected, setSidebarSelected] = useState("1");
-
+  
+  
   const fetchUserOrganizations = () => {
     dispatch(getUserOrganizations())
       .then((res) => {
@@ -110,7 +107,7 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='organizations'
-        onClick={() => setSidebarSelected("2")}>
+        onClick={() => dispatch(switchSidebar("2"))}>
         Organizations
       </Link>,
       "2",
