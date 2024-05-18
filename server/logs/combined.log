@@ -376,3 +376,6 @@ ReferenceError: logger is not defined
 [2024-05-18 15:10:05]: http: ::1 - - [18/May/2024:12:10:05 +0000] "GET /null HTTP/1.1" 404 1255 "http://localhost:4000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0"
 [2024-05-18 15:10:05]: info: organizations.find([{"name":{}},{"sort":{"createdAt":-1},"skip":null,"limit":null,"projection":{"name":1}}])
 [2024-05-18 15:10:05]: http: ::1 - - [18/May/2024:12:10:05 +0000] "GET /api/organizations?page=1&name=&sort=&limit=Infinity&fields=name HTTP/1.1" 200 686 "http://localhost:4000/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0"
+[2024-05-18 15:12:04]: info: Server running on port 8080
+[2024-05-18 15:12:04]: info: DBconnection succcessful
+[2024-05-18 15:12:04]: info: users.createIndex([{"email":1},{"unique":true,"background":true}])
