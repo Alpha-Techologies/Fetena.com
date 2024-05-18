@@ -17,9 +17,12 @@ import { Outlet, Link } from "react-router-dom";
 import fetena_logo from "../../assets/fetena_logo.png";
 import { logoutUser } from "../../Redux/features/authActions";
 import Loading from "../../Components/Loading";
-import { getOneOrganization, switchWorkspace } from "../../Redux/features/dataActions";
+import { getOneOrganization, getUserOrganizations, switchWorkspace } from "../../Redux/features/dataActions";
 import { toast } from "react-toastify";
-import { switchToPersonalWorkspace } from "../../Redux/features/dataSlice";
+import {
+  switchToPersonalWorkspace,
+  switchSidebar,
+} from "../../Redux/features/dataSlice";
 const { Header, Content, Footer, Sider } = Layout;
 
 const DashboardScreen = () => {
@@ -30,21 +33,45 @@ const DashboardScreen = () => {
   const [workspaceDropdownItems, setWorkspaceDropdownItems] = useState([]);
   const [currentWorkspace, setCurrentWorkspace] = useState("personal");
   const { user } = useSelector((state) => state.auth);
-  const {workspace} = useSelector((state) => state.data);
+  const { workspace } = useSelector((state) => state.data);
+  const {currentSidebar} = useSelector((state) => state.data);
   const [userRole, setUserRole] = useState("examinee");
   const [organization, setOrganization] = useState({});
+  const [userOrganizations, setUserOrganizations] = useState([]);
+  const [sidebarSelected, setSidebarSelected] = useState("1");
+
+  const fetchUserOrganizations = () => {
+dispatch(getUserOrganizations())
+    .then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        console.log(res);
+        const userOrganizations = res.payload.data.data
+        setUserOrganizations(userOrganizations)
+        console.log(userOrganizations);
+      } else {
+        toast.error(res.payload.message)
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      toast.error("There is some error in the server!");
+    });
+  }
 
   useEffect(() => {
     if (workspace === null) {
       setUserRole('examinee')
       setCurrentWorkspace('peronal')
     } else if (workspace.adminUser._id === user._id) {
-      setUserRole('orgAdmin')
+      setUserRole('admin')
       setCurrentWorkspace(workspace._id)
     } else {
       setUserRole('examiner')
       setCurrentWorkspace(workspace._id)
     }
+
+    fetchUserOrganizations()
+
   }, []);
 
 
@@ -62,7 +89,7 @@ const DashboardScreen = () => {
 
   const examineeSidebarItems = [
     getItem(
-      <Link to=''>Dashboard</Link>,
+      <Link to='' onClick={() => dispatch(switchSidebar("1"))}>Dashboard</Link>,
       "1",
       <Icon
         className='w-5 h-5'
@@ -70,7 +97,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='organizations'>Organizations</Link>,
+      <Link to='organizations' onClick={() => setSidebarSelected("2")}>Organizations</Link>,
       "2",
       <Icon
         className='w-4 h-4'
@@ -78,7 +105,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='exams'>Exams</Link>,
+      <Link to='exams' onClick={() => dispatch(switchSidebar("3"))}>Exams</Link>,
       "3",
       <Icon
         className='w-5 h-5'
@@ -86,7 +113,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='results'>Results</Link>,
+      <Link to='results' onClick={() => dispatch(switchSidebar("4"))}>Results</Link>,
       "4",
       <Icon
         className='w-5 h-5'
@@ -94,7 +121,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='certifications'>Certifications</Link>,
+      <Link to='certifications' onClick={() => dispatch(switchSidebar("5"))}>Certifications</Link>,
       "5",
       <Icon
         className='w-5 h-5'
@@ -103,7 +130,7 @@ const DashboardScreen = () => {
     ),
     { type: "divider" },
     getItem(
-      <Link to='trainingVideos'>Training Videos</Link>,
+      <Link to='trainingVideos' onClick={() => dispatch(switchSidebar("6"))}>Training Videos</Link>,
       "6",
       <Icon
         className='w-5 h-5'
@@ -111,7 +138,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='support'>Support</Link>,
+      <Link to='support' onClick={() => dispatch(switchSidebar("7"))}>Support</Link>,
       "7",
       <Icon
         className='w-5 h-5'
@@ -120,11 +147,9 @@ const DashboardScreen = () => {
     ),
   ];
 
-  const examinerSidebarItems = [];
-
-  const orgAdminSidebarItems = [
+  const examinerSidebarItems = [
     getItem(
-      <Link to=''>Dashboard</Link>,
+      <Link to='' onClick={() => dispatch(switchSidebar("1"))}>Dashboard</Link>,
       "1",
       <Icon
         className='w-5 h-5'
@@ -132,7 +157,47 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='exams'>Exams</Link>,
+      <Link
+        to='exams'
+        onClick={() => dispatch(switchSidebar("2"))}>
+        My Exams
+      </Link>,
+      "2",
+      <Icon
+        className='w-5 h-5'
+        icon='healthicons:i-exam-multiple-choice-outline'
+      />
+    ),
+    { type: "divider" },
+    getItem(
+      <Link to='trainingVideos' onClick={() => dispatch(switchSidebar("3"))}>Training Videos</Link>,
+      "3",
+      <Icon
+        className='w-5 h-5'
+        icon='healthicons:i-training-class-outline'
+      />
+    ),
+    getItem(
+      <Link to='support' onClick={() => dispatch(switchSidebar("4"))}>Support</Link>,
+      "4",
+      <Icon
+        className='w-5 h-5'
+        icon='material-symbols:contact-support-outline'
+      />
+    ),
+  ];
+
+  const orgAdminSidebarItems = [
+    getItem(
+      <Link to='' onClick={() => dispatch(switchSidebar("1"))}>Dashboard</Link>,
+      "1",
+      <Icon
+        className='w-5 h-5'
+        icon='akar-icons:dashboard'
+      />
+    ),
+    getItem(
+      <Link to='exams' onClick={() => dispatch(switchSidebar("2"))}>Exams</Link>,
       "2",
       <Icon
         className='w-5 h-5'
@@ -140,7 +205,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='activities'>Activity Log</Link>,
+      <Link to='activities' onClick={() => dispatch(switchSidebar("3"))}>Activity Log</Link>,
       "3",
       <Icon
         className='w-4 h-4'
@@ -148,7 +213,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='staffs'>Staff</Link>,
+      <Link to='staffs' onClick={() => dispatch(switchSidebar("4"))}>Staff</Link>,
       "4",
       <Icon
         className='w-5 h-5'
@@ -156,7 +221,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='settings'>Settings</Link>,
+      <Link to='settings' onClick={() => dispatch(switchSidebar("5"))}>Settings</Link>,
       "5",
       <Icon
         className='w-5 h-5'
@@ -165,7 +230,7 @@ const DashboardScreen = () => {
     ),
     { type: "divider" },
     getItem(
-      <Link to='trainingVideos'>Training Videos</Link>,
+      <Link to='trainingVideos' onClick={() => dispatch(switchSidebar("6"))}>Training Videos</Link>,
       "6",
       <Icon
         className='w-5 h-5'
@@ -173,7 +238,7 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to='support'>Support</Link>,
+      <Link to='support' onClick={() => dispatch(switchSidebar("7"))}>Support</Link>,
       "7",
       <Icon
         className='w-5 h-5'
@@ -182,9 +247,9 @@ const DashboardScreen = () => {
     ),
   ];
 
-  const changeWorkspace = (workspace) => {
+  const changeWorkspace = (workspace, userRole) => {
     if (workspace === "personal") {
-      setUserRole("examinee");
+      setUserRole(userRole);
       setCurrentWorkspace(workspace);
       dispatch(switchToPersonalWorkspace());
       toast.success("Workspace switched successfully!", {
@@ -203,11 +268,7 @@ const DashboardScreen = () => {
           toast.success("Workspace switched successfully!", {
             position: "bottom-right",
           });
-          if (res.payload.data.data[0].adminUser._id === user._id) {
-            setUserRole("orgAdmin");
-          } else {
-            setUserRole("examiner");
-          }
+          setUserRole(userRole)
           navigate('/dashboard')
         } else {
           toast.error("There is an error while switching workspace!", {
@@ -225,7 +286,7 @@ const DashboardScreen = () => {
     setWorkspaceDropdownItems([
       {
         label: (
-          <span onClick={() => changeWorkspace("personal")}>
+          <span onClick={() => changeWorkspace("personal", 'examinee')}>
             Personal Workspace
           </span>
         ),
@@ -246,13 +307,13 @@ const DashboardScreen = () => {
     let itemsSoFar = workspaceDropdownItems.length + 1;
 
 
-    for (let i = 0; i < user.adminOf.length; i++) {
+    for (let i = 0; i < userOrganizations.length; i++) {
       setWorkspaceDropdownItems((prevItems) => [
         ...prevItems,
         {
           label: (
-            <span onClick={() => changeWorkspace(user.adminOf[i]._id)}>
-              {user.adminOf[i].name}
+            <span onClick={() => changeWorkspace(userOrganizations[i].organization._id, userOrganizations[i].userType)}>
+              {userOrganizations[i].organization?.name}
             </span>
           ),
           key: ++itemsSoFar,
@@ -344,12 +405,12 @@ const DashboardScreen = () => {
         </Link>
         <Menu
           theme='light'
-          defaultSelectedKeys={["1"]}
+          defaultSelectedKeys={[currentSidebar]}
           mode='inline'
           items={
             userRole === "examinee"
               ? examineeSidebarItems
-              : userRole === "orgAdmin"
+              : userRole === "admin"
               ? orgAdminSidebarItems
               : examinerSidebarItems
           }
@@ -367,7 +428,10 @@ const DashboardScreen = () => {
           </h1>
           <div className='inline-flex items-center justify-center gap-4'>
             <Dropdown
-              onClick={() => setupWorkspaceItems()}
+              onClick={() => {
+                fetchUserOrganizations()
+                setupWorkspaceItems()
+              }}
               overlayClassName='overflow-auto h-64'
               menu={{
                 items: workspaceDropdownItems,

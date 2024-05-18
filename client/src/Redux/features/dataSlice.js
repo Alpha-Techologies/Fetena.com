@@ -13,13 +13,15 @@ import {
   joinOrganization,
   organizationStaff,
   activateStaff,
-  deactivateStaff
+  deactivateStaff,
+  getUserOrganizations
 } from "./dataActions";
 
 const initialState = {
   loading: false,
   error: null,
-  workspace: null
+  workspace: null,
+  currentSidebar: "1",
 };
 
 const dataSlice = createSlice({
@@ -28,7 +30,11 @@ const dataSlice = createSlice({
   reducers: {
     switchToPersonalWorkspace(state) {
       state.workspace = null;
-    }
+    },
+    switchSidebar(state, action) {
+      console.log(action, 'action');
+      state.currentSidebar = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -172,11 +178,21 @@ const dataSlice = createSlice({
       .addCase(deactivateStaff.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(getUserOrganizations.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getUserOrganizations.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(getUserOrganizations.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
     
   },
 });
 
-export const {switchToPersonalWorkspace} = dataSlice.actions;
+export const { switchToPersonalWorkspace, switchSidebar } = dataSlice.actions;
 
 export default dataSlice.reducer;

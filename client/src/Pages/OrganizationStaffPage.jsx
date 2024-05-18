@@ -12,9 +12,12 @@ const OrganizationStaffPage = () => {
   const url = 'http://localhost:8080'
 
   const [open, setOpen] = useState(false);
+  const [openRowId, setOpenRowId] = useState(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const showPopconfirm = () => {
-    setOpen(true);
+  const showPopconfirm = (rowId) => {
+    // setOpen(true);
+    setOpenRowId(rowId)
+
   };
 
   const fetchOrganizationStaffs = () => {
@@ -48,11 +51,13 @@ const OrganizationStaffPage = () => {
         console.log(res);
         if (res.meta.requestStatus === "fulfilled") {
           console.log(res);
-          setOpen(false);
+          // setOpen(false);
+          setOpenRowId(null)
           setConfirmLoading(false);
           fetchOrganizationStaffs()
         } else {
-          setOpen(false);
+          // setOpen(false);
+          setOpenRowId(null)
           setConfirmLoading(false);
           toast.error(res.payload.message);
         }
@@ -72,11 +77,13 @@ const OrganizationStaffPage = () => {
         
         if (res.meta.requestStatus === "fulfilled") {
           console.log(res);
-          setOpen(false);
+          // setOpen(false);
+          setOpenRowId(null)
           setConfirmLoading(false);
           fetchOrganizationStaffs();
         } else {
-          setOpen(false);
+          // setOpen(false);
+          setOpenRowId(null)
           setConfirmLoading(false);
           toast.error(res.payload.message);
         }
@@ -89,7 +96,8 @@ const OrganizationStaffPage = () => {
   };
   const handleCancel = () => {
     console.log("Clicked cancel button");
-    setOpen(false);
+    // setOpen(false);
+    setOpenRowId(null)
   };
 
   useEffect(() => {
@@ -131,7 +139,7 @@ const OrganizationStaffPage = () => {
         <Popconfirm
           title='Warning'
           description='Are you sure to continue?'
-          open={open}
+          open={openRowId === text}
           onConfirm={
             record.status === "pending"
               ? () => handleActivate(text)
@@ -151,7 +159,7 @@ const OrganizationStaffPage = () => {
                 ? "bg-red-500"
                 : "bg-green-500"
             } text-white`}
-            onClick={showPopconfirm}>
+            onClick={() => showPopconfirm(text)}>
             {record.status === "pending"
               ? "Approve"
               : record.status === "activated"
@@ -167,7 +175,7 @@ const OrganizationStaffPage = () => {
   return (
     <div className='flex flex-col gap-4 items-start my-4'>
       <h1 className='text-3xl font-bold justify-self-start'>
-        Organizations Staffs
+        Organization Staffs
       </h1>
       <div className='flex flex-col gap-4 items-start my-4'>
         <Table
