@@ -13,6 +13,8 @@ exports.createExam = catchAsync(async (req, res, next) => {
   //     return next(new APIError("There is no file", StatusCodes.BAD_REQUEST));
   //   }
 
+  console.log(req.files, req.body)
+
   if (!req.body.data) {
     return next(new APIError("There is no user data", StatusCodes.BAD_REQUEST));
   }
@@ -24,51 +26,52 @@ exports.createExam = catchAsync(async (req, res, next) => {
   exam.createdBy = exam.createdBy || req.user.id;
   exam.invigilatorID = exam.invigilatorID || req.user.id;
 
-  if (req.files.material) {
-    const examMaterial = req.files.material;
-    // check if the examMaterial is a PDF
-    if (!examMaterial.mimetype.startsWith("application/pdf")) {
-      return next(
-        new APIError("Please upload a Proper PDF", StatusCodes.BAD_REQUEST)
-      );
+  if(req.files)
+    if (req.files.material) {
+      const examMaterial = req.files.material;
+      // check if the examMaterial is a PDF
+      if (!examMaterial.mimetype.startsWith("application/pdf")) {
+        return next(
+          new APIError("Please upload a Proper PDF", StatusCodes.BAD_REQUEST)
+        );
+      }
+
+      const MaterialLink = await fileUpload({
+        file: examMaterial,
+        name: `examMaterial_` + exam._id,
+        filePath: "examMaterials",
+        maxSize: 4 * 1024 * 1024,
+      });
+
+      // check for error on the file
+      if (MaterialLink instanceof Error) {
+        return next(MaterialLink);
+      }
+
+      exam.material = MaterialLink;
+    } else if (req.files.examFile) {
+      const examFile = req.files.examFile;
+      // check if the examMaterial is a PDF
+      if (!examFile.mimetype.startsWith("application/pdf")) {
+        return next(
+          new APIError("Please upload a Proper PDF", StatusCodes.BAD_REQUEST)
+        );
+      }
+
+      const examFileLink = await fileUpload({
+        file: examFile,
+        name: `examFile_` + exam._id,
+        filePath: "examFiles",
+        maxSize: 4 * 1024 * 1024,
+      });
+
+      // check for error on the file
+      if (examFileLink instanceof Error) {
+        return next(examFileLink);
+      }
+
+      exam.examFile = examFileLink;
     }
-
-    const MaterialLink = await fileUpload({
-      file: examMaterial,
-      name: `examMaterial_` + exam._id,
-      filePath: "examMaterials",
-      maxSize: 4 * 1024 * 1024,
-    });
-
-    // check for error on the file
-    if (MaterialLink instanceof Error) {
-      return next(MaterialLink);
-    }
-
-    exam.material = MaterialLink;
-  } else if (req.files.examFile) {
-    const examFile = req.files.examFile;
-    // check if the examMaterial is a PDF
-    if (!examFile.mimetype.startsWith("application/pdf")) {
-      return next(
-        new APIError("Please upload a Proper PDF", StatusCodes.BAD_REQUEST)
-      );
-    }
-
-    const examFileLink = await fileUpload({
-      file: examFile,
-      name: `examFile_` + exam._id,
-      filePath: "examFiles",
-      maxSize: 4 * 1024 * 1024,
-    });
-
-    // check for error on the file
-    if (examFileLink instanceof Error) {
-      return next(examFileLink);
-    }
-
-    exam.examFile = examFileLink;
-  }
 
   await exam.save();
 
