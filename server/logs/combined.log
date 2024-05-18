@@ -1,0 +1,20 @@
+[2024-05-16 23:48:02]: info: Server running on port 8080
+ [2024-05-16 23:51:52]: info: Server running on port 8080
+[2024-05-16 23:54:10]: info: Server running on port 8080
+[2024-05-16 23:54:17]: http: ::1 - - [16/May/2024:20:54:17 +0000] "POST /api/users/login HTTP/1.1" 200 98 "-" "PostmanRuntime/7.39.0"
+[2024-05-16 23:54:33]: http: ::1 - - [16/May/2024:20:54:33 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-17 00:09:36]: info: Server running on port 8080
+[2024-05-17 00:09:44]: http: ::1 - - [16/May/2024:21:09:44 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-17 00:11:48]: http: ::1 - - [16/May/2024:21:11:48 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-17 00:12:26]: http: ::1 - - [16/May/2024:21:12:26 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-17 00:12:41]: http: ::1 - - [16/May/2024:21:12:41 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-17 00:12:44]: http: ::1 - - [16/May/2024:21:12:44 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-17 00:15:17]: http: ::1 - - [16/May/2024:21:15:17 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-17 00:17:59]: http: ::1 - - [16/May/2024:21:17:59 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-17 10:08:00]: info: Server running on port 8080
+[2024-05-17 10:08:25]: http: ::1 - - [17/May/2024:07:08:25 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-17 10:11:57]: info: Server running on port 8080
+[2024-05-17 10:12:20]: http: ::1 - - [17/May/2024:07:12:20 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-17 10:19:40]: info: Server running on port 8080
+[2024-05-17 10:19:51]: http: ::1 - - [17/May/2024:07:19:51 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-17 10:22:48]: http: ::1 - - [17/May/2024:07:22:48 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"

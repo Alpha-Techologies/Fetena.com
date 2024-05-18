@@ -10,7 +10,9 @@ const xss = require("xss-clean"); // remove the html tags that are needed
 const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
 const socketIo = require("socket.io");
+const logger = require("./utils/logger");
 const morganHTTP = require("./utils/morgan");
+const errorLogger = require("./middleware/errorLogger");
 
 require("dotenv").config({
   path: "./config.env",
@@ -35,6 +37,7 @@ const fileUpload = require("express-fileupload");
 app.use(express.static("public"));
 
 // Middleware to log all incoming requests
+// app.use(morgan("combined"));
 app.use(morganHTTP);
 
 app.use(cookieParser(process.env.JWT_SECRET));
@@ -63,6 +66,9 @@ app.use(
 );
 app.use(express.static("../public"));
 
+app.use(errorLogger.converter);
+app.use(errorLogger.notFound);
+app.use(errorLogger.handler);
 // if (process.env.NODE_ENV === "development") {
 //   app.use(morgan("dev"));
 // }
@@ -106,5 +112,6 @@ app.all("*", (req, res, next) => {
   next(new APIError(`Can't find ${req.originalUrl} in server plus`, 404));
 });
 app.use(globalErrorHandler);
+
 
 module.exports = app;
