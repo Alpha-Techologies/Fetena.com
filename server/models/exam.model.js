@@ -51,6 +51,10 @@ const ExamSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  organization: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Organization",
+  },
   questions: [
     {
       type: mongoose.Schema.Types.ObjectId,
