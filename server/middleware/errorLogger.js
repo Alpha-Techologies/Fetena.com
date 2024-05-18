@@ -47,7 +47,12 @@
 const { StatusCodes } = require("http-status-codes");
 const logger = require("../utils/logger");
 const APIError = require("../utils/apiError");
+const catchAsync = require("../utils/catchAsync");
 
+const  errorLogger = catchAsync(async (req, res, next) => {
+  
+
+});
 const converter = (err, req, res, next) => {
   if (!(err instanceof APIError)) {
     const status = err.status || StatusCodes.INTERNAL_SERVER_ERROR;
@@ -90,4 +95,4 @@ const handler = (err, req, res, next) => {
   });
 };
 
-module.exports = { converter, notFound, handler };
+module.exports = {errorLogger, converter, notFound, handler };
