@@ -84,3 +84,55 @@
     at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
     at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
 [2024-05-18 14:16:57]: http: ::1 - - [18/May/2024:11:16:57 +0000] "POST /api/users/forgotpassword HTTP/1.1" 500 1159 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:21:40]: info: Server running on port 8080
+[2024-05-18 14:23:15]: info: Server running on port 8080
+[2024-05-18 14:23:20]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yonas\Desktop\Fetena.com\server\middleware\errorLogger.js:71:5)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:23:20]: http: ::1 - - [18/May/2024:11:23:20 +0000] "POST /api/users/forgotpassword HTTP/1.1" 500 1159 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:25:13]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yonas\Desktop\Fetena.com\server\middleware\errorLogger.js:71:5)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:25:13]: http: ::1 - - [18/May/2024:11:25:13 +0000] "POST /api/users/log HTTP/1.1" 500 1159 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:33:48]: info: Server running on port 8080
+[2024-05-18 14:33:53]: info: Server running on port 8080
+[2024-05-18 14:36:32]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yonas\Desktop\Fetena.com\server\middleware\errorLogger.js:71:5)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:36:32]: http: ::1 - - [18/May/2024:11:36:32 +0000] "POST /api/users/login HTTP/1.1" 500 1159 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:38:22]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yonas\Desktop\Fetena.com\server\middleware\errorLogger.js:71:5)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:38:22]: http: ::1 - - [18/May/2024:11:38:22 +0000] "POST /api/users/login HTTP/1.1" 500 1159 "-" "PostmanRuntime/7.39.0"

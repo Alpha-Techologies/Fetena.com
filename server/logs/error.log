@@ -53,3 +53,47 @@
     at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
     at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
     at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:23:20]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yonas\Desktop\Fetena.com\server\middleware\errorLogger.js:71:5)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:25:13]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yonas\Desktop\Fetena.com\server\middleware\errorLogger.js:71:5)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:36:32]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yonas\Desktop\Fetena.com\server\middleware\errorLogger.js:71:5)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:38:22]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yonas\Desktop\Fetena.com\server\middleware\errorLogger.js:71:5)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
