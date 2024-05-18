@@ -436,7 +436,7 @@ const DashboardScreen = () => {
 
   const profileDropdownItems = [
     {
-      label: <Link to={"profile"}>Profile</Link>,
+      label: <Link to={"profile"} onClick={() => dispatch(switchSidebar(""))}>Profile</Link>,
       key: "1",
       icon: <Icon icon='ep:user' />,
     },
@@ -551,7 +551,7 @@ const DashboardScreen = () => {
                 <Icon icon='gridicons:dropdown' />
               </div>
             </Dropdown>
-            <Link to='notifications'>
+            <Link onClick={() => dispatch(switchSidebar(""))} to='notifications'>
               <Avatar
                 className='cursor-pointer flex items-center justify-center'
                 size='large'

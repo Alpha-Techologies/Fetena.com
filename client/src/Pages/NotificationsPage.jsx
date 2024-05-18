@@ -78,7 +78,7 @@ const NotificationsPage = () => {
               active
             />
           }
-          endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+          endMessage={<Divider plain>No more Notifications!</Divider>}
           scrollableTarget='scrollableDiv'>
           <List
             dataSource={Array.from(data)}
