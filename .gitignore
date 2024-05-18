@@ -4,3 +4,4 @@ organizationsLogo
 examFiles
 examMaterials
 .env
+*.log
