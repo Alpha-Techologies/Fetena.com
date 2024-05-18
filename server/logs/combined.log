@@ -18,3 +18,34 @@
 [2024-05-17 10:19:40]: info: Server running on port 8080
 [2024-05-17 10:19:51]: http: ::1 - - [17/May/2024:07:19:51 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
 [2024-05-17 10:22:48]: http: ::1 - - [17/May/2024:07:22:48 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:35:14]: info: Server running on port 8080
+[2024-05-18 14:35:41]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:66:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:35:41]: http: ::1 - - [18/May/2024:11:35:41 +0000] "POST /api/users/login HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:37:20]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:66:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:37:20]: http: ::1 - - [18/May/2024:11:37:20 +0000] "POST /api/users/login HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:37:42]: info: Server running on port 8080
+[2024-05-18 14:37:47]: info: Server running on port 8080
+[2024-05-18 14:37:49]: info: Server running on port 8080
+[2024-05-18 14:37:51]: info: Server running on port 8080
+[2024-05-18 14:37:59]: http: ::1 - - [18/May/2024:11:37:59 +0000] "POST /api/users/login HTTP/1.1" 200 89 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:38:08]: info: Server running on port 8080

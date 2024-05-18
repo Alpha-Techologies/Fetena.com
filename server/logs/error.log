@@ -1,0 +1,22 @@
+[2024-05-18 14:35:41]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:66:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:37:20]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:66:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
