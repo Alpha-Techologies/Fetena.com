@@ -4,6 +4,7 @@ const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
 const factory = require("./../handlerFactory");
 const { fileUpload } = require("../profile/fileUpload");
+const generateRandomKey = require("../../utils/generateRandomKey");
 
 exports.createExam = catchAsync(async (req, res, next) => {
   // form data will be send in req, holding in the req.file the material that is a PDF file
@@ -26,7 +27,12 @@ exports.createExam = catchAsync(async (req, res, next) => {
   exam.createdBy = exam.createdBy || req.user.id;
   exam.invigilatorID = exam.invigilatorID || req.user.id;
 
-  if(req.files)
+
+  // generate an exam key that will store a combination of characters and numbers and special characters that has a length of 6
+  const examKey = generateRandomKey(6);
+  exam.examKey = examKey;
+
+  if (req.files)
     if (req.files.material) {
       const examMaterial = req.files.material;
       // check if the examMaterial is a PDF
@@ -49,14 +55,15 @@ exports.createExam = catchAsync(async (req, res, next) => {
       }
 
       exam.material = MaterialLink;
-    } else if (req.files.examFile) {
-      const examFile = req.files.examFile;
-      // check if the examMaterial is a PDF
-      if (!examFile.mimetype.startsWith("application/pdf")) {
-        return next(
-          new APIError("Please upload a Proper PDF", StatusCodes.BAD_REQUEST)
-        );
-      }
+    }
+  if (req.files.examFile) {
+    const examFile = req.files.examFile;
+    // check if the examMaterial is a PDF
+    if (!examFile.mimetype.startsWith("application/pdf")) {
+      return next(
+        new APIError("Please upload a Proper PDF", StatusCodes.BAD_REQUEST)
+      );
+    }
 
       const examFileLink = await fileUpload({
         file: examFile,
