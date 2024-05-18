@@ -116,3 +116,263 @@
     at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
 [2024-05-18 14:16:57]: http: ::1 - - [18/May/2024:11:16:57 +0000] "POST /api/users/forgotpassword HTTP/1.1" 500 1159 "-" "PostmanRuntime/7.39.0"
 [2024-05-18 14:38:47]: info: Server running on port 8080
+[2024-05-18 14:42:45]: http: ::1 - - [18/May/2024:11:42:45 +0000] "POST /api/users/login HTTP/1.1" 200 89 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:42:59]: http: ::1 - - [18/May/2024:11:42:59 +0000] "POST /api/users/logi HTTP/1.1" 404 1289 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:49:03]: http: ::1 - - [18/May/2024:11:49:03 +0000] "POST /api/users/logi HTTP/1.1" 404 1289 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:49:44]: info: Server running on port 8080
+[2024-05-18 14:49:46]: info: Server running on port 8080
+[2024-05-18 14:50:13]: info: Server running on port 8080
+[2024-05-18 14:50:16]: info: Server running on port 8080
+[2024-05-18 14:50:18]: info: Server running on port 8080
+[2024-05-18 14:50:22]: info: Server running on port 8080
+[2024-05-18 14:50:25]: info: Server running on port 8080
+[2024-05-18 14:50:27]: info: Server running on port 8080
+[2024-05-18 14:50:28]: info: Server running on port 8080
+[2024-05-18 14:50:30]: info: Server running on port 8080
+[2024-05-18 14:50:33]: info: Server running on port 8080
+[2024-05-18 14:50:34]: info: Server running on port 8080
+[2024-05-18 14:50:36]: info: Server running on port 8080
+[2024-05-18 14:50:38]: error: Status: error, Message: [object Object], Stack: Error: [object Object]
+    at C:\Users\yohan\Music\Teyake.com\server\app.js:109:8
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+[2024-05-18 14:50:38]: http: ::1 - - [18/May/2024:11:50:38 +0000] "POST /api/users/logi HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:51:13]: info: Server running on port 8080
+[2024-05-18 14:51:14]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:71:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:51:14]: http: ::1 - - [18/May/2024:11:51:14 +0000] "POST /api/users/logi HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:51:29]: info: Server running on port 8080
+[2024-05-18 14:51:31]: info: Server running on port 8080
+[2024-05-18 14:51:33]: error: Status: error, Message: [object Object], Stack: Error: [object Object]
+    at C:\Users\yohan\Music\Teyake.com\server\app.js:109:8
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+[2024-05-18 14:51:33]: http: ::1 - - [18/May/2024:11:51:33 +0000] "POST /api/users/logi HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:51:59]: info: Server running on port 8080
+[2024-05-18 14:52:10]: info: Server running on port 8080
+[2024-05-18 14:52:13]: info: Server running on port 8080
+[2024-05-18 14:52:14]: error: Status: error, Message: [object Object], Stack: Error: [object Object]
+    at C:\Users\yohan\Music\Teyake.com\server\app.js:109:8
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+[2024-05-18 14:52:14]: http: ::1 - - [18/May/2024:11:52:14 +0000] "POST /api/users/logi HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:54:51]: info: Server running on port 8080
+[2024-05-18 14:54:54]: info: Server running on port 8080
+[2024-05-18 14:54:56]: info: Server running on port 8080
+[2024-05-18 14:55:03]: info: Server running on port 8080
+[2024-05-18 14:55:07]: error: Status: error, Message: [object Object], Stack: Error: [object Object]
+    at C:\Users\yohan\Music\Teyake.com\server\app.js:109:8
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+[2024-05-18 14:55:07]: http: ::1 - - [18/May/2024:11:55:07 +0000] "POST /api/users/logi HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:56:03]: http: ::1 - - [18/May/2024:11:56:03 +0000] "POST /api/users/login HTTP/1.1" 200 89 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:56:47]: error: Status: error, Message: [object Object], Stack: CastError: Cast to ObjectId failed for value "logou" (type string) at path "_id" for model "User"
+    at SchemaObjectId.cast (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\schema\objectId.js:250:11)
+    at SchemaType.applySetters (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\schemaType.js:1221:12)
+    at SchemaType.castForQuery (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\schemaType.js:1636:17)
+    at cast (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\cast.js:375:32)
+    at Query.cast (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:4778:12)
+    at Query._castConditions (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:2199:10)
+    at model.Query._find (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:2225:8)
+    at model.Query.exec (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:4322:80)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\Users\yohan\Music\Teyake.com\server\controller\handlerFactory.js:19:17
+[2024-05-18 14:56:47]: http: ::1 - - [18/May/2024:11:56:47 +0000] "GET /api/users/logou HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:57:28]: info: Server running on port 8080
+[2024-05-18 14:57:29]: info: Server running on port 8080
+[2024-05-18 14:57:31]: error: Status: error, Message: [object Object], Stack: CastError: Cast to ObjectId failed for value "logou" (type string) at path "_id" for model "User"
+    at SchemaObjectId.cast (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\schema\objectId.js:250:11)
+    at SchemaType.applySetters (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\schemaType.js:1221:12)
+    at SchemaType.castForQuery (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\schemaType.js:1636:17)
+    at cast (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\cast.js:375:32)
+    at Query.cast (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:4778:12)
+    at Query._castConditions (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:2199:10)
+    at model.Query._find (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:2225:8)
+    at model.Query.exec (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:4322:80)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\Users\yohan\Music\Teyake.com\server\controller\handlerFactory.js:19:17
+[2024-05-18 14:57:31]: http: ::1 - - [18/May/2024:11:57:31 +0000] "GET /api/users/logou HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:57:53]: error: Status: error, Message: Route Not Found, Stack: Error: Route Not Found
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:68:15)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:57:53]: http: ::1 - - [18/May/2024:11:57:53 +0000] "GET /iojoj HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:58:40]: info: Server running on port 8080
+[2024-05-18 14:58:42]: info: Server running on port 8080
+[2024-05-18 15:00:52]: info: Server running on port 8080
+[2024-05-18 15:00:53]: info: Server running on port 8080
+[2024-05-18 15:01:11]: info: Server running on port 8080
+[2024-05-18 15:01:15]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:69:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:01:15]: http: ::1 - - [18/May/2024:12:01:15 +0000] "GET /iojoj HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 15:01:55]: info: Server running on port 8080
+[2024-05-18 15:01:56]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:69:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:01:56]: http: ::1 - - [18/May/2024:12:01:56 +0000] "GET /iojoj HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 15:02:29]: info: Server running on port 8080
+[2024-05-18 15:02:31]: info: Server running on port 8080
+[2024-05-18 15:02:35]: info: Server running on port 8080
+[2024-05-18 15:02:37]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:69:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:02:37]: http: ::1 - - [18/May/2024:12:02:37 +0000] "GET /iojoj HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 15:04:47]: info: Server running on port 8080
+[2024-05-18 15:04:49]: info: Server running on port 8080
+[2024-05-18 15:04:51]: info: Server running on port 8080
+[2024-05-18 15:04:52]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:69:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:04:52]: http: ::1 - - [18/May/2024:12:04:52 +0000] "GET /iojoj HTTP/1.1" 500 1147 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 15:05:18]: info: Server running on port 8080
+[2024-05-18 15:05:20]: info: Server running on port 8080
+[2024-05-18 15:06:03]: info: Server running on port 8080
+[2024-05-18 15:06:12]: info: Server running on port 8080
+[2024-05-18 15:06:14]: info: Server running on port 8080
+[2024-05-18 15:06:17]: info: Server running on port 8080
+[2024-05-18 15:06:24]: info: Server running on port 8080
+[2024-05-18 15:06:30]: info: Server running on port 8080
+[2024-05-18 15:06:32]: error: Status: 404, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:69:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:06:32]: http: ::1 - - [18/May/2024:12:06:32 +0000] "GET /iojoj HTTP/1.1" 404 1255 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 15:07:24]: info: Server running on port 8080
+[2024-05-18 15:07:24]: error: logger is not defined
+ReferenceError: logger is not defined
+    at NativeCollection.<anonymous> (C:\Users\yohan\Music\Teyake.com\server\config\db_Connection.js:24:5)
+    at NativeCollection.<computed> [as createIndex] (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:217:15)
+    at create (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\model.js:1960:22)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\model.js:1915:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+[2024-05-18 15:07:38]: info: Server running on port 8080
+[2024-05-18 15:07:52]: info: Server running on port 8080
+[2024-05-18 15:07:57]: info: Server running on port 8080
+[2024-05-18 15:07:57]: info: DBconnection succcessful
+[2024-05-18 15:07:57]: info: users.createIndex([{"email":1},{"unique":true,"background":true}])
+[2024-05-18 15:08:25]: error: Status: 404, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:69:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:08:25]: http: ::1 - - [18/May/2024:12:08:25 +0000] "GET /iojoj HTTP/1.1" 404 1255 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 15:08:38]: info: Server running on port 8080
+[2024-05-18 15:08:38]: info: DBconnection succcessful
+[2024-05-18 15:08:38]: info: users.createIndex([{"email":1},{"unique":true,"background":true}])
+[2024-05-18 15:08:40]: info: Server running on port 8080
+[2024-05-18 15:08:40]: info: DBconnection succcessful
+[2024-05-18 15:08:40]: info: users.createIndex([{"email":1},{"unique":true,"background":true}])
+[2024-05-18 15:09:12]: info: tokens.findOneAndDelete([{},{}])
+[2024-05-18 15:09:12]: http: ::1 - - [18/May/2024:12:09:12 +0000] "GET /api/users/logout HTTP/1.1" 200 32 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 15:09:40]: info: users.findOne([{"email":"tibesolomon7@gmail.com"},{"projection":{"passwordConfirm":0}}])
+[2024-05-18 15:09:40]: info: tokens.findOne([{"user":"66296cac89224981daf0cc7e"},{}])
+[2024-05-18 15:09:40]: http: ::1 - - [18/May/2024:12:09:40 +0000] "POST /api/users/login HTTP/1.1" 200 89 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 15:10:05]: info: tokens.findOne([{"user":"66296d9e275400892a22243a","refreshToken":"b87065da21e97dd5b183a49e7aef8ec733f838fcce20b0b8a4c0e6712f644d64af9646a3eb04afd1"},{}])
+[2024-05-18 15:10:05]: info: users.find([{"_id":"66296d9e275400892a22243a"},{"projection":{"__v":0,"password":0,"passwordConfirm":0}}])
+[2024-05-18 15:10:05]: info: organizations.find([{"_id":{"$in":["66363835c01964fe2987435e"]}},{"strictPopulate":false}])
+[2024-05-18 15:10:05]: http: ::1 - - [18/May/2024:12:10:05 +0000] "GET /api/users/me HTTP/1.1" 200 798 "http://localhost:4000/sign-in" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0"
+[2024-05-18 15:10:05]: info: organizations.countDocuments([{"name":{}},{}])
+[2024-05-18 15:10:05]: error: Status: 404, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:68:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:10:05]: http: ::1 - - [18/May/2024:12:10:05 +0000] "GET /null HTTP/1.1" 404 1255 "http://localhost:4000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0"
+[2024-05-18 15:10:05]: info: organizations.find([{"name":{}},{"sort":{"createdAt":-1},"skip":null,"limit":null,"projection":{"name":1}}])
+[2024-05-18 15:10:05]: http: ::1 - - [18/May/2024:12:10:05 +0000] "GET /api/organizations?page=1&name=&sort=&limit=Infinity&fields=name HTTP/1.1" 200 686 "http://localhost:4000/dashboard" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0"

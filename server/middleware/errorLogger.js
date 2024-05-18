@@ -49,10 +49,7 @@ const logger = require("../utils/logger");
 const APIError = require("../utils/apiError");
 const catchAsync = require("../utils/catchAsync");
 
-const  errorLogger = catchAsync(async (req, res, next) => {
-  
-
-});
+const errorLogger = catchAsync(async (req, res, next) => {});
 const converter = (err, req, res, next) => {
   if (!(err instanceof APIError)) {
     const status = err.status || StatusCodes.INTERNAL_SERVER_ERROR;
@@ -73,7 +70,7 @@ const notFound = (req, res, next) => {
 };
 
 const handler = (err, req, res, next) => {
-  let status = err.status || StatusCodes.INTERNAL_SERVER_ERROR;
+  let status = err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
   let message = err.message || StatusCodes[status];
 
   if (process.env.NODE_ENV === "production") {
@@ -95,4 +92,4 @@ const handler = (err, req, res, next) => {
   });
 };
 
-module.exports = {errorLogger, converter, notFound, handler };
+module.exports = { errorLogger, converter, notFound, handler };

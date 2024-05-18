@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 /* get database authentication keys */
 const { dbAuth } = require("./db_Authentication");
+const logger = require("../utils/logger");
 
 mongoose.connect("mongodb://0.0.0.0:27017/exam-management?retryWrites=true", {
   // .connect("mongodb://mongo:27017/beach-resort?retryWrites=true", { //create connection
@@ -15,24 +16,24 @@ mongoose.connect("mongodb://0.0.0.0:27017/exam-management?retryWrites=true", {
   // useUnifiedTopology: true, //To use the new Server Discover and Monitoring engine
 });
 
-// mongoose.set("debug", function (collectionName, methodName, ...methodArgs) {
-//   try {
-//     logger.info(
-//       `${collectionName}.${methodName}(${JSON.stringify(methodArgs)})`
-//     );
-//   } catch (error) {
-//     logger.error(
-//       `${collectionName}.${methodName}(${JSON.stringify(methodArgs)})`
-//     );
-//   }
-// });
+mongoose.set("debug", function (collectionName, methodName, ...methodArgs) {
+  try {
+    logger.info(
+      `${collectionName}.${methodName}(${JSON.stringify(methodArgs)})`
+    );
+  } catch (error) {
+    logger.error(
+      `${collectionName}.${methodName}(${JSON.stringify(methodArgs)})`
+    );
+  }
+});
 const dbConn = mongoose.connection;
 
-// dbConn.on("error", () => {
-//   console.error.bind(console, "connection error");
-// });
-// dbConn.once("open", () => {
-//   logger.info("DBconnection succcessful");
-// });
+dbConn.on("error", () => {
+  console.error.bind(console, "connection error");
+});
+dbConn.once("open", () => {
+  logger.info("DBconnection succcessful");
+});
 
 module.exports = dbConn;

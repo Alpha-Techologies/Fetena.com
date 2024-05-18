@@ -105,13 +105,14 @@ app.use("/api/questions", questionRouter);
 app.use("/api/organizations", organizationRouter);
 app.use("/api/notifications", notificationRouter);
 
-app.all("*", (req, res, next) => {
-  next(new APIError(`Can't find ${req.originalUrl} in server plus`, 404));
-});
-app.use(globalErrorHandler);
+// app.all("*", (req, res, next) => {
+//   next(new APIError(`Can't find ${req.originalUrl} in server plus`, 404));
+// });
 
 app.use(errorLogger.converter);
 app.use(errorLogger.notFound);
 app.use(errorLogger.handler);
+
+app.use(globalErrorHandler);
 
 module.exports = app;

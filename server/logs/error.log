@@ -20,3 +20,193 @@
     at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
     at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
     at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:50:38]: error: Status: error, Message: [object Object], Stack: Error: [object Object]
+    at C:\Users\yohan\Music\Teyake.com\server\app.js:109:8
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+[2024-05-18 14:51:14]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:71:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 14:51:33]: error: Status: error, Message: [object Object], Stack: Error: [object Object]
+    at C:\Users\yohan\Music\Teyake.com\server\app.js:109:8
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+[2024-05-18 14:52:14]: error: Status: error, Message: [object Object], Stack: Error: [object Object]
+    at C:\Users\yohan\Music\Teyake.com\server\app.js:109:8
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+[2024-05-18 14:55:07]: error: Status: error, Message: [object Object], Stack: Error: [object Object]
+    at C:\Users\yohan\Music\Teyake.com\server\app.js:109:8
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\route.js:145:7)
+[2024-05-18 14:56:47]: error: Status: error, Message: [object Object], Stack: CastError: Cast to ObjectId failed for value "logou" (type string) at path "_id" for model "User"
+    at SchemaObjectId.cast (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\schema\objectId.js:250:11)
+    at SchemaType.applySetters (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\schemaType.js:1221:12)
+    at SchemaType.castForQuery (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\schemaType.js:1636:17)
+    at cast (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\cast.js:375:32)
+    at Query.cast (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:4778:12)
+    at Query._castConditions (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:2199:10)
+    at model.Query._find (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:2225:8)
+    at model.Query.exec (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:4322:80)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\Users\yohan\Music\Teyake.com\server\controller\handlerFactory.js:19:17
+[2024-05-18 14:57:31]: error: Status: error, Message: [object Object], Stack: CastError: Cast to ObjectId failed for value "logou" (type string) at path "_id" for model "User"
+    at SchemaObjectId.cast (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\schema\objectId.js:250:11)
+    at SchemaType.applySetters (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\schemaType.js:1221:12)
+    at SchemaType.castForQuery (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\schemaType.js:1636:17)
+    at cast (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\cast.js:375:32)
+    at Query.cast (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:4778:12)
+    at Query._castConditions (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:2199:10)
+    at model.Query._find (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:2225:8)
+    at model.Query.exec (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\query.js:4322:80)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\Users\yohan\Music\Teyake.com\server\controller\handlerFactory.js:19:17
+[2024-05-18 14:57:53]: error: Status: error, Message: Route Not Found, Stack: Error: Route Not Found
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:68:15)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:01:15]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:69:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:01:56]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:69:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:02:37]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:69:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:04:52]: error: Status: error, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:69:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:06:32]: error: Status: 404, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:69:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:07:24]: error: logger is not defined
+ReferenceError: logger is not defined
+    at NativeCollection.<anonymous> (C:\Users\yohan\Music\Teyake.com\server\config\db_Connection.js:24:5)
+    at NativeCollection.<computed> [as createIndex] (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\drivers\node-mongodb-native\collection.js:217:15)
+    at create (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\model.js:1960:22)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\model.js:1915:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+[2024-05-18 15:07:38]: error: logger is not defined
+ReferenceError: logger is not defined
+    at NativeConnection.<anonymous> (C:\Users\yohan\Music\Teyake.com\server\config\db_Connection.js:35:3)
+    at Object.onceWrapper (node:events:632:28)
+    at NativeConnection.emit (node:events:518:28)
+    at Connection.onOpen (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\connection.js:747:8)
+    at _setClient (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\drivers\node-mongodb-native\connection.js:400:8)
+    at NativeConnection.createClient (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\drivers\node-mongodb-native\connection.js:303:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[2024-05-18 15:07:52]: error: logger is not defined
+ReferenceError: logger is not defined
+    at NativeConnection.<anonymous> (C:\Users\yohan\Music\Teyake.com\server\config\db_Connection.js:35:3)
+    at Object.onceWrapper (node:events:632:28)
+    at NativeConnection.emit (node:events:518:28)
+    at Connection.onOpen (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\connection.js:747:8)
+    at _setClient (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\drivers\node-mongodb-native\connection.js:400:8)
+    at NativeConnection.createClient (C:\Users\yohan\Music\Teyake.com\server\node_modules\mongoose\lib\drivers\node-mongodb-native\connection.js:303:3)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[2024-05-18 15:08:25]: error: Status: 404, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:69:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+[2024-05-18 15:10:05]: error: Status: 404, Message: NOT_FOUND, Stack: Error: NOT_FOUND
+    at notFound (C:\Users\yohan\Music\Teyake.com\server\middleware\errorLogger.js:68:5)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:95:5)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:280:10)
+    at Layer.handle [as handle_request] (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\layer.js:91:12)
+    at trim_prefix (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:328:13)
+    at C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\yohan\Music\Teyake.com\server\node_modules\express\lib\router\index.js:346:12)
