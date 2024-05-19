@@ -103,7 +103,7 @@ const NotificationsPage = () => {
           endMessage={<Divider plain>No more Notifications!</Divider>}
           scrollableTarget='scrollableDiv'>
           <List
-            dataSource={Array.from(data)}
+            dataSource={data}
             renderItem={(item) => (
               <List.Item
                 className='hover:bg-gray-50 cursor-pointer w-full px-8'
