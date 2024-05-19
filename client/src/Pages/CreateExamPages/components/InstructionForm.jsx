@@ -30,7 +30,7 @@ const InstructionForm = ({basicInfoValues, setBasicInfoValues,setActiveTabKey}) 
   return (
     <>
     <Form.Item name="instruction">
-      <p className="mb-4 font-semibold text-left text-blue-900 text-lg">Enter the Instructions for the exam here</p>
+      <p className="mb-4 font-semibold text-center text-blue-900 text-lg">Enter the Instructions for the exam here</p>
       <ReactQuill 
       className="mx-32 my-8 h-96"
       value={basicInfoValues.instruction} 

@@ -37,7 +37,7 @@ const ExamQuestionForm = ({
  
  
            {questionType === "trueFalse" && (
-   <Card className="bg-gray-50 w-5/6 mx-auto my-8">
+   <Card className="bg-gray-50 w-5/6 mx-auto my-8 rounded-none">
      <div className="flex gap-8 items-center justify-between mx-4 border-b">
        <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
        <Form.Item label="points" rules={[{ required: true, type: "number", message: "Please input the points!" }]}>
@@ -64,7 +64,7 @@ const ExamQuestionForm = ({
  )}
  
  {questionType === "choose" && (
-   <Card className="bg-gray-50 w-5/6 mx-auto my-8">
+   <Card className="bg-gray-50 w-5/6 mx-auto my-8 rounded-none">
      <div className="flex gap-8 items-center justify-between mx-4 border-b">
      <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
      <Form.Item label="points" rules={[{ required: true, type: "number", message: "Please input the points!" }]}>
@@ -115,7 +115,7 @@ const ExamQuestionForm = ({
  
  
  {questionType === "shortAnswer" && (
-   <Card className="bg-gray-50 w-5/6 mx-auto my-8">
+   <Card className="bg-gray-50 w-5/6 mx-auto my-8 rounded-none">
      <div className="flex gap-8 items-center justify-between mx-4 border-b">
      <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
        {/* <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}> */}
@@ -142,7 +142,7 @@ const ExamQuestionForm = ({
  )}
  
  { questionType === "essay" && (
-            <Card className="bg-gray-50 w-5/6 mx-auto my-8">
+            <Card className="bg-gray-50 w-5/6 mx-auto my-8 rounded-none">
             <div className="flex gap-8 items-center justify-between mx-4 border-b">
             <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
               {/* <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}> */}
@@ -171,7 +171,7 @@ const ExamQuestionForm = ({
  
  
            {/* Render the question choices section */}
-           <Card className="bg-gray-50 w-5/6 mx-auto my-8">
+           <Card className="bg-gray-50 w-5/6 mx-auto my-8 rounded-none">
              <div className="flex gap-8 items-center justify-center">
              <h3 className="text-blue-900 font-semibold text-lg">Question type</h3>
   {/* <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}> */}
@@ -185,7 +185,7 @@ const ExamQuestionForm = ({
  </Card>
  
  
- <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
+ <Card className=" mx-auto mt-8 mb-2  rounded-none">
              <div className="flex gap-8 items-center justify-center">
              <h3 className=" font-semibold text-lg">Total Questions <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
              <h3 className=" font-semibold text-lg">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3>

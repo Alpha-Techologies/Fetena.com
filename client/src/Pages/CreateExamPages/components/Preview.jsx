@@ -258,13 +258,13 @@ const submitExam = async () => {
 
 
 
-<Card className="bg-gray-50 w-11/12 mx-auto my-2">
+<Card className="bg-gray-50 w-11/12 mx-auto rounded-none px-0">
 <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
   <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
     <p className="font-semibold text-blue-900">Points {question.points}</p>
   </div>
   <div className="mt-4 mx-4 flex items-start">
-   <h3 className="font-semibold">{question.questionText}</h3>
+   <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
   <div className="mt-8 flex items-start mx-4 ">
     <Form.Item label="Your Answer" className="w-48">
@@ -292,7 +292,7 @@ const submitExam = async () => {
 
 
 
-<Card className="bg-gray-50 w-11/12 mx-auto">
+<Card className="bg-gray-50 w-11/12 mx-auto rounded-none">
   <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
     <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
     <p className="font-semibold text-blue-900">Points {question.points}</p>
@@ -340,7 +340,7 @@ const submitExam = async () => {
 
 
 
-<Card className="bg-gray-50 w-11/12 mx-auto my-2">
+<Card className="bg-gray-50 w-11/12 mx-auto my-2 rounded-none">
 <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
     <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
     <p className="font-semibold text-blue-900">Points {question.points}</p>
@@ -375,7 +375,7 @@ const submitExam = async () => {
         
 
 
-        <Card className="bg-gray-50 w-11/12 mx-auto my-8">
+        <Card className="bg-gray-50 w-11/12 mx-auto my-8 rounded-none">
          <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
     <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
     <p className="font-semibold text-blue-900">Points {question.points}</p>
@@ -411,7 +411,7 @@ const submitExam = async () => {
 </div>
 
 
-<Card className=" mx-auto mt-8 mb-2 shadow-sm ">
+<Card className=" mx-auto mt-8 mb-2 shadow-sm rounded-none">
              <div className="flex gap-8 items-center justify-center">
              <h3 className=" font-semibold text-lg">Total Questions <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
              <h3 className=" font-semibold text-lg">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3>

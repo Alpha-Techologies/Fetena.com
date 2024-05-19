@@ -13,12 +13,12 @@ const OrganizationSettingsPage = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef();
   let initialValues = {
-    name: workspace.name,
-    address: workspace.address,
-    description: workspace.description,
-    website: workspace.website,
-    phone: workspace.phone,
-    email: workspace.email,
+    name: workspace?.name,
+    address: workspace?.address,
+    description: workspace?.description,
+    website: workspace?.website,
+    phone: workspace?.phone,
+    email: workspace?.email,
   };
 
   const [pictureData, setPictureData] = useState({

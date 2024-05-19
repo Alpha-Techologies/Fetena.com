@@ -44,6 +44,7 @@ const DashboardScreen = () => {
   const [userRole, setUserRole] = useState("examinee");
   const [organization, setOrganization] = useState({});
   const [userOrganizations, setUserOrganizations] = useState([]);
+  console.log(workspace,"workspace")
   
   
   const fetchUserOrganizations = () => {
@@ -68,12 +69,12 @@ const DashboardScreen = () => {
     if (workspace === null) {
       setUserRole("examinee");
       setCurrentWorkspace("peronal");
-    } else if (workspace.adminUser._id === user._id) {
+    } else if (workspace?.adminUser._id === user._id) {
       setUserRole("admin");
-      setCurrentWorkspace(workspace._id);
+      setCurrentWorkspace(workspace?._id);
     } else {
       setUserRole("examiner");
-      setCurrentWorkspace(workspace._id);
+      setCurrentWorkspace(workspace?._id);
     }
 
     fetchUserOrganizations();
