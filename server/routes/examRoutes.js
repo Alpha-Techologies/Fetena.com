@@ -22,7 +22,7 @@ router
   .route("/")
   .get(protect, restrictTo(true), getAllExam)
   .post(protect, createExam);
-router.route("/my-exam").get(protect, getMyExam);
+router.route("/my-exam/:id").get(protect, getMyExam);
 
 router.route("/resource/:id").patch(protect, updateExamResource);
 

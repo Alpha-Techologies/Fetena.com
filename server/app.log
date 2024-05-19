@@ -625,3 +625,131 @@
 2024-05-19T16:44:56.224Z - [INFO   ] - takeexams.countDocuments([{"exam":"664a083958be7cb039e70ac9"},{}])
 2024-05-19T16:44:56.227Z - [INFO   ] - takeexams.find([{"exam":"664a083958be7cb039e70ac9"},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
 2024-05-19T16:44:56.229Z - [INFO   ] - users.find([{"_id":{"$in":["662e39a7e96e06fe1e620e41"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-19T17:24:15.397Z - [INFO   ] - DBconnection succcessful
+2024-05-19T17:24:15.421Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T18:54:24.409Z - [INFO   ] - tokens.findOne([{"user":"662e39a7e96e06fe1e620e41","refreshToken":"8c2bf941ee34ef034d914bed7d0900be886ef76315c358dafc43cac80f55a1df58cc188e7c032464"},{}])
+2024-05-19T18:54:24.418Z - [INFO   ] - exams.countDocuments([{"createdBy":"662e39a7e96e06fe1e620e41"},{}])
+2024-05-19T18:54:24.423Z - [INFO   ] - exams.find([{"createdBy":"662e39a7e96e06fe1e620e41"},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
+2024-05-19T18:54:24.435Z - [INFO   ] - questions.find([{"_id":{"$in":["664a072e0e520e043131e8bb","664a072e0e520e043131e8bc","664a072e0e520e043131e8bd","664a072e0e520e043131e8be","664a072e0e520e043131e8bf"]}},{"strictPopulate":false}])
+2024-05-19T18:54:24.436Z - [INFO   ] - users.find([{"_id":{"$in":["662e39a7e96e06fe1e620e41"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-19T18:54:51.083Z - [INFO   ] - exams.countDocuments([{"createdBy":"662e39a7e96e06fe1e620e41","filters":{}},{}])
+2024-05-19T18:54:51.090Z - [INFO   ] - exams.find([{"createdBy":"662e39a7e96e06fe1e620e41","filters":{}},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
+2024-05-19T18:55:10.413Z - [INFO   ] - exams.countDocuments([{"createdBy":"662e39a7e96e06fe1e620e41","field":{}},{}])
+2024-05-19T18:55:10.416Z - [INFO   ] - exams.find([{"createdBy":"662e39a7e96e06fe1e620e41","field":{}},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
+2024-05-19T18:55:12.782Z - [INFO   ] - exams.countDocuments([{"createdBy":"662e39a7e96e06fe1e620e41"},{}])
+2024-05-19T18:55:12.784Z - [INFO   ] - exams.find([{"createdBy":"662e39a7e96e06fe1e620e41"},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"questions":1}}])
+2024-05-19T18:55:12.788Z - [INFO   ] - questions.find([{"_id":{"$in":["664a072e0e520e043131e8bb","664a072e0e520e043131e8bc","664a072e0e520e043131e8bd","664a072e0e520e043131e8be","664a072e0e520e043131e8bf"]}},{"strictPopulate":false}])
+2024-05-19T18:57:25.314Z - [INFO   ] - users.findOne([{"_id":"662e39a7e96e06fe1e620e41"},{"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-19T18:57:25.318Z - [INFO   ] - organizations.findOne([{},{}])
+2024-05-19T18:59:27.152Z - [INFO   ] - DBconnection succcessful
+2024-05-19T18:59:27.180Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T18:59:32.002Z - [INFO   ] - DBconnection succcessful
+2024-05-19T18:59:32.043Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T18:59:34.009Z - [INFO   ] - DBconnection succcessful
+2024-05-19T18:59:34.036Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T18:59:36.608Z - [INFO   ] - DBconnection succcessful
+2024-05-19T18:59:36.635Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T18:59:40.064Z - [INFO   ] - DBconnection succcessful
+2024-05-19T18:59:40.092Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:00:09.009Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:00:09.044Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:00:18.908Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:00:18.930Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:00:33.050Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:00:33.080Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:00:55.239Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:00:55.272Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:01:04.449Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:01:04.479Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:11:46.233Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:11:46.255Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:11:51.020Z - [INFO   ] - tokens.findOne([{"user":"662e39a7e96e06fe1e620e41","refreshToken":"8c2bf941ee34ef034d914bed7d0900be886ef76315c358dafc43cac80f55a1df58cc188e7c032464"},{}])
+2024-05-19T19:11:51.029Z - [INFO   ] - exams.countDocuments([{"createdBy":"662e39a7e96e06fe1e620e41","organization":"664a2c61187e6dfdd8417784"},{}])
+2024-05-19T19:11:51.034Z - [INFO   ] - exams.find([{"createdBy":"662e39a7e96e06fe1e620e41","organization":"664a2c61187e6dfdd8417784"},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
+2024-05-19T19:11:59.215Z - [INFO   ] - exams.find([{"_id":"664a2c61187e6dfdd8417784"},{"projection":{"__v":0}}])
+2024-05-19T19:17:18.549Z - [INFO   ] - users.findOne([{"email":"balchutbutrf@gmail.com"},{"projection":{"passwordConfirm":0}}])
+2024-05-19T19:17:18.633Z - [INFO   ] - tokens.findOne([{"user":"662ea4de6b5166c7e46a4c6b"},{}])
+2024-05-19T19:17:18.642Z - [INFO   ] - tokens.insertOne([{"refreshToken":"539e3134b2ec320c48797b49f38be25a24f5271d2a230e14c41efcb1a3af31c5870b57c82923aadb","ip":"::1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36","isValid":true,"user":"662ea4de6b5166c7e46a4c6b","_id":"664a503e5e3da0ef0589b786","createdAt":"2024-05-19T19:17:18.640Z","updatedAt":"2024-05-19T19:17:18.640Z","__v":0},{}])
+2024-05-19T19:17:18.683Z - [INFO   ] - users.find([{"_id":"662ea4de6b5166c7e46a4c6b"},{"projection":{"__v":0,"password":0,"passwordConfirm":0}}])
+2024-05-19T19:17:48.367Z - [INFO   ] - users.find([{"_id":"662ea4de6b5166c7e46a4c6b"},{"projection":{"__v":0,"password":0,"passwordConfirm":0}}])
+2024-05-19T19:17:48.817Z - [INFO   ] - organizations.countDocuments([{"name":{}},{}])
+2024-05-19T19:17:48.820Z - [INFO   ] - organizations.find([{"name":{}},{"sort":{"createdAt":-1},"skip":null,"limit":null,"projection":{"name":1}}])
+2024-05-19T19:17:48.824Z - [INFO   ] - organizationexaminers.countDocuments([{"user":"662ea4de6b5166c7e46a4c6b","status":"activated"},{}])
+2024-05-19T19:17:48.828Z - [INFO   ] - organizationexaminers.find([{"user":"662ea4de6b5166c7e46a4c6b","status":"activated"},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
+2024-05-19T19:18:28.366Z - [INFO   ] - organizationexaminers.countDocuments([{"user":"662ea4de6b5166c7e46a4c6b","status":"activated"},{}])
+2024-05-19T19:18:28.368Z - [INFO   ] - organizations.countDocuments([{"name":{}},{}])
+2024-05-19T19:18:28.370Z - [INFO   ] - users.find([{"_id":"662ea4de6b5166c7e46a4c6b"},{"projection":{"__v":0,"password":0,"passwordConfirm":0}}])
+2024-05-19T19:18:28.372Z - [INFO   ] - organizationexaminers.find([{"user":"662ea4de6b5166c7e46a4c6b","status":"activated"},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
+2024-05-19T19:18:28.375Z - [INFO   ] - organizations.find([{"name":{}},{"sort":{"createdAt":-1},"skip":null,"limit":null,"projection":{"name":1}}])
+2024-05-19T19:18:31.516Z - [INFO   ] - organizations.countDocuments([{"name":{}},{}])
+2024-05-19T19:18:31.518Z - [INFO   ] - organizations.find([{"name":{}},{"sort":{"name":1},"skip":0,"limit":10,"projection":{"__v":0}}])
+2024-05-19T19:18:37.199Z - [INFO   ] - organizationexaminers.countDocuments([{"user":"662ea4de6b5166c7e46a4c6b","status":"activated"},{}])
+2024-05-19T19:18:37.201Z - [INFO   ] - organizationexaminers.find([{"user":"662ea4de6b5166c7e46a4c6b","status":"activated"},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
+2024-05-19T19:21:09.397Z - [INFO   ] - organizations.countDocuments([{"name":{}},{}])
+2024-05-19T19:21:09.399Z - [INFO   ] - organizations.find([{"name":{}},{"sort":{"name":1},"skip":0,"limit":10,"projection":{"__v":0}}])
+2024-05-19T19:42:37.963Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:42:37.980Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:42:41.706Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:42:41.729Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:43:53.146Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:43:53.176Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:43:56.396Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:43:56.421Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:46:18.459Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:46:18.485Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:46:24.853Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:46:24.880Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:46:26.852Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:46:26.876Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:46:30.976Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:46:30.996Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:46:34.230Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:46:35.449Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:46:35.469Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:46:38.455Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:46:38.477Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:46:50.953Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:46:50.985Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:46:53.006Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:46:54.287Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:46:54.311Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:47:10.349Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:47:10.374Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:47:36.402Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:47:36.434Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:48:01.379Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:48:01.404Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:48:09.670Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:48:10.951Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:48:10.972Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:49:08.545Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:49:08.569Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:49:12.083Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:49:13.259Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:49:13.279Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:49:28.371Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:49:28.396Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:49:36.940Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:49:36.962Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:49:40.687Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:49:40.714Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:49:49.443Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:49:49.471Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:50:00.269Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:50:00.294Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:50:16.108Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:50:16.150Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:50:22.262Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:50:22.288Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:50:24.782Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:50:24.806Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:50:27.826Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:50:27.867Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:50:29.180Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:50:29.203Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:50:33.401Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:50:33.480Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:50:35.450Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:50:35.474Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T19:50:38.909Z - [INFO   ] - DBconnection succcessful
+2024-05-19T19:50:38.934Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
