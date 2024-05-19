@@ -13,7 +13,7 @@ const cookieParser = require("cookie-parser");
 const socketIo = require("socket.io");
 
 require("dotenv").config({
-  path: "./config.env",
+  path: "./.env",
 });
 
 const limiter = rateLimit({
@@ -76,10 +76,15 @@ const examRouter = require("./routes/examRoutes");
 const questionRouter = require("./routes/questionRoutes");
 const organizationRouter = require("./routes/organizationRoutes");
 const notificationRouter = require("./routes/notificationRoutes");
+
 const initSocket = require("./sockets");
 // socket.io
+
 const server = require("http").createServer(app);
+
 // specifiy the port for connection for the socket
+const userAnswerRouter = require("./routes/userAnswerRoutes");
+// const answerRouter = require("./routes/answerRoutes");
 
 const io = require("socket.io")(server, {
   cors: {
@@ -98,6 +103,7 @@ app.use("/api/exams", examRouter);
 app.use("/api/questions", questionRouter);
 app.use("/api/organizations", organizationRouter);
 app.use("/api/notifications", notificationRouter);
+app.use("/api/useranswers", userAnswerRouter);
 
 app.all("*", (req, res, next) => {
   next(new APIError(`Can't find ${req.originalUrl} in server plus`, 404));

@@ -76,15 +76,30 @@ const user = new mongoose.Schema(
       default: null,
       trim: true,
     },
-    idPhotoType: {
+    passportPhoto: {
       type: String,
-      required: true,
-      default: "National",
-      enum: {
-        values: ["National", "Kebele", "Passport", "License", "SchoolId"],
-        message: "Id Type must be of the Provided Types.",
-      },
+      default: null,
+      trim: true,
     },
+    licensePhoto: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    schoolIdPhoto: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    // idPhotoType: {
+    //   type: String,
+    //   required: true,
+    //   default: "National",
+    //   enum: {
+    //     values: ["National", "Kebele", "Passport", "License", "SchoolId"],
+    //     message: "Id Type must be of the Provided Types.",
+    //   },
+    // },
     createdAt: {
       type: Date,
       default: Date.now(),

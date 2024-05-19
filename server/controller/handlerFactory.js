@@ -44,6 +44,7 @@ exports.getAll = (Model, options = "") =>
     if (options === "addOrganization") opt = { organization: req.params.id };
     if (options === "addExaminerStatus")
       opt = { user: req.user.id, status: "activated" };
+    if (options === "addExamCreater") opt = { createdBy: req.user.id };
 
     const page = req.query.page * 1 || 1;
     const limit = req.query.limit * 1 || 10;

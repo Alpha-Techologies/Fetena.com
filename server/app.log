@@ -1,0 +1,349 @@
+2024-05-17T20:38:11.642Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:38:11.939Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:45:38.888Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:45:39.023Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:45:48.924Z - [INFO   ] - users.findOne([{"email":"tibesolomon7@gmail.com"},{"projection":{"passwordConfirm":0}}])
+2024-05-17T20:45:49.110Z - [INFO   ] - tokens.findOne([{"user":"66296cac89224981daf0cc7e"},{}])
+2024-05-17T20:46:54.327Z - [INFO   ] - useranswers.insertOne([{"userId":"662e998e1b1c9802c2665e13","examId":"662a4e169e7fc1467afc501c","score":0,"questionAnswers":[],"_id":"6647c23d7a05c2ecc267ebd5","__v":0},{}])
+2024-05-17T20:47:31.597Z - [INFO   ] - exams.countDocuments([{},{}])
+2024-05-17T20:47:31.701Z - [INFO   ] - exams.find([{},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"examName":1,"questions":1}}])
+2024-05-17T20:47:31.910Z - [INFO   ] - questions.find([{"_id":{"$in":["663e889c6470d66fcf38a4d4","663e891d9378ac344cc59f80"]}},{"strictPopulate":false}])
+2024-05-17T20:48:22.561Z - [INFO   ] - useranswers.insertOne([{"userId":"662e998e1b1c9802c2665e13","examId":"662a4e169e7fc1467afc501c","score":0,"questionAnswers":[],"_id":"6647c2967a05c2ecc267ebda","__v":0},{}])
+2024-05-17T20:51:38.886Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:51:39.147Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:51:57.942Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:51:57.959Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:52:53.885Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:52:53.907Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:52:58.446Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:52:58.463Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:53:02.368Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:53:02.386Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:53:15.786Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:53:15.805Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:53:29.492Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:53:29.787Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:53:39.473Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:53:39.493Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:53:45.363Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:53:45.407Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:53:50.939Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:53:51.092Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:54:06.617Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:54:06.768Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:54:11.042Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:54:11.061Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:54:13.535Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:54:13.552Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:54:19.742Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:54:19.920Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:54:25.037Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:54:25.145Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:54:36.460Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:54:36.481Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:55:03.057Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:55:03.070Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:55:07.219Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:55:07.241Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:55:12.848Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:55:13.021Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:55:16.534Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:55:16.652Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:55:18.470Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:55:18.905Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:55:20.794Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:55:21.034Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:55:25.241Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:55:25.261Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:55:39.091Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:55:39.390Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:55:47.472Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:55:47.522Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:56:03.846Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:56:03.867Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:56:16.013Z - [INFO   ] - questions.countDocuments([{},{}])
+2024-05-17T20:56:16.051Z - [INFO   ] - questions.find([{},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
+2024-05-17T20:57:03.242Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:57:03.338Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:57:05.952Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:57:06.002Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:57:34.432Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:57:34.556Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:57:43.661Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:57:44.005Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:57:50.017Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:57:50.050Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:58:00.239Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:58:00.481Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:58:03.296Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:58:03.510Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:58:06.660Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:58:06.825Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:58:09.036Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:58:09.309Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:59:14.641Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:59:14.794Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:59:26.073Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:59:26.215Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:59:31.312Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:59:31.334Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T20:59:32.738Z - [INFO   ] - DBconnection succcessful
+2024-05-17T20:59:32.759Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:00:07.742Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:00:07.862Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:00:17.580Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:00:17.608Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:00:22.754Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:00:22.775Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:00:24.782Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:00:24.806Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:00:28.851Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:00:28.866Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:02:16.123Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:02:16.347Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:03:26.610Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:03:26.885Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:03:28.471Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:03:28.625Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:03:35.462Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-17T21:06:13.766Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:06:13.787Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:07:51.436Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:07:51.571Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:08:04.508Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-17T21:08:07.535Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:08:07.668Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:08:14.783Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-17T21:08:52.756Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:08:52.769Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:08:58.832Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:08:58.991Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:09:03.030Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:09:03.095Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:09:13.513Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:09:13.748Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:09:21.037Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:09:21.272Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:09:23.100Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:09:23.369Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:09:32.961Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:09:33.092Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:09:35.399Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:09:35.542Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:09:49.768Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:09:49.791Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:09:51.720Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:09:51.965Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:10:11.084Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:10:11.145Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:10:13.861Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:10:13.972Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:10:15.634Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:10:15.659Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:10:20.527Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:10:20.599Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:10:36.594Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:10:36.783Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:10:48.810Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:10:48.889Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:10:53.341Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:10:53.368Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:10:59.052Z - [INFO   ] - questions.countDocuments([{},{}])
+2024-05-17T21:10:59.060Z - [INFO   ] - questions.find([{},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
+2024-05-17T21:11:06.000Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-17T21:11:34.088Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:11:34.127Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:11:47.849Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:11:47.864Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:12:20.224Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:12:20.269Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:12:22.310Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-17T21:12:58.393Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:12:58.410Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:13:00.311Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:13:00.456Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:13:04.007Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:13:04.129Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:13:05.024Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-17T21:14:41.610Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:14:41.764Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:14:46.317Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-17T21:16:46.411Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:16:46.433Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-17T21:16:46.443Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:17:30.866Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:17:30.881Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:17:38.234Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-17T21:18:10.379Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-17T21:18:58.194Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:18:58.213Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:19:00.592Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-17T21:19:25.249Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:19:25.266Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:19:33.783Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:19:33.798Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:19:50.376Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:19:50.396Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:19:56.829Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:19:56.850Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:20:03.450Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:20:03.471Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:20:15.282Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:20:15.308Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:20:18.545Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:20:18.563Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:20:19.848Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-17T21:20:48.662Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:20:48.686Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:20:50.315Z - [INFO   ] - DBconnection succcessful
+2024-05-17T21:20:50.341Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-17T21:20:51.096Z - [INFO   ] - questions.findOne([{"_id":"664685e526d944a4bfeb57b4"},{}])
+2024-05-19T14:04:13.167Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:04:13.191Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:04:17.106Z - [INFO   ] - users.findOne([{"email":"tibesolomon7@gmail.com"},{"projection":{"passwordConfirm":0}}])
+2024-05-19T14:04:25.156Z - [INFO   ] - users.findOne([{"email":"yohannesmesg@gmail.com"},{"projection":{"passwordConfirm":0}}])
+2024-05-19T14:04:25.248Z - [INFO   ] - tokens.findOne([{"user":"662e39a7e96e06fe1e620e41"},{}])
+2024-05-19T14:05:34.642Z - [INFO   ] - questions.insertMany([[{"questionText":"What is the capital of France?","questionChoice":["Paris","Berlin","Madrid","Rome"],"correctAnswer":"Paris","questionType":"choose","tag":["geography","capital cities"],"flag":false,"points":5,"_id":"664a072e0e520e043131e8bb","__v":0},{"questionText":"The Earth is flat.","questionChoice":["True","False"],"correctAnswer":"False","questionType":"True/False","tag":["science","astronomy"],"flag":false,"points":2,"_id":"664a072e0e520e043131e8bc","__v":0},{"questionText":"Explain the theory of relativity.","questionChoice":[],"correctAnswer":"","questionType":"shortAnswer","tag":["physics"],"flag":false,"points":10,"_id":"664a072e0e520e043131e8bd","__v":0},{"questionText":"Discuss the impacts of climate change on global agriculture.","questionChoice":[],"correctAnswer":"","questionType":"essay","tag":["environment","agriculture"],"flag":false,"points":15,"_id":"664a072e0e520e043131e8be","__v":0},{"questionText":"Match the following countries with their capitals.","questionChoice":["France - Paris","Germany - Berlin","Spain - Madrid","Italy - Rome"],"correctAnswer":"","questionType":"matching","tag":["geography"],"flag":false,"points":8,"_id":"664a072e0e520e043131e8bf","__v":0}],{}])
+2024-05-19T14:09:22.064Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:09:22.091Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:09:27.237Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:09:27.266Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:09:29.672Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:09:29.697Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:09:33.662Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:09:33.686Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:09:54.919Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:09:54.944Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:09:59.959Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:09:59.986Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:10:01.266Z - [INFO   ] - exams.insertOne([{"examName":"Sample Exam","duration":60,"instruction":"This is a sample exam for testing purposes.","securityLevel":"low","examType":"createOnline","privateAnswer":false,"privateScore":false,"toolsPermitted":["calculator","pen"],"questions":["664a072e0e520e043131e8bb","664a072e0e520e043131e8bc","664a072e0e520e043131e8bd","664a072e0e520e043131e8be","664a072e0e520e043131e8bf"],"access":"closed","startDate":"2024-06-01T08:00:00.000Z","requiredField":[],"_id":"664a083958be7cb039e70ac9","createdBy":"662e39a7e96e06fe1e620e41","invigilatorID":"662e39a7e96e06fe1e620e41","examKey":"&8vtY:","__v":0},{}])
+2024-05-19T14:11:25.064Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:11:25.089Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:11:30.341Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:11:30.363Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:11:36.052Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:11:36.075Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:11:37.446Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:11:37.468Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:11:40.900Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:11:40.924Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:11:42.836Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:11:42.860Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:11:45.289Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:11:45.312Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:11:53.855Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:11:53.886Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:11:59.233Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:11:59.262Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:12:14.255Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:12:14.284Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:13:31.202Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:13:31.225Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:13:33.261Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:13:33.283Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:13:39.420Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:13:39.443Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:14:35.733Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:14:35.755Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:14:37.062Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:14:37.081Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:14:42.414Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:14:42.436Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:15:49.729Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:15:49.750Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:17:22.189Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:17:22.214Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:17:25.337Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:17:25.362Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:17:28.152Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:17:28.174Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:17:47.460Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:17:47.483Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:17:55.331Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:17:55.354Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:18:00.159Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:18:00.187Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:18:03.901Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:18:03.926Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:18:13.655Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:18:13.679Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:18:21.037Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:18:21.061Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:18:59.102Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:18:59.125Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:20:41.993Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:20:42.019Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:21:05.988Z - [INFO   ] - tokens.findOne([{"user":"662e39a7e96e06fe1e620e41","refreshToken":"8c2bf941ee34ef034d914bed7d0900be886ef76315c358dafc43cac80f55a1df58cc188e7c032464"},{}])
+2024-05-19T14:21:05.997Z - [INFO   ] - exams.countDocuments([{"createdBy":"662e39a7e96e06fe1e620e41"},{}])
+2024-05-19T14:21:06.018Z - [INFO   ] - exams.find([{"createdBy":"662e39a7e96e06fe1e620e41"},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
+2024-05-19T14:21:06.030Z - [INFO   ] - questions.find([{"_id":{"$in":["664a072e0e520e043131e8bb","664a072e0e520e043131e8bc","664a072e0e520e043131e8bd","664a072e0e520e043131e8be","664a072e0e520e043131e8bf"]}},{"strictPopulate":false}])
+2024-05-19T14:21:06.031Z - [INFO   ] - users.find([{"_id":{"$in":["662e39a7e96e06fe1e620e41"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-19T14:22:49.485Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:22:49.505Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:22:56.552Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:22:56.575Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:24:06.053Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:24:06.076Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:24:42.095Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:24:42.117Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:24:46.902Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:24:46.927Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:24:48.906Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:24:48.930Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:24:53.625Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:24:53.650Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:24:55.970Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:24:55.995Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:25:01.313Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:25:01.335Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:25:03.440Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:25:03.470Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:25:59.445Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:25:59.469Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:27:17.315Z - [INFO   ] - exams.findOne([{"_id":null},{}])
+2024-05-19T14:27:29.156Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:27:29.176Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:27:30.940Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:27:30.963Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:28:25.038Z - [INFO   ] - exams.findOne([{"_id":"664a083958be7cb039e70ac9"},{}])
+2024-05-19T14:28:41.010Z - [INFO   ] - exams.findOne([{"_id":"664a083958be7cb039e70ac9"},{}])
+2024-05-19T14:29:01.659Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:29:01.681Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:29:01.767Z - [INFO   ] - exams.findOne([{"_id":"664a083958be7cb039e70ac9"},{}])
+2024-05-19T14:29:33.811Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:29:33.833Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:30:59.412Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:30:59.439Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:31:03.134Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:31:03.160Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:31:11.129Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:31:11.188Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:31:16.022Z - [INFO   ] - exams.findOne([{"_id":"664a083958be7cb039e70ac9"},{}])
+2024-05-19T14:31:31.094Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:31:31.117Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:31:36.701Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:31:36.723Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:31:37.108Z - [INFO   ] - exams.findOne([{"_id":"664a083958be7cb039e70ac9"},{}])
+2024-05-19T14:31:37.126Z - [INFO   ] - exams.updateOne([{"_id":"664a083958be7cb039e70ac9"},{"$set":{"material":"/uploads/examMaterials/examMaterial_664a083958be7cb039e70ac9.pdf","examFile":"/uploads/examFiles/examFile_664a083958be7cb039e70ac9.pdf"}},{}])
+2024-05-19T14:33:35.232Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:33:35.254Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:33:38.198Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:33:38.221Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:33:41.915Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:33:41.937Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:33:43.354Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:33:43.377Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:42:16.302Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:42:16.326Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:42:26.542Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:42:26.563Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:42:36.145Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:42:36.164Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:42:38.331Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:42:38.355Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:44:51.596Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:44:51.618Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:45:00.764Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:45:00.783Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:45:03.585Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:45:03.606Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
