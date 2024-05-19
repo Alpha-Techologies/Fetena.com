@@ -31,6 +31,10 @@ import ExamDetailPage from "../Pages/ExamDetailPage";
 import CertificationsPage from "../Pages/CertificationsPage";
 import TrainingVideosPage from "../Pages/TrainingVideosPage";
 import SupportPage from "../Pages/SupportPage";
+import ActivityLogPage from "../Pages/ActivityLogPage";
+import OrganizationStaffPage from "../Pages/OrganizationStaffPage";
+import OrganizationSettingsPage from "../Pages/OrganizationSettingsPage";
+import NotificationPage from "../Pages/NotificationsPage";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -93,6 +97,10 @@ const AllRoutes = () => {
             element={<ProfilePage />}
           />
           <Route
+            path='notifications'
+            element={<NotificationPage />}
+          />
+          <Route
             path='exams'
             element={<ExamsPage />}
           />
@@ -126,6 +134,18 @@ const AllRoutes = () => {
             element={<CertificationsPage />}
           />
           <Route
+            path='activities'
+            element={<ActivityLogPage />}
+          />
+          <Route
+            path='staffs'
+            element={<OrganizationStaffPage />}
+          />
+          <Route
+            path='settings'
+            element={<OrganizationSettingsPage />}
+          />
+          <Route
             path='trainingVideos'
             element={<TrainingVideosPage />}
           />
@@ -139,7 +159,7 @@ const AllRoutes = () => {
             element={<NotFoundPage />}
           />
         </Route>
-        
+
         <Route
           path='*'
           element={<NotFoundPage />}

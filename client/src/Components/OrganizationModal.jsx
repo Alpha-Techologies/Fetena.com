@@ -2,8 +2,9 @@ import { Modal, Select } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { getOrganizations } from "../Redux/features/dataActions";
+import { getOrganizations, joinOrganization } from "../Redux/features/dataActions";
 import { toast } from "react-toastify";
+import { getMe } from "../Redux/features/authActions";
 
 const OrganizationModal = ({ orgModal, setOrgModal }) => {
   const [searchOptions, setSearchOptions] = useState([]);
@@ -47,8 +48,23 @@ const OrganizationModal = ({ orgModal, setOrgModal }) => {
   };
 
   const handleJoinOrganization = () => {
-    setOrgModal(false);
-    setSelectedValue("");
+    console.log(selectedValue);
+    dispatch(joinOrganization(selectedValue))
+    .then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setOrgModal(false);
+        setSelectedValue("");
+        toast.success(res.payload.message);
+        dispatch(getMe())
+      } else {
+        toast.error(res.payload.message);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      toast.error("There is some error in the server! ");
+    });
+    
   };
 
   const handleCancel = () => {
