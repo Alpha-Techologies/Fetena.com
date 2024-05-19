@@ -2,7 +2,8 @@ const { StatusCodes } = require("http-status-codes");
 const Exam = require("../../models/exam.model");
 const catchAsync = require("../../utils/catchAsync");
 const factory = require("./../handlerFactory");
-const APIError = require("../../utils/apiError");
+const APIError = require("../../utils/APIError");
+const { fileUpload } = require("../profile/fileUpload");
 
 exports.updateExam = factory.updateOne(Exam);
 

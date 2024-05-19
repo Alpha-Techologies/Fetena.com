@@ -1,6 +1,6 @@
 const catchAsync = require("../../utils/catchAsync");
 const Exam = require("../../models/exam.model");
-const StatusCodes = require("http-status-codes");
+const {StatusCodes} = require("http-status-codes");
 const APIError = require("../../utils/APIError");
 
 
@@ -33,6 +33,8 @@ const startExam = catchAsync(async (req, res, next) => {
     if (isExamStarted && isExamStarted.status === "inprogress") {
         return next(APIError("Exam is already in progress", StatusCodes.BAD_REQUEST));
     }
+
+
 
 
 
