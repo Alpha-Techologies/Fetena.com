@@ -1,6 +1,6 @@
 const { createExam } = require("./createExam");
 const { deleteExam } = require("./deleteExam");
-const { getAllExam, getOneExam, getMyExam } = require("./getExam");
+const { getAllExam, getOneExam, getMyExam, getPublicExam } = require("./getExam");
 const { updateExam, updateExamResource } = require("./updateExam");
 
 module.exports = {
@@ -10,5 +10,6 @@ module.exports = {
   getOneExam,
   updateExam,
   getMyExam,
-  updateExamResource
+  updateExamResource,
+  getPublicExam
 };

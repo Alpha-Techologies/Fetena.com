@@ -9,11 +9,15 @@ exports.getAllExam = factory.getAll(Exam, "addOrganization");
 exports.getMyExam = factory.getAll(Exam, "addExamCreater");
 exports.getPublicExam = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id);
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 10;
 
-  let query = new APIFeatures(
-    Exam.find({ organization: { $in: user.organizationFollowed } }),
-    req.query
-  )
+  const opt = { organization: { $in: user.organizationsFollowed } };
+
+  let count = new APIFeatures(Exam.find(opt), req.query).filter().count();
+  let total = await count.query;
+
+  let query = new APIFeatures(Exam.find(opt), req.query)
     .filter()
     .field()
     .sort()
@@ -22,11 +26,24 @@ exports.getPublicExam = catchAsync(async (req, res, next) => {
 
   const doc = await query.query;
 
+  if (!doc) {
+    return next(
+      new APIError(`No document found with id = ${req.params.id}`, 404)
+    );
+  }
+
   res.status(200).json({
-    status: "success",
-    results: doc.length,
+    status: "succcess",
     data: {
       data: doc,
+      results: doc.length,
+      paginationData: {
+        total,
+        totalPages: Math.ceil(total / limit),
+        currentPage: page,
+        showingFrom: limit * (page - 1) + 1,
+        showingUntil: limit * page > total ? total : limit * page,
+      },
     },
   });
 });
