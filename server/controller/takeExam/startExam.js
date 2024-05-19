@@ -1,11 +1,11 @@
 const catchAsync = require("../../utils/catchAsync");
 const Exam = require("../../models/exam.model");
-const {StatusCodes} = require("http-status-codes");
+const { StatusCodes } = require("http-status-codes");
 const APIError = require("../../utils/APIError");
-
+const TakeExam = require("../../models/take.exam.model");
 
 const startExam = catchAsync(async (req, res, next) => {
-  const examId = req.params.examId;
+  const examId = req.params.id;
 
   const exam = await Exam.findById(examId);
 
@@ -13,33 +13,35 @@ const startExam = catchAsync(async (req, res, next) => {
     return next(APIError("Exam not found", StatusCodes.BAD_REQUEST));
   }
 
-  // check if the exam is active
-  if (!exam.isActive) {
-    return next(APIError("Exam is not active", StatusCodes.BAD_REQUEST));
-  }
-
   // check the exam status if it is closed or not
   if (exam.status === "closed") {
-    return next(APIError("Exam is closed", StatusCodes.BAD_REQUEST));
+    return next(new APIError("Exam is closed", StatusCodes.BAD_REQUEST));
   }
 
   // check if the exam is already started by the user
-    const isExamStarted = await TakeExam.findOne({
-        examId: examId,
-        userId: req.user.id,
-    });
+  const isExamStarted = await TakeExam.findOne({
+    exam: examId,
+    user: req.user.id,
+  });
 
-    // check if the exam is currently in progress or if he has not started the exam
-    if (isExamStarted && isExamStarted.status === "inprogress") {
-        return next(APIError("Exam is already in progress", StatusCodes.BAD_REQUEST));
-    }
+  // check if the exam is currently in progress or if he has not started the exam
+  if (isExamStarted && isExamStarted.status === "inprogress") {
+    return next(
+      new APIError("Exam is already in progress", StatusCodes.CONFLICT)
+    );
+  }
 
+  // create the exam take object
+  const doc = await TakeExam.create({
+    exam: examId,
+    user: req.user.id,
+    status: "inprogress",
+  });
 
-
-
-
-
-
-
-
+  res.status(200).json({
+    status: "success",
+    data: doc,
+  });
 });
+
+module.exports = startExam;

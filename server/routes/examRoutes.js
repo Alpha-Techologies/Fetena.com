@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+
+const takeExamRouter = require("./takeExamRoutes");
+
 // import '../controller/exam'
 const {
   createExam,
@@ -10,6 +13,9 @@ const {
   getMyExam,
   updateExamResource,
 } = require("../controller/exam");
+
+router.use(takeExamRouter);
+
 const { protect, restrictTo } = require("../controller/auth");
 
 router
