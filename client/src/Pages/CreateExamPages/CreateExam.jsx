@@ -25,10 +25,12 @@ const tabListNoTitle = [
   { key: "Exam Tools", label: "Exam Tools >" },
   { key: "Exam Questions", label: "Exam Questions >" },
   { key: "Preview", label: "Preview" },
+  { key: "Success", label: "" },
 ];
 
 const CreateExam = () => {
   const [activeTabKey, setActiveTabKey] = useState("Basic Info");
+  const [examKey,setExamKey] = useState("");
   const [basicInfoValues, setBasicInfoValues] = useState(() => {
     const savedBasicInfo = localStorage.getItem("basicInfoValues");
     return savedBasicInfo ? JSON.parse(savedBasicInfo) : {
@@ -46,6 +48,7 @@ const CreateExam = () => {
       uploadMaterials: false,
       material: null,
       questions: [],
+      access: "closed",
     };
   });
 
@@ -377,8 +380,30 @@ const CreateExam = () => {
             chooseOnChange={chooseOnChange} 
             essayOnChange={essayOnChange} 
             shortAnswerOnChange={shortAnswerOnChange} 
-            handleQuestionsSave={handleQuestionsSave} />
+            handleQuestionsSave={handleQuestionsSave} 
+            setExamKey={setExamKey}
+            setActiveTabKey={setActiveTabKey}
+            />
             )}
+
+
+{activeTabKey === "Success" && (
+ <section className='flex flex-col justify-center items-center mt-8'>
+ <img
+   loading='lazy'
+   src='https://cdn.builder.io/api/v1/image/assets/TEMP/f036dfadbcb5962fc51b133ce1f5e0f003ad5000218eb6b4df54e7ec1cff714a?apiKey=da0e5699a0964f23ab3a2091e7f935a3&'
+   alt='Submit form icon'
+   className='max-w-full aspect-[1.1] w-[157px]'
+ />
+ <h2 className='text-lg font-semibold text-left mt-4'>
+  Your exam has been successfully submitted!
+ </h2>
+
+ <h3 className='text-lg font-semibold text-left mt-4'>
+  Exam key : {examKey}
+ </h3>
+</section>
+)}
 
 
 
