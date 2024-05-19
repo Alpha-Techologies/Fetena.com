@@ -76,6 +76,10 @@ const ExamSchema = new mongoose.Schema({
       type: String,
     },
   ],
+  organization: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Organization",
+  },
 });
 
 const Exam = mongoose.model("Exam", ExamSchema);

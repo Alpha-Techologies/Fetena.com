@@ -341,3 +341,9 @@
 2024-05-19T14:42:36.164Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
 2024-05-19T14:42:38.331Z - [INFO   ] - DBconnection succcessful
 2024-05-19T14:42:38.355Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:44:51.596Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:44:51.618Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:45:00.764Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:45:00.783Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-19T14:45:03.585Z - [INFO   ] - DBconnection succcessful
+2024-05-19T14:45:03.606Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
