@@ -1,7 +1,7 @@
 const { createUserAnswer } = require("./createUserAnswer");
 const { deleteUserAnswer } = require("./deleteUserAnswer");
 const { getOneUserAnswer } = require("./getUserAnswer");
-const { updateUser } = require("./updateUser");
+const { updateUserAnswer } = require("./updateUserAnswer");
 const {evaluateUserAnswer} = require("./evaluateUserAnswer")
 
 module.exports = {

@@ -1,6 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const Exam = require("../../models/exam.model");
-const APIError = require("../../utils/APIError");
+const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
 const { fileUpload } = require("../profile/fileUpload");
 const generateRandomKey = require("../../utils/generateRandomKey");

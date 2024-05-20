@@ -1,7 +1,7 @@
 const catchAsync = require("../../utils/catchAsync");
 const Exam = require("../../models/exam.model");
 const { StatusCodes } = require("http-status-codes");
-const APIError = require("../../utils/APIError");
+const APIError = require("../../utils/apiError");
 const TakeExam = require("../../models/take.exam.model");
 
 const startExam = catchAsync(async (req, res, next) => {
