@@ -822,3 +822,5 @@
 2024-05-19T20:57:18.791Z - [INFO   ] - questions.find([{"_id":{"$in":["664a072e0e520e043131e8bb","664a072e0e520e043131e8bc","664a072e0e520e043131e8bd","664a072e0e520e043131e8be","664a072e0e520e043131e8bf"]}},{"strictPopulate":false}])
 2024-05-19T20:57:18.792Z - [INFO   ] - users.find([{"_id":{"$in":["662ea4de6b5166c7e46a4c6b"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
 2024-05-19T20:57:18.793Z - [INFO   ] - organizations.find([{"_id":{"$in":["664a66940342f900a2d99c90"]}},{"strictPopulate":false}])
+2024-05-20T12:00:59.247Z - [INFO   ] - DBconnection succcessful
+2024-05-20T12:00:59.325Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
