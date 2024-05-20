@@ -87,13 +87,12 @@ exports.getAll = (Model, options = "", obj = {}) =>
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    // console.log(req.params, req.body);
     let doc = await Model.updateOne(
       {
         _id: req.params.id,
       },
       req.body,
-      {
+      { 
         new: true,
         runValidators: true,
       }

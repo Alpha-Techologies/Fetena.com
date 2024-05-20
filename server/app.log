@@ -850,3 +850,223 @@
 2024-05-20T14:41:29.162Z - [INFO   ] - takeexams.findOne([{"exam":"664b491d2068fc9d1b0c5156","user":"662e998e1b1c9802c2665e13"},{}])
 2024-05-20T14:45:10.675Z - [INFO   ] - DBconnection succcessful
 2024-05-20T14:45:10.723Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T14:51:53.473Z - [INFO   ] - DBconnection succcessful
+2024-05-20T14:51:53.506Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T14:52:16.954Z - [INFO   ] - DBconnection succcessful
+2024-05-20T14:52:16.985Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T14:52:29.726Z - [INFO   ] - DBconnection succcessful
+2024-05-20T14:52:29.758Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T14:55:15.582Z - [INFO   ] - DBconnection succcessful
+2024-05-20T14:55:15.622Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T14:55:38.595Z - [INFO   ] - DBconnection succcessful
+2024-05-20T14:55:38.624Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T14:55:48.335Z - [INFO   ] - DBconnection succcessful
+2024-05-20T14:55:48.374Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T14:56:13.120Z - [INFO   ] - DBconnection succcessful
+2024-05-20T14:56:13.156Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T14:56:45.294Z - [INFO   ] - DBconnection succcessful
+2024-05-20T14:56:45.325Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T14:59:51.285Z - [INFO   ] - DBconnection succcessful
+2024-05-20T14:59:51.330Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:06:02.771Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:06:02.809Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:06:44.180Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:06:44.226Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:13:48.545Z - [INFO   ] - tokens.findOne([{"user":"662e998e1b1c9802c2665e13","refreshToken":"3c2897724ab1216e0469a87e979964386d7136d90e69771e2b6dc74648d59b24bb33372279ffa9d7"},{}])
+2024-05-20T15:13:48.556Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T15:13:48.560Z - [INFO   ] - takeexams.findOne([{"exam":"664b491d2068fc9d1b0c5156","user":"662e998e1b1c9802c2665e13"},{}])
+2024-05-20T15:24:00.084Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:24:00.117Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:24:12.880Z - [INFO   ] - useranswers.insertOne([{"userId":"662e998e1b1c9802c2665e13","examId":"664b491d2068fc9d1b0c5156","score":0,"questionAnswers":[{"questionId":"664b47762068fc9d1b0c514d","answerText":"Paris","_id":"664b6b1c3a76c5de66a60ed6"},{"questionId":"664b47762068fc9d1b0c514f","answerText":"The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity. Special relativity deals with objects moving at constant speeds, particularly at speeds close to the speed of light, and introduces the concept that space and time are interconnected and relative to the observer. General relativity expands on this by explaining how gravity is not a force between masses but a curvature of spacetime caused by mass and energy.","_id":"664b6b1c3a76c5de66a60ed7"},{"questionId":"664b47762068fc9d1b0c514e","answerText":"False","_id":"664b6b1c3a76c5de66a60ed8"},{"questionId":"664b47762068fc9d1b0c5150","answerText":"This question requires a detailed answer discussing various aspects of climate change, including rising temperatures, sea-level rise, changes in weather patterns, and their effects on different ecosystems around the world.","_id":"664b6b1c3a76c5de66a60ed9"}],"_id":"664b6b1c3a76c5de66a60ed5","__v":0},{}])
+2024-05-20T15:29:46.025Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:29:46.062Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:30:03.611Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:30:03.651Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:30:08.017Z - [INFO   ] - useranswers.insertOne([{"userId":"662e998e1b1c9802c2665e13","examId":"664b491d2068fc9d1b0c5156","score":0,"questionAnswers":[{"questionId":"664b47762068fc9d1b0c514d","answerText":"Paris","_id":"664b6c803638d26fa1c182b0"},{"questionId":"664b47762068fc9d1b0c514f","answerText":"The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity. Special relativity deals with objects moving at constant speeds, particularly at speeds close to the speed of light, and introduces the concept that space and time are interconnected and relative to the observer. General relativity expands on this by explaining how gravity is not a force between masses but a curvature of spacetime caused by mass and energy.","_id":"664b6c803638d26fa1c182b1"},{"questionId":"664b47762068fc9d1b0c514e","answerText":"False","_id":"664b6c803638d26fa1c182b2"},{"questionId":"664b47762068fc9d1b0c5150","answerText":"This question requires a detailed answer discussing various aspects of climate change, including rising temperatures, sea-level rise, changes in weather patterns, and their effects on different ecosystems around the world.","_id":"664b6c803638d26fa1c182b3"}],"_id":"664b6c803638d26fa1c182af","__v":0},{}])
+2024-05-20T15:31:09.277Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:31:09.314Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:31:11.491Z - [INFO   ] - useranswers.updateOne([{"_id":"664b491d2068fc9d1b0c5156"},{"$set":{"questionAnswers":[{"questionId":"664b47762068fc9d1b0c514d","answerText":"Paris","_id":"664b6cbf2240fd5aff8e3fb3"},{"questionId":"664b47762068fc9d1b0c514f","answerText":"The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity. Special relativity deals with objects moving at constant speeds, particularly at speeds close to the speed of light, and introduces the concept that space and time are interconnected and relative to the observer. General relativity expands on this by explaining how gravity is not a force between masses but a curvature of spacetime caused by mass and energy.","_id":"664b6cbf2240fd5aff8e3fb4"},{"questionId":"664b47762068fc9d1b0c514e","answerText":"False","_id":"664b6cbf2240fd5aff8e3fb5"},{"questionId":"664b47762068fc9d1b0c5150","answerText":"This question requires a detailed answer discussing various aspects of climate change, including rising temperatures, sea-level rise, changes in weather patterns, and their effects on different ecosystems around the world.","_id":"664b6cbf2240fd5aff8e3fb6"}],"score":0,"examId":"664b491d2068fc9d1b0c5156","userId":"662e998e1b1c9802c2665e13"}},{"new":true,"runValidators":true}])
+2024-05-20T15:31:27.666Z - [INFO   ] - useranswers.updateOne([{"_id":"664b491d2068fc9d1b0c5156"},{"$set":{"questionAnswers":[{"questionId":"664b47762068fc9d1b0c514d","answerText":"France","_id":"664b6ccf2240fd5aff8e3fb8"},{"questionId":"664b47762068fc9d1b0c514f","answerText":"The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity. Special relativity deals with objects moving at constant speeds, particularly at speeds close to the speed of light, and introduces the concept that space and time are interconnected and relative to the observer. General relativity expands on this by explaining how gravity is not a force between masses but a curvature of spacetime caused by mass and energy.","_id":"664b6ccf2240fd5aff8e3fb9"},{"questionId":"664b47762068fc9d1b0c514e","answerText":"False","_id":"664b6ccf2240fd5aff8e3fba"},{"questionId":"664b47762068fc9d1b0c5150","answerText":"This question requires a detailed answer discussing various aspects of climate change, including rising temperatures, sea-level rise, changes in weather patterns, and their effects on different ecosystems around the world.","_id":"664b6ccf2240fd5aff8e3fbb"}],"score":0,"examId":"664b491d2068fc9d1b0c5156","userId":"662e998e1b1c9802c2665e13"}},{"new":true,"runValidators":true}])
+2024-05-20T15:31:38.708Z - [INFO   ] - useranswers.updateOne([{"_id":"664b491d2068fc9d1b0c5156"},{"$set":{"questionAnswers":[{"questionId":"664b47762068fc9d1b0c514d","answerText":"France","_id":"664b6cda2240fd5aff8e3fbd"},{"questionId":"664b47762068fc9d1b0c514f","answerText":"The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity. Special relativity deals with objects moving at constant speeds, particularly at speeds close to the speed of light, and introduces the concept that space and time are interconnected and relative to the observer. General relativity expands on this by explaining how gravity is not a force between masses but a curvature of spacetime caused by mass and energy.","_id":"664b6cda2240fd5aff8e3fbe"},{"questionId":"664b47762068fc9d1b0c514e","answerText":"False","_id":"664b6cda2240fd5aff8e3fbf"},{"questionId":"664b47762068fc9d1b0c5150","answerText":"This question requires a detailed answer discussing various aspects of climate change, including rising temperatures, sea-level rise, changes in weather patterns, and their effects on different ecosystems around the world.","_id":"664b6cda2240fd5aff8e3fc0"}],"score":0,"examId":"664b491d2068fc9d1b0c5156","userId":"662e998e1b1c9802c2665e13"}},{"new":true,"runValidators":true}])
+2024-05-20T15:33:11.710Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:33:11.732Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:33:14.472Z - [INFO   ] - useranswers.updateOne([{"_id":"664b491d2068fc9d1b0c5156"},{"$set":{"questionAnswers":[{"questionId":"664b47762068fc9d1b0c514d","answerText":"France","_id":"664b6d3adb0e745037682769"},{"questionId":"664b47762068fc9d1b0c514f","answerText":"The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity. Special relativity deals with objects moving at constant speeds, particularly at speeds close to the speed of light, and introduces the concept that space and time are interconnected and relative to the observer. General relativity expands on this by explaining how gravity is not a force between masses but a curvature of spacetime caused by mass and energy.","_id":"664b6d3adb0e74503768276a"},{"questionId":"664b47762068fc9d1b0c514e","answerText":"False","_id":"664b6d3adb0e74503768276b"},{"questionId":"664b47762068fc9d1b0c5150","answerText":"This question requires a detailed answer discussing various aspects of climate change, including rising temperatures, sea-level rise, changes in weather patterns, and their effects on different ecosystems around the world.","_id":"664b6d3adb0e74503768276c"}],"score":0,"examId":"664b491d2068fc9d1b0c5156","userId":"662e998e1b1c9802c2665e13"}},{"new":true,"runValidators":true}])
+2024-05-20T15:33:39.013Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:33:39.047Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:33:48.889Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:33:48.921Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:33:50.538Z - [INFO   ] - useranswers.updateOne([{"_id":"664b491d2068fc9d1b0c5156"},{"$set":{"questionAnswers":[{"questionId":"664b47762068fc9d1b0c514d","answerText":"France","_id":"664b6d5edc9f0d8648b7904a"},{"questionId":"664b47762068fc9d1b0c514f","answerText":"The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity. Special relativity deals with objects moving at constant speeds, particularly at speeds close to the speed of light, and introduces the concept that space and time are interconnected and relative to the observer. General relativity expands on this by explaining how gravity is not a force between masses but a curvature of spacetime caused by mass and energy.","_id":"664b6d5edc9f0d8648b7904b"},{"questionId":"664b47762068fc9d1b0c514e","answerText":"False","_id":"664b6d5edc9f0d8648b7904c"},{"questionId":"664b47762068fc9d1b0c5150","answerText":"This question requires a detailed answer discussing various aspects of climate change, including rising temperatures, sea-level rise, changes in weather patterns, and their effects on different ecosystems around the world.","_id":"664b6d5edc9f0d8648b7904d"}],"score":0,"examId":"664b491d2068fc9d1b0c5156","userId":"662e998e1b1c9802c2665e13"}},{"new":true,"runValidators":true}])
+2024-05-20T15:35:22.197Z - [INFO   ] - useranswers.updateOne([{"_id":"664b491d2068fc9d1b0c5156"},{"$set":{"questionAnswers":[{"questionId":"664b47762068fc9d1b0c544d","answerText":"France","_id":"664b6dbadc9f0d8648b79050"},{"questionId":"664b47762068fc9d1b0c514f","answerText":"The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity. Special relativity deals with objects moving at constant speeds, particularly at speeds close to the speed of light, and introduces the concept that space and time are interconnected and relative to the observer. General relativity expands on this by explaining how gravity is not a force between masses but a curvature of spacetime caused by mass and energy.","_id":"664b6dbadc9f0d8648b79051"},{"questionId":"664b47762068fc9d1b0c514e","answerText":"False","_id":"664b6dbadc9f0d8648b79052"},{"questionId":"664b47762068fc9d1b0c5150","answerText":"This question requires a detailed answer discussing various aspects of climate change, including rising temperatures, sea-level rise, changes in weather patterns, and their effects on different ecosystems around the world.","_id":"664b6dbadc9f0d8648b79053"}],"score":0,"examId":"664b491d2068fc9d1b0c5156","userId":"662e998e1b1c9802c2665e13"}},{"new":true,"runValidators":true}])
+2024-05-20T15:35:53.941Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:35:53.979Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:36:47.429Z - [INFO   ] - useranswers.find([{"_id":"664b491d2068fc9d1b0c5156"},{"projection":{"__v":0}}])
+2024-05-20T15:36:50.006Z - [INFO   ] - useranswers.find([{"_id":"664b491d2068fc9d1b0c5156"},{"projection":{"__v":0}}])
+2024-05-20T15:37:45.685Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:37:45.720Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:38:13.004Z - [INFO   ] - useranswers.find([{"_id":"664b491d2068fc9d1b0c5156"},{"projection":{"__v":0}}])
+2024-05-20T15:38:16.074Z - [INFO   ] - useranswers.updateOne([{"_id":"664b491d2068fc9d1b0c5156"},{"$set":{"questionAnswers":[{"questionId":"664b47762068fc9d1b0c544d","answerText":"France","_id":"664b6e68ce357200a9842b31"},{"questionId":"664b47762068fc9d1b0c514f","answerText":"The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity. Special relativity deals with objects moving at constant speeds, particularly at speeds close to the speed of light, and introduces the concept that space and time are interconnected and relative to the observer. General relativity expands on this by explaining how gravity is not a force between masses but a curvature of spacetime caused by mass and energy.","_id":"664b6e68ce357200a9842b32"},{"questionId":"664b47762068fc9d1b0c514e","answerText":"False","_id":"664b6e68ce357200a9842b33"},{"questionId":"664b47762068fc9d1b0c5150","answerText":"This question requires a detailed answer discussing various aspects of climate change, including rising temperatures, sea-level rise, changes in weather patterns, and their effects on different ecosystems around the world.","_id":"664b6e68ce357200a9842b34"}],"score":0,"examId":"664b491d2068fc9d1b0c5156","userId":"662e998e1b1c9802c2665e13"}},{"new":true,"runValidators":true}])
+2024-05-20T15:38:39.626Z - [INFO   ] - useranswers.updateOne([{"_id":"664b491d2068fc9d1b0c5156"},{"$set":{"questionAnswers":[{"questionId":"664b47762068fc9d1b0c544d","answerText":"France","_id":"664b6e7fce357200a9842b36"},{"questionId":"664b47762068fc9d1b0c514f","answerText":"The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity. Special relativity deals with objects moving at constant speeds, particularly at speeds close to the speed of light, and introduces the concept that space and time are interconnected and relative to the observer. General relativity expands on this by explaining how gravity is not a force between masses but a curvature of spacetime caused by mass and energy.","_id":"664b6e7fce357200a9842b37"},{"questionId":"664b47762068fc9d1b0c514e","answerText":"False","_id":"664b6e7fce357200a9842b38"},{"questionId":"664b47762068fc9d1b0c5150","answerText":"This question requires a detailed answer discussing various aspects of climate change, including rising temperatures, sea-level rise, changes in weather patterns, and their effects on different ecosystems around the world.","_id":"664b6e7fce357200a9842b39"}],"score":10,"examId":"664b491d2068fc9d1b0c5156","userId":"662e998e1b1c9802c2665e13"}},{"new":true,"runValidators":true}])
+2024-05-20T15:38:49.334Z - [INFO   ] - useranswers.updateOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{"$set":{"questionAnswers":[{"questionId":"664b47762068fc9d1b0c544d","answerText":"France","_id":"664b6e89ce357200a9842b3b"},{"questionId":"664b47762068fc9d1b0c514f","answerText":"The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity. Special relativity deals with objects moving at constant speeds, particularly at speeds close to the speed of light, and introduces the concept that space and time are interconnected and relative to the observer. General relativity expands on this by explaining how gravity is not a force between masses but a curvature of spacetime caused by mass and energy.","_id":"664b6e89ce357200a9842b3c"},{"questionId":"664b47762068fc9d1b0c514e","answerText":"False","_id":"664b6e89ce357200a9842b3d"},{"questionId":"664b47762068fc9d1b0c5150","answerText":"This question requires a detailed answer discussing various aspects of climate change, including rising temperatures, sea-level rise, changes in weather patterns, and their effects on different ecosystems around the world.","_id":"664b6e89ce357200a9842b3e"}],"score":10,"examId":"664b491d2068fc9d1b0c5156","userId":"662e998e1b1c9802c2665e13"}},{"new":true,"runValidators":true}])
+2024-05-20T15:38:54.483Z - [INFO   ] - useranswers.updateOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{"$set":{"questionAnswers":[{"questionId":"664b47762068fc9d1b0c544d","answerText":"France","_id":"664b6e8ece357200a9842b40"},{"questionId":"664b47762068fc9d1b0c514f","answerText":"The theory of relativity, developed by Albert Einstein, consists of two parts: special relativity and general relativity. Special relativity deals with objects moving at constant speeds, particularly at speeds close to the speed of light, and introduces the concept that space and time are interconnected and relative to the observer. General relativity expands on this by explaining how gravity is not a force between masses but a curvature of spacetime caused by mass and energy.","_id":"664b6e8ece357200a9842b41"},{"questionId":"664b47762068fc9d1b0c514e","answerText":"False","_id":"664b6e8ece357200a9842b42"},{"questionId":"664b47762068fc9d1b0c5150","answerText":"This question requires a detailed answer discussing various aspects of climate change, including rising temperatures, sea-level rise, changes in weather patterns, and their effects on different ecosystems around the world.","_id":"664b6e8ece357200a9842b43"}],"score":0,"examId":"664b491d2068fc9d1b0c5156","userId":"662e998e1b1c9802c2665e13"}},{"new":true,"runValidators":true}])
+2024-05-20T15:40:36.872Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:40:36.910Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:40:52.339Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:40:52.380Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:41:00.305Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:41:00.417Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:42:02.184Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:42:02.263Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:42:35.323Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:42:35.367Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:43:15.467Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:43:15.512Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:43:28.474Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:43:28.514Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:43:56.558Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:43:56.584Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:44:10.402Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:44:10.441Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:44:22.107Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:44:22.136Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:48:08.552Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:48:08.582Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:48:29.733Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:48:29.764Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:49:13.096Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:49:13.131Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:49:34.405Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:49:34.448Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:49:42.427Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:49:42.463Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:49:43.017Z - [INFO   ] - exams.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T15:49:50.789Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:49:50.819Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:49:53.695Z - [INFO   ] - exams.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T15:50:04.236Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:50:04.268Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:50:05.869Z - [INFO   ] - exams.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T15:51:08.286Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:51:08.318Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:51:08.981Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T15:51:57.913Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:51:57.982Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:52:24.241Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:52:24.274Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:52:33.392Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:52:33.471Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:52:36.314Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T15:52:45.844Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:52:45.869Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T15:52:47.625Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T15:52:47.649Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T15:52:47.661Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T15:54:25.847Z - [INFO   ] - DBconnection succcessful
+2024-05-20T15:54:25.879Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:00:12.618Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:00:12.680Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:00:17.562Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:00:17.630Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:00:19.044Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T16:00:19.092Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T16:00:19.118Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T16:05:05.040Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:05:05.215Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:05:06.726Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T16:05:06.784Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T16:05:06.813Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T16:06:01.809Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:06:01.884Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:06:04.855Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T16:06:04.901Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T16:06:04.927Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T16:06:35.293Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:06:35.339Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:06:38.494Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T16:06:38.550Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T16:06:38.578Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T16:06:56.955Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:06:57.036Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:06:57.314Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T16:06:57.334Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T16:06:57.349Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T16:07:47.922Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:07:47.966Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:07:49.958Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T16:07:49.989Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T16:07:50.017Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T16:08:08.903Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:08:08.935Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:08:10.620Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T16:08:10.652Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T16:08:10.673Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T16:10:54.119Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:10:54.164Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:11:54.233Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:11:54.306Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:11:56.239Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T16:11:56.268Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T16:11:56.290Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T16:16:08.715Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:16:08.839Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:16:11.479Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T16:16:11.503Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T16:16:11.520Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T16:16:57.249Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:16:57.297Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:17:12.583Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:17:12.670Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:17:17.516Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:17:17.548Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:22:41.975Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T16:22:41.987Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T16:22:41.996Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T16:22:45.222Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T16:22:45.227Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T16:22:45.233Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T16:22:52.581Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:22:52.624Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:23:06.047Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:23:06.080Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:24:04.517Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"__v":0}}])
+2024-05-20T16:24:21.936Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5","populate":{}},{"projection":{"__v":0}}])
+2024-05-20T16:24:25.503Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"__v":0}}])
+2024-05-20T16:25:28.476Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:25:28.507Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:26:53.489Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"__v":0}}])
+2024-05-20T16:26:53.526Z - [INFO   ] - users.find([{"_id":{"$in":["662e998e1b1c9802c2665e13"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-20T16:27:07.874Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"__v":0}}])
+2024-05-20T16:27:07.882Z - [INFO   ] - users.find([{"_id":{"$in":["662e998e1b1c9802c2665e13"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-20T16:27:17.839Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"userId":1}}])
+2024-05-20T16:27:17.845Z - [INFO   ] - users.find([{"_id":{"$in":["662e998e1b1c9802c2665e13"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-20T16:27:32.894Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"userId.firstName":1}}])
+2024-05-20T16:27:36.167Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"userId":1}}])
+2024-05-20T16:27:36.173Z - [INFO   ] - users.find([{"_id":{"$in":["662e998e1b1c9802c2665e13"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-20T16:27:44.037Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"userId.firstName":1}}])
+2024-05-20T16:27:48.236Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"\"userId.firstName\"":1}}])
+2024-05-20T16:27:51.469Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"\"userId\"":1}}])
+2024-05-20T16:27:54.309Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"userId":1}}])
+2024-05-20T16:27:54.318Z - [INFO   ] - users.find([{"_id":{"$in":["662e998e1b1c9802c2665e13"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-20T16:28:00.958Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"__v":0}}])
+2024-05-20T16:28:00.968Z - [INFO   ] - users.find([{"_id":{"$in":["662e998e1b1c9802c2665e13"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-20T16:28:42.507Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:28:42.564Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:28:45.977Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:28:46.059Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:29:00.949Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"__v":0}}])
+2024-05-20T16:29:00.989Z - [INFO   ] - users.find([{"_id":{"$in":["662e998e1b1c9802c2665e13"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-20T16:29:00.991Z - [INFO   ] - exams.find([{"_id":{"$in":["664b491d2068fc9d1b0c5156"]}},{"strictPopulate":false}])
+2024-05-20T16:29:57.589Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:29:57.642Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:30:16.416Z - [INFO   ] - DBconnection succcessful
+2024-05-20T16:30:16.492Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-20T16:30:18.862Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"__v":0}}])
+2024-05-20T16:30:18.905Z - [INFO   ] - users.find([{"_id":{"$in":["662e998e1b1c9802c2665e13"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-20T16:30:18.908Z - [INFO   ] - exams.find([{"_id":{"$in":["664b491d2068fc9d1b0c5156"]}},{"strictPopulate":false}])
+2024-05-20T16:30:25.835Z - [INFO   ] - useranswers.findOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{}])
+2024-05-20T16:30:25.846Z - [INFO   ] - exams.findOne([{"_id":"664b491d2068fc9d1b0c5156"},{}])
+2024-05-20T16:30:25.857Z - [INFO   ] - questions.find([{"_id":{"$in":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"]}},{}])
+2024-05-20T16:30:25.896Z - [INFO   ] - useranswers.updateOne([{"_id":"664b6b1c3a76c5de66a60ed5"},{"$set":{"score":27}},{}])
+2024-05-20T16:30:32.608Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"__v":0}}])
+2024-05-20T16:30:32.622Z - [INFO   ] - users.find([{"_id":{"$in":["662e998e1b1c9802c2665e13"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-05-20T16:30:32.626Z - [INFO   ] - exams.find([{"_id":{"$in":["664b491d2068fc9d1b0c5156"]}},{"strictPopulate":false}])
+2024-05-20T16:30:40.480Z - [INFO   ] - useranswers.find([{"_id":"664b6b1c3a76c5de66a60ed5"},{"projection":{"score":1}}])

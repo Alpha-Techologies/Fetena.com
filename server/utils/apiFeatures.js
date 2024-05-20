@@ -73,7 +73,12 @@ class APIFeatures {
       { path: "organizationsJoined", options: { strictPopulate: false } },
       { path: "follower", options: { strictPopulate: false } },
       { path: "organization", options: { strictPopulate: false } },
+
+      // for user Answer 
+      { path: "userId", options: { strictPopulate: false } },
+      { path: "examId", options: { strictPopulate: false } },
     ];
+
     let populateObj = [];
     if (this.queryString.fields) {
       const result = this.queryString.fields.split(",").map((value) => {
