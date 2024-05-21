@@ -850,3 +850,7 @@
 2024-05-20T14:41:29.162Z - [INFO   ] - takeexams.findOne([{"exam":"664b491d2068fc9d1b0c5156","user":"662e998e1b1c9802c2665e13"},{}])
 2024-05-20T14:45:10.675Z - [INFO   ] - DBconnection succcessful
 2024-05-20T14:45:10.723Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-21T21:41:11.580Z - [INFO   ] - DBconnection succcessful
+2024-05-21T21:41:11.638Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-05-21T21:41:17.435Z - [INFO   ] - tokens.findOne([{"user":"66300f3aef1e9e86df85edd7","refreshToken":"b157fac5d1a94430de1bfecce032f721e78e301971b44646e52078b1e1ab95b24c39372169c379a7"},{}])
+2024-05-21T21:41:17.457Z - [INFO   ] - exams.updateOne([{"_id":"664d033e675f83a3d5b1ff36"},{"$setOnInsert":{"createdAt":"2024-05-21T21:41:17.450Z"},"$set":{"updatedAt":"2024-05-21T21:41:17.450Z","access":"open"}},{"new":true,"runValidators":true}])
