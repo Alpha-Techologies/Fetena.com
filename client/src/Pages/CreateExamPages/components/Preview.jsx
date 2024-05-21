@@ -12,7 +12,7 @@ import axios from "axios";
 
 
 
-const Preview = ({setActiveTabKey,basicInfoValues, setBasicInfoValues, trueFalse, setTrueFalse, choose, setChoose, shortAnswer, setShortAnswer, essay, setEssay, questionsCollection, setQuestionsCollection, questionType, setQuestionType, choiceCount, setChoiceCount, trueFalseOnChange, chooseOnChange, essayOnChange, shortAnswerOnChange, handleQuestionsSave,setExamKey}) => {
+const Preview = ({setActiveTabKey,basicInfoValues, setBasicInfoValues, questionsCollection, setQuestionsCollection, choiceCount,  chooseOnChange, setExamKey}) => {
 
   const totalPoints = questionsCollection.reduce((total, question) => total + (question.points || 0), 0);
   const { workspace } = useSelector((state) => state.data);
@@ -99,7 +99,7 @@ const submitExam = async () => {
         {
           examName: updatedBasicInfoValues.examName,
           duration: updatedBasicInfoValues.duration,
-          examStartDate: updatedBasicInfoValues.examStartDate,
+          startDate: updatedBasicInfoValues.examStartDate,
           organization: workspace._id,
           privateAnswer: updatedBasicInfoValues.privateAnswer,
           privateScore: updatedBasicInfoValues.privateScore,
@@ -205,9 +205,7 @@ const submitExam = async () => {
                 <Tag color={"blue"}>Physics</Tag>
               </div>
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Created by : </span>{user.firstName} {user.lastName} </p>
-
-
-          
+        
 
 </div>
 

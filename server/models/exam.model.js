@@ -80,7 +80,7 @@ const ExamSchema = new mongoose.Schema({
       type: String,
     },
   ],
-});
+}, {timestamps: true});
 
 const Exam = mongoose.model("Exam", ExamSchema);
 

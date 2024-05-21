@@ -490,7 +490,7 @@ const DashboardScreen = () => {
               trigger={["click"]}
             >
               <Avatar
-                className="cursor-pointer w-fit items-center justify-center"
+                className="cursor-pointer w-16 h-10 items-center justify-center"
                 size="large"
                 icon={
                   <img

@@ -252,15 +252,13 @@ const OrganizationsPage = () => {
 
   // JSX to render the Organizations page
   return (
-    <div className='flex flex-col gap-2 items-start'>
+    <div className='flex flex-col gap-4 items-start'>
       {/* Title */}
-     
-      {/* Search input and sorting options */}
-      <div className='flex justify-between items-center px-2 pb-2  gap-4  rounded-md w-full '>
-      <h1 className="text-2xl font-bold text-primary-600 text-left">Organizations</h1>
-        <div className='flex gap-2'>
+      <div className="flex justify-between items-center w-full">
 
-      
+      <h1 className='text-2xl font-bold text-blue-900 text-left'>Organizations</h1>
+      {/* Search input and sorting options */}
+      <div className='flex justify-start w-3/5 gap-4 '>
         <Search
           placeholder='Search Organizations'
           allowClear
@@ -269,13 +267,12 @@ const OrganizationsPage = () => {
           onSearch={onSearch}
         />
         {/* Filtering options */}
-        <span className='flex  items-center'>
+        <span className='flex items-center'>
           <span className='w-full font-semibold text-blue-800'>Filter:</span>
 
           <Select
             defaultValue=''
             className='h-full'
-            size='medium'
             style={{
               width: 120,
             }}
@@ -297,7 +294,6 @@ const OrganizationsPage = () => {
           <span className='w-full font-semibold text-blue-800'>Sort by:</span>
           <Select
             defaultValue='name'
-            size='medium'
             className='h-full'
             style={{
               width: 120,
@@ -308,7 +304,6 @@ const OrganizationsPage = () => {
           <Select
             defaultValue=''
             className='h-full'
-            size='medium'
             style={{
               width: 120,
             }}
@@ -325,8 +320,10 @@ const OrganizationsPage = () => {
             ]}
           />
         </span>
-        </div>
       </div>
+
+      </div>
+
       {/* Rendering organizations based on the active tab */}
       {activeTabKey === "All" && (
         <div className='flex flex-wrap gap-8'>
