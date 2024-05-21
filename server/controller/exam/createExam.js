@@ -55,6 +55,7 @@ exports.createExam = catchAsync(async (req, res, next) => {
 
       exam.material = MaterialLink;
     }
+
   if (req.files)
     if (req.files.examFile) {
       const examFile = req.files.examFile;
