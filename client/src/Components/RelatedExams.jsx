@@ -15,7 +15,7 @@ const RelatedExams = () => {
     return (
       <Link to='/dashboard/exams/dfghkfdghkd'>
         <Card
-          className='hover:shadow-md transition-all ease-in-out duration-300'
+          className='hover:shadow-md transition-all ease-in-out duration-300 '
           style={{
             width: 300,
             // marginTop: 16,
@@ -47,7 +47,7 @@ const RelatedExams = () => {
   };
 
   return (
-    <div className='flex flex-col gap-4 my-4'>
+    <div className='flex flex-col gap-4 my-2'>
       <div className='flex justify-between gap-4 items-center'></div>
       <div>
         <Card
@@ -57,7 +57,7 @@ const RelatedExams = () => {
             Related Exams
           </h1>
 
-          <div className='flex flex-wrap gap-4'>
+          <div className='flex flex-wrap gap-2 mb-4'>
             <ExamCard />
             <ExamCard />
 

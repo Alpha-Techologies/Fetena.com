@@ -13,7 +13,7 @@ const { Meta } = Card;
 
 const ExamDetailPage = () => {
   return (
-    <div className='flex flex-col gap-4 my-4'>
+    <div className='flex flex-col gap-4'>
       <div className='flex justify-between gap-4 items-center'>
         <div className='flex gap-4 items-center '>
           <Link to='/dashboard/exams'>
