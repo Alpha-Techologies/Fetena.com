@@ -2,7 +2,6 @@ const { StatusCodes } = require("http-status-codes");
 const Exam = require("../../models/exam.model");
 const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
-const factory = require("./../handlerFactory");
 const { fileUpload } = require("../profile/fileUpload");
 const generateRandomKey = require("../../utils/generateRandomKey");
 
@@ -56,30 +55,31 @@ exports.createExam = catchAsync(async (req, res, next) => {
 
       exam.material = MaterialLink;
     }
-  if(req.files)
+
+  if (req.files)
     if (req.files.examFile) {
-        const examFile = req.files.examFile;
-        // check if the examMaterial is a PDF
-        if (!examFile.mimetype.startsWith("application/pdf")) {
+      const examFile = req.files.examFile;
+      // check if the examMaterial is a PDF
+      if (!examFile.mimetype.startsWith("application/pdf")) {
         return next(
-            new APIError("Please upload a Proper PDF", StatusCodes.BAD_REQUEST)
+          new APIError("Please upload a Proper PDF", StatusCodes.BAD_REQUEST)
         );
-        }
+      }
 
-        const examFileLink = await fileUpload({
-            file: examFile,
-            name: `examFile_` + exam._id,
-            filePath: "examFiles",
-            maxSize: 4 * 1024 * 1024,
-        });
+      const examFileLink = await fileUpload({
+        file: examFile,
+        name: `examFile_` + exam._id,
+        filePath: "examFiles",
+        maxSize: 4 * 1024 * 1024,
+      });
 
-        // check for error on the file
-        if (examFileLink instanceof Error) {
-            return next(examFileLink);
-        }
+      // check for error on the file
+      if (examFileLink instanceof Error) {
+        return next(examFileLink);
+      }
 
-        exam.examFile = examFileLink;
-        }
+      exam.examFile = examFileLink;
+    }
 
   await exam.save();
 
