@@ -35,6 +35,8 @@ import ActivityLogPage from "../Pages/ActivityLogPage";
 import OrganizationStaffPage from "../Pages/OrganizationStaffPage";
 import OrganizationSettingsPage from "../Pages/OrganizationSettingsPage";
 import NotificationPage from "../Pages/NotificationsPage";
+import TakeExamRoute from "../Screens/TakeExamRoute";
+import TakeExamScreen from "../Screens/TakeExamScreens/TakeExamScreen";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -82,6 +84,14 @@ const AllRoutes = () => {
         />
 
         <Route
+          path='/take-exam'
+          element={
+            <TakeExamRoute isAuthenticated={isAuthenticated}>
+              <TakeExamScreen />
+            </TakeExamRoute>
+          }></Route>
+
+        <Route
           path='/dashboard'
           element={
             <ProtectedRoutes isAuthenticated={isAuthenticated}>
@@ -108,6 +118,7 @@ const AllRoutes = () => {
             path='exams/:id'
             element={<ExamDetailPage />}
           />
+          {/* <Route path='take-exam' element={<TakeExam />} /> */}
           <Route
             path='create-exam'
             element={<CreateExam />}
