@@ -116,3 +116,9 @@
     at Function.process_params (C:\Users\yonas\Desktop\Fetena.com\server\node_modules\express\lib\router\index.js:346:12)
 [2024-05-18 14:16:57]: http: ::1 - - [18/May/2024:11:16:57 +0000] "POST /api/users/forgotpassword HTTP/1.1" 500 1159 "-" "PostmanRuntime/7.39.0"
 [2024-05-18 14:38:47]: info: Server running on port 8080
+[2024-05-18 14:47:29]: info: Server running on port 8080
+[2024-05-18 14:47:38]: http: ::1 - - [18/May/2024:11:47:38 +0000] "POST /api/users/login HTTP/1.1" 200 98 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:47:51]: http: ::1 - - [18/May/2024:11:47:51 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:48:45]: http: ::1 - - [18/May/2024:11:48:45 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:49:58]: http: ::1 - - [18/May/2024:11:49:58 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
+[2024-05-18 14:51:23]: http: ::1 - - [18/May/2024:11:51:23 +0000] "POST /api/users/logi HTTP/1.1" 404 1309 "-" "PostmanRuntime/7.39.0"
