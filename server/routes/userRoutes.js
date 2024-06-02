@@ -30,7 +30,7 @@ const {
   // getProfile,
 } = require("../controller/userController");
 
-const { fileUpload } = require("../controller/profile/fileUpload");
+const { fileUpload } = require("../utils/fileUpload");
 
 const { zip } = require("../utils/zip");
 const { validationRules, checkId } = require("../lib/validation");
@@ -71,7 +71,10 @@ router.patch(
 );
 router.patch("/deleteMe", protect, deleteMe);
 router.post("/verify-email", activateAccount);
+
+router.post("/profile", fileUpload);
 router.patch("/updateIdPhoto", protect, updateIdPhoto);
+
 
 router.post("/uploads", fileUpload);
 router.post("/follow/:id", protect, followOrganization);

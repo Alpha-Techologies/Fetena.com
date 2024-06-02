@@ -277,7 +277,7 @@ export const updateNotification = createAsyncThunk(
   async ({id, notification}, { rejectWithValue }) => {
     console.log(id, notification);
     try {
-      const { data } = await axios.get(
+      const { data } = await axios.patch(
         `${url}/notifications/${id}`, notification
       );
       return data;

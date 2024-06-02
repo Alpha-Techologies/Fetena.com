@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch . --legacy-watch index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +19,7 @@
     "eventsource-parser": "^1.1.2",
     "express": "^4.19.2",
     "express-fileupload": "^1.5.0",
-    "express-mongo-sanitize": "^2.2.0",
+    "express-mongo-sanitize": "^2.2.0",   
     "express-rate-limit": "^6.5.2",
     "express-validator": "^6.14.2",
     "gridfs": "^1.0.0",
@@ -44,5 +44,13 @@
     "validator": "^13.7.0",
     "winston": "^3.13.0",
     "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/supertest": "^6.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.5"
   }
 }

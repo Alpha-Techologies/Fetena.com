@@ -80,11 +80,9 @@ const ExamSchema = new mongoose.Schema({
       type: String,
     },
   ],
-  organization: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Organization",
-  },
-});
+
+}, {timestamps: true});
+
 
 const Exam = mongoose.model("Exam", ExamSchema);
 
