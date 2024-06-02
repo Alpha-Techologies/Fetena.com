@@ -60,7 +60,7 @@ const ExamDetailPage = () => {
           <Icon icon="line-md:pencil-twotone" /> Edit
         </Link>
         <Link
-          to='/dashboard/create-exam'
+          to='/take-exam'
           className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded'>
           <Icon className='w-5 h-5' icon='system-uicons:write' /> Take Exam
         </Link>
@@ -109,12 +109,31 @@ const ExamDetailPage = () => {
 
           <div className='w-full  flex flex-col gap-2 py-4 px-8 my-4 items-start'>
             <h3 className='text-xl font-bold text-blue-900'>Instructions</h3>
-            <div className="text-left w-4/6" dangerouslySetInnerHTML={{ __html: exam.instruction}} />
+            <p className='w-full text-justify'>
+              This exam willl send your name, email and photo to the examiner.
+              Perferendis consectetur accusamus, culpa veniam perspiciatis
+              suscipit ut impedit totam similique aperiam? Libero, placeat.
+              Veniam velit libero assumenda distinctio accusantium expedita sed.
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iusto
+              soluta ab ipsam, qui repellendus ut incidunt delectus ipsum error
+              repudiandae hic nemo doloremque consequuntur, ipsa, provident
+              reiciendis inventore adipisci? Facilis?
+            </p>
+
+            <p className='w-full text-justify'>
+              This exam willl send your name, email and photo to the examiner.
+              Libero, placeat. Veniam velit libero assumenda distinctio
+              accusantium expedita sed. Lorem ipsum, dolor sit amet consectetur
+              adipisicing elit. Iusto soluta ab ipsam, qui repellendus ut
+              incidunt delectus ipsum error repudiandae hic nemo doloremque
+              consequuntur, ipsa, provident reiciendis inventore adipisci?
+              Facilis?
+            </p>
             <p className='font-bold mt-4'>Good Luck!</p>
           </div>
           <div className='flex justify-center items-center my-4'>
             <Link
-              to='/dashboard/create-exam'
+              to='/take-exam'
               className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded text-center w-36'>
               <Icon className='w-5 h-5' icon='system-uicons:write' /> Take Exam
             </Link>
