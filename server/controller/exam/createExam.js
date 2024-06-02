@@ -1,9 +1,9 @@
 const { StatusCodes } = require("http-status-codes");
 const Exam = require("../../models/exam.model");
-const APIError = require("../../utils/APIError");
 const catchAsync = require("../../utils/catchAsync");
 const { fileUpload } = require("../profile/fileUpload");
 const generateRandomKey = require("../../utils/generateRandomKey");
+const APIError = require("../../utils/apiError");
 
 exports.createExam = catchAsync(async (req, res, next) => {
   // form data will be send in req, holding in the req.file the material that is a PDF file
