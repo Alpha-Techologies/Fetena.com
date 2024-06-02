@@ -1,14 +1,18 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
-import { Button, Modal, Layout, Menu, Tabs, Switch, Divider } from "antd";
+import { Button, Modal, Layout, Menu, Tabs, Switch, Divider, FloatButton } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import fetena_logo from "../../assets/fetena_logo.png";
 import moment from "moment";
 import Draggable from "react-draggable";
+import "react-chat-elements/dist/main.css";
+import { MessageBox } from "react-chat-elements";
+import { MessageList, Input } from "react-chat-elements";
 import * as math from "mathjs";
 const { Header, Sider, Content } = Layout;
+const inputReferance = React.createRef();
 
 const TakeExamScreen = () => {
   const socket = io("http://localhost:3000");
@@ -20,6 +24,9 @@ const TakeExamScreen = () => {
   const [isUserSwitchingAway, setIsUserSwitchingAway] = useState(false);
   const [batteryLevel, setBatteryLevel] = useState(100);
   const [isCharging, setIsCharging] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+    const [showChat, setShowChat] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -134,7 +141,7 @@ const TakeExamScreen = () => {
     return (
       <>
         <Modal
-          title='Basic Modal'
+          title='Get Ready for your Exam'
           open={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}>
@@ -206,12 +213,6 @@ const TakeExamScreen = () => {
         <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-[#3A4764] text-white text-center h-fit w-[650px] p-4 rounded-lg'>
           <div className='flex flex-col gap-4'>
             <div className='input-section bg-[#182034] w-full h-[100px] px-4 rounded flex flex-col'>
-              {/* <input
-                className='screen bg-[#182034] w-full h-[50px]'
-                type='text'
-                value={expression}
-                onChange={handleCalcChange}
-              /> */}
 
               <div
                 className='screen text-right text-[#EAE3DC] font-bold text-lg h-[25px]'
@@ -305,6 +306,42 @@ const TakeExamScreen = () => {
     );
   };
 
+  const ChatComponent = () => {
+    return (
+      <div className="h-screen flex flex-col justify-between">
+        <MessageList
+          key={1}
+          className='message-list mt-2 mb-2'
+          lockable={true}
+          toBottomHeight={"100%"}
+          dataSource={[
+            {
+              position: "right",
+              title: "message name",
+              type: "text",
+              text: "message text",
+              date: "message.date",
+            },
+          ]}
+        />
+        <Input
+          referance={inputReferance}
+          placeholder='Type here...'
+          multiline={true}
+          value={inputValue}
+          rightButtons={
+            <Button
+              color='white'
+              backgroundColor='black'
+              text='Send'
+            />
+          }
+        />
+        
+      </div>
+    );
+  }
+
   const ExamScreen = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [currentTime, setCurrentTime] = useState(moment());
@@ -349,8 +386,9 @@ const TakeExamScreen = () => {
             ]}
           />
           {showCalculator && <Calculator />}
-          <div className='flex flex-col gap-2 items-center justify-center'>
+          <div className='flex flex-col gap-2 items-center justify-center text-black'>
             <div className='flex gap-2 items-center justify-center'>
+              <Icon className="w-5 h-5" icon='ph:calculator-fill' />
               <p>Calculator</p>
               <Switch
                 size='small'
@@ -399,38 +437,37 @@ const TakeExamScreen = () => {
         </div>
       );
     };
-    const tabItems = [
-      {
-        key: "1",
-        label: "Exam Tools",
-        children: <ExamTools />,
-      },
-      {
-        key: "2",
-        label: "Chat",
-        children: "Content of Tab Pane 2",
-      },
-    ];
+    
 
     return (
       <Layout className='h-screen'>
+        <FloatButton
+        onClick={() => setShowChat(!showChat)}
+          shape='circle'        
+          icon={<Icon icon='grommet-icons:chat' />}
+          tooltip={<div>Exam Chat</div>}
+          badge={{
+            dot: true,
+          }}
+          
+        />
+        {showChat && <ChatComponent />}
         <Sider
+          style={{
+            width: 600,
+          }}
           className='flex flex-col gap-4 text-white h-screen'
-          collapsible
+          // collapsible
           theme='light'
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}>
+          // collapsed={collapsed}
+          // onCollapse={(value) => setCollapsed(value)}
+        >
           <img
             src={fetena_logo}
             alt='Fetena.com Logo'
             className='w-24 my-4 mx-auto'
           />
-          <Tabs
-            className='flex mx-auto'
-            defaultActiveKey='1'
-            items={tabItems}
-            onChange={onChangeTabs}
-          />
+          <ExamTools />
         </Sider>
         <Layout>
           <Header

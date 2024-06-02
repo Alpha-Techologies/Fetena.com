@@ -37,6 +37,7 @@ import OrganizationSettingsPage from "../Pages/OrganizationSettingsPage";
 import NotificationPage from "../Pages/NotificationsPage";
 import TakeExamRoute from "../Screens/TakeExamRoute";
 import TakeExamScreen from "../Screens/TakeExamScreens/TakeExamScreen";
+import MonitoringPage from "../Pages/MonitoringPage";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -139,6 +140,10 @@ const AllRoutes = () => {
           <Route
             path='results'
             element={<ResultsPage />}
+          />
+          <Route
+            path='exam-monitor'
+            element={<MonitoringPage/>}
           />
           <Route
             path='certifications'
