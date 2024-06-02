@@ -113,12 +113,18 @@ exports.updateOne = (Model) =>
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findByIdAndDelete(req.params.id);
-    if (!doc) {
+    // const doc = await Model.findByIdAndDelete(req.params.id);
+    const model = await Model.findbyId(req.params.id);
+
+    if (!model) {
       return next(
         new APIError(`No document found with id = ${req.params.id}`, 404)
       );
     }
+
+    model.active = false;
+    await model.save();
+
     res.status(204).json({
       status: "success",
       data: null,

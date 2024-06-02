@@ -1172,3 +1172,47 @@
 2024-05-21T22:18:33.862Z - [INFO   ] - users.find([{"_id":{"$in":["664b9da2bf6a278f3ebbe38e","66300f3aef1e9e86df85edd7","664c2ff3b8474a5f68fc7d70"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
 2024-05-21T22:18:37.548Z - [INFO   ] - tokens.findOne([{"user":"66300f3aef1e9e86df85edd7","refreshToken":"b157fac5d1a94430de1bfecce032f721e78e301971b44646e52078b1e1ab95b24c39372169c379a7"},{}])
 2024-05-21T22:18:37.552Z - [INFO   ] - users.findOne([{"_id":"66300f3aef1e9e86df85edd7"},{"projection":{"password":0,"passwordConfirm":0}}])
+2024-06-02T19:14:35.270Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:14:35.299Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:14:44.861Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:14:44.879Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:14:52.578Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:14:52.611Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:15:37.990Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:15:38.009Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:15:47.395Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:15:47.424Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:15:52.269Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:15:52.285Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:15:58.368Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:15:58.404Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:16:12.666Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:16:12.692Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:16:15.904Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:16:15.933Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:16:24.017Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:16:24.034Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:16:38.957Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:16:38.986Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:16:41.388Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:16:41.408Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:17:01.167Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:17:01.189Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:17:02.870Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:17:02.888Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:17:07.786Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:17:07.800Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:17:09.900Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:17:09.927Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:17:10.846Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:17:10.868Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:17:12.845Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:17:12.873Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:17:16.411Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:17:16.430Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:17:18.019Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:17:18.039Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:17:20.748Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:17:20.763Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:17:36.732Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:17:36.763Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
