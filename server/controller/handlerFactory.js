@@ -5,13 +5,13 @@ const catchAsync = require("../utils/catchAsync");
 // const transaction = require("../utils/transaction");
 const APIFeatures = require("../utils/apiFeatures");
 const dbConn = require("../config/db_Connection");
+const OrganizationExaminer = require("../models/organization.examiner.model");
 // const dbAuth = require("../config/db_Authentication");
 require("events").EventEmitter.prototype._maxListeners = 70;
 require("events").defaultMaxListeners = 70;
 
 exports.getOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    console.log(req.params, 'does not give');
     let query = new APIFeatures(Model.findById(req.params.id), req.query)
       .filter()
       .field()
@@ -32,19 +32,29 @@ exports.getOne = (Model) =>
     });
   });
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, options = "", obj = {}) =>
   catchAsync(async (req, res, next) => {
     // currentTime, pathname, method
     // const {currentTime,_parsedOriginalUrl} = req
     // console.log(currentTime)
     // console.log(_parsedOriginalUrl.pathname)
 
+    let opt = {};
+    if (options === "addUser") opt = { user: req.user.id };
+    if (options === "addOrganization") opt = { organization: req.params.id };
+    if (options === "addExaminerStatus")
+      opt = { user: req.user.id, status: "activated" };
+    if (options === "addExamCreater")
+      opt = { createdBy: req.user.id, organization: req.params.id };
+    if (options === "addExam") opt = { exam: req.params.id };
+
     const page = req.query.page * 1 || 1;
-    const limit = req.query.limit * 1 || 9;
-    let count = new APIFeatures(Model.find({}), req.query).filter().count();
+    const limit = req.query.limit * 1 || 10;
+
+    let count = new APIFeatures(Model.find(opt), req.query).filter().count();
     let total = await count.query;
 
-    let query = new APIFeatures(Model.find({}), req.query)
+    let query = new APIFeatures(Model.find(opt), req.query)
       .filter()
       .field()
       .sort()
@@ -148,6 +158,33 @@ exports.createOne = (Model) =>
         data: doc,
       },
     });
+  });
+
+exports.createMany = (Model, returnOnlyId = false) =>
+  catchAsync(async (req, res, next) => {
+    const doc = await Model.insertMany(req.body);
+    if (!doc) {
+      return next(
+        new APIError(`An error occured while creating the document`, 404)
+      );
+    }
+
+    if (returnOnlyId) {
+      let id = doc.map((item) => item._id);
+      res.status(201).json({
+        status: "success",
+        data: {
+          data: id,
+        },
+      });
+    } else {
+      res.status(201).json({
+        status: "success",
+        data: {
+          data: doc,
+        },
+      });
+    }
   });
 
 // exports.getOneMedia = (collectionName) =>

@@ -25,19 +25,6 @@ const OrganizationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  examiners: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-      status: {
-        type: String,
-        enum: ["active", "inactive", "pending"],
-        default: "pending",
-      },
-    },
-  ],
 });
 
 const Organization = mongoose.model("Organization", OrganizationSchema);

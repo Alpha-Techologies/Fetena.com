@@ -6,7 +6,7 @@ const { fileUpload } = require("../profile/fileUpload");
 
 exports.updateOrganizationLogo = catchAsync(async (req, res, next) => {
   if (!req.files) {
-    return next(APIError("There is no file", StatusCodes.BAD_REQUEST));
+    return next(new APIError("There is no file", StatusCodes.BAD_REQUEST));
   }
 
   const orgLogo = req.files.logo;
@@ -14,7 +14,7 @@ exports.updateOrganizationLogo = catchAsync(async (req, res, next) => {
 
   if (!orgLogo.mimetype.startsWith("image")) {
     return next(
-      APIError("Please upload a Proper Logo", StatusCodes.BAD_REQUEST)
+      new APIError("Please upload a Proper Logo", StatusCodes.BAD_REQUEST)
     );
   }
 
@@ -22,17 +22,20 @@ exports.updateOrganizationLogo = catchAsync(async (req, res, next) => {
 
   if (!organization) {
     return next(
-      APIError("Organization does not exist", StatusCodes.BAD_REQUEST)
+      new APIError("Organization does not exist", StatusCodes.BAD_REQUEST)
     );
   }
 
-  organization.logo = await fileUpload({
+  const logo = await fileUpload({
     file: orgLogo,
     name: `organizationLogo_` + organization._id,
     filePath: "organizationsLogo",
     maxSize: 1024 * 1024,
   });
 
+  if (typeof logo != "string") next(logo);
+
+  organization.logo = logo;
   await organization.save();
 
   res.status(StatusCodes.CREATED).json({

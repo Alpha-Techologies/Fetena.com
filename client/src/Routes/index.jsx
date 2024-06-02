@@ -23,6 +23,18 @@ import ProfilePage from "../Pages/ProfilePage";
 import NotFoundPage from "../Pages/NotFoundPage";
 import ExamsPage from "../Pages/ExamsPage";
 import CreateExam from "../Pages/CreateExamPages/CreateExam";
+import OrganizationsPage from "../Pages/OrganizationsPage";
+import ResultsPage from "../Pages/ResultsPage";
+import CreateOrganization from "../Pages/CreateOrganization";
+import OrganizationsDetails from "../Pages/OrganizationsDetails";
+import ExamDetailPage from "../Pages/ExamDetailPage";
+import CertificationsPage from "../Pages/CertificationsPage";
+import TrainingVideosPage from "../Pages/TrainingVideosPage";
+import SupportPage from "../Pages/SupportPage";
+import ActivityLogPage from "../Pages/ActivityLogPage";
+import OrganizationStaffPage from "../Pages/OrganizationStaffPage";
+import OrganizationSettingsPage from "../Pages/OrganizationSettingsPage";
+import NotificationPage from "../Pages/NotificationsPage";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -85,18 +97,69 @@ const AllRoutes = () => {
             element={<ProfilePage />}
           />
           <Route
+            path='notifications'
+            element={<NotificationPage />}
+          />
+          <Route
             path='exams'
             element={<ExamsPage />}
+          />
+          <Route
+            path='exams/:id'
+            element={<ExamDetailPage />}
           />
           <Route
             path='create-exam'
             element={<CreateExam />}
           />
           <Route
+            path='organizations'
+            element={<OrganizationsPage />}
+          />
+
+          <Route
+            path='organizations/*'
+            element={<OrganizationsDetails />}
+          />
+          <Route
+            path='create-organization'
+            element={<CreateOrganization />}
+          />
+          <Route
+            path='results'
+            element={<ResultsPage />}
+          />
+          <Route
+            path='certifications'
+            element={<CertificationsPage />}
+          />
+          <Route
+            path='activities'
+            element={<ActivityLogPage />}
+          />
+          <Route
+            path='staffs'
+            element={<OrganizationStaffPage />}
+          />
+          <Route
+            path='settings'
+            element={<OrganizationSettingsPage />}
+          />
+          <Route
+            path='trainingVideos'
+            element={<TrainingVideosPage />}
+          />
+
+          <Route
+            path='support'
+            element={<SupportPage />}
+          />
+          <Route
             path='*'
             element={<NotFoundPage />}
           />
         </Route>
+
         <Route
           path='*'
           element={<NotFoundPage />}

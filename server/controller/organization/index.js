@@ -6,6 +6,7 @@ const { activateExaminer } = require("./activateExaminer");
 const { deactivateExaminer } = require("./deactivateExaminer");
 const { joinOrganization } = require("./joinOrganization");
 const { updateOrganizationLogo } = require("./updateOrganizationLogo");
+const organizationStaff = require("./organizationStaff");
 
 module.exports = {
   createOrganization,
@@ -17,4 +18,5 @@ module.exports = {
   deactivateExaminer,
   joinOrganization,
   updateOrganizationLogo,
+  organizationStaff,
 };

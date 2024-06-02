@@ -9,6 +9,7 @@ const {
   joinOrganization,
   deactivateExaminer,
   updateOrganizationLogo,
+  organizationStaff,
 } = require("../controller/organization");
 const { protect, restrictTo } = require("../controller/auth");
 
@@ -20,6 +21,10 @@ organizationRouter
   .post(protect, createOrganization);
 
 organizationRouter
+  .route("/staff/:id")
+  .get(protect, restrictTo(true), organizationStaff);
+
+organizationRouter
   .route("/:id")
   .get(protect, getOneOrganization)
   .patch(protect, restrictTo(true), updateOrganization)
@@ -29,14 +34,14 @@ organizationRouter
   .route("/updateLogo/:id")
   .patch(protect, restrictTo(true), updateOrganizationLogo);
 
-organizationRouter.route("/join").post(protect, joinOrganization);
+organizationRouter.route("/join/:id").post(protect, joinOrganization);
 
 organizationRouter
-  .route("/activate")
+  .route("/activate/:id")
   .post(protect, restrictTo(true), activateExaminer);
 
 organizationRouter
-  .route("/deactivate")
+  .route("/deactivate/:id")
   .post(protect, restrictTo(true), deactivateExaminer);
 
 module.exports = organizationRouter;

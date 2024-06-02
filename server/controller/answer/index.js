@@ -1,12 +1,13 @@
-const { createAnswer } = require("./createAnswer");
-const { deleteAnswer } = require("./deleteAnswer");
-const { getAllAnswer, getOneAnswer } = require("./getAnswer");
-const { updateAnswer } = require("./updateAnswer");
+const { createUserAnswer } = require("./createUserAnswer");
+const { deleteUserAnswer } = require("./deleteUserAnswer");
+const { getOneUserAnswer } = require("./getUserAnswer");
+const { updateUserAnswer } = require("./updateUserAnswer");
+const {evaluateUserAnswer} = require("./evaluateUserAnswer")
 
 module.exports = {
-    createAnswer,
-    deleteAnswer,
-    getAllAnswer,
-    getOneAnswer,
-    updateAnswer
+    createUserAnswer,
+    deleteUserAnswer,
+    getOneUserAnswer,
+    updateUserAnswer,
+    evaluateUserAnswer
 }

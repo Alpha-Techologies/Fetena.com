@@ -26,6 +26,7 @@ const {
   followOrganization,
   addAsAdmin,
   unfollowOrganization,
+  getUserOrganization,
   // getProfile,
 } = require("../controller/userController");
 
@@ -50,7 +51,7 @@ router.param("filename", checkId);
 
 router.route("/backup").get(zip);
 
-// router.get("/", protect, getAllUsers);
+router.get("/", protect, getAllUsers);
 router.get("/me", protect, getMe, getUser);
 router.get("/logout", protect, logout);
 router.get("/myEdits", protect); //getMyEdits
@@ -80,6 +81,7 @@ router.post("/follow/:id", protect, followOrganization);
 router.post("/unfollow/:id", protect, unfollowOrganization);
 router.post("/addAdmin", addAsAdmin);
 
+router.get("/organizations", protect, getUserOrganization);
 // router.patch("/activate/:token", activateAccount);
 // verify-email
 
