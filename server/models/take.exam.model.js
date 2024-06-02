@@ -36,8 +36,8 @@ const userActivityLogSchema = new mongoose.Schema({
   // actionType: 'medium' -> medium severity
   // actionType: 'high' -> high severity
   actionType: {
-    type: Enum,
-    values: ["low", "medium", "high"],
+    type: String,
+    enum: ["low", "medium", "high"],
   },
 
   timestamp: {
@@ -47,12 +47,12 @@ const userActivityLogSchema = new mongoose.Schema({
 });
 
 const takeExamSchema = new mongoose.Schema({
-  examId: {
+  exam: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Exam",
     required: true,
   },
-  userId: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -61,8 +61,15 @@ const takeExamSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: {
-      values: ["pending", "inprogress", "submitted", "terminated", "interrupted"],
-      message: "examStatus can be either pending, inprogress or completed",
+      values: [
+        "pending",
+        "inprogress",
+        "submitted",
+        "terminated",
+        "interrupted",
+        "completed"
+      ],
+      message: "examStatus can be either pending, inprogress, submitted, terminated, interrupted or completed",
     },
   },
   startTime: {
@@ -82,6 +89,6 @@ const takeExamSchema = new mongoose.Schema({
   userActivityLogs: [userActivityLogSchema],
 });
 
-
 const TakeExam = mongoose.model("TakeExam", takeExamSchema);
 
+module.exports = TakeExam;

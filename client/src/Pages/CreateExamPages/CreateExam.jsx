@@ -7,7 +7,6 @@ import 'react-quill/dist/quill.snow.css';
 import { toast } from "react-toastify";
 
 
-
 import Preview from "./components/Preview";
 import ExamQuestionForm from "./components/ExamQuestionForm";
 import ExamToolsForm from "./components/ExamToolsForm";
@@ -31,13 +30,17 @@ const tabListNoTitle = [
 const CreateExam = () => {
   const [activeTabKey, setActiveTabKey] = useState("Basic Info");
   const [examKey,setExamKey] = useState("");
+  const [tags,setTags] = useState([]);
+
   const [basicInfoValues, setBasicInfoValues] = useState(() => {
     const savedBasicInfo = localStorage.getItem("basicInfoValues");
     return savedBasicInfo ? JSON.parse(savedBasicInfo) : {
       examName: "",
       duration: 1 ,
-      examStartDate: null,
-      organization: "org",
+      examDate: "",
+      examStartDate: "",
+      examTime: "",
+      organization: "663e889c6470d66fcf38a4d4",
       privateAnswer: false,
       privateScore: false,
       instruction: "",
@@ -49,6 +52,7 @@ const CreateExam = () => {
       material: null,
       questions: [],
       access: "closed",
+      tags: []
     };
   });
 
@@ -58,7 +62,8 @@ const CreateExam = () => {
     questionChoice: ["true", "false"],
     questionType: "True/False",
     correctAnswer: "",
-    points: 1
+    points: 1,
+    tags: []
   })
 
   const [choose,setChoose] = useState({
@@ -66,19 +71,25 @@ const CreateExam = () => {
     questionChoice: [],
     questionType: "choose",
     correctAnswer: "",
-    points: 1
+    points: 1,
+    tags: []
+
   })
   
   const [shortAnswer,setShortAnswer] = useState({
     questionText: "",
     questionType: "shortAnswer",
-    points: 1
+    points: 1,
+    tags: []
+
   })
 
   const [essay,setEssay] = useState({
     questionText: "",
     questionType: "essay",
-    points: 1
+    points: 1,
+    tags: []
+
   })
 
 
@@ -170,8 +181,10 @@ const CreateExam = () => {
         return;
       }
        
+
   // Append trueFalse to questionsCollection
   setQuestionsCollection(prevQuestions => [...prevQuestions, trueFalse]);
+
   toast.success("Question saved successfully")
   // Reset trueFalse state to its default values
   setTrueFalse({
@@ -179,7 +192,8 @@ const CreateExam = () => {
     questionChoice: ["true", "false"],
     questionType: "True/False",
     correctAnswer: "",
-    points: 1
+    points: 1,
+    tags: []
   });
       console.log(questionsCollection)
     }
@@ -193,8 +207,8 @@ const CreateExam = () => {
       for(let i = 0; i < questionSize; i++) {
         structuredChoose.questionChoice.push(choose.questionChoice[i]);
       }
-
-      if (!choose.questionText || !choose.questionChoice || !choose.questionType || !choose.correctAnswer || !choose.points) {
+      console.log(choose.correctAnswer,"hello world yooooo")
+      if (!choose.questionText || !choose.questionChoice || !choose.questionType || !choose.points) {
         console.log(choose)
         toast.error("Please enter all the fields")
         return;
@@ -208,7 +222,9 @@ const CreateExam = () => {
         questionChoice: [],
         questionType: "choose",
         correctAnswer: "",
-        points: 1
+        points: 1,
+        tags: []
+
       });
     }
     else if (type === "shortAnswer") {
@@ -223,7 +239,9 @@ const CreateExam = () => {
       setShortAnswer({
         questionText: "",
     questionType: "shortAnswer",
-    points: 1
+    points: 1,
+    tags: []
+
       });
     }
     else if (type === "essay") {
@@ -237,7 +255,9 @@ const CreateExam = () => {
       setEssay({
         questionText: "",
         questionType: "essay",
-        points: 1
+        points: 1,
+        tags: []
+
       });
     }
 
@@ -268,7 +288,7 @@ const CreateExam = () => {
 
 
       return (
-        <div className="flex flex-col gap-4 my-4 ">
+        <div className="flex flex-col gap-4">
         <div className="flex gap-4 items-center ">
           <Link to='/dashboard/exams'>
             <Icon icon="fluent-emoji-high-contrast:left-arrow" className="text-2xl text-primary-500" />
@@ -337,6 +357,7 @@ const CreateExam = () => {
     questionType={questionType}
     questionsCollection ={questionsCollection }
     trueFalse={trueFalse}
+    setTrueFalse={setTrueFalse}
     handleQuestionsSave={handleQuestionsSave}
     trueFalseOnChange={trueFalseOnChange}
     choose={choose}
@@ -351,8 +372,8 @@ const CreateExam = () => {
     setShortAnswer={setShortAnswer}
     shortAnswer={shortAnswer}
     setChoose={setChoose}
-  
-    setTrueFalse={setTrueFalse}
+    tags={tags}
+    setTags={setTags}
   
   />
 )}
@@ -364,8 +385,11 @@ const CreateExam = () => {
             <Preview 
             basicInfoValues={basicInfoValues} 
             setBasicInfoValues={setBasicInfoValues} 
-            trueFalse={trueFalse} setTrueFalse={setTrueFalse} 
-            choose={choose} setChoose={setChoose} 
+            trueFalse={trueFalse} 
+            setTrueFalse={setTrueFalse} 
+            choose={choose} 
+            setChoose={setChoose} 
+
             shortAnswer={shortAnswer} 
             setShortAnswer={setShortAnswer} 
             essay={essay} 
@@ -388,22 +412,30 @@ const CreateExam = () => {
 
 
 {activeTabKey === "Success" && (
- <section className='flex flex-col justify-center items-center mt-8'>
- <img
-   loading='lazy'
-   src='https://cdn.builder.io/api/v1/image/assets/TEMP/f036dfadbcb5962fc51b133ce1f5e0f003ad5000218eb6b4df54e7ec1cff714a?apiKey=da0e5699a0964f23ab3a2091e7f935a3&'
-   alt='Submit form icon'
-   className='max-w-full aspect-[1.1] w-[157px]'
- />
- <h2 className='text-lg font-semibold text-left mt-4'>
-  Your exam has been successfully submitted!
- </h2>
+  <section className='flex flex-col justify-center items-center mt-8'>
+    <img
+      loading='lazy'
+      src='https://cdn.builder.io/api/v1/image/assets/TEMP/f036dfadbcb5962fc51b133ce1f5e0f003ad5000218eb6b4df54e7ec1cff714a?apiKey=da0e5699a0964f23ab3a2091e7f935a3&'
+      alt='Submit form icon'
+      className='max-w-full aspect-[1.1] w-[157px]'
+    />
+    <h2 className='text-lg font-semibold text-left mt-4'>
+      Your exam has been successfully submitted!
+    </h2>
 
- <h3 className='text-lg font-semibold text-left mt-4'>
-  Exam key : {examKey}
- </h3>
-</section>
+    <div className=' flex cursor-pointer items-center mt-4 gap-4 border px-4 py-2 rounded-md border-blue-500 bg-blue-50 text-blue-900 mb-8'  onClick={() => {
+          navigator.clipboard.writeText(examKey)
+          toast.success("Exam key copied to clipboard")
+        }}>
+      <h3 className='text-[1rem] font-semibold text-left'>
+        Exam key : {examKey}
+      </h3>
+      
+       <Icon icon="uil:copy" className="font-extrabold text-xl text-blue-900 hover:scale-125 transition-all duration-300" />
+    </div>
+  </section>
 )}
+
 
 
 

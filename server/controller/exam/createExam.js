@@ -2,7 +2,6 @@ const { StatusCodes } = require("http-status-codes");
 const Exam = require("../../models/exam.model");
 const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
-const factory = require("./../handlerFactory");
 const { fileUpload } = require("../profile/fileUpload");
 const generateRandomKey = require("../../utils/generateRandomKey");
 
@@ -56,14 +55,16 @@ exports.createExam = catchAsync(async (req, res, next) => {
 
       exam.material = MaterialLink;
     }
-  if (req.files.examFile) {
-    const examFile = req.files.examFile;
-    // check if the examMaterial is a PDF
-    if (!examFile.mimetype.startsWith("application/pdf")) {
-      return next(
-        new APIError("Please upload a Proper PDF", StatusCodes.BAD_REQUEST)
-      );
-    }
+
+  if (req.files)
+    if (req.files.examFile) {
+      const examFile = req.files.examFile;
+      // check if the examMaterial is a PDF
+      if (!examFile.mimetype.startsWith("application/pdf")) {
+        return next(
+          new APIError("Please upload a Proper PDF", StatusCodes.BAD_REQUEST)
+        );
+      }
 
       const examFileLink = await fileUpload({
         file: examFile,
