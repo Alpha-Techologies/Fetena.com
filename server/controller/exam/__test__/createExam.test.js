@@ -1,92 +1,62 @@
-// __tests__/examController.test.js
-const request = require('supertest');
-const express = require('express');
-const bodyParser = require('body-parser');
+// const request = require('supertest');
+const app = require('../../../app');  // Your Express app
 const mongoose = require('mongoose');
-const Exam = require('../../../models/exam.model');
-const { createExam } = require('../createExam');
 
-// Mocking the Mongoose model
-jest.mock('../../../models/exam.model');
-
-const app = express();
-app.use(bodyParser.json());
-app.post('/exams', createExam);
-
-describe('Exam Controller - Create Exam', () => {
-  beforeAll(() => {
-    mongoose.connect = jest.fn(); // Prevent actual DB connection
+describe('POST /exams', () => {
+  beforeAll(async () => {
+    // Connect to the test database
+    await mongoose.connect(process.env.MONGO_URI, {
+    //   useNewUrlParser: true,
+    //   useUnifiedTopology: true
+    });
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
+  afterAll(async () => {
+    // Disconnect from the test database
+    await mongoose.connection.close();
   });
 
-  it('should create an exam successfully', async () => {
-    const mockExam = {
-      examName: 'Sample Exam',
-      duration: 120,
-      examKey: 'EXAM123',
-      description: 'A sample exam description',
-      privateAnswer: false,
-      privateScore: false,
-      toolsPermitted: ['Calculator', 'Notes'],
-      invigilatorID: '60c72b2f5f1b2c001c8e4f7f',
-      questions: ['60c72b2f5f1b2c001c8e4f80', '60c72b2f5f1b2c001c8e4f81'],
+  it('should create a new exam', async () => {
+    const newExam = {
+      title: 'Sample Exam',
+      description: 'This is a sample exam.',
+      date: '2024-06-02T10:00:00.000Z',
+      duration: 60,
+      questions: [
+        {
+          questionText: 'What is 2 + 2?',
+          options: ['2', '3', '4', '5'],
+          correctAnswer: '4'
+        }
+      ]
     };
 
-    Exam.mockImplementation(() => ({
-      save: jest.fn().mockResolvedValue({ ...mockExam, _id: 'mock-id' }),
-    }));
-
     const response = await request(app)
-      .post('/exams')
-      .send(mockExam);
+      .post('/api/exams')
+      .send(newExam)
+      .expect('Content-Type', /json/)
+      .expect(201);
 
-    expect(response.status).toBe(201);
-    expect(response.body.status).toBe('success');
-    expect(response.body.data.exam.examName).toBe(mockExam.examName);
-    expect(response.body.data.exam.duration).toBe(mockExam.duration);
-    expect(response.body.data.exam.toolsPermitted).toEqual(mockExam.toolsPermitted);
-  });
-
-  it('should return 500 if exam creation fails', async () => {
-    const mockExam = {
-      examName: 'Sample Exam',
-      duration: 120,
-      examKey: 'EXAM123',
-      description: 'A sample exam description',
-      privateAnswer: false,
-      privateScore: false,
-      toolsPermitted: ['Calculator', 'Notes'],
-      invigilatorID: '60c72b2f5f1b2c001c8e4f7f',
-      questions: ['60c72b2f5f1b2c001c8e4f80', '60c72b2f5f1b2c001c8e4f81'],
-    };
-
-    Exam.mockImplementation(() => ({
-      save: jest.fn().mockRejectedValue(new Error('Database error')),
-    }));
-
-    const response = await request(app)
-      .post('/exams')
-      .send(mockExam);
-
-    expect(response.status).toBe(500);
-    expect(response.body.status).toBe('error');
-    expect(response.body.message).toBe('Database error');
+    expect(response.body).toHaveProperty('_id');
+    expect(response.body.title).toBe(newExam.title);
+    expect(response.body.description).toBe(newExam.description);
+    expect(response.body.date).toBe(newExam.date);
+    expect(response.body.duration).toBe(newExam.duration);
+    expect(response.body.questions).toEqual(expect.arrayContaining(newExam.questions));
   });
 
   it('should return 400 if required fields are missing', async () => {
     const incompleteExam = {
-      examName: 'Incomplete Exam',
-      duration: 90,
+      description: 'This is a sample exam without a title.'
+      // Missing other required fields
     };
 
     const response = await request(app)
-      .post('/exams')
-      .send(incompleteExam);
+      .post('/api/exams')
+      .send(incompleteExam)
+      .expect('Content-Type', /json/)
+      .expect(400);
 
-    expect(response.status).toBe(400);
-    expect(response.body.status).toBe('error');
+    expect(response.body).toHaveProperty('error');
   });
 });
