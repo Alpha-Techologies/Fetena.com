@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
 import { Link, useParams } from "react-router-dom";
 import axios from 'axios';
-import RelatedExams from "../Components/RelatedExams";
+// import RelatedExams from "../Components/RelatedExams";
 
 const { Search } = Input;
 
@@ -121,7 +121,7 @@ const ExamDetailPage = () => {
             
           </div>
         </Card>
-        <RelatedExams />
+        {/* <RelatedExams /> */}
       </div>
     </div>
   );

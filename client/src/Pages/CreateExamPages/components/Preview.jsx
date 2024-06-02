@@ -112,6 +112,7 @@ const submitExam = async () => {
             updatedBasicInfoValues.formulasCollection && "formulasCollection",
             updatedBasicInfoValues.uploadMaterials && "uploadMaterials"
           ].filter(Boolean), // Filters out any falsy values
+          tags: updatedBasicInfoValues.tags,
   
           questions: response.data.data.data // Ensure the questions are from the response
         }
@@ -200,9 +201,14 @@ const submitExam = async () => {
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Organization : </span>AASTU <span><Icon icon="gravity-ui:seal-check" className="text-lg text-blue-800" /></span></p>
           <div className='flex gap-1'>
           <span className="font-bold text-blue-700">Tags : </span>
-                <Tag color={"yellow"}>English</Tag>
+          {
+            basicInfoValues.tags?.map((tag) => (
+              <Tag color={"yellow"}>{tag}</Tag>
+            ))
+          }
+                {/* <Tag color={"yellow"}>English</Tag>
                 <Tag color={"red"}>Maths</Tag>
-                <Tag color={"blue"}>Physics</Tag>
+                <Tag color={"blue"}>Physics</Tag> */}
               </div>
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Created by : </span>{user.firstName} {user.lastName} </p>
         

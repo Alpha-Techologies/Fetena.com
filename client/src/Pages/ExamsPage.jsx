@@ -1,4 +1,4 @@
-import { Card, Form, Button, Input, Avatar, Pagination, Badge, Tag } from "antd";
+import { Card, Form, Button, Input, Avatar, Pagination, Badge, Tag,Space, Table,Popover  } from "antd";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
@@ -6,26 +6,14 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from 'axios';
 
+
 const { Search } = Input;
 
 const onSearch = (value, _e, info) => console.log(info?.source, value);
 
 const { Meta } = Card;
 
-const tabListNoTitle = [
-  {
-    key: "All",
-    label: "All",
-  },
-  {
-    key: "Featured",
-    label: "Featured",
-  },
-  {
-    key: "Taken",
-    label: "Taken",
-  },
-];
+
 
 const ExamsPage = () => {
   const [activeTabKey, setActiveTabKey] = useState("All");
@@ -35,15 +23,32 @@ const ExamsPage = () => {
   const [exams, setExams] = useState([]);
   const [pages, setPages] = useState(1); // Total pages of organizations
   const [current, setCurrent] = useState(1); // Current page number
+
+
+
+
+
   const fetchData = async (page=1) => {
+    const id = workspace._id
+  
+    if (userOrganizationsIdAndRole[id] && userOrganizationsIdAndRole[id] === "admin") {
+
+
+    
     try {
-      const response = await axios.get(`/api/exams?fields=examName,organization&page=${page}&sort=-createdAt`);
+      const response = await axios.get(`/api/exams/my-exam/${id}`);
+      
+     console.log(response.data.data.data,"bitch")
       setExams(response.data.data.data);
-      console.log(response.data.data.data,"gragn");
+     
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  }
   };
+
+
+
   useEffect(() => {
     
 
@@ -52,66 +57,100 @@ const ExamsPage = () => {
 
 
 
-  const onTabChange = (key) => {
-    if (activeTabKey === "All" && key !== "All") {
-      basicInfoForm
-        .validateFields()
-        .then(() => {
-          setActiveTabKey(key);
-        })
-        .catch(() => {
-          toast.error("Please complete all required fields in Basic Info");
-        });
-    } else if (activeTabKey === "Featured" && key !== "Featured") {
-      // Add validation or other functionality specific to Exam Questions tab
-      setActiveTabKey(key);
-    } else {
-      setActiveTabKey(key);
-    }
-  };
-
-
 
   const onPaginationChange = (page) => {
-    fetchData(page);
+    setCurrent(page); // Update the current page
+    fetchData(page); // Fetch data for the new page
   }
+  
 
 
+  const columns = [
+    {
+      title: 'Exam name',
+      dataIndex: 'examName',
+      key: 'examName',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Exam key',
+      dataIndex: 'examKey',
+      key: 'examKey',
+    },
+    {
+      title: 'Created by',
+      dataIndex: 'createdBy',
+      key: 'createdBy',
+    },
+    {
+      title: 'Created at',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+    },
+    {
+      title: 'Security level',
+      dataIndex: 'securityLevel',
+      key: 'securityLevel',
+    },
+    {
+      title: 'Access',
+      dataIndex: 'access',
+      key: 'access',
+    },
+   
+   
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <Space size="middle" className="grid grid-cols-4 gap-2">
+          <Popover title="Edit Exam" trigger="hover">
+            <Icon icon="line-md:pencil-twotone" className="text-blue-800 font-bold text-2xl hover:text-black" />
+          </Popover>
+    
+          <Popover title="Exam Details" trigger="hover">
+            <Link to={`/dashboard/exams/${record.key}`}>
+              <Icon icon="mdi:eye" className="text-blue-800 font-bold text-2xl hover:text-black" />
+            </Link>
+          </Popover>
+    
+          <Popover title="Preview Exam" trigger="hover">
+            <Icon icon="fa6-solid:binoculars" className="text-blue-800 font-bold text-2xl hover:text-black" />
+          </Popover>
+    
+          <Popover title="Delete Exam" trigger="hover">
+            <Icon icon="material-symbols:delete" className="text-blue-800 font-bold text-2xl hover:text-black" />
+          </Popover>
+        </Space>
+      ),
+    }
+    ,
+  ];
+  // const data = [
+  //   {
+  //     examName: 'John Brown',
+  //     examKey: 32,
+  //     createdBy: 'New York No. 1 Lake Park',
+  //     createdAt:'New York No. 1 Lake Park',
+  //     access: 'New York No. 1 Lake Park',
+  //   },
+   
+  // ];
 
-  const ExamCard = ({ _id, examName, organization }) => {
-    return (
-      <Link to={`/dashboard/exams/${_id}`} key={_id}>
-        <Card
-          className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
-          style={{ width: 300 }}
-        >
-          <div className='flex gap-4'>
-            <Icon
-              icon='healthicons:i-exam-multiple-choice-outline'
-              className='text-4xl text-blue-700'
-            />
-            <div className='flex-col flex items-start gap-2'>
-              <h3 className='font-bold text-md'>{examName}</h3>
-              <div className='flex gap-1'>
-                <Tag color={"yellow"}>English</Tag>
-                <Tag color={"red"}>Maths</Tag>
-                <Tag color={"blue"}>Physics</Tag>
-              </div>
-              <p className='font-semibold flex gap-2 items-center justify-center'>
-                {organization?.name}{" "}
-                {organization?.isVerified && (
-                  <span>
-                    <Icon className='text-blue-500' icon='mdi:verified' />
-                  </span>
-                )}
-              </p>
-            </div>
-          </div>
-        </Card>
-      </Link>
-    );
-  };
 
+  const data = exams.map((exam) => ({
+    key: exam._id,
+    examName: exam.examName,
+    examKey: exam.examKey,
+    createdBy: exam.createdBy.firstName + ' ' + exam.createdBy.lastName,
+    createdAt: new Date(exam.createdAt).toLocaleString(),
+    securityLevel: exam.securityLevel,
+    access: exam.access,
+  }));
+  
+
+
+ 
   return (
     <div className='flex flex-col gap-4'>
       <div className='flex justify-between gap-4 items-center'>
@@ -137,30 +176,9 @@ const ExamsPage = () => {
         )}
       </div>
       <div>
-        <Card
-          style={{ width: "100%" }}
-          tabList={tabListNoTitle}
-          activeTabKey={activeTabKey}
-          onTabChange={onTabChange}
-          tabProps={{ size: "middle" }}>
-          {activeTabKey === "All" && (
-            <>
-              <div className='flex flex-wrap gap-2'>
-                {exams && exams.map((exam) => (
-                  <ExamCard key={exam._id} {...exam} />
-                ))}
-              </div>
-              <Pagination
-                className='mt-8'
-                current={current}
-                total={pages * 10}
-                onChange={onPaginationChange()}
-              />
-            </>
-          )}
-          {activeTabKey === "Featured" && <p>Featured</p>}
-          {activeTabKey === "Taken" && <p>Taken</p>}
-        </Card>
+       
+      <Table columns={columns} dataSource={data} />;
+
       </div>
     </div>
   );

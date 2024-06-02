@@ -75,6 +75,10 @@ const ExamSchema = new mongoose.Schema({
   startDate: {
     type: Date,
   },
+  points: {
+    type: Number,
+    required: true,
+  },
   requiredField: [
     {
       type: String,
