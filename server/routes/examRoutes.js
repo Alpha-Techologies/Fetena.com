@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+
+const takeExamRouter = require("./takeExamRoutes");
+
 // import '../controller/exam'
 const {
   createExam,
@@ -7,15 +10,28 @@ const {
   getOneExam,
   getAllExam,
   updateExam,
+  getMyExam,
+  updateExamResource,
+  getPublicExam,
 } = require("../controller/exam");
-const { protect } = require("../controller/auth");
- 
-router.route("/").get(protect, getAllExam).post(protect, createExam);
+
+router.use(takeExamRouter);
+
+const { protect, restrictTo } = require("../controller/auth");
+
+router
+  .route("/")
+  .get(protect, restrictTo(true), getAllExam)
+  .post(protect, createExam);
+router.route("/my-exam/:id").get(protect, getMyExam);
+router.route("/get-public").get(protect, getPublicExam);
+
+router.route("/resource/:id").patch(protect, updateExamResource);
 
 router
   .route("/:id")
   .get(protect, getOneExam)
-  .put(protect, updateExam)
+  .patch(protect, updateExam)
   .delete(protect, deleteExam);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
-const APIError = require("./utils/apiError");
+const APIError = require("./utils/APIError");
 const globalErrorHandler = require("./controller/errorController");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
@@ -13,7 +13,7 @@ const cookieParser = require("cookie-parser");
 const socketIo = require("socket.io");
 
 require("dotenv").config({
-  path: "./config.env",
+  path: "./.env",
 });
 
 const limiter = rateLimit({
@@ -71,15 +71,14 @@ app.use((req, res, next) => {
   next();
 });
 
-const userRouter = require("./routes/userRoutes");
-const examRouter = require("./routes/examRoutes");
-const questionRouter = require("./routes/questionRoutes");
-const organizationRouter = require("./routes/organizationRoutes");
-const notificationRouter = require("./routes/notificationRoutes");
+
 const initSocket = require("./sockets");
 // socket.io
+
 const server = require("http").createServer(app);
+
 // specifiy the port for connection for the socket
+const router = require("./routes/routes");
 
 const io = require("socket.io")(server, {
   cors: {
@@ -92,12 +91,7 @@ server.listen(3000);
 //intialize the socket
 initSocket(io);
 
-// // const answerRouter = require("./routes/answerRoutes");
-app.use("/api/users", userRouter);
-app.use("/api/exams", examRouter);
-app.use("/api/questions", questionRouter);
-app.use("/api/organizations", organizationRouter);
-app.use("/api/notifications", notificationRouter);
+app.use("/api", router);
 
 app.all("*", (req, res, next) => {
   next(new APIError(`Can't find ${req.originalUrl} in server plus`, 404));

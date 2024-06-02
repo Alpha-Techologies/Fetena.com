@@ -1,9 +1,10 @@
-import { Card, Form, Button, Input, Avatar, Pagination, Badge, Tag } from "antd";
-import { useState } from "react";
+import { Card, Form, Button, Input, Avatar, Pagination, Badge, Tag,Space, Table,Popover  } from "antd";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import axios from 'axios';
 import ExamCard from "../Components/ExamCard"
 
 const { Search } = Input;
@@ -12,90 +13,146 @@ const onSearch = (value, _e, info) => console.log(info?.source, value);
 
 const { Meta } = Card;
 
-const tabListNoTitle = [
-  {
-    key: "All",
-    label: "All",
-  },
-  {
-    key: "Featured",
-    label: "Featured",
-  },
-  {
-    key: "Taken",
-    label: "Taken",
-  },
-];
+
 
 const ExamsPage = () => {
   const [activeTabKey, setActiveTabKey] = useState("All");
   const [basicInfoForm] = Form.useForm();
   const { workspace } = useSelector((state) => state.data);
-  const {userOrganizationsIdAndRole} = useSelector((state) => state.data);
+  const { userOrganizationsIdAndRole } = useSelector((state) => state.data);
+  const [exams, setExams] = useState([]);
+  const [pages, setPages] = useState(1); // Total pages of organizations
+  const [current, setCurrent] = useState(1); // Current page number
 
-  const onTabChange = (key) => {
-    if (activeTabKey === "All" && key !== "All") {
-      basicInfoForm
-        .validateFields()
-        .then(() => {
-          setActiveTabKey(key);
-        })
-        .catch(() => {
-          toast.error("Please complete all required fields in Basic Info");
-        });
-    } else if (activeTabKey === "Featured" && key !== "Featured") {
-      // Add validation or other functionality specific to Exam Questions tab
-      setActiveTabKey(key);
-    } else {
-      setActiveTabKey(key);
+
+
+
+
+  const fetchData = async (page=1) => {
+    const id = workspace._id
+  
+    if (userOrganizationsIdAndRole[id] && userOrganizationsIdAndRole[id] === "admin") {
+
+
+    
+    try {
+      const response = await axios.get(`/api/exams/my-exam/${id}`);
+      
+     console.log(response.data.data.data,"bitch")
+      setExams(response.data.data.data);
+     
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
+  }
   };
 
-  // const ExamCard = () => {
-  //   return (
-  //     <Link to='/dashboard/exams/dfghkfdghkd'>
-  //       <Card
-  //         className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
-  //         style={{
-  //           width: 300,
-  //           // marginTop: 16,
-  //         }}
-  //         // key={index}
-  //         // loading={loading}
-  //       >
-  //         <div className='flex gap-4'>
-  //           <Icon
-  //             icon='healthicons:i-exam-multiple-choice-outline'
-  //             className='text-4xl text-blue-700'
-  //           />
-  //           <div className='flex-col flex items-start gap-2'>
-  //             <h3 className='font-bold text-md'>English exam</h3>
-  //             <div className='flex gap-1'>
-  //               <Tag color={"yellow"}>English</Tag>
-  //               <Tag color={"red"}>Maths</Tag>
-  //               <Tag color={"blue"}>Physics</Tag>
-  //             </div>
-  //             <p className='font-semibold flex gap-2 items-center justify-center'>
-  //               AASTU{" "}
-  //               <span>
-  //                 <Icon
-  //                   className='text-blue-500'
-  //                   icon='mdi:verified'
-  //                 />
-  //               </span>
-  //             </p>
-  //           </div>
-  //         </div>
-  //       </Card>
-  //     </Link>
-  //   );
-  // };
+  useEffect(() => {
+    
+
+    fetchData();
+  }, []);
 
 
+
+
+  const onPaginationChange = (page) => {
+    setCurrent(page); // Update the current page
+    fetchData(page); // Fetch data for the new page
+  }
+  
+
+
+  const columns = [
+    {
+      title: 'Exam name',
+      dataIndex: 'examName',
+      key: 'examName',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Exam key',
+      dataIndex: 'examKey',
+      key: 'examKey',
+    },
+    {
+      title: 'Created by',
+      dataIndex: 'createdBy',
+      key: 'createdBy',
+    },
+    {
+      title: 'Created at',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+    },
+    {
+      title: 'Security level',
+      dataIndex: 'securityLevel',
+      key: 'securityLevel',
+    },
+    {
+      title: 'Access',
+      dataIndex: 'access',
+      key: 'access',
+    },
+   
+   
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <Space size="middle" className="grid grid-cols-4 gap-2">
+          <Popover title="Edit Exam" trigger="hover">
+            <Icon icon="line-md:pencil-twotone" className="text-blue-800 font-bold text-2xl hover:text-black" />
+          </Popover>
+    
+          <Popover title="Exam Details" trigger="hover">
+            <Link to={`/dashboard/exams/${record.key}`}>
+              <Icon icon="mdi:eye" className="text-blue-800 font-bold text-2xl hover:text-black" />
+            </Link>
+          </Popover>
+    
+          <Popover title="Preview Exam" trigger="hover">
+            <Icon icon="fa6-solid:binoculars" className="text-blue-800 font-bold text-2xl hover:text-black" />
+          </Popover>
+    
+          <Popover title="Delete Exam" trigger="hover">
+            <Icon icon="material-symbols:delete" className="text-blue-800 font-bold text-2xl hover:text-black" />
+          </Popover>
+        </Space>
+      ),
+    }
+    ,
+  ];
+  // const data = [
+  //   {
+  //     examName: 'John Brown',
+  //     examKey: 32,
+  //     createdBy: 'New York No. 1 Lake Park',
+  //     createdAt:'New York No. 1 Lake Park',
+  //     access: 'New York No. 1 Lake Park',
+  //   },
+   
+  // ];
+
+
+  const data = exams.map((exam) => ({
+    key: exam._id,
+    examName: exam.examName,
+    examKey: exam.examKey,
+    createdBy: exam.createdBy.firstName + ' ' + exam.createdBy.lastName,
+    createdAt: new Date(exam.createdAt).toLocaleString(),
+    securityLevel: exam.securityLevel,
+    access: exam.access,
+  }));
+  
+
+
+ 
   return (
-    <div className='flex flex-col gap-4 my-4'>
+    <div className='flex flex-col gap-4'>
       <div className='flex justify-between gap-4 items-center'>
-        <h1 className='text-3xl font-bold text-blue-900'>Exams</h1>
+        <h1 className='text-2xl font-bold text-blue-900 text-left'>Exams</h1>
 
         <div className='flex flex-col justify-start w-96'>
           <Search
@@ -109,53 +166,17 @@ const ExamsPage = () => {
 
         {workspace?._id in userOrganizationsIdAndRole && (
           <Link
-          to='/dashboard/create-exam'
-          className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded'>
-          {" "}
-          <Icon
-            className='text-white w-4 h-4'
-            icon='material-symbols:add'
-          />{" "}
-          Create Exam
-        </Link>)}
+            to='/dashboard/create-exam'
+            className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded'>
+            <Icon className='text-white w-4 h-4' icon='material-symbols:add' />{" "}
+            Create Exam
+          </Link>
+        )}
       </div>
       <div>
-        <Card
-          style={{ width: "100%" }}
-          tabList={tabListNoTitle}
-          activeTabKey={activeTabKey}
-          onTabChange={onTabChange}
-          tabProps={{ size: "middle" }}>
-          {activeTabKey === "All" && (
-            <>
-              <div className='flex flex-wrap gap-4'>
-                <ExamCard />
-                <ExamCard />
+       
+      <Table columns={columns} dataSource={data} />;
 
-                <ExamCard />
-                <ExamCard />
-
-                <ExamCard />
-                <ExamCard />
-                <ExamCard />
-                <ExamCard />
-
-                <ExamCard />
-                <ExamCard />
-                <ExamCard />
-                <ExamCard />
-              </div>
-              {/* <Pagination current={current} total={pages} onChange={onPaginationChange} /> */}
-              <Pagination
-                current='1'
-                total='5'
-                className='mt-4'
-              />
-            </>
-          )}
-          {activeTabKey === "Featured" && <p>Featured</p>}
-          {activeTabKey === "Taken" && <p>Taken</p>}
-        </Card>
       </div>
     </div>
   );

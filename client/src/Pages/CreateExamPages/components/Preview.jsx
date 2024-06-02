@@ -1,4 +1,4 @@
-import { Card, Form, Input, Button, Select, InputNumber, DatePicker, Radio, Switch } from "antd";
+import { Card, Form, Input, Button, Select, InputNumber, DatePicker, Radio, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
@@ -11,12 +11,19 @@ import axios from "axios";
 
 
 
-const Preview = ({setActiveTabKey,basicInfoValues, setBasicInfoValues, trueFalse, setTrueFalse, choose, setChoose, shortAnswer, setShortAnswer, essay, setEssay, questionsCollection, setQuestionsCollection, questionType, setQuestionType, choiceCount, setChoiceCount, trueFalseOnChange, chooseOnChange, essayOnChange, shortAnswerOnChange, handleQuestionsSave,setExamKey}) => {
+
+const Preview = ({setActiveTabKey,basicInfoValues, setBasicInfoValues, questionsCollection, setQuestionsCollection, choiceCount,  chooseOnChange, setExamKey}) => {
 
   const totalPoints = questionsCollection.reduce((total, question) => total + (question.points || 0), 0);
+  const { workspace } = useSelector((state) => state.data);
+  console.log(workspace._id,"points")
+
+
+
 
 
 const [questionCount,setQuestionCount] = useState(0);
+
 
 const updateQuestionCount = () => { setQuestionCount(questionCount + 1) }
 
@@ -34,22 +41,15 @@ const submitExam = async () => {
     toast.error("Please enter the duration");
     return;
   }
-  if (!basicInfoValues.examStartDate) {
-    toast.error("Please enter the exam start date");
-    return;
-  }
-  if (!basicInfoValues.organization) {
-    toast.error("Please enter the organization");
-    return;
-  }
-  if (!basicInfoValues.privateAnswer) {
-    toast.error("Please enter the private answer");
-    return;
-  }
-  if (!basicInfoValues.privateScore) {
-    toast.error("Please enter the private score");
-    return;
-  }
+  // if (!basicInfoValues.examStartDate) {
+  //   toast.error("Please enter the exam start date");
+  //   return;
+  // }
+  // if (!basicInfoValues.organization) {
+  //   toast.error("Please enter the organization");
+  //   return;
+  // }
+
   if (!basicInfoValues.instruction) {
     toast.error("Please enter the instruction");
     return;
@@ -58,10 +58,19 @@ const submitExam = async () => {
     toast.error("Please enter the exam type");
     return;
   }
-  if (!basicInfoValues.material || !basicInfoValues.material.name) {
-    toast.error("Please upload the material");
-    return;
+  if (!basicInfoValues.material) {
+      basicInfoValues.uploadMaterials = false;
   }
+  if (basicInfoValues.examTime && basicInfoValues.examDate) {
+    basicInfoValues.examStartDate = new Date(basicInfoValues.examDate + " " + basicInfoValues.examTime);
+  }
+  
+  console.log(basicInfoValues.examStartDate)
+
+  // if (!basicInfoValues.material || !basicInfoValues.material.name) {
+  //   toast.error("Please upload the material");
+  //   return;
+  // }
 
   // Check if questions are available
   if (questionsCollection.length === 0) {
@@ -76,6 +85,8 @@ const submitExam = async () => {
     // Handle success
     console.log('Questions submitted successfully:', response.data.data.data);
 
+    // setExamKey(response.data.data.exam.examKey);
+
     const updatedBasicInfoValues = { ...basicInfoValues, questions: response.data.data.data };
     setBasicInfoValues(updatedBasicInfoValues);
 
@@ -88,8 +99,8 @@ const submitExam = async () => {
         {
           examName: updatedBasicInfoValues.examName,
           duration: updatedBasicInfoValues.duration,
-          examStartDate: updatedBasicInfoValues.examStartDate,
-          organization: updatedBasicInfoValues.organization,
+          startDate: updatedBasicInfoValues.examStartDate,
+          organization: workspace._id,
           privateAnswer: updatedBasicInfoValues.privateAnswer,
           privateScore: updatedBasicInfoValues.privateScore,
           instruction: updatedBasicInfoValues.instruction,
@@ -101,6 +112,7 @@ const submitExam = async () => {
             updatedBasicInfoValues.formulasCollection && "formulasCollection",
             updatedBasicInfoValues.uploadMaterials && "uploadMaterials"
           ].filter(Boolean), // Filters out any falsy values
+          tags: updatedBasicInfoValues.tags,
   
           questions: response.data.data.data // Ensure the questions are from the response
         }
@@ -113,42 +125,17 @@ const submitExam = async () => {
     }
 
 
-    // const newExamData = {
-    //   material: updatedBasicInfoValues.material,
-    //   data: JSON.stringify({
-    //     examName: updatedBasicInfoValues.examName,
-    //     duration: updatedBasicInfoValues.duration,
-    //     examStartDate: updatedBasicInfoValues.examStartDate,
-    //     organization: updatedBasicInfoValues.organization,
-    //     privateAnswer: updatedBasicInfoValues.privateAnswer,
-    //     privateScore: updatedBasicInfoValues.privateScore,
-    //     instruction: updatedBasicInfoValues.instruction,
-    //     securityLevel: updatedBasicInfoValues.securityLevel,
-    //     examType: updatedBasicInfoValues.examType,
-    //     access: updatedBasicInfoValues.access,
-    //     toolsPermitted: [
-    //       updatedBasicInfoValues.calculator && "calculator",
-    //       updatedBasicInfoValues.formulasCollection && "formulasCollection",
-    //       updatedBasicInfoValues.uploadMaterials && "uploadMaterials"
-    //     ].filter(Boolean), // Filters out any falsy values
-
-    //     questions: response.data.data.data // Ensure the questions are from the response
-    //   })
-    // };
-
+   console.log(examDataToSend)
    
     // Send examData to the /api/exams endpoint with authentication header
     const examResponse = await axios.post('/api/exams', examDataToSend);
 
-    console.log('Exam data submitted successfully:', examResponse.data);
+    console.log('Exam data submitted successfully:', examResponse);
     toast.success("Exam submitted successfully.");
 
     // Clear questionsCollection and remove from local storage
-    setExamKey("abebe")
-    setQuestionsCollection([]);
-    setBasicInfoValues([]);
-    localStorage.removeItem('basicInfoValues');
-    localStorage.removeItem('questionsCollection');
+    setExamKey(examResponse.data.data.exam.examKey)
+   
     setActiveTabKey('Success');
   
 
@@ -157,6 +144,32 @@ const submitExam = async () => {
     console.error('Error submitting exam:', error);
     toast.error("Error submitting exam. Please try again later.");
   }
+
+
+  setQuestionsCollection([]);
+    setBasicInfoValues(
+      {
+        examName: "",
+        duration: 1 ,
+        examStartDate: Date.now(),
+        organization: "663e889c6470d66fcf38a4d4",
+        privateAnswer: false,
+        privateScore: false,
+        instruction: "",
+        securityLevel: "low",
+        examType: "",
+        calculator: false,
+        formulasCollection: false,
+        uploadMaterials: false,
+        material: null,
+        questions: [],
+        access: "closed",
+      }
+    );
+    localStorage.removeItem('basicInfoValues');
+    localStorage.removeItem('questionsCollection');
+
+
 }
 
 
@@ -186,15 +199,19 @@ const submitExam = async () => {
 
           <div className="w-full  flex flex-wrap gap-16 py-2 px-8 my-4">
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Organization : </span>AASTU <span><Icon icon="gravity-ui:seal-check" className="text-lg text-blue-800" /></span></p>
-          <div className="flex gap-2"><span className="font-bold text-blue-700">Tags : </span>
-          <p className="text-yellow-500">english</p>
-               <p className="text-red-500">maths</p>
-               <p className="text-blue-500">maths</p>
-          </div>
+          <div className='flex gap-1'>
+          <span className="font-bold text-blue-700">Tags : </span>
+          {
+            basicInfoValues.tags?.map((tag) => (
+              <Tag color={"yellow"}>{tag}</Tag>
+            ))
+          }
+                {/* <Tag color={"yellow"}>English</Tag>
+                <Tag color={"red"}>Maths</Tag>
+                <Tag color={"blue"}>Physics</Tag> */}
+              </div>
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Created by : </span>{user.firstName} {user.lastName} </p>
-
-
-          
+        
 
 </div>
 
@@ -258,13 +275,13 @@ const submitExam = async () => {
 
 
 
-<Card className="bg-gray-50 w-11/12 mx-auto my-2">
+<Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
 <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
   <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
     <p className="font-semibold text-blue-900">Points {question.points}</p>
   </div>
   <div className="mt-4 mx-4 flex items-start">
-   <h3 className="font-semibold">{question.questionText}</h3>
+   <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
   <div className="mt-8 flex items-start mx-4 ">
     <Form.Item label="Your Answer" className="w-48">
@@ -299,7 +316,7 @@ const submitExam = async () => {
 
   </div>
   <div className="mt-4 mx-4 flex items-start border-b pb-4">
-  <h3 className="font-semibold">{question.questionText}</h3>
+  <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
   <div className="mt-4 w-full flex items-start mx-4 gap-4">
     {/* <Form.Item label="Choice Number" rules={[{ required: true, message: "Please select the choice number" }]} className="w-48">
@@ -349,7 +366,7 @@ const submitExam = async () => {
  
      
      <div className="mt-4 mx-4 flex items-start ">
-  <h3 className="font-semibold">{question.questionText}</h3>
+     <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
 
      <div className="mt-4 flex items-start mx-4 mb-4">
@@ -384,7 +401,7 @@ const submitExam = async () => {
     
         
         <div className="mt-4 mx-4 flex items-start">
-  <h3 className="font-semibold">{question.questionText}</h3>
+        <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
 
      <div className="mt-4 flex items-start mx-4 mb-4">
@@ -399,12 +416,6 @@ const submitExam = async () => {
        
       </Card>
 
-
-
-
-
-
-
       ) : null}
     </div>
   ))}
@@ -413,8 +424,8 @@ const submitExam = async () => {
 
 <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
              <div className="flex gap-8 items-center justify-center">
-             <h3 className=" font-semibold text-lg">Total Questions <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
-             <h3 className=" font-semibold text-lg">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3>
+             <h3 className=" font-semibold text-[1rem]">Total Questions <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
+             <h3 className=" font-semibold text-[1rem]">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3>
              <Button type="primary" className="px-16" onClick={submitExam}>Save & Submit</Button>
  
        </div>
