@@ -16,15 +16,15 @@ mongoose.connect("mongodb://0.0.0.0:27017/exam-management?retryWrites=true", {
 });
 
 mongoose.set("debug", function (collectionName, methodName, ...methodArgs) {
-  try {
-    logger.info(
-      `${collectionName}.${methodName}(${JSON.stringify(methodArgs)})`
-    );
-  } catch (error) {
-    logger.error(
-      `${collectionName}.${methodName}(${JSON.stringify(methodArgs)})`
-    );
-  }
+  // try {
+  //   logger.info(
+  //     `${collectionName}.${methodName}(${JSON.stringify(methodArgs)})`
+  //   );
+  // } catch (error) {
+  //   logger.error(
+  //     `${collectionName}.${methodName}(${JSON.stringify(methodArgs)})`
+  //   );
+  // }
 });
 const dbConn = mongoose.connection;
 
@@ -34,4 +34,4 @@ dbConn.on("error", () => {
 dbConn.once("open", () => {
   logger.info("DBconnection succcessful");
 });
-module.exports = dbConn;
+module.exports = {dbConn,mongoose};
