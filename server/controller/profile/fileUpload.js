@@ -1,3 +1,4 @@
+
 const path = require("path");
 const catchAsync = require("./../../utils/catchAsync");
 
@@ -55,12 +56,35 @@ const fileUpload =
 //     {
 //       use_filename: true,
 //       folder: 'file-upload',
-//     }
-//   );
-//   fs.unlinkSync(req.files.image.tempFilePath);
-//   return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
-// };
 
-module.exports = {
-  fileUpload,
-};
+//     }
+//     console.log("upp")
+//     const newFileName = name + path.extname(file.name); // You can generate a new name however you like
+
+//     const imagePath = path.join(
+//       __dirname,
+//       `../../public/uploads/` + `${filePath}/` + `${newFileName}`
+//     );
+//     await file.mv(imagePath);
+    
+//     return `/uploads/` + `${filePath}/` + `${newFileName}`;
+//   };
+
+
+
+
+// // const uploadProductImage = async (req, res) => {
+// //   const result = await cloudinary.uploader.upload(
+// //     req.files.image.tempFilePath,
+// //     {
+// //       use_filename: true,
+// //       folder: 'file-upload',
+// //     }
+// //   );
+// //   fs.unlinkSync(req.files.image.tempFilePath);
+// //   return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
+// // };
+
+// module.exports = {
+//   fileUpload,
+// };
