@@ -35,6 +35,13 @@ const ProfilePage = () => {
         const res = await dispatch(getMe());
         console.log(res, "res");
         const userData = res.payload.data.data[0];
+        console.log(userData, "userData");
+        setInitialValues({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          phoneNumber: userData.phoneNumber,
+        })
         setUser(userData);
         form.setFieldsValue({
           firstName: userData.firstName,

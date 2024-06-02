@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const APIError = require("../../utils/apiError");
 const User = require("../../models/user.model");
+const Organization = require("../../models/organization.model");
 
 // roles -> ["sysAdmin", "orgAdmin"]
 exports.restrictTo = (isOrgOperation) => {
@@ -10,7 +11,16 @@ exports.restrictTo = (isOrgOperation) => {
     if (user.isSystemAdmin) next();
 
     if (isOrgOperation) {
-      if (user.adminOf.includes(req.params.id)) return next();
+      // use the find function to create req.params.id and admin.toString()
+      const org = await Organization.findOne({ _id: req.params.id });
+      if (!org) {
+        return next(
+          new APIError("Organization Does not Exist", StatusCodes.BAD_REQUEST)
+        );
+      }
+
+      const isadmin = org.adminUser.toString() === req.user.id;
+      if (isadmin) return next();
     }
     return next(
       new APIError(
