@@ -86,6 +86,9 @@ const ExamSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    points: {
+      type: Number,
+    }
   },
   { timestamps: true }
 );

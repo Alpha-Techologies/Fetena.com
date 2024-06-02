@@ -1218,3 +1218,21 @@
 2024-06-02T19:17:36.763Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
 2024-06-02T19:20:19.558Z - [INFO   ] - DBconnection succcessful
 2024-06-02T19:20:19.583Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:21:08.215Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:21:08.249Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:21:13.127Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:21:13.172Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:21:15.930Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:21:15.954Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:21:24.474Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:21:24.514Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:21:41.379Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:21:41.415Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:21:46.673Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:21:46.706Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:21:53.757Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:21:53.791Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:22:00.526Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:22:00.590Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T19:22:03.959Z - [INFO   ] - DBconnection succcessful
+2024-06-02T19:22:03.997Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
