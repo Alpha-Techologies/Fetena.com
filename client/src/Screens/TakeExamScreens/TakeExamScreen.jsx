@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import io from "socket.io-client";
-import { Button, Modal, Layout, Menu, Tabs, Switch, Divider, FloatButton } from "antd";
+import {
+  Button,
+  Modal,
+  Layout,
+  Menu,
+  Tabs,
+  Switch,
+  Divider,
+  FloatButton,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import fetena_logo from "../../assets/fetena_logo.png";
 import moment from "moment";
+import { toast } from "react-toastify";
 import Draggable from "react-draggable";
 import "react-chat-elements/dist/main.css";
 import { MessageBox } from "react-chat-elements";
 import { MessageList, Input } from "react-chat-elements";
 import * as math from "mathjs";
+import { takeExam } from "../../Redux/features/dataActions";
 const { Header, Sider, Content } = Layout;
 const inputReferance = React.createRef();
 
 const TakeExamScreen = () => {
-  const socket = io("http://localhost:3000");
+  const serverURL = "http://localhost:3000";
+  const socket = io(serverURL);
+
   const roomId = "123efr";
   const { user } = useSelector((state) => state.auth);
   const userId = user._id;
@@ -25,12 +38,50 @@ const TakeExamScreen = () => {
   const [batteryLevel, setBatteryLevel] = useState(100);
   const [isCharging, setIsCharging] = useState(false);
   const [inputValue, setInputValue] = useState("");
-    const [showChat, setShowChat] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const [takeExamId, setTakeExamId] = useState("");
+  const [chatMessage, setChatMessage] = useState("");
+  const [chatList, setChatList] = useState([])
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    socket.emit("joinRoom", { userId, roomId });
+    if (startExam) {
+      dispatch(takeExam("665cd9ad02c0ca39fcda44d4"))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            console.log(res.payload);
+            const temp = res.payload.data._id;
+            setTakeExamId(temp);
+            console.log(temp, "takeExamId");
+
+            socket.on("connect", () => {
+              console.log("Connected to the server");
+            });
+
+            socket.emit(
+              "joinExam",
+              "665cd9ad02c0ca39fcda44d4",
+              res.payload.data._id
+            );
+          } else {
+            toast.error(res.payload.message);
+            return;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("There is some error in the server!");
+        });
+
+      // return () => {
+      //   socket.disconnect();
+      // };
+    }
+  }, [startExam]);
+
+  useEffect(() => {
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
@@ -213,7 +264,6 @@ const TakeExamScreen = () => {
         <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-[#3A4764] text-white text-center h-fit w-[650px] p-4 rounded-lg'>
           <div className='flex flex-col gap-4'>
             <div className='input-section bg-[#182034] w-full h-[100px] px-4 rounded flex flex-col'>
-
               <div
                 className='screen text-right text-[#EAE3DC] font-bold text-lg h-[25px]'
                 value={expression}>
@@ -307,40 +357,89 @@ const TakeExamScreen = () => {
   };
 
   const ChatComponent = () => {
+
+    useEffect(() => {
+      console.log("receiving message");
+      socket.on("receiveMessage", (message) => {
+        console.log("message received");
+        console.log(message);
+        setChatList((prev) => [
+          ...prev,
+          {
+            position: "left",
+            title: "Invigilator",
+            type: "text",
+            text: message.message,
+            date: "message.date",
+          },
+        ]);
+      });
+
+      socket.on("announcement", (message) => {
+        console.log("announcemet received");
+        console.log(message);
+        setChatList((prev) => [
+          ...prev,
+          {
+            position: "left",
+            title: "Invigilator",
+            type: "text",
+            text: message,
+            date: "message.date",
+          },
+        ]);
+      })
+
+    }, [socket]);
+
+    const sendMessage = () => {
+      console.log("send message function");
+      if (chatMessage !== "") {
+        socket.emit("sendMessage", "665cd9ad02c0ca39fcda44d4", false, {
+          sender: user._id,
+          receiver: "6630daab4db53d7d765f3978",
+          message: chatMessage,
+        });
+        setChatList((prev) => [
+          ...prev,
+          {
+            position: "right",
+            title: "You",
+            type: "text",
+            text: chatMessage,
+            date: "message.date",
+          },
+        ]);
+      }
+    };
+
     return (
-      <div className="h-screen flex flex-col justify-between">
+      <div className='h-screen flex flex-col justify-between'>
         <MessageList
           key={1}
           className='message-list mt-2 mb-2'
           lockable={true}
           toBottomHeight={"100%"}
-          dataSource={[
-            {
-              position: "right",
-              title: "message name",
-              type: "text",
-              text: "message text",
-              date: "message.date",
-            },
-          ]}
+          dataSource={chatList}
         />
-        <Input
-          referance={inputReferance}
-          placeholder='Type here...'
-          multiline={true}
-          value={inputValue}
-          rightButtons={
-            <Button
-              color='white'
-              backgroundColor='black'
-              text='Send'
+        <div className='flex items-center gap-2 w-[90%]'>
+          <Input
+            className='w-full'
+            value={chatMessage}
+            placeholder={"Type your message here"}
+            onChange={(e) => setChatMessage(e.target.value)}
+          />
+          <div className='w-[20%]'>
+            <Icon
+              onClick={() => sendMessage()}
+              className='w-5 h-5 text-primary-500'
+              icon='carbon:send-filled'
             />
-          }
-        />
-        
+          </div>
+        </div>
       </div>
     );
-  }
+  };
 
   const ExamScreen = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -388,7 +487,10 @@ const TakeExamScreen = () => {
           {showCalculator && <Calculator />}
           <div className='flex flex-col gap-2 items-center justify-center text-black'>
             <div className='flex gap-2 items-center justify-center'>
-              <Icon className="w-5 h-5" icon='ph:calculator-fill' />
+              <Icon
+                className='w-5 h-5'
+                icon='ph:calculator-fill'
+              />
               <p>Calculator</p>
               <Switch
                 size='small'
@@ -437,19 +539,17 @@ const TakeExamScreen = () => {
         </div>
       );
     };
-    
 
     return (
       <Layout className='h-screen'>
         <FloatButton
-        onClick={() => setShowChat(!showChat)}
-          shape='circle'        
+          onClick={() => setShowChat(!showChat)}
+          shape='circle'
           icon={<Icon icon='grommet-icons:chat' />}
           tooltip={<div>Exam Chat</div>}
           badge={{
             dot: true,
           }}
-          
         />
         {showChat && <ChatComponent />}
         <Sider
