@@ -1,86 +1,51 @@
-const factory = require('.././../handlerFactory');
-const question = require('../../../models/question.model');
-const APIError = require('../../../utils/apiError');
-const { getOneQuestion, getAllQuestion } = require('../getQuestion');
+const Question = require("../../../models/question.model");
+const factory = require(".././../handlerFactory");
+const { getOneQuestion, getAllQuestion } = require("../getQuestion");
 
-// Mock factory functions
-jest.mock('.././../handlerFactory', () => ({
-  getOne: jest.fn(() => jest.fn(async (req, res, next) => {
-    if (req.params.id === '123') {
-      return res.status(200).json({
-        status: 'success',
-        data: {
-            question: { id: '123', name: 'Test question' }
-        }
-      });
-    } else {
-      return next('No question found with that ID', 404);
-    }
-  })),
-  getAll: jest.fn(() => jest.fn(async (req, res, next) => {
-    return res.status(200).json({
-      status: 'success',
-      results: 2,
-      data: {
-        questions: [
-          { id: '123', name: 'Test question 1' },
-          { id: '456', name: 'Test question 2' }
-        ]
-      }
-    });
-  })),
+// Mock the factory.getOne and factory.getAll methods
+jest.mock(".././../handlerFactory", () => ({
+  getOne: jest.fn().mockReturnValue(jest.fn()),
+  getAll: jest.fn().mockReturnValue(jest.fn()),
 }));
 
-jest.mock('../../../models/question.model');
-jest.mock('../../../utils/apiError');
-
-describe('getOneQuestion', () => {
-  beforeEach(() => {
+describe("getOneQuestion", () => {
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should fetch and return the question if it exists', async () => {
-    const mockReq = {
-      params: { id: '123' },
-    };
-    const mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-    const mockNext = jest.fn();
+  it("should call factory.getOne with the correct arguments", () => {
+    getOneQuestion();
 
-    await getOneQuestion(mockReq, mockRes, mockNext);
-
-    expect(mockRes.status).toHaveBeenCalledWith(200);
-    expect(mockRes.json).toHaveBeenCalledWith({
-      status: 'success',
-      data: {
-        question: { id: '123', name: 'Test question' }
-      }
-    });
-    
+    expect(factory.getOne).toHaveBeenCalledWith(Question);
   });
 
-  it('should fetch and return all question', async () => {
-    const mockReq = {};
-    const mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-    const mockNext = jest.fn();
+  it("should return the result of factory.getOne", () => {
+    const mockGetOne = jest.fn();
+    factory.getOne.mockReturnValueOnce(mockGetOne);
 
-    await getAllQuestion(mockReq, mockRes, mockNext);
+    const result = getOneQuestion();
 
-    expect(mockRes.status).toHaveBeenCalledWith(200);
-    expect(mockRes.json).toHaveBeenCalledWith({
-      status: 'success',
-      results: 2,
-      data: {
-        questions: [
-          { id: '123', name: 'Test question 1' },
-          { id: '456', name: 'Test question 2' }
-        ]
-      }
-    });
+    expect(result).toBe(mockGetOne);
   });
-}); 
+});
+
+describe("getAllQuestion", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should call factory.getAll with the correct arguments", () => {
+    getAllQuestion();
+
+    expect(factory.getAll).toHaveBeenCalledWith(Question);
+  });
+
+  it("should return the result of factory.getAll", () => {
+    const mockGetAll = jest.fn();
+    factory.getAll.mockReturnValueOnce(mockGetAll);
+
+    const result = getAllQuestion();
+
+    expect(result).toBe(mockGetAll);
+  });
+});

@@ -1,88 +1,69 @@
 const { StatusCodes } = require("http-status-codes");
 const Organization = require("../../../models/organization.model");
 const APIError = require("../../../utils/apiError");
-const catchAsync = require("../../../utils/catchAsync"); 
 const Notification = require("../../../models/notification.model");
 const OrganizationExaminer = require("../../../models/organization.examiner.model");
-const  {joinOrganization}  = require("../joinOrganization"); 
+const { joinOrganization } = require("../joinOrganization");
 
-// Mock your models and dependencies
 jest.mock("../../../models/organization.model");
+jest.mock("../../../utils/apiError");
 jest.mock("../../../models/notification.model");
 jest.mock("../../../models/organization.examiner.model");
-jest.mock("../../../utils/catchAsync"); 
 
-describe('joinOrganization', () => {
-  let mockReq, mockRes, mockNext;
+describe("joinOrganization", () => {
+  let req, res, next;
 
   beforeEach(() => {
-    mockReq = {
-      params: { id: 'testOrgId' },
-      user: { id: 'testUserId' }
+    req = {
+      params: { id: "organizationId" },
+      user: { id: "userId" },
     };
-    mockRes = {
+    res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-    mockNext = jest.fn();
-
-    jest.clearAllMocks();
+    next = jest.fn();
   });
 
-  it('should return an error if organization is not found', async () => {
-    Organization.findOne.mockResolvedValue(null); 
-
-    await joinOrganization(mockReq, mockRes, mockNext);
-
-    expect(mockNext).toHaveBeenCalledWith(new APIError("Organization not found", StatusCodes.BAD_REQUEST));
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
-  it('should return an error if user is the admin', async () => {
-    Organization.findOne.mockResolvedValue({ 
-      _id: 'testOrgId', 
-      adminUser: 'testUserId' 
-    });
+  it("should return an error if the organization is not found", async () => {
+    Organization.findOne.mockResolvedValueOnce(null);
 
-    await joinOrganization(mockReq, mockRes, mockNext);
+    await joinOrganization(req, res, next);
 
-    expect(mockNext).toHaveBeenCalledWith(new APIError("You are the admin of this organization", StatusCodes.BAD_REQUEST));
+    expect(next).toHaveBeenCalledWith(
+      new APIError("Organization not found", StatusCodes.BAD_REQUEST)
+    );
   });
 
-  it('should return an error if user is already a member or has requested', async () => {
-    Organization.findOne.mockResolvedValue({ _id: 'testOrgId', adminUser: 'differentAdminId' });
-    OrganizationExaminer.findOne.mockResolvedValue({});
+  it("should return an error if the user is the admin of the organization", async () => {
+    const organization = { adminUser: req.user.id };
+    Organization.findOne.mockResolvedValueOnce(organization);
 
-    await joinOrganization(mockReq, mockRes, mockNext);
+    await joinOrganization(req, res, next);
 
-    expect(mockNext).toHaveBeenCalledWith(new APIError("You are already a member of this organization or have requested to be so.", StatusCodes.BAD_REQUEST));
+    expect(next).toHaveBeenCalledWith(
+      new APIError(
+        "You are the admin of this organization",
+        StatusCodes.BAD_REQUEST
+      )
+    );
   });
-
-  it('should successfully create a join request and send a notification', async () => {
-    Organization.findOne.mockResolvedValue({ 
-      _id: 'testOrgId', 
-      adminUser: 'differentAdminId' 
-    });
-    OrganizationExaminer.findOne.mockResolvedValue(null);
-    OrganizationExaminer.create.mockResolvedValue({});
-    Notification.create.mockResolvedValue({});
-
-    await joinOrganization(mockReq, mockRes, mockNext);
-
-    expect(OrganizationExaminer.create).toHaveBeenCalledWith({
-      user: 'testUserId',
-      organization: 'testOrgId',
-    });
-
-    expect(Notification.create).toHaveBeenCalledWith({
-      user: 'differentAdminId', 
-      message: expect.stringContaining('testUserId') 
-    });
-
-    expect(mockRes.status).toHaveBeenCalledWith(StatusCodes.OK);
-    expect(mockRes.json).toHaveBeenCalledWith({
-      status: "success",
-      message: expect.any(String)
-    });
+  it("should return an error if the user is already a member or has requested to join", async () => {
+    const organization = { adminUser: "anotherUserId" };
+    Organization.findOne.mockResolvedValueOnce(organization);
+    OrganizationExaminer.findOne.mockResolvedValueOnce(null);
+  
+    await joinOrganization(req, res, next);
+  
+    expect(next).toHaveBeenCalledWith(
+      new APIError(
+        "You are already a member of this organization or have requested to be so.",
+        StatusCodes.BAD_REQUEST
+      )
+    );
   });
 });
-

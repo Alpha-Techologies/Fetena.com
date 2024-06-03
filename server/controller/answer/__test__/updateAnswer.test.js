@@ -1,27 +1,28 @@
+const UserAnswer = require("../../../models/user.answer.model");
 const factory = require(".././../handlerFactory");
-const Organization = require("../../../models/organization.model");
-const { updateOrganization } = require("../updateOrganization");
+const { updateUserAnswer } = require("../updateUserAnswer");
 
+// Mock the factory.updateOne method
 jest.mock(".././../handlerFactory", () => ({
   updateOne: jest.fn().mockReturnValue(jest.fn()),
 }));
 
-describe("updateOrganization", () => {
+describe("updateUserAnswer", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   it("should call factory.updateOne with the correct arguments", () => {
-    updateOrganization();
+    updateUserAnswer();
 
-    expect(factory.updateOne).toHaveBeenCalledWith(Organization);
+    expect(factory.updateOne).toHaveBeenCalledWith(UserAnswer);
   });
 
   it("should return the result of factory.updateOne", () => {
     const mockUpdateOne = jest.fn();
     factory.updateOne.mockReturnValueOnce(mockUpdateOne);
 
-    const result = updateOrganization();
+    const result = updateUserAnswer();
 
     expect(result).toBe(mockUpdateOne);
   });

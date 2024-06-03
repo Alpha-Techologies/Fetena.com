@@ -17,12 +17,12 @@ describe("updateQuestion", () => {
     expect(factory.updateOne).toHaveBeenCalledWith(Question);
   });
 
-//   it("should return the result of factory.updateOne", () => {
-//     const mockUpdateOne = jest.fn();
-//     factory.updateOne.mockReturnValueOnce(mockUpdateOne);
+  it("should return the result of factory.updateOne", () => {
+    const mockUpdateOne = jest.fn();
+    factory.updateOne.mockReturnValueOnce(mockUpdateOne);
 
-//     const result = updateQuestion();
+    const result = updateQuestion();
 
-//     expect(result).toBe(mockUpdateOne);
-//   });
+    expect(result).toBe(mockUpdateOne);
+  });
 });
