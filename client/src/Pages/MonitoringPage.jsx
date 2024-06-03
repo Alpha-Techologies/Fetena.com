@@ -16,7 +16,7 @@ import {
 } from "antd";
 import moment from "moment";
 import Button from "../Components/Button";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { MessageList } from "react-chat-elements";
 import { io } from "socket.io-client";
 import * as faceapi from 'face-api.js'
@@ -31,7 +31,7 @@ const MonitoringPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [examStatus, setExamStatus] = useState("open");
   const [seeStatusOf, setSeeStatusOf] = useState("all");
-  console.log(faceapi)
+  // console.log(faceapi)
 
   const tabList = [
     {
@@ -155,128 +155,102 @@ const MonitoringPage = () => {
     );
   }
 
-  const VideoMonitorWindow = () => {
-    const video = document.getElementById("video");
 
-    const modelUrl = "../models";
+const VideoMonitorWindow = () => {
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [socket, setSocket] = useState(null);
+  const [myPeer, setMyPeer] = useState(null);
+
+  useEffect(() => {
+    const modelUrl = '../models';
     Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri(modelUrl),
       faceapi.nets.faceLandmark68Net.loadFromUri(modelUrl),
       faceapi.nets.faceRecognitionNet.loadFromUri(modelUrl),
       faceapi.nets.faceExpressionNet.loadFromUri(modelUrl),
-    ]).then(startVideo);
+    ]).then(() => {
+      const videoElement = videoRef.current;
+      const canvasElement = canvasRef.current;
+      const displaySize = { width: videoElement.width, height: videoElement.height };
 
-    function startVideo() {
-      // navigator.getUserMedia(
-      //   { video: {} },
-      //   (stream) => (video.srcObject = stream),
-      //   (err) => console.error(err)
-      // );
-    }
+      const videoOnPlay = () => {
+        canvasElement.getContext('2d').clearRect(0, 0, canvasElement.width, canvasElement.height);
+        console.log('adding the vancaf')
+        faceapi.matchDimensions(canvasElement, displaySize);
+        setInterval(async () => {
+          const detections = await faceapi
+            .detectAllFaces(videoElement, new faceapi.TinyFaceDetectorOptions())
+            .withFaceLandmarks();
+          console.log(detections.length);
 
-    const videoOnPlay = () =>  {
-      const canvas = faceapi.createCanvasFromMedia(video);
-      document.getElementById("video_container").append(canvas);
-      const displaySize = { width: video.width, height: video.height };
-      faceapi.matchDimensions(canvas, displaySize);
-      setInterval(async () => {
-        const detections = await faceapi
-          .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-          .withFaceLandmarks();
-        console.log(detections.length);
-
-        // if (detections.length === 1) {
-        //   p.innerHTML = "DETECTED  FACE";
-        //   p.style.color = "green";
-        // } else {
-        //   p.innerHTML = "FACE NOT DETECTED";
-        //   p.style.color = "red";
-        // }
-        const resizedDetections = faceapi.resizeResults(
-          detections,
-          displaySize
-        );
-        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-        faceapi.draw.drawDetections(canvas, resizedDetections);
-        faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-
-        // faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-      }, 100);
-
-      // Capture the canvas as a media stream
-      const canvasStream = canvas.captureStream(30); // 30 is the frame rate
-
-      // Combine the canvas stream with the video stream if needed
-      const videoStream = video.srcObject;
-
-      // video.srcObject = canvasStream;
-    };
-
-    const socket = io("http://localhost:3000", {
-      transports: ["websocket"],
+          const resizedDetections = faceapi.resizeResults(detections, displaySize);
+          canvasElement.getContext('2d').clearRect(0, 0, canvasElement.width, canvasElement.height);
+          faceapi.draw.drawDetections(canvasElement, resizedDetections);
+          faceapi.draw.drawFaceLandmarks(canvasElement, resizedDetections);
+        }, 100);
+      };
     });
 
-    const myPeer = new Peer();
+    const newSocket = io('http://localhost:3000', {
+      transports: ['websocket'],
+    });
+    setSocket(newSocket);
 
-    const videoPlayer = document.getElementById("video");
-    const soundToggle = document.getElementById("sound");
+    const newPeer = new Peer();
+    setMyPeer(newPeer);
 
-    /**
-     * Socket Event Handlers
-     */
-
-    socket.on("connect", () => {
-      console.log("Connected as viewer");
+    newSocket.on('connect', () => {
+      console.log('Connected as viewer');
     });
 
-    myPeer.on("open", (viewerId) => {
-      socket.emit("join-as-viewer", viewerId);
+    newPeer.on('open', (viewerId) => {
+      newSocket.emit('join-as-viewer', viewerId);
     });
 
-    myPeer.on("call", (call) => {
+    newPeer.on('call', (call) => {
       call.answer();
-      call.on("stream", (stream) => {
-        addVideoStream(videoPlayer, stream);
+      call.on('stream', (stream) => {
+        addVideoStream(videoRef.current, stream);
       });
     });
 
-    myPeer.on("connection", (conn) => {
-      conn.on("close", () => {
+    newPeer.on('connection', (conn) => {
+      conn.on('close', () => {
         setTimeout(reload, 1000);
       });
     });
 
-    socket.on("disconnect", () => {
-      // we dont really care about emitting this to the streamer tbh
-      console.log("disconnected viewer");
+    newSocket.on('disconnect', () => {
+      console.log('disconnected viewer');
     });
 
-    /**
-     * Input Event Handlers
-     */
+    return () => {
+      newPeer.disconnect();
+      newSocket.disconnect();
+    };
+  }, []);
 
-    // soundToggle.addEventListener("click", () => {
-    //   videoPlayer.muted = !videoPlayer.muted;
-    //   soundToggle.innerText = videoPlayer.muted ? "Unmute" : "Mute";
-    // });
+  const addVideoStream = (video, stream) => {
+    video.srcObject = stream;
+    video.addEventListener('loadedmetadata', () => {
+      video.play();
+    });
+  };
 
-    /**
-     * Helper Functions
-     */
-    const reload = window.location.reload.bind(window.location);
+  const reload = () => {
+    window.location.reload();
+  };
 
-    function addVideoStream(video, stream) {
-      video.srcObject = stream;
-      video.addEventListener("loadedmetadata", () => {
-        video.play();
-      });
-    }
-    return (
-      <Card>
-        <video onPlay={videoOnPlay} src="https://www.youtube.com/watch?v=9SMreNyP4uM" id="video" width="340" height="120"></video>
-      </Card>
-    )
-  }
+  return (
+    <div id="video_container">
+      <video onPlay={() => videoOnPlay()} ref={videoRef} id="video" width="340" height="120" />
+      <canvas ref={canvasRef} id="canvas" width="340" height="120" />
+    </div>
+  );
+};
+
+
 
   const MonitoringTab = () => {
     const overviewTableColumns = [

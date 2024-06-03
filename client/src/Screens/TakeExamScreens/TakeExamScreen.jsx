@@ -1,7 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
-import { Button, Modal, Layout, Menu, Tabs, Switch, Divider, FloatButton } from "antd";
+import {
+  Button,
+  Modal,
+  Layout,
+  Menu,
+  Tabs,
+  Switch,
+  Divider,
+  FloatButton,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import fetena_logo from "../../assets/fetena_logo.png";
@@ -11,6 +20,7 @@ import "react-chat-elements/dist/main.css";
 import { MessageBox } from "react-chat-elements";
 import { MessageList, Input } from "react-chat-elements";
 import * as math from "mathjs";
+import Peer from "peerjs";
 const { Header, Sider, Content } = Layout;
 const inputReferance = React.createRef();
 
@@ -25,7 +35,7 @@ const TakeExamScreen = () => {
   const [batteryLevel, setBatteryLevel] = useState(100);
   const [isCharging, setIsCharging] = useState(false);
   const [inputValue, setInputValue] = useState("");
-    const [showChat, setShowChat] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   const navigate = useNavigate();
 
@@ -213,7 +223,6 @@ const TakeExamScreen = () => {
         <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-[#3A4764] text-white text-center h-fit w-[650px] p-4 rounded-lg'>
           <div className='flex flex-col gap-4'>
             <div className='input-section bg-[#182034] w-full h-[100px] px-4 rounded flex flex-col'>
-
               <div
                 className='screen text-right text-[#EAE3DC] font-bold text-lg h-[25px]'
                 value={expression}>
@@ -308,7 +317,7 @@ const TakeExamScreen = () => {
 
   const ChatComponent = () => {
     return (
-      <div className="h-screen flex flex-col justify-between">
+      <div className='h-screen flex flex-col justify-between'>
         <MessageList
           key={1}
           className='message-list mt-2 mb-2'
@@ -337,10 +346,98 @@ const TakeExamScreen = () => {
             />
           }
         />
-        
       </div>
     );
-  }
+  };
+
+
+const VideoComponent = () => {
+  const videoRef = useRef(null);
+  const peerClientRef = useRef(null);
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+          socketRef.current = io("http://localhost:3000", {
+            transports: ["websocket"],
+          });
+
+    const setupVideoStream = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+
+        if (videoRef.current) {
+          addVideoStream(videoRef.current, stream);
+        }
+
+        peerClientRef.current = new Peer();
+
+        peerClientRef.current.on('open', (streamerId) => {
+          socketRef.current.emit('join-as-streamer', streamerId);
+        });
+
+        peerClientRef.current.on('close', (streamerId) => {
+          socketRef.current.emit('disconnect-as-streamer', streamerId);
+        });
+
+        // console.log(socketRef, 'socketref');
+
+        socketRef.current.on('viewer-connected', (viewerId) => {
+          console.log('viewer connected');
+          connectToNewViewer(viewerId, stream);
+        });
+
+        socketRef.current.on('disconnect', () => {
+          // socketRef.current.emit('disconnect-as-streamer', streamerId);
+        });
+      } catch (error) {
+        console.error('Error accessing media devices:', error);
+      }
+    };
+
+    setupVideoStream();
+
+    return () => {
+      if (peerClientRef.current) {
+        peerClientRef.current.destroy();
+      }
+
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  const addVideoStream = (videoElement, stream) => {
+    videoElement.srcObject = stream;
+    videoElement.muted = true;
+
+    const videoOnPlay = () => {
+      videoElement.play();
+    };
+
+    videoElement.onloadedmetadata = videoOnPlay;
+  };
+
+  const connectToNewViewer = (viewerId, stream) => {
+    peerClientRef.current.call(viewerId, stream);
+  };
+
+  return (
+    <div>
+      <video
+        id="video"
+        width="340"
+        height="120"
+        autoPlay
+        ref={videoRef}
+        muted
+      />
+    </div>
+  );
+};
 
   const ExamScreen = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -388,7 +485,10 @@ const TakeExamScreen = () => {
           {showCalculator && <Calculator />}
           <div className='flex flex-col gap-2 items-center justify-center text-black'>
             <div className='flex gap-2 items-center justify-center'>
-              <Icon className="w-5 h-5" icon='ph:calculator-fill' />
+              <Icon
+                className='w-5 h-5'
+                icon='ph:calculator-fill'
+              />
               <p>Calculator</p>
               <Switch
                 size='small'
@@ -437,19 +537,17 @@ const TakeExamScreen = () => {
         </div>
       );
     };
-    
 
     return (
       <Layout className='h-screen'>
         <FloatButton
-        onClick={() => setShowChat(!showChat)}
-          shape='circle'        
+          onClick={() => setShowChat(!showChat)}
+          shape='circle'
           icon={<Icon icon='grommet-icons:chat' />}
           tooltip={<div>Exam Chat</div>}
           badge={{
             dot: true,
           }}
-          
         />
         {showChat && <ChatComponent />}
         <Sider
@@ -468,6 +566,7 @@ const TakeExamScreen = () => {
             className='w-24 my-4 mx-auto'
           />
           <ExamTools />
+          <VideoComponent />
         </Sider>
         <Layout>
           <Header
