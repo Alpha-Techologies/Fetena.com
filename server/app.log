@@ -865,3 +865,17 @@
 2024-06-02T14:26:08.764Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
 2024-06-02T14:26:25.481Z - [INFO   ] - tokens.findOne([{"user":"66300a5afb642a758256afa3","refreshToken":"f54f27c2881ef2c72d3ca739f171b9d707c468a4c592ca29b223971a68c1ef697bb9868459ac862d"},{}])
 2024-06-02T14:26:25.514Z - [INFO   ] - exams.insertOne([{"examName":"Sample Exam","duration":60,"instruction":"This is a sample exam for testing purposes.","securityLevel":"low","examType":"createOnline","privateAnswer":false,"privateScore":false,"toolsPermitted":["calculator","pen"],"questions":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"],"access":"open","requiredField":[],"_id":"665c8111bb405c7c4b6d8ab2","createdBy":"66300a5afb642a758256afa3","invigilatorID":"66300a5afb642a758256afa3","examKey":"tCxpmI","createdAt":"2024-06-02T14:26:25.511Z","updatedAt":"2024-06-02T14:26:25.511Z","__v":0},{}])
+2024-06-03T00:57:46.495Z - [INFO   ] - DBconnection successful
+2024-06-03T00:57:46.498Z - [INFO   ] - organizations.deleteOne([{"_id":"665d150ae1ccd34acca79b80"},{}])
+2024-06-03T00:57:46.529Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-03T00:57:46.560Z - [INFO   ] - organizations.deleteOne([{"_id":"665d150ae1ccd34acca79b84"},{}])
+2024-06-03T01:00:46.407Z - [INFO   ] - DBconnection successful
+2024-06-03T01:00:46.412Z - [INFO   ] - organizations.deleteOne([{"_id":"665d15be70e75cfb8c268cb7"},{}])
+2024-06-03T01:00:46.442Z - [INFO   ] - organizations.deleteOne([{"_id":"665d15be70e75cfb8c268cba"},{}])
+2024-06-03T01:16:26.943Z - [INFO   ] - DBconnection successful
+2024-06-03T01:16:27.004Z - [INFO   ] - DBconnection successful
+2024-06-03T01:16:28.322Z - [INFO   ] - DBconnection successful
+2024-06-03T01:20:52.171Z - [INFO   ] - DBconnection successful
+2024-06-03T01:20:52.341Z - [INFO   ] - DBconnection successful
+2024-06-03T01:20:52.704Z - [INFO   ] - DBconnection successful
+2024-06-03T01:20:52.856Z - [INFO   ] - DBconnection successful

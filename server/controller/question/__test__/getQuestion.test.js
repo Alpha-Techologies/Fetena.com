@@ -1,7 +1,7 @@
 const factory = require('.././../handlerFactory');
-const organization = require('../../../models/organization.model');
+const question = require('../../../models/question.model');
 const APIError = require('../../../utils/apiError');
-const { getOneOrganization, getAllOrganization } = require('../getOrganization');
+const { getOneQuestion, getAllQuestion } = require('../getQuestion');
 
 // Mock factory functions
 jest.mock('.././../handlerFactory', () => ({
@@ -10,11 +10,11 @@ jest.mock('.././../handlerFactory', () => ({
       return res.status(200).json({
         status: 'success',
         data: {
-          organization: { id: '123', name: 'Test Organization' }
+            question: { id: '123', name: 'Test question' }
         }
       });
     } else {
-      return next('No organization found with that ID', 404);
+      return next('No question found with that ID', 404);
     }
   })),
   getAll: jest.fn(() => jest.fn(async (req, res, next) => {
@@ -22,24 +22,24 @@ jest.mock('.././../handlerFactory', () => ({
       status: 'success',
       results: 2,
       data: {
-        organizations: [
-          { id: '123', name: 'Test Organization 1' },
-          { id: '456', name: 'Test Organization 2' }
+        questions: [
+          { id: '123', name: 'Test question 1' },
+          { id: '456', name: 'Test question 2' }
         ]
       }
     });
   })),
 }));
 
-jest.mock('../../../models/organization.model');
+jest.mock('../../../models/question.model');
 jest.mock('../../../utils/apiError');
 
-describe('getOneOrganization', () => {
+describe('getOneQuestion', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should fetch and return the organization if it exists', async () => {
+  it('should fetch and return the question if it exists', async () => {
     const mockReq = {
       params: { id: '123' },
     };
@@ -49,19 +49,19 @@ describe('getOneOrganization', () => {
     };
     const mockNext = jest.fn();
 
-    await getOneOrganization(mockReq, mockRes, mockNext);
+    await getOneQuestion(mockReq, mockRes, mockNext);
 
     expect(mockRes.status).toHaveBeenCalledWith(200);
     expect(mockRes.json).toHaveBeenCalledWith({
       status: 'success',
       data: {
-        organization: { id: '123', name: 'Test Organization' }
+        question: { id: '123', name: 'Test question' }
       }
     });
     
   });
 
-  it('should fetch and return all organizations', async () => {
+  it('should fetch and return all question', async () => {
     const mockReq = {};
     const mockRes = {
       status: jest.fn().mockReturnThis(),
@@ -69,18 +69,18 @@ describe('getOneOrganization', () => {
     };
     const mockNext = jest.fn();
 
-    await getAllOrganization(mockReq, mockRes, mockNext);
+    await getAllQuestion(mockReq, mockRes, mockNext);
 
     expect(mockRes.status).toHaveBeenCalledWith(200);
     expect(mockRes.json).toHaveBeenCalledWith({
       status: 'success',
       results: 2,
       data: {
-        organizations: [
-          { id: '123', name: 'Test Organization 1' },
-          { id: '456', name: 'Test Organization 2' }
+        questions: [
+          { id: '123', name: 'Test question 1' },
+          { id: '456', name: 'Test question 2' }
         ]
       }
     });
   });
-});
+}); 
