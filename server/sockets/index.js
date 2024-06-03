@@ -1,4 +1,5 @@
 const chatSocket = require("./chatSocket");
+const faceTrack = require("./faceTrack");
 const notificationSocket = require("./notificationSocket");
 
 const initSocket = (io) => {
@@ -8,6 +9,7 @@ const initSocket = (io) => {
     // Register notification and chat handlers
     notificationSocket(io, socket);
     chatSocket(io, socket);
+    faceTrack(io, socket);
 
     socket.on("disconnect", () => {
       console.log("Client disconnected", socket.id);
