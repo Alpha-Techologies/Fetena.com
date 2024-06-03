@@ -31,6 +31,18 @@ const startExam = catchAsync(async (req, res, next) => {
     );
   }
 
+  //check if exam is submitted
+  if (isExamStarted && isExamStarted.status === "submitted") {
+    return next(
+      new APIError("Exam is already submitted", StatusCodes.CONFLICT)
+    );
+  }
+
+  //check if the exam is terminated
+  if (isExamStarted && isExamStarted.status === "terminated") {
+    return next(new APIError("Exam is terminated", StatusCodes.CONFLICT));
+  }
+
   // create the exam take object
   const doc = await TakeExam.create({
     exam: examId,
