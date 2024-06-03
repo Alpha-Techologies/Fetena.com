@@ -13,7 +13,7 @@ exports.createExam = catchAsync(async (req, res, next) => {
   //     return next(new APIError("There is no file", StatusCodes.BAD_REQUEST));
   //   }
 
-  console.log(req.files, req.body)
+  console.log(req.files, req.body);
 
   if (!req.body.data) {
     return next(new APIError("There is no user data", StatusCodes.BAD_REQUEST));
@@ -24,8 +24,6 @@ exports.createExam = catchAsync(async (req, res, next) => {
   // create the exam
   const exam = new Exam(examData);
   exam.createdBy = exam.createdBy || req.user.id;
-  exam.invigilatorID = exam.invigilatorID || req.user.id;
-
 
   // generate an exam key that will store a combination of characters and numbers and special characters that has a length of 6
   const examKey = generateRandomKey(6);

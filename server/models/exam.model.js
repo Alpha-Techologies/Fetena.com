@@ -48,9 +48,8 @@ const ExamSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    invigilatorID: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    socketId: {
+      type: String,
     },
     organization: {
       type: mongoose.Schema.Types.ObjectId,
@@ -88,7 +87,7 @@ const ExamSchema = new mongoose.Schema(
     },
     points: {
       type: Number,
-    }
+    },
   },
   { timestamps: true }
 );
