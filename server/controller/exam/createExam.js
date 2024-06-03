@@ -13,7 +13,6 @@ exports.createExam = catchAsync(async (req, res, next) => {
   //     return next(new APIError("There is no file", StatusCodes.BAD_REQUEST));
   //   }
 
-  console.log(req.files, req.body);
 
   if (!req.body.data) {
     return next(new APIError("There is no user data", StatusCodes.BAD_REQUEST));

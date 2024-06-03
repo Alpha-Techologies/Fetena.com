@@ -25,6 +25,15 @@ const ExamSchema = new mongoose.Schema(
       enum: ["low", "high"],
       required: true,
     },
+    announcement: [
+      {
+        type: String,
+      },
+      {
+        type: Date,
+        default: Date.now(),
+      },
+    ],
     examType: {
       type: String,
       enum: ["pdfUpload", "createOnline", "worksheet"],

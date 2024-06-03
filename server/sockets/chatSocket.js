@@ -6,7 +6,7 @@ const users = {}; // This maps userId to socketId
 
 const chatSocket = (io, socket) => {
   // Join a room
-  socket.on("joinExam", async ({ examId, takeExamId }) => {
+  socket.on("joinExam", async (examId, takeExamId) => {
     socket.join(examId);
 
     const takeExam = await TakeExam.findOne({ _id: takeExamId });
@@ -24,7 +24,7 @@ const chatSocket = (io, socket) => {
   });
 
   // handle invigilator socket id store
-  socket.on("joinInvigilator", async ({ examId }) => {
+  socket.on("joinInvigilator", async (examId) => {
     socket.join(examId);
     const exam = await Exam.findOne({ _id: examId });
 
@@ -41,9 +41,20 @@ const chatSocket = (io, socket) => {
     console.log(`Invigilator ${socket.id} joined room ${examId}`);
   });
 
-  socket.on("announcement", ({ examId, message }) => {
+  socket.on("announcement", (examId, message) => {
     console.log(`Announcement: ${message}`);
-    io.in(examId).emit("announcement", { message });
+    // get the exam
+    const exam = Exam.findOne({ _id: examId });
+
+    if (!exam) {
+      console.log(`Exam ${examId} not found`);
+      return;
+    }
+
+    exam.announcement.push(message);
+    exam.save();
+
+    io.in(examId).emit("announcement", message);
   });
 
   // Handle sending a chat message
