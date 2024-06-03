@@ -6,7 +6,7 @@ const chatSocket = (io, socket) => {
   // Join a room
   socket.on('joinRoom', ({ userId, roomId }) => {
     socket.join(roomId);
-    users[userId] = { socketId: socket.id, roomId };
+    // users[userId] = { socketId: socket.id, roomId };
     console.log(`User ${userId} joined room ${roomId}`);
   });
 
