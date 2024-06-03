@@ -16,18 +16,17 @@ const attachCookiesToResponse = ({ res, user, refreshToken }) => {
   res.cookie("refreshToken", refreshTokenJWT, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
-    secure: true,
+    secure: false,
     signed: true,
-    sameSite: 'None'
+    sameSite: "lax",
   });
   res.cookie("accessToken", accessTokenJWT, {
     httpOnly: true,
-    secure: true,
+    secure: false,
     signed: true,
-    sameSite: 'None',
+    sameSite: "lax",
     maxAge: 1000 * 60 * 15,
   });
-  
 };
 
 module.exports = {
