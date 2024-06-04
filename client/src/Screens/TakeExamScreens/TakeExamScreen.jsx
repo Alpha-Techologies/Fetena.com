@@ -47,6 +47,8 @@ const TakeExamScreen = () => {
 
   const navigate = useNavigate();
 
+
+  // useEffect to join chat room for examinee
   useEffect(() => {
     console.log('this is runnning and start is changing');
     if (startExam) {
@@ -76,6 +78,8 @@ const TakeExamScreen = () => {
     }
   }, [startExam]);
 
+
+// useEffect to handle battery dispaly and screen change
   useEffect(() => {
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -446,93 +450,82 @@ const TakeExamScreen = () => {
     );
   };
 
-const VideoComponent = () => {
-  const videoRef = useRef(null);
-  const peerClientRef = useRef(null);
-  // const socketRef = useRef(null);
+// const VideoComponent = () => {
+//   const videoRef = useRef(null);
+//   const peerClientRef = useRef(null);
 
-  useEffect(() => {
-  //         socketRef.current = io("http://localhost:3000", {
-  //           transports: ["websocket"],
-  //         });
+//   useEffect(() => {
+//     const setupVideoStream = async () => {
+//       try {
+//         const stream = await navigator.mediaDevices.getUserMedia({
+//           video: true,
+//           audio: true,
+//         });
 
-    const setupVideoStream = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: true,
-        });
+//         if (videoRef.current) {
+//           addVideoStream(videoRef.current, stream);
+//         }
 
-        if (videoRef.current) {
-          addVideoStream(videoRef.current, stream);
-        }
+//         peerClientRef.current = new Peer();
 
-        peerClientRef.current = new Peer();
+//         peerClientRef.current.on('open', (streamerId) => {
+//           socket.emit('join-as-streamer', streamerId);
+//         });
 
-        peerClientRef.current.on('open', (streamerId) => {
-          socket.emit('join-as-streamer', streamerId);
-        });
+//         peerClientRef.current.on('close', (streamerId) => {
+//           socket.emit('disconnect-as-streamer', streamerId);
+//         });
 
-        peerClientRef.current.on('close', (streamerId) => {
-          socket.emit('disconnect-as-streamer', streamerId);
-        });
 
-        // console.log(socketRef, 'socketref');
+//         socket.on('viewer-connected', (viewerId) => {
+//           console.log('viewer connected');
+//           connectToNewViewer(viewerId, stream);
+//         });
 
-        socket.on('viewer-connected', (viewerId) => {
-          console.log('viewer connected');
-          connectToNewViewer(viewerId, stream);
-        });
+        
+//       } catch (error) {
+//         console.error('Error accessing media devices:', error);
+//       }
+//     };
 
-        // socket.on('disconnect', () => {
-        //   // socketRef.current.emit('disconnect-as-streamer', streamerId);
-        // });
-      } catch (error) {
-        console.error('Error accessing media devices:', error);
-      }
-    };
+//     setupVideoStream();
 
-    setupVideoStream();
+//     return () => {
+//       if (peerClientRef.current) {
+//         peerClientRef.current.destroy();
+//       }
 
-    return () => {
-      if (peerClientRef.current) {
-        peerClientRef.current.destroy();
-      }
+//     };
+//   }, []);
 
-      // if (socketRef.current) {
-      //   socketRef.current.disconnect();
-      // }
-    };
-  }, []);
+//   const addVideoStream = (videoElement, stream) => {
+//     videoElement.srcObject = stream;
+//     videoElement.muted = true;
 
-  const addVideoStream = (videoElement, stream) => {
-    videoElement.srcObject = stream;
-    // videoElement.muted = true;
+//     const videoOnPlay = () => {
+//       videoElement.play();
+//     };
 
-    const videoOnPlay = () => {
-      videoElement.play();
-    };
+//     videoElement.onloadedmetadata = videoOnPlay;
+//   };
 
-    videoElement.onloadedmetadata = videoOnPlay;
-  };
+//   const connectToNewViewer = (viewerId, stream) => {
+//     peerClientRef.current.call(viewerId, stream);
+//   };
 
-  const connectToNewViewer = (viewerId, stream) => {
-    peerClientRef.current.call(viewerId, stream);
-  };
-
-  return (
-    <div>
-      <video
-        id="video"
-        width="340"
-        height="120"
-        autoPlay
-        ref={videoRef}
-        muted
-      />
-    </div>
-  );
-};
+//   return (
+//     <div>
+//       <video
+//         id="video"
+//         width="340"
+//         height="120"
+//         autoPlay
+//         ref={videoRef}
+//         muted
+//       />
+//     </div>
+//   );
+// };
 
   const ExamScreen = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -661,7 +654,8 @@ const VideoComponent = () => {
             className='w-24 my-4 mx-auto'
           />
           <ExamTools />
-          <VideoComponent />
+          {/* <VideoComponent /> */}
+          {"VideoComponent"}
         </Sider>
         <Layout>
           <Header
