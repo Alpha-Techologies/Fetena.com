@@ -27,7 +27,7 @@ const ExamSchema = new mongoose.Schema(
     },
     examType: {
       type: String,
-      enum: ["pdfUpload", "createOnline", "worksheet"],
+      enum: ["pdfUpload", "online", "worksheet"],
       required: true,
     },
     privateAnswer: {
@@ -84,7 +84,7 @@ const ExamSchema = new mongoose.Schema(
 
     active: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     points: {
       type: Number,

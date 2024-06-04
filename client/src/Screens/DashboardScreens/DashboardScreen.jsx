@@ -205,40 +205,51 @@ const DashboardScreen = () => {
         icon="healthicons:i-exam-multiple-choice-outline"
       />
     ),
+
+    // getItem(
+    //   <Link to="questionbank" onClick={() => dispatch(switchSidebar("3"))}>
+    //     Question Bank
+    //   </Link>,
+    //   "3",
+    //   <Icon
+    //     className="w-5 h-5"
+    //     icon="healthicons:i-exam-multiple-choice-outline"
+    //   />
+    // ),
     getItem(
-      <Link to="activities" onClick={() => dispatch(switchSidebar("3"))}>
+      <Link to="activities" onClick={() => dispatch(switchSidebar("4"))}>
         Activity Log
       </Link>,
-      "3",
+      "4",
       <Icon className="w-4 h-4" icon="octicon:log-24" />
     ),
     getItem(
-      <Link to="staffs" onClick={() => dispatch(switchSidebar("4"))}>
+      <Link to="staffs" onClick={() => dispatch(switchSidebar("5"))}>
         Staff
       </Link>,
-      "4",
+      "5",
       <Icon className="w-5 h-5" icon="fluent:people-team-16-regular" />
     ),
     getItem(
-      <Link to="settings" onClick={() => dispatch(switchSidebar("5"))}>
+      <Link to="settings" onClick={() => dispatch(switchSidebar("6"))}>
         Settings
       </Link>,
-      "5",
+      "6",
       <Icon className="w-5 h-5" icon="uil:setting" />
     ),
     { type: "divider" },
     getItem(
-      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("6"))}>
+      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("7"))}>
         Training Videos
       </Link>,
-      "6",
+      "7",
       <Icon className="w-5 h-5" icon="healthicons:i-training-class-outline" />
     ),
     getItem(
-      <Link to="support" onClick={() => dispatch(switchSidebar("7"))}>
+      <Link to="support" onClick={() => dispatch(switchSidebar("8"))}>
         Support
       </Link>,
-      "7",
+      "8",
       <Icon
         className="w-5 h-5"
         icon="material-symbols:contact-support-outline"

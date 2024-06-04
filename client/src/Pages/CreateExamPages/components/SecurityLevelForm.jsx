@@ -9,12 +9,24 @@ const { TextArea } = Input;
 const SecurityLevelForm = ({setActiveTabKey}) => {
   return (
     <div>
-    <p className="mb-4  font-semibold text-blue-900 text-xl">Enter the Security level for the exam here</p>
+      <div className="flex justify-center items-center gap-2 mb-8 mt-4">
+
+      <Icon icon="material-symbols:security"  className="text-2xl font-bold text-blue-800" />
+<p className="font-semibold  text-blue-900 text-lg">Enter the Security level for the exam here</p>
+  </div>
 
   <Form.Item  name="securityLevel" rules={[{ required: true, message: "Please input the exam security type!" }]}>
-  <Radio.Group>
-    <Radio value="high"> High security </Radio>
-    <Radio value="low"> Low Security </Radio>
+  <Radio.Group className="flex justify-center items-center gap-8">
+    
+    <div className="p-8 border border-gray-200 rounded-lg flex flex-col gap-4 justify-center items-center group hover:bg-blue-600 transition ease-in-out duration-300">
+
+    <Icon icon="ph:security-camera-fill"  className="text-3xl font-bold text-blue-800 group-hover:text-white"/>
+    <Radio value="high" className="group-hover:text-white"> High security </Radio>
+    </div>
+    <div className="p-8 border border-gray-200 rounded-lg flex flex-col gap-4 justify-center items-center group hover:bg-blue-600 transition ease-in-out duration-300">
+    <Icon icon="mdi:security-off"  className="text-3xl font-bold text-blue-800 group-hover:text-white"/>
+    <Radio value="low" className="group-hover:text-white"> Low Security </Radio>
+    </div>
   </Radio.Group>
 </Form.Item>
 <div className="flex justify-end">

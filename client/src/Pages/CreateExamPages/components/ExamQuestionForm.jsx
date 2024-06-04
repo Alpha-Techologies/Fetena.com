@@ -3,6 +3,8 @@ import 'react-quill/dist/quill.snow.css';
 import React, { useState, useRef, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { TweenOneGroup } from 'rc-tween-one';
+import { Icon } from "@iconify/react";
+
 
 
 const { TextArea } = Input;
@@ -154,7 +156,12 @@ const ExamQuestionForm = ({
 
   return (
     <div>
-    <p className="mb-8 mt-4  font-semibold text-blue-900 text-xl">Enter the exam questions and create the Exam!</p>
+      <div className="flex justify-center items-center gap-2 mb-8 mt-4">
+
+<Icon icon="ph:question-bold"  className="text-2xl font-bold text-blue-800" />
+<p className="font-semibold  text-blue-900 text-lg">Enter exam questions</p>
+</div>
+    
     <div>
            {/* Render the question forms */}
  

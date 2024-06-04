@@ -35,6 +35,10 @@ import ActivityLogPage from "../Pages/ActivityLogPage";
 import OrganizationStaffPage from "../Pages/OrganizationStaffPage";
 import OrganizationSettingsPage from "../Pages/OrganizationSettingsPage";
 import NotificationPage from "../Pages/NotificationsPage";
+import Preview from "../Pages/Preview";
+import QuestionBank from "../Pages/QuestionBank";
+import EditExam from "../Pages/EditExam";
+import UserExamsPage from "../Pages/UserExamsPage";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -104,9 +108,32 @@ const AllRoutes = () => {
             path='exams'
             element={<ExamsPage />}
           />
+
+
+<Route
+            path='exams/userexams'
+            element={<UserExamsPage />}
+          />
+          
+          <Route
+            path='questionbank'
+            element={<QuestionBank />}
+          />
+
+
           <Route
             path='exams/:id'
             element={<ExamDetailPage />}
+          />
+
+<Route
+            path='exams/editexam/:id'
+            element={<EditExam />}
+          />
+
+          <Route
+            path='exams/preview/:id'
+            element={<Preview />}
           />
           <Route
             path='create-exam'
@@ -149,6 +176,8 @@ const AllRoutes = () => {
             path='trainingVideos'
             element={<TrainingVideosPage />}
           />
+
+
 
           <Route
             path='support'
