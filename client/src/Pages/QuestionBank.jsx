@@ -2,10 +2,9 @@ import { Card, Form, Button, Input, Avatar, Pagination, Badge, Tag, Space, Table
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
-import { Link,Navigate,useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from 'axios';
-import ExamCard from "../Components/ExamCard"
 
 
 const { Search } = Input;
@@ -16,7 +15,7 @@ const { Meta } = Card;
 
 
 
-const ExamsPage = () => {
+const QuestionBank = () => {
   const [activeTabKey, setActiveTabKey] = useState("All");
   const [basicInfoForm] = Form.useForm();
   const { workspace } = useSelector((state) => state.data);
@@ -24,12 +23,6 @@ const ExamsPage = () => {
   const [exams, setExams] = useState([]);
   const [pages, setPages] = useState(1); // Total pages of organizations
   const [current, setCurrent] = useState(1); // Current page number
-  const navigate = useNavigate();
-
-  console.log("--------------------------------------------------------------------------------------------------------")
-
-  console.log(workspace)
-  console.log(userOrganizationsIdAndRole)
 
 
 
@@ -38,7 +31,7 @@ const ExamsPage = () => {
   const fetchData = async (page=1,active=true,access="") => {
     const id = workspace._id
   
-    if (userOrganizationsIdAndRole[id] && (userOrganizationsIdAndRole[id] === "admin" || userOrganizationsIdAndRole[id] === "examiner")) {
+    if (userOrganizationsIdAndRole[id] && userOrganizationsIdAndRole[id] === "admin") {
 
 
     
@@ -52,21 +45,14 @@ const ExamsPage = () => {
       console.error("Error fetching data:", error);
     }
   }
-
-
-
-
   };
+
+
 
   useEffect(() => {
     
 
-    if (!workspace) {
-      // Handle the case where workspace is null, for example, redirect the user or show an error message
-      navigate('userexams');
-    } else {
-      fetchData(1, true);
-    }
+    fetchData(1,true);
   }, []);
 
 
@@ -119,10 +105,7 @@ const ExamsPage = () => {
       render: (text, record) => (
         <Space size="middle" className="grid grid-cols-4 gap-2">
           <Popover title="Edit Exam" trigger="hover">
-          <Link to={`/dashboard/exams/editexam/${record.key}`}>
-          
             <Icon icon="line-md:pencil-twotone" className="text-blue-800 font-bold text-2xl hover:text-black" />
-            </Link>
           </Popover>
     
           <Popover title="Exam Details" trigger="hover">
@@ -137,28 +120,15 @@ const ExamsPage = () => {
             </Link>
           </Popover>
     
+          <Popover title="Delete Exam" trigger="hover" className="cursor-pointer">
             {console.log("record",record)}
-            <>
-  {record.active ? (
-    <Popover title="Delete Exam" trigger="hover" className="cursor-pointer">
-      <Icon
-        icon="material-symbols:delete"
-        className="text-blue-800 font-bold text-2xl hover:text-black"
-        onClick={() => confirmDelete(record.key)}
-      />
-    </Popover>
-  ) : (
-    <Popover title="Restore Exam" trigger="hover" className="cursor-pointer">
-      <Icon
-        icon="pajamas:redo"
-        className="text-blue-800 font-bold text-2xl hover:text-black"
-        onClick={() => confirmRestore(record.key)}
-      />
-    </Popover>
-  )}
-</>
-
-    
+            {record.active ? (
+              
+              <Icon icon="material-symbols:delete" className="text-blue-800 font-bold text-2xl hover:text-black" onClick={() => confirmDelete(record.key)} />
+            ) : (
+              <Icon icon="pajamas:redo" className="text-blue-800 font-bold text-2xl hover:text-black" onClick={() => archiveExam(record.key)} />
+            )}
+          </Popover>
         </Space>
       ),
     }
@@ -187,22 +157,12 @@ const ExamsPage = () => {
   const data = exams.map((exam) => ({
     key: exam._id,
     examName: exam.examName,
-    examKey: (
-      <span className="font-bold text-blue-900">{exam.examKey}</span>
-    ),
+    examKey: exam.examKey,
     createdBy: exam.createdBy.firstName + ' ' + exam.createdBy.lastName,
     createdAt: new Date(exam.createdAt).toLocaleString(),
     securityLevel: exam.securityLevel,
-    access: (
-      <span
-        onClick={() => handleAccess(exam._id, exam.access)}
-        className="font-semibold cursor-pointer border rounded-xl  flex items-center justify-center"
-        style={{ color: exam.access === "open" ? "green" : "red", borderColor: exam.access === "open" ? "green" : "red" }}
-      >
-        {exam.access}
-      </span>
-    ),
-    active: exam.active,
+    access: exam.access,
+    active: exam.active
   }));
   
 
@@ -219,42 +179,11 @@ const ExamsPage = () => {
   };
 
 
-  const handleRestore = async (examId) => {
-    try {
-      await axios.patch(`/api/exams/${examId}`, { active: true });
-      toast.success("Exam restored successfully");
-      setExams((prevExams) => prevExams.filter((exam) => exam._id !== examId));
-
-    } catch (error) {
-      console.error("Error restoring exam:", error);
-      toast.error("Failed to restore exam");
-    }
-  };
-
-  const handleAccess = async (examId, access) => {
-    try {
-      if (access === "open") {
-        await axios.patch(`/api/exams/${examId}`, { access: "closed" });
-        toast.success("Exam access changed successfully");
-      } else {
-        await axios.patch(`/api/exams/${examId}`, { access: "open" });
-        toast.success("Exam access changed successfully");
-      }
-
-      fetchData(1,true);
-     
-
-    } catch (error) {
-      console.error("Error restoring exam:", error);
-      toast.error("Failed to restore exam");
-    }
-  };
-
-
   const confirmDelete = (examId) => {
     console.log("exam id",examId)
     Modal.confirm({
       title: "Are you sure you want to delete this exam?",
+      content: "This action cannot be undone.",
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
@@ -263,31 +192,19 @@ const ExamsPage = () => {
   };
 
 
-  const confirmRestore = (examId) => {
-
-    Modal.confirm({
-      title: "Are you sure you want to restore this exam?",
-      okText: "Yes",
-      okType: "primary",
-      cancelText: "No",
-      onOk: () => handleRestore(examId),
-    });
-  };
-
-  
-
-
  
   return (
     <div className='flex flex-col gap-4'>
       <div className='flex justify-between items-center'>
-        <h1 className='text-2xl font-bold text-blue-900 text-left'>Exams</h1>
+        <h1 className='text-2xl font-bold text-blue-900 text-left'>Question bank</h1>
 
         
 
-       
+       <div className="flex gap-4">
 
-        <div className='flex flex-col justify-start w-86'>
+   
+
+        <div className='flex flex-col justify-start w-96'>
           <Search
             placeholder='Search Exams'
             allowClear
@@ -323,66 +240,9 @@ const ExamsPage = () => {
   />
 </span>
 
+</div>
 
-
-        <span className='flex items-center'>
-          <span className='w-full font-semibold text-blue-800'>Access :</span>
-
-          <Select
-            defaultValue=''
-            className='h-full ml-2'
-            style={{
-              width: 'auto',
-              minWidth: 100, // Ensure a minimum width for better appearance
-            }}
-            onChange={(value) => filterByAccess(value)}
-            options={[
-              {
-                value: "Open",
-                label: "Open",
-              },
-              {
-                value: "Closed",
-                label: "Closed",
-              },
-            ]}
-          />
-        </span>
-
-
-        {/* <span className='flex items-center'>
-          <span className='w-full font-semibold text-blue-800'>Created by :</span>
-
-          <Select
-            defaultValue=''
-            className='h-full ml-2'
-            style={{
-              width: 'auto',
-              minWidth: 100, // Ensure a minimum width for better appearance
-            }}
-            // onChange={(value) => filterOrganization(value)}
-            options={[
-              {
-                value: "Active",
-                label: "Active",
-              },
-              {
-                value: "Archived",
-                label: "Archived",
-              },
-            ]}
-          />
-        </span> */}
-
-        {workspace?._id in userOrganizationsIdAndRole && (
-          <Link
-            to='/dashboard/create-exam'
-            className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-[0.5rem] px-4 rounded ml-4'>
-            <Icon className='text-white w-4 h-4' icon='material-symbols:add' />{" "}
-            Create Exam
-          </Link>
-        )}
-
+       
 
       </div>
       <div>
@@ -394,4 +254,4 @@ const ExamsPage = () => {
   );
 };
 
-export default ExamsPage;
+export default QuestionBank;

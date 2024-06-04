@@ -5,3 +5,4 @@ examFiles
 examMaterials
 .env
 *.log
+app.log

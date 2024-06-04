@@ -222,62 +222,51 @@ const DashboardScreen = () => {
         icon='healthicons:i-exam-multiple-choice-outline'
       />
     ),
+
+    // getItem(
+    //   <Link to="questionbank" onClick={() => dispatch(switchSidebar("3"))}>
+    //     Question Bank
+    //   </Link>,
+    //   "3",
+    //   <Icon
+    //     className="w-5 h-5"
+    //     icon="healthicons:i-exam-multiple-choice-outline"
+    //   />
+    // ),
     getItem(
-      <Link
-        to='exam-monitor'
-        onClick={() => dispatch(switchSidebar("3"))}>
-        Exam Monitoring
-      </Link>,
-      "3",
-      <Icon
-        className='w-5 h-5'
-        icon='ic:outline-monitor-heart'
-      />
-    ),
-    getItem(
-      <Link
-        to='activities'
-        onClick={() => dispatch(switchSidebar("4"))}>
+      <Link to="activities" onClick={() => dispatch(switchSidebar("4"))}>
         Activity Log
       </Link>,
       "4",
-      <Icon
-        className='w-4 h-4'
-        icon='octicon:log-24'
-      />
+      <Icon className="w-4 h-4" icon="octicon:log-24" />
     ),
     getItem(
-      <Link
-        to='staffs'
-        onClick={() => dispatch(switchSidebar("5"))}>
+      <Link to="staffs" onClick={() => dispatch(switchSidebar("5"))}>
         Staff
       </Link>,
       "5",
-      <Icon
-        className='w-5 h-5'
-        icon='fluent:people-team-16-regular'
-      />
+      <Icon className="w-5 h-5" icon="fluent:people-team-16-regular" />
     ),
     getItem(
-      <Link
-        to='settings'
-        onClick={() => dispatch(switchSidebar("6"))}>
+      <Link to="settings" onClick={() => dispatch(switchSidebar("6"))}>
         Settings
       </Link>,
       "6",
-      <Icon
-        className='w-5 h-5'
-        icon='uil:setting'
-      />
+      <Icon className="w-5 h-5" icon="uil:setting" />
     ),
     { type: "divider" },
     getItem(
-      <Link
-        to='trainingVideos'
-        onClick={() => dispatch(switchSidebar("7"))}>
+      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("7"))}>
         Training Videos
       </Link>,
       "7",
+      <Icon className="w-5 h-5" icon="healthicons:i-training-class-outline" />
+    ),
+    getItem(
+      <Link to="support" onClick={() => dispatch(switchSidebar("8"))}>
+        Support
+      </Link>,
+      "8",
       <Icon
         className='w-5 h-5'
         icon='healthicons:i-training-class-outline'
