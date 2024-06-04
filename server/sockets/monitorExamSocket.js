@@ -2,11 +2,11 @@
 
 const TakeExam = require("../models/take.exam.model");
 
-const   monitorExamSocket = (socket, io) => {
-  socket.on("terminateExaminee", async (examId, takeExamId) => {
+const monitorExamSocket = (socket, io) => {
+  socket.on("terminateExaminee", async (takeExamId) => {
     console.log(`Terminating examinee ${takeExamId}`);
     // get the exam
-    const takeExam = await TakeExam.findOne({ _id: takeExamId, exam: examId });
+    const takeExam = await TakeExam.findOne({ _id: takeExamId });
 
     if (!takeExam) {
       console.log(`TakeExam ${takeExamId} not found`);
@@ -16,7 +16,7 @@ const   monitorExamSocket = (socket, io) => {
     takeExam.status = "Terminated";
     await takeExam.save();
 
-    io.to(takeExam.socketId).emit("examTerminated");
+    io.to(takeExam.socketId).emit("examTerminated", takeExamId);
   });
 };
 
