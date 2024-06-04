@@ -27,6 +27,7 @@ const chatSocket = (io, socket) => {
       return;
     }
 
+    console.log(takeExamId, exam, exam.socketId, "jkhhj");
     if (exam.socketId) {
       io.to(exam.socketId).emit("userJoined", takeExamId);
     }

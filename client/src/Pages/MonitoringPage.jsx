@@ -25,6 +25,7 @@ import Peer from "peerjs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import _ from 'lodash'
+import {toast} from "react-toastify";
 
 const inputReferance = React.createRef();
 const { Search, TextArea } = Input;
@@ -43,7 +44,7 @@ const MonitoringPage = () => {
   const { workspace } = useSelector((state) => state.data);
   const { userOrganizationsIdAndRole } = useSelector((state) => state.data);
   const [examsList, setExamsList] = useState([]);
-  const [currentExam, setCurrentExam] = useState("");
+  const [currentExam, setCurrentExam] = useState({});
   const [examineeList, setExamineeList] = useState([]);
   const [examineeStatusStats, setExamineeStatusStats] = useState({})
   const navigate = useNavigate();
@@ -89,9 +90,11 @@ const MonitoringPage = () => {
           `/api/exams/exam-taker/${takeExamId}`
         );
 
-        console.log(response, "resp getTakeExamId  ");
-        
+      console.log(response, "resp getTakeExamId  ");
+      const tempExaminee = response.data.data.data[0]
 
+      setExamineeList((prev) => [...prev, tempExaminee])
+      toast.success("New User joined Exam!")
 
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -104,8 +107,9 @@ const MonitoringPage = () => {
     try {
       const response = await axios.get(`/api/exams/${examId}`);
       // console.log(response, 'response from fetch single exam');
-      setCurrentExam(response.data.data.data[0]);
-      // console.log(currentExam)
+      const tempExam = response.data.data.data[0]
+      setCurrentExam(tempExam);
+      console.log(currentExam, 'currentExam')
     } catch (error) {
       console.error("Error fetching exam details:", error);
     }
@@ -156,15 +160,16 @@ const MonitoringPage = () => {
       if (socket) {
         console.log("receiving userjoined", socket);
 
-        const handleUserJoined = (takeExamId) => {
-          console.log("userJoined received");
-          getTakeExamId(takeExamId)
+        const handleUserJoined = () => {
+          console.log("userJoined received", currentExam);
+          fetchExamineeList(currentExam._id)
+          toast.success("New User Joined Exam!")
         };
 
         socket.on("userJoined", handleUserJoined);
 
         return () => {
-          socket.off("receiveMessage", handleUserJoined);
+          socket.off("userJoined", handleUserJoined);
         };
       }
   }, [socket])
@@ -173,7 +178,7 @@ const MonitoringPage = () => {
   useEffect(() => {
     if (examStatus === "open") {
       // Emit an event to the server
-      socket.emit("joinInvigilator", "665cd9ad02c0ca39fcda44d4");
+      socket.emit("joinInvigilator", currentExam._id);
     }
   }, [examStatus]);
 
@@ -1060,8 +1065,8 @@ const MonitoringPage = () => {
     setActiveTabKey1(key);
   };
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
+  const handleExamChange = (value) => {
+    fetchExamDetails(value)
   };
 
   const handleExamStatusChange = (value) => {
@@ -1088,7 +1093,7 @@ const MonitoringPage = () => {
                 style={{
                   width: 120,
                 }}
-                onChange={handleChange}
+                onChange={handleExamChange}
                 options={examsList}
               />
             </div>
