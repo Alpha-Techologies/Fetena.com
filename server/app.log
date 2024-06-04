@@ -15429,3 +15429,9 @@
 2024-06-04T16:22:12.699Z - [INFO   ] - users.find([{"_id":{"$in":["665c008be683ae5e64b38ac0"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
 2024-06-04T16:22:12.703Z - [INFO   ] - users.find([{"_id":{"$in":["665c8c24f416b6151e017199"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
 2024-06-04T16:22:12.704Z - [INFO   ] - organizations.find([{"_id":{"$in":["665c0101e683ae5e64b38ad0"]}},{"strictPopulate":false}])
+2024-06-04T16:23:44.529Z - [INFO   ] - DBconnection succcessful
+2024-06-04T16:23:44.581Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-04T16:25:30.128Z - [INFO   ] - organizationexaminers.countDocuments([{"user":"665c8c24f416b6151e017199","status":"activated"},{}])
+2024-06-04T16:25:30.135Z - [INFO   ] - organizationexaminers.find([{"user":"665c8c24f416b6151e017199","status":"activated"},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
+2024-06-04T16:25:30.152Z - [INFO   ] - users.find([{"_id":{"$in":["665c8c24f416b6151e017199"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
+2024-06-04T16:25:30.153Z - [INFO   ] - organizations.find([{"_id":{"$in":["665c0101e683ae5e64b38ad0"]}},{"strictPopulate":false}])
