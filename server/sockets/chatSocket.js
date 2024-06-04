@@ -29,7 +29,7 @@ const chatSocket = (io, socket) => {
 
     console.log(takeExamId, exam, exam.socketId, "jkhhj");
     if (exam.socketId) {
-      io.to(exam.socketId).emit("userJoined", takeExamId);
+      io.to(exam.socketId).emit("userJoined", takeExamId, exam._id);
     }
 
     // users[userId] = { socketId: socket.id, roomId };

@@ -24,8 +24,8 @@ import * as faceapi from "face-api.js";
 import Peer from "peerjs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import _ from 'lodash'
-import {toast} from "react-toastify";
+import _ from "lodash";
+import { toast } from "react-toastify";
 
 const inputReferance = React.createRef();
 const { Search, TextArea } = Input;
@@ -46,7 +46,7 @@ const MonitoringPage = () => {
   const [examsList, setExamsList] = useState([]);
   const [currentExam, setCurrentExam] = useState({});
   const [examineeList, setExamineeList] = useState([]);
-  const [examineeStatusStats, setExamineeStatusStats] = useState({})
+  const [examineeStatusStats, setExamineeStatusStats] = useState({});
   const navigate = useNavigate();
   // console.log(faceapi);
   const serverURL = "http://localhost:3000";
@@ -84,32 +84,28 @@ const MonitoringPage = () => {
     }
   };
 
-  const getTakeExamId = async(takeExamId) => {
+  const getTakeExamId = async (takeExamId) => {
     try {
-        const response = await axios.get(
-          `/api/exams/exam-taker/${takeExamId}`
-        );
+      const response = await axios.get(`/api/exams/exam-taker/${takeExamId}`);
 
       console.log(response, "resp getTakeExamId  ");
-      const tempExaminee = response.data.data.data[0]
+      const tempExaminee = response.data.data.data[0];
 
-      setExamineeList((prev) => [...prev, tempExaminee])
-      toast.success("New User joined Exam!")
-
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-  }
-
+      setExamineeList((prev) => [...prev, tempExaminee]);
+      toast.success("New User joined Exam!");
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const fetchExamDetails = async (examId) => {
     console.log("fetchExamDetails");
     try {
       const response = await axios.get(`/api/exams/${examId}`);
       // console.log(response, 'response from fetch single exam');
-      const tempExam = response.data.data.data[0]
+      const tempExam = response.data.data.data[0];
       setCurrentExam(tempExam);
-      console.log(currentExam, 'currentExam')
+      console.log(currentExam, "currentExam");
     } catch (error) {
       console.error("Error fetching exam details:", error);
     }
@@ -118,11 +114,11 @@ const MonitoringPage = () => {
   const fetchExamineeList = async (examId) => {
     try {
       const response = await axios.get(`/api/exams/exam-history/${examId}`);
-      console.log(examId)
+      console.log(examId);
       console.log(response, "response from fetch single exam");
       // setExamineeList(response.data.data.data);
-      const tempExamineeList = response.data.data.data
-      setExamineeList(tempExamineeList)
+      const tempExamineeList = response.data.data.data;
+      setExamineeList(tempExamineeList);
       const expectedStatuses = [
         "inprogress",
         "submitted",
@@ -133,9 +129,9 @@ const MonitoringPage = () => {
         _.countBy(tempExamineeList, "status"),
         _.fromPairs(expectedStatuses.map((status) => [status, 0]))
       );
-      setExamineeStatusStats(tempExamineeStatusCount)
+      setExamineeStatusStats(tempExamineeStatusCount);
       console.log(examineeStatusStats, "temp examinee stat");
-      console.log(examineeStatusStats.inprogress, 'examinee stats');
+      console.log(examineeStatusStats.inprogress, "examinee stats");
     } catch (error) {
       console.error("Error fetching exam details:", error);
       // toast.error("Failed to fetch exam details");
@@ -157,27 +153,28 @@ const MonitoringPage = () => {
 
   useEffect(() => {
     console.log(socket, "socket in join");
-      if (socket) {
-        console.log("receiving userjoined", socket);
+    if (socket) {
+      console.log("receiving userjoined", socket);
 
-        const handleUserJoined = () => {
-          console.log("userJoined received", currentExam);
-          fetchExamineeList(currentExam._id)
-          toast.success("New User Joined Exam!")
-        };
+      const handleUserJoined = (takeExamId, examId) => {
+        console.log("userJoined received", examId);
+        fetchExamineeList(examId);
+        toast.success("New User Joined Exam!");
+      };
 
-        socket.on("userJoined", handleUserJoined);
+      socket.on("userJoined", handleUserJoined);
 
-        return () => {
-          socket.off("userJoined", handleUserJoined);
-        };
-      }
-  }, [socket])
+      return () => {
+        socket.off("userJoined", handleUserJoined);
+      };
+    }
+  }, [socket]);
 
   // useEffect to join socket of the invigilator
   useEffect(() => {
     if (examStatus === "open") {
       // Emit an event to the server
+      console.log(currentExam._id, "invig id");
       socket.emit("joinInvigilator", currentExam._id);
     }
   }, [examStatus]);
@@ -508,16 +505,12 @@ const MonitoringPage = () => {
         title: "Profile",
         dataIndex: "profilePhoto",
         key: "profilePhoto",
-        render: (text) => (
-          <Avatar
-            src={serverURL + text}
-          />
-        ),
+        render: (text) => <Avatar src={serverURL + text} />,
       },
       {
         title: "Name",
         dataIndex: "fullName",
-        key:"fullName"
+        key: "fullName",
       },
       {
         title: "Email",
@@ -555,15 +548,13 @@ const MonitoringPage = () => {
     ];
 
     const overviewTableData = _.map(examineeList, (item) => ({
-  profilePhoto: item.user.profilePhoto,
-  fullName: item.user.fullName,
-  email: item.user.email,
-  userId: item.user.id,
-  status: item.status,
-  startTime: item.startTime
-}));
-
-    
+      profilePhoto: item.user.profilePhoto,
+      fullName: item.user.fullName,
+      email: item.user.email,
+      userId: item.user.id,
+      status: item.status,
+      startTime: item.startTime,
+    }));
 
     const MonitoringOverviewPage = () => {
       return (
@@ -572,7 +563,10 @@ const MonitoringPage = () => {
             <Card>
               <div>
                 <p className='font-bold text-xl italic'>
-                  {examineeStatusStats.inprogress + examineeStatusStats.submitted + examineeStatusStats.interrupted + examineeStatusStats.terminated}
+                  {examineeStatusStats.inprogress +
+                    examineeStatusStats.submitted +
+                    examineeStatusStats.interrupted +
+                    examineeStatusStats.terminated}
                 </p>
                 <p>Total Examinees</p>
               </div>
@@ -587,19 +581,25 @@ const MonitoringPage = () => {
             </Card>
             <Card>
               <div>
-                <p className='font-bold text-xl italic'>{ examineeStatusStats.inprogress}</p>
+                <p className='font-bold text-xl italic'>
+                  {examineeStatusStats.inprogress}
+                </p>
                 <p>Ongoing</p>
               </div>
             </Card>
             <Card>
               <div>
-                <p className='font-bold text-xl italic'>{ examineeStatusStats.terminated}</p>
+                <p className='font-bold text-xl italic'>
+                  {examineeStatusStats.terminated}
+                </p>
                 <p>Terminated</p>
               </div>
             </Card>
             <Card>
               <div>
-                <p className='font-bold text-xl italic'>{ examineeStatusStats.interrupted}</p>
+                <p className='font-bold text-xl italic'>
+                  {examineeStatusStats.interrupted}
+                </p>
                 <p>Interrupted</p>
               </div>
             </Card>
@@ -613,8 +613,11 @@ const MonitoringPage = () => {
     };
 
     const MonitoringIndividualPage = () => {
-      const currentUser = _.find(examineeList, (item) => item.user && item.user._id === seeStatusOf)
-      console.log(currentUser, 'currentUser')
+      const currentUser = _.find(
+        examineeList,
+        (item) => item.user && item.user._id === seeStatusOf
+      );
+      console.log(currentUser, "currentUser");
       return (
         <div className='flex flex-col gap-4'>
           <div className='flex justify-between w-full'>
@@ -1066,7 +1069,7 @@ const MonitoringPage = () => {
   };
 
   const handleExamChange = (value) => {
-    fetchExamDetails(value)
+    fetchExamDetails(value);
   };
 
   const handleExamStatusChange = (value) => {

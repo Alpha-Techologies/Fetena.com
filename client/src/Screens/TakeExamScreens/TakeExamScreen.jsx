@@ -3,13 +3,19 @@ import { useSelector, useDispatch } from "react-redux";
 import io from "socket.io-client";
 import {
   Button,
+  Card,
+  Form,
   Modal,
+  Input,
+  Select,
   Layout,
   Menu,
   Tabs,
   Switch,
   Divider,
   FloatButton,
+  Radio,
+  Tag,
 } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
@@ -19,17 +25,16 @@ import { toast } from "react-toastify";
 import Draggable from "react-draggable";
 import "react-chat-elements/dist/main.css";
 import { MessageBox } from "react-chat-elements";
-import { MessageList, Input } from "react-chat-elements";
+import { MessageList } from "react-chat-elements";
 import useSocketIO from "../../utils/socket/useSocketIO";
 import * as math from "mathjs";
 import { takeExam } from "../../Redux/features/dataActions";
 import Peer from "peerjs";
+import axios from "axios";
 const { Header, Sider, Content } = Layout;
 const inputReferance = React.createRef();
 
 const TakeExamScreen = () => {
-
-  const roomId = "123efr";
   const { user } = useSelector((state) => state.auth);
   const userId = user._id;
   const [startExam, setStartExam] = useState(false);
@@ -42,17 +47,18 @@ const TakeExamScreen = () => {
   const [takeExamId, setTakeExamId] = useState("");
   const [chatMessage, setChatMessage] = useState("");
   const [chatList, setChatList] = useState([]);
+  const [exam, setExam] = useState(null);
   const [socket] = useSocketIO();
   const dispatch = useDispatch();
+  const { TextArea } = Input;
 
   const navigate = useNavigate();
 
-  const {id} = useParams()
-
+  const { id } = useParams();
 
   // useEffect to join chat room for examinee
   useEffect(() => {
-    console.log('this is runnning and start is changing');
+    console.log("this is runnning and start is changing");
     if (startExam) {
       dispatch(takeExam(id))
         .then((res) => {
@@ -62,11 +68,7 @@ const TakeExamScreen = () => {
             setTakeExamId(temp);
             console.log(temp, "takeExamId");
 
-            socket.emit(
-              "joinExam",
-              id,
-              res.payload.data._id
-            );
+            socket.emit("joinExam", id, res.payload.data._id);
           } else {
             toast.error(res.payload.message);
             return;
@@ -76,12 +78,10 @@ const TakeExamScreen = () => {
           console.log(error);
           toast.error("There is some error in the server!");
         });
-
     }
   }, [startExam]);
 
-
-// useEffect to handle battery dispaly and screen change
+  // useEffect to handle battery dispaly and screen change
   useEffect(() => {
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -111,6 +111,22 @@ const TakeExamScreen = () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
+
+  // useEffect to load the exam
+  useEffect(() => {
+    const fetchExamDetails = async () => {
+      try {
+        const response = await axios.get(`/api/exams/${id}`);
+        setExam(response.data.data.data[0]);
+        console.log("this is the fuckn data", response.data.data.data[0]);
+      } catch (error) {
+        console.error("Error fetching exam details:", error);
+        toast.error("Failed to fetch exam details");
+      }
+    };
+
+    fetchExamDetails();
+  }, [id]);
 
   const requestFullscreen = () => {
     const element = document.documentElement;
@@ -197,7 +213,10 @@ const TakeExamScreen = () => {
           open={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}>
-          <p>This is a high security exam. Make sure to give permission for camera and microphone. The exam is about to start.</p>
+          <p>
+            This is a high security exam. Make sure to give permission for
+            camera and microphone. The exam is about to start.
+          </p>
         </Modal>
       </>
     );
@@ -360,7 +379,6 @@ const TakeExamScreen = () => {
   const ChatComponent = () => {
     useEffect(() => {
       if (socket) {
-
         console.log("receiving message examinee", socket);
 
         const handleReceiveMessage = (message) => {
@@ -374,7 +392,7 @@ const TakeExamScreen = () => {
             date: "message.date",
           };
           setChatList((prev) => [...prev, newMessage]);
-        }
+        };
 
         const handleReceiveAnnouncement = (message) => {
           console.log("announcemet received");
@@ -389,16 +407,16 @@ const TakeExamScreen = () => {
               date: "message.date",
             },
           ]);
-        }
+        };
 
         socket.on("receiveMessage", handleReceiveMessage);
-  
+
         socket.on("announcement", handleReceiveAnnouncement);
 
         return () => {
-        socket.off("receiveMessage", handleReceiveMessage);
-        socket.off("announcement", handleReceiveAnnouncement)
-      };
+          socket.off("receiveMessage", handleReceiveMessage);
+          socket.off("announcement", handleReceiveAnnouncement);
+        };
       }
     }, [socket]);
 
@@ -445,89 +463,86 @@ const TakeExamScreen = () => {
               className='w-5 h-5 text-primary-500'
               icon='carbon:send-filled'
             />
-
           </div>
         </div>
       </div>
     );
   };
 
-// const VideoComponent = () => {
-//   const videoRef = useRef(null);
-//   const peerClientRef = useRef(null);
+  // const VideoComponent = () => {
+  //   const videoRef = useRef(null);
+  //   const peerClientRef = useRef(null);
 
-//   useEffect(() => {
-//     const setupVideoStream = async () => {
-//       try {
-//         const stream = await navigator.mediaDevices.getUserMedia({
-//           video: true,
-//           audio: true,
-//         });
+  //   useEffect(() => {
+  //     const setupVideoStream = async () => {
+  //       try {
+  //         const stream = await navigator.mediaDevices.getUserMedia({
+  //           video: true,
+  //           audio: true,
+  //         });
 
-//         if (videoRef.current) {
-//           addVideoStream(videoRef.current, stream);
-//         }
+  //         if (videoRef.current) {
+  //           addVideoStream(videoRef.current, stream);
+  //         }
 
-//         peerClientRef.current = new Peer();
+  //         peerClientRef.current = new Peer();
 
-//         peerClientRef.current.on('open', (streamerId) => {
-//           socket.emit('join-as-streamer', streamerId);
-//         });
+  //         peerClientRef.current.on('open', (streamerId) => {
+  //           socket.emit('join-as-streamer', streamerId);
+  //         });
 
-//         peerClientRef.current.on('close', (streamerId) => {
-//           socket.emit('disconnect-as-streamer', streamerId);
-//         });
+  //         peerClientRef.current.on('close', (streamerId) => {
+  //           socket.emit('disconnect-as-streamer', streamerId);
+  //         });
 
+  //         socket.on('viewer-connected', (viewerId) => {
+  //           console.log('viewer connected');
+  //           connectToNewViewer(viewerId, stream);
+  //         });
 
-//         socket.on('viewer-connected', (viewerId) => {
-//           console.log('viewer connected');
-//           connectToNewViewer(viewerId, stream);
-//         });
+  //       } catch (error) {
+  //         console.error('Error accessing media devices:', error);
+  //       }
+  //     };
 
-        
-//       } catch (error) {
-//         console.error('Error accessing media devices:', error);
-//       }
-//     };
+  //     setupVideoStream();
 
-//     setupVideoStream();
+  //     return () => {
+  //       if (peerClientRef.current) {
+  //         peerClientRef.current.destroy();
+  //       }
 
-//     return () => {
-//       if (peerClientRef.current) {
-//         peerClientRef.current.destroy();
-//       }
+  //     };
+  //   }, []);
 
-//     };
-//   }, []);
+  //   const addVideoStream = (videoElement, stream) => {
+  //     videoElement.srcObject = stream;
+  //     videoElement.muted = true;
 
-//   const addVideoStream = (videoElement, stream) => {
-//     videoElement.srcObject = stream;
-//     videoElement.muted = true;
+  //     const videoOnPlay = () => {
+  //       videoElement.play();
+  //     };
 
-//     const videoOnPlay = () => {
-//       videoElement.play();
-//     };
+  //     videoElement.onloadedmetadata = videoOnPlay;
+  //   };
 
-//     videoElement.onloadedmetadata = videoOnPlay;
-//   };
+  //   const connectToNewViewer = (viewerId, stream) => {
+  //     peerClientRef.current.call(viewerId, stream);
+  //   };
 
-//   const connectToNewViewer = (viewerId, stream) => {
-//     peerClientRef.current.call(viewerId, stream);
-//   };
-
-//   return (
-//     <div>
-//       <video
-//         id="video"
-//         width="340"
-//         height="120"
-//         autoPlay
-//         ref={videoRef}
-//         muted
-//       />
-//     </div>
-//   );
-// };
+  //   return (
+  //     <div>
+  //       <video
+  //         id="video"
+  //         width="340"
+  //         height="120"
+  //         autoPlay
+  //         ref={videoRef}
+  //         muted
+  //       />
+  //     </div>
+  //   );
+  // };
 
   const ExamScreen = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -574,18 +589,20 @@ const TakeExamScreen = () => {
           />
           {showCalculator && <Calculator />}
           <div className='flex flex-col gap-2 items-center justify-center text-black'>
-            <div className='flex gap-2 items-center justify-center'>
-              <Icon
-                className='w-5 h-5'
-                icon='ph:calculator-fill'
-              />
-              <p>Calculator</p>
-              <Switch
-                size='small'
-                defaultChecked={showCalculator}
-                onChange={onChangeSwitch}
-              />
-            </div>
+            {exam.toolsPermitted.includes("calculator") && (
+              <div className='flex gap-2 items-center justify-center'>
+                <Icon
+                  className='w-5 h-5'
+                  icon='ph:calculator-fill'
+                />
+                <p>Calculator</p>
+                <Switch
+                  size='small'
+                  defaultChecked={showCalculator}
+                  onChange={onChangeSwitch}
+                />
+              </div>
+            )}
             <div className='flex gap-2'>
               {isCharging ? (
                 <Icon
@@ -673,7 +690,140 @@ const TakeExamScreen = () => {
               padding: 24,
               minHeight: 280,
             }}>
-            <button onClick={handleFinishExam}>Finish</button>
+            <div className='flex flex-col gap-4 my-4 mt-8 '>
+              {exam.questions.map((question, index) => (
+                <div
+                  key={index}
+                  className='mb-4'>
+                  {question.questionType === "True/False" ? (
+                    <Card className=' w-11/12 mx-auto bg-gray-50 rounded-none'>
+                      <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                        <h3 className='text-blue-900 font-semibold text-lg'>
+                          Question {index + 1}
+                        </h3>
+                        <p className='font-semibold text-blue-900'>
+                          Points {question.points}
+                        </p>
+                      </div>
+                      <div className='mt-4 mx-4 flex items-start'>
+                        <h3 className='font-semibold text-[1rem]'>
+                          {question.questionText}
+                        </h3>
+                      </div>
+                      <div className='mt-8 flex items-start mx-4 '>
+                        <Form.Item
+                          label='Your Answer'
+                          className='w-48'>
+                          <Select>
+                            <Select.Option value='true'>True</Select.Option>
+                            <Select.Option value='false'>False</Select.Option>
+                          </Select>
+                        </Form.Item>
+                      </div>
+                    </Card>
+                  ) : question.questionType === "choose" ? (
+                    <Card className='bg-gray-50 w-11/12 mx-auto'>
+                      <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                        <h3 className='text-blue-900 font-semibold text-lg'>
+                          Question {index + 1}
+                        </h3>
+                        <p className='font-semibold text-blue-900'>
+                          Points {question.points}
+                        </p>
+                      </div>
+                      <div className='mt-4 mx-4 flex items-start border-b pb-4'>
+                        <h3 className='font-semibold text-[1rem]'>
+                          {question.questionText}
+                        </h3>
+                      </div>
+                      <div className='mt-4 w-full flex items-start mx-4 gap-4'>
+                        {/* <Form.Item label="Choice Number" rules={[{ required: true, message: "Please select the choice number" }]} className="w-48">
+      <Select onChange={(value) => setChoiceCount(value)} defaultValue={2}>
+        {[2, 3, 4, 5].map((count) => (
+          <Select.Option key={count} value={count}>{count}</Select.Option>
+        ))}
+      </Select>
+    </Form.Item> */}
+                        <div className='flex flex-col'>
+                          <Radio.Group value={question.correctAnswer}>
+                            {question.questionChoice.map(
+                              (choice, choiceIndex) => (
+                                <Form.Item
+                                  key={choiceIndex}
+                                  label={`${String.fromCharCode(
+                                    65 + choiceIndex
+                                  )}`}>
+                                  <div className='flex gap-4 justify-center'>
+                                    <p className='font-semibold'>{choice}</p>
+                                    <div className='flex gap-2 items-center'>
+                                      <Radio value={choice}></Radio>
+                                      <span className='text-blue-700'></span>
+                                    </div>
+                                  </div>
+                                </Form.Item>
+                              )
+                            )}
+                          </Radio.Group>
+                        </div>
+                      </div>
+                    </Card>
+                  ) : question.questionType === "shortAnswer" ? (
+                    <Card className='bg-gray-50 w-11/12 mx-auto my-2'>
+                      <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                        <h3 className='text-blue-900 font-semibold text-lg'>
+                          Question {index + 1}
+                        </h3>
+                        <p className='font-semibold text-blue-900'>
+                          Points {question.points}
+                        </p>
+                      </div>
+
+                      <div className='mt-4 mx-4 flex items-start '>
+                        <h3 className='font-semibold text-[1rem]'>
+                          {question.questionText}
+                        </h3>
+                      </div>
+
+                      <div className='mt-4 flex items-start mx-4 mb-4'>
+                        <TextArea
+                          rows={4}
+                          placeholder='Enter your question here'
+                        />
+                      </div>
+                    </Card>
+                  ) : question.questionType === "essay" ? (
+                    <Card className='bg-gray-50 w-11/12 mx-auto my-8'>
+                      <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                        <h3 className='text-blue-900 font-semibold text-lg'>
+                          Question {index + 1}
+                        </h3>
+                        <p className='font-semibold text-blue-900'>
+                          Points {question.points}
+                        </p>
+                      </div>
+
+                      <div className='mt-4 mx-4 flex items-start'>
+                        <h3 className='font-semibold text-[1rem]'>
+                          {question.questionText}
+                        </h3>
+                      </div>
+
+                      <div className='mt-4 flex items-start mx-4 mb-4'>
+                        <TextArea
+                          rows={4}
+                          placeholder='Enter your question here'
+                        />
+                      </div>
+                    </Card>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={handleFinishExam}
+              className='bg-primary-500 text-white cursor-pointer rounded px-4 py-2'>
+              Finish
+            </button>
           </Content>
         </Layout>
       </Layout>
