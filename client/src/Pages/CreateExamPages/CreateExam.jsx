@@ -30,6 +30,8 @@ const tabListNoTitle = [
 const CreateExam = () => {
   const [activeTabKey, setActiveTabKey] = useState("Basic Info");
   const [examKey,setExamKey] = useState("");
+  const [tags,setTags] = useState([]);
+
   const [basicInfoValues, setBasicInfoValues] = useState(() => {
     const savedBasicInfo = localStorage.getItem("basicInfoValues");
     return savedBasicInfo ? JSON.parse(savedBasicInfo) : {
@@ -50,6 +52,7 @@ const CreateExam = () => {
       material: null,
       questions: [],
       access: "closed",
+      tags: []
     };
   });
 
@@ -59,7 +62,8 @@ const CreateExam = () => {
     questionChoice: ["true", "false"],
     questionType: "True/False",
     correctAnswer: "",
-    points: 1
+    points: 1,
+    tags: []
   })
 
   const [choose,setChoose] = useState({
@@ -67,19 +71,25 @@ const CreateExam = () => {
     questionChoice: [],
     questionType: "choose",
     correctAnswer: "",
-    points: 1
+    points: 1,
+    tags: []
+
   })
   
   const [shortAnswer,setShortAnswer] = useState({
     questionText: "",
     questionType: "shortAnswer",
-    points: 1
+    points: 1,
+    tags: []
+
   })
 
   const [essay,setEssay] = useState({
     questionText: "",
     questionType: "essay",
-    points: 1
+    points: 1,
+    tags: []
+
   })
 
 
@@ -171,8 +181,10 @@ const CreateExam = () => {
         return;
       }
        
+
   // Append trueFalse to questionsCollection
   setQuestionsCollection(prevQuestions => [...prevQuestions, trueFalse]);
+
   toast.success("Question saved successfully")
   // Reset trueFalse state to its default values
   setTrueFalse({
@@ -180,7 +192,8 @@ const CreateExam = () => {
     questionChoice: ["true", "false"],
     questionType: "True/False",
     correctAnswer: "",
-    points: 1
+    points: 1,
+    tags: []
   });
       console.log(questionsCollection)
     }
@@ -194,8 +207,8 @@ const CreateExam = () => {
       for(let i = 0; i < questionSize; i++) {
         structuredChoose.questionChoice.push(choose.questionChoice[i]);
       }
-
-      if (!choose.questionText || !choose.questionChoice || !choose.questionType || !choose.correctAnswer || !choose.points) {
+      console.log(choose.correctAnswer,"hello world yooooo")
+      if (!choose.questionText || !choose.questionChoice || !choose.questionType || !choose.points) {
         console.log(choose)
         toast.error("Please enter all the fields")
         return;
@@ -209,7 +222,9 @@ const CreateExam = () => {
         questionChoice: [],
         questionType: "choose",
         correctAnswer: "",
-        points: 1
+        points: 1,
+        tags: []
+
       });
     }
     else if (type === "shortAnswer") {
@@ -224,7 +239,9 @@ const CreateExam = () => {
       setShortAnswer({
         questionText: "",
     questionType: "shortAnswer",
-    points: 1
+    points: 1,
+    tags: []
+
       });
     }
     else if (type === "essay") {
@@ -238,7 +255,9 @@ const CreateExam = () => {
       setEssay({
         questionText: "",
         questionType: "essay",
-        points: 1
+        points: 1,
+        tags: []
+
       });
     }
 
@@ -338,6 +357,7 @@ const CreateExam = () => {
     questionType={questionType}
     questionsCollection ={questionsCollection }
     trueFalse={trueFalse}
+    setTrueFalse={setTrueFalse}
     handleQuestionsSave={handleQuestionsSave}
     trueFalseOnChange={trueFalseOnChange}
     choose={choose}
@@ -352,8 +372,8 @@ const CreateExam = () => {
     setShortAnswer={setShortAnswer}
     shortAnswer={shortAnswer}
     setChoose={setChoose}
-  
-    setTrueFalse={setTrueFalse}
+    tags={tags}
+    setTags={setTags}
   
   />
 )}
@@ -365,8 +385,11 @@ const CreateExam = () => {
             <Preview 
             basicInfoValues={basicInfoValues} 
             setBasicInfoValues={setBasicInfoValues} 
-            trueFalse={trueFalse} setTrueFalse={setTrueFalse} 
-            choose={choose} setChoose={setChoose} 
+            trueFalse={trueFalse} 
+            setTrueFalse={setTrueFalse} 
+            choose={choose} 
+            setChoose={setChoose} 
+
             shortAnswer={shortAnswer} 
             setShortAnswer={setShortAnswer} 
             essay={essay} 

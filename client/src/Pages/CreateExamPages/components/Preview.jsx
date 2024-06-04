@@ -1,4 +1,4 @@
-import { Card, Form, Input, Button, Select, InputNumber, DatePicker, Radio, Tag } from "antd";
+import { Card, Form, Input, Button, Select, InputNumber, DatePicker, Radio, Tag, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
@@ -8,6 +8,7 @@ const { TextArea } = Input;
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
+
 
 
 
@@ -84,10 +85,12 @@ const submitExam = async () => {
 
     // Handle success
     console.log('Questions submitted successfully:', response.data.data.data);
+    setQuestionsCollection([]);
+    localStorage.removeItem('questionsCollection');
 
     // setExamKey(response.data.data.exam.examKey);
 
-    const updatedBasicInfoValues = { ...basicInfoValues, questions: response.data.data.data };
+    const updatedBasicInfoValues = { ...basicInfoValues, questions: response.data.data.data,points:totalPoints };
     setBasicInfoValues(updatedBasicInfoValues);
 
 
@@ -112,6 +115,8 @@ const submitExam = async () => {
             updatedBasicInfoValues.formulasCollection && "formulasCollection",
             updatedBasicInfoValues.uploadMaterials && "uploadMaterials"
           ].filter(Boolean), // Filters out any falsy values
+          tags: updatedBasicInfoValues.tags,
+          points: updatedBasicInfoValues.points,
   
           questions: response.data.data.data // Ensure the questions are from the response
         }
@@ -145,7 +150,7 @@ const submitExam = async () => {
   }
 
 
-  setQuestionsCollection([]);
+ 
     setBasicInfoValues(
       {
         examName: "",
@@ -163,19 +168,106 @@ const submitExam = async () => {
         material: null,
         questions: [],
         access: "closed",
+        points:0,
       }
     );
     localStorage.removeItem('basicInfoValues');
-    localStorage.removeItem('questionsCollection');
 
 
 }
 
 
 
+
+
+
+const [editingQuestion, setEditingQuestion] = useState(null);
+const [isModalVisible, setIsModalVisible] = useState(false);
+
+
+const handleEditQuestion = (index) => {
+  const question = questionsCollection[index];
+  setEditingQuestion({ ...question, index });
+  setIsModalVisible(true);
+};
+
+
+// const handleChoiceEditQuestion = (question, index) => {
+//   console.log(question)
+//   const questionCopy = { ...question };
+//   setEditingQuestion({ ...questionCopy, index });
+//   setIsModalVisible(true);
+// };
+
+
+// // Add a function to handle deleting a question
+
+
+const handleOk = () => {
+  const updatedQuestions = [...questionsCollection];
+  updatedQuestions[editingQuestion.index] = editingQuestion;
+  setQuestionsCollection(updatedQuestions);
+  setIsModalVisible(false);
+  setEditingQuestion(null);
+};
+
+const handleCancel = () => {
+  setIsModalVisible(false);
+  setEditingQuestion(null);
+};
+
+
+
+
+
+
+
+// Define state variables for modal visibility and the index of the question to delete
+const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+const [deleteIndex, setDeleteIndex] = useState(null);
+
+
+const deleteQuestion = (index) => {
+  const updatedQuestions = [...questionsCollection];
+  updatedQuestions.splice(index, 1); // Remove the question at the specified index
+  setQuestionsCollection(updatedQuestions);
+};
+
+
+// Function to handle opening the delete confirmation modal
+const showDeleteModal = (index) => {
+  setDeleteIndex(index);
+  setDeleteModalVisible(true);
+};
+
+// Function to handle closing the delete confirmation modal
+const handleDeleteCancel = () => {
+  setDeleteIndex(null);
+  setDeleteModalVisible(false);
+};
+
+// Function to delete the question and close the modal
+const confirmDeleteQuestion = () => {
+  deleteQuestion(deleteIndex);
+  setDeleteModalVisible(false);
+  toast.success("Question deleted successfully.");
+};
+
+
+
+
+
+
+
+
   return (
     <div>
-    <p className="mb-4  font-semibold text-blue-900 text-xl">Exam Preview</p>
+       <div className="flex justify-center items-center gap-2 mb-8 mt-4">
+
+<Icon icon="material-symbols:preview"  className="text-2xl font-bold text-blue-800" />
+<p className="font-semibold  text-blue-900 text-lg">Exam Preview</p>
+</div>
+     
     <div>
         <Card
           style={{ width: "100%" }}
@@ -183,10 +275,10 @@ const submitExam = async () => {
         >
           <div className="w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border ">
           <p className="font-semibold"><span className="font-bold text-blue-700">Exam Name : </span>{basicInfoValues.examName}</p>
-          {/* <p className="font-semibold">
+          <p className="font-semibold">
   <span className="font-bold text-blue-700">Starting date & time : </span>
-  {basicInfoValues.examStartDate ? basicInfoValues.examStartDate.format("YYYY-MM-DD HH:mm:ss") : ""}
-</p> */}
+  {basicInfoValues.examStartDate ? new Date(basicInfoValues.examStartDate).toLocaleString() : ""}
+</p>
 <p className="font-semibold"><span className="font-bold text-blue-700">Points : </span>{totalPoints}</p>
 
 <p className="font-semibold"><span className="font-bold text-blue-700">Questions : </span>{questionsCollection.length}</p>
@@ -200,9 +292,14 @@ const submitExam = async () => {
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Organization : </span>AASTU <span><Icon icon="gravity-ui:seal-check" className="text-lg text-blue-800" /></span></p>
           <div className='flex gap-1'>
           <span className="font-bold text-blue-700">Tags : </span>
-                <Tag color={"yellow"}>English</Tag>
+          {
+            basicInfoValues.tags?.map((tag) => (
+              <Tag color={"yellow"}>{tag}</Tag>
+            ))
+          }
+                {/* <Tag color={"yellow"}>English</Tag>
                 <Tag color={"red"}>Maths</Tag>
-                <Tag color={"blue"}>Physics</Tag>
+                <Tag color={"blue"}>Physics</Tag> */}
               </div>
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Created by : </span>{user.firstName} {user.lastName} </p>
         
@@ -227,15 +324,27 @@ const submitExam = async () => {
 
 
       <div className="w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4">
-<p className="font-semibold"><span className="font-bold text-blue-700">Private Answer : </span>{basicInfoValues.privateAnswer}</p>
-<p className="font-semibold"><span className="font-bold text-blue-700">Private Score : </span>{basicInfoValues.privateScore}</p>
+<p className="font-semibold">
+  <span className="font-bold text-blue-700">Private Answer : </span>{basicInfoValues.privateAnswer ? "Yes" : "No"}
+</p>
+<p className="font-semibold">
+  <span className="font-bold text-blue-700">Private Score : </span>{basicInfoValues.privateScore ? "Yes" : "No"}
+</p>
 
-<p className="font-semibold"><span className="font-bold text-blue-700">Security level : </span>{basicInfoValues.securityLevel}</p>
-<p className="font-semibold"><span className="font-bold text-blue-700">Exam type : </span>{basicInfoValues.examType}</p>
+<p className="font-semibold">
+  <span className="font-bold text-blue-700">Security level : </span>{basicInfoValues.securityLevel}
+</p>
+<p className="font-semibold">
+  <span className="font-bold text-blue-700">Exam type : </span>{basicInfoValues.examType}
+</p>
 
 {/* <p className="font-semibold"><span className="font-bold text-blue-700">Allowed Attempts : </span>Unlimited</p> */}
 
           </div>
+
+
+
+
 
 
           <div className="w-full flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4">
@@ -256,11 +365,210 @@ const submitExam = async () => {
 </div>
 
 
+<Modal
+  title="Confirm Delete"
+  visible={deleteModalVisible}
+  onOk={confirmDeleteQuestion}
+  onCancel={handleDeleteCancel}
+>
+  <p>Are you sure you want to delete this question?</p>
+</Modal>
+
+
+<Modal
+  title="Edit Question"
+  visible={isModalVisible}
+  onOk={handleOk}
+  onCancel={handleCancel}
+>
+  {editingQuestion && (
+    <div>
+      {/* Render the appropriate form based on the question type */}
+      {editingQuestion.questionType === 'True/False' && (
+        <div className="flex flex-col gap-2 mt-6">
+          {/* Form fields for True/False question */}
+          <Input
+            placeholder="Question text"
+            value={editingQuestion.questionText}
+            onChange={(e) =>
+              setEditingQuestion({
+                ...editingQuestion,
+                questionText: e.target.value,
+              })
+            }
+          />
+          <InputNumber
+            placeholder="Points"
+            value={editingQuestion.points}
+            onChange={(value) =>
+              setEditingQuestion({
+                ...editingQuestion,
+                points: value,
+              })
+            }
+          />
+
+<div className="mt-4 flex items-start mx-4">
+       <Form.Item label="Correct Answer"  rules={[{ required: true, message: "Please select the correct answer" }]}>
+         <Select value={editingQuestion.correctAnswer} 
+        //  onChange={(value) => trueFalseOnChange('correctAnswer', value)}
+         onChange={(value) =>
+          setEditingQuestion({
+            ...editingQuestion,
+            correctAnswer: value,
+          })
+        }
+         
+         >
+           <Select.Option value="true">True</Select.Option>
+           <Select.Option value="false">False</Select.Option>
+         </Select>
+       </Form.Item>
+     </div>
+
+
+
+
+          {/* Other fields as needed */}
+        </div>
+      )}
+
+      {/* Add similar logic for other question types */}
+      
+
+      {editingQuestion.questionType === 'choose' && (
+        <div className="flex flex-col gap-2 mt-6">
+        <Input
+      placeholder="Question text"
+      value={editingQuestion.questionText}
+      onChange={(e) =>
+        setEditingQuestion({
+          ...editingQuestion,
+          questionText: e.target.value,
+        })
+      }
+    />
+    <InputNumber
+      placeholder="Points"
+      value={editingQuestion.points}
+      onChange={(value) =>
+        setEditingQuestion({
+          ...editingQuestion,
+          points: value,
+        })
+      }
+    />
+    {editingQuestion.questionChoice.map((choice, choiceIndex) => (
+      <div key={choiceIndex} className="flex items-center gap-2">
+        <Input
+          placeholder="Choice"
+          value={choice}
+          onChange={(e) =>
+            setEditingQuestion({
+              ...editingQuestion,
+              questionChoice: editingQuestion.questionChoice.map((c, i) =>
+                i === choiceIndex ? e.target.value : c
+              ),
+            })
+          }
+        />
+        <Radio
+          checked={editingQuestion.correctAnswer === choiceIndex}
+          onChange={() =>
+            setEditingQuestion({
+              ...editingQuestion,
+              correctAnswer: choiceIndex,
+            })
+          }
+        />
+      </div>
+    ))}
+  </div>
+)}
+
+     
+{editingQuestion.questionType === 'shortAnswer' && (
+        <div className="flex flex-col gap-2 mt-6">
+        {/* Form fields for True/False question */}
+          <Input
+            placeholder="Question text"
+            value={editingQuestion.questionText}
+            onChange={(e) =>
+              setEditingQuestion({
+                ...editingQuestion,
+                questionText: e.target.value,
+              })
+            }
+          />
+          <InputNumber
+            placeholder="Points"
+            value={editingQuestion.points}
+            onChange={(value) =>
+              setEditingQuestion({
+                ...editingQuestion,
+                points: value,
+              })
+            }
+          />
+  
+         
+
+          {/* Other fields as needed */}
+        </div>
+      )}
+{editingQuestion.questionType === 'essay' && (
+        <div className="flex flex-col gap-2 mt-6">
+        {/* Form fields for True/False question */}
+          <Input
+            placeholder="Question text"
+            value={editingQuestion.questionText}
+            onChange={(e) =>
+              setEditingQuestion({
+                ...editingQuestion,
+                questionText: e.target.value,
+              })
+            }
+          />
+          <InputNumber
+            placeholder="Points"
+            value={editingQuestion.points}
+            onChange={(value) =>
+              setEditingQuestion({
+                ...editingQuestion,
+              })
+            }
+          />
+
+   
+
+          {/* Other fields as needed */}
+        </div>
+      )}
+
+
+
+
+    </div>
+  )}
+</Modal>
+
+
+
+
 
 
           <div className="flex flex-col gap-4 my-4 mt-8 ">
+
+
+
+
   {questionsCollection.map((question, index) => (
     <div key={index} className="mb-4">
+
+
+
+
+      
   
       {question.questionType === "True/False" ? (
 
@@ -274,7 +582,7 @@ const submitExam = async () => {
   <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
     <p className="font-semibold text-blue-900">Points {question.points}</p>
   </div>
-  <div className="mt-4 mx-4 flex items-start">
+  <div className="mt-4 mx-4 flex items-start border-b pb-4">
    <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
   <div className="mt-8 flex items-start mx-4 ">
@@ -285,11 +593,22 @@ const submitExam = async () => {
       </Select>
     </Form.Item>
   </div>
- 
+ {/* Example for the 'True/False' question type */}
+
+  <div className="flex justify-end items-center mx-4">
+    <Button type="link" onClick={() => handleEditQuestion(index)}>
+    <Icon icon="mage:edit" className="text-blue-800 text-2xl hover:text-gray-900" />
+    </Button>
+
+
+
+    <Button type="link" onClick={() => showDeleteModal(index)}>
+      
+        <Icon icon="material-symbols:delete-outline" className="text-blue-800 text-2xl hover:text-gray-900" />
+      </Button>
+  </div>
+
 </Card>
-
-
-
 
 
 
@@ -297,55 +616,39 @@ const submitExam = async () => {
 
 
       ) : question.questionType === "choose" ? (
+        <Card className="bg-gray-50 w-11/12 mx-auto">
+          <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+            <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
+            <p className="font-semibold text-blue-900">Points {question.points}</p>
+          </div>
+          <div className="mt-4 mx-4 flex items-start border-b pb-4">
+            <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
+          </div>
+          <div className="mt-4 w-full flex items-start mx-4 gap-4">
+            <Radio.Group value={question.correctAnswer}>
+              {question.questionChoice.map((choice, choiceIndex) => (
+                <Form.Item key={choiceIndex} label={`${String.fromCharCode(65 + choiceIndex)}`}>
+                  <div className="flex gap-4 justify-center">
+                    <p className="font-semibold">{choice}</p>
+                    <div className="flex gap-2 items-center">
+                      <Radio value={choiceIndex}></Radio>
+                      <span className="text-blue-700"></span>
+                    </div>
+                  </div>
+                </Form.Item>
+              ))}
+            </Radio.Group>
+          </div>
+          <div className="flex justify-end items-center mx-4">
+            <Button type="link" onClick={() => handleEditQuestion(index)}>
+              <Icon icon="mage:edit" className="text-blue-800 text-2xl hover:text-gray-900" />
+            </Button>
+            <Button type="link" onClick={() => showDeleteModal(index)}>
         
-
-
-
-
-
-<Card className="bg-gray-50 w-11/12 mx-auto">
-  <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-    <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
-    <p className="font-semibold text-blue-900">Points {question.points}</p>
-
-  </div>
-  <div className="mt-4 mx-4 flex items-start border-b pb-4">
-  <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
-  </div>
-  <div className="mt-4 w-full flex items-start mx-4 gap-4">
-    {/* <Form.Item label="Choice Number" rules={[{ required: true, message: "Please select the choice number" }]} className="w-48">
-      <Select onChange={(value) => setChoiceCount(value)} defaultValue={2}>
-        {[2, 3, 4, 5].map((count) => (
-          <Select.Option key={count} value={count}>{count}</Select.Option>
-        ))}
-      </Select>
-    </Form.Item> */}
-    <div className="flex flex-col">
-    <Radio.Group value={question.correctAnswer} onChange={(e) => chooseOnChange('correctAnswer', e.target.value)}>
-  {Array.from({ length: choiceCount }).map((_, index) => (
-    <Form.Item key={index} label={`${String.fromCharCode(65 + index)}`} rules={[{ required: true, message: `Please enter choice ${String.fromCharCode(65 + index)}` }]}>
-      <div className="flex gap-4 justify-center">
-        <p className="font-semibold">{question.questionChoice[index]}</p>
-        {/* <Input onChange={(e) => chooseOnChange('questionChoice', { [index]: e.target.value })} value={question.questionChoice[index]} /> */}
-       <div className="flex gap-2 items-center"> <Radio></Radio><span className="text-blue-700"></span></div>
-      </div>
-    </Form.Item>
-  ))}
-</Radio.Group>
-
-    </div>
-  </div>
- 
-</Card>
-
-
-
-
-
-
-
-
-
+        <Icon icon="material-symbols:delete-outline" className="text-blue-800 text-2xl hover:text-gray-900" />
+      </Button>
+          </div>
+        </Card>
       ) : question.questionType === "shortAnswer" ? (
         
 
@@ -359,7 +662,7 @@ const submitExam = async () => {
   </div>
  
      
-     <div className="mt-4 mx-4 flex items-start ">
+  <div className="mt-4 mx-4 flex items-start border-b pb-4">
      <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
 
@@ -371,7 +674,18 @@ const submitExam = async () => {
          
        />
      </div>
- 
+     <div className="flex justify-end items-center mx-4">
+    <Button type="link" onClick={() => handleEditQuestion(index)}>
+    <Icon icon="mage:edit" className="text-blue-800 text-2xl hover:text-gray-900" />
+    </Button>
+
+
+
+    <Button type="link" onClick={() => showDeleteModal(index)}>
+        
+        <Icon icon="material-symbols:delete-outline" className="text-blue-800 text-2xl hover:text-gray-900" />
+      </Button>
+  </div>
     
    </Card>
 
@@ -394,7 +708,7 @@ const submitExam = async () => {
   </div>
     
         
-        <div className="mt-4 mx-4 flex items-start">
+  <div className="mt-4 mx-4 flex items-start border-b pb-4">
         <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
 
@@ -406,7 +720,18 @@ const submitExam = async () => {
          
        />
      </div>
-    
+     <div className="flex justify-end items-center mx-4">
+    <Button type="link" onClick={() => handleEditQuestion(index)}>
+    <Icon icon="mage:edit" className="text-blue-800 text-2xl hover:text-gray-900" />
+    </Button>
+
+
+
+    <Button type="link" onClick={() => showDeleteModal(index)}>
+        
+        <Icon icon="material-symbols:delete-outline" className="text-blue-800 text-2xl hover:text-gray-900" />
+      </Button>
+  </div>
        
       </Card>
 
@@ -418,8 +743,8 @@ const submitExam = async () => {
 
 <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
              <div className="flex gap-8 items-center justify-center">
-             <h3 className=" font-semibold text-[1rem]">Total Questions <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
-             <h3 className=" font-semibold text-[1rem]">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3>
+             <h3 className=" font-semibold text-[1rem]">Total Questions : <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
+             <h3 className=" font-semibold text-[1rem]">Total Points :<span className="text-blue-900"> {totalPoints} </span> </h3>
              <Button type="primary" className="px-16" onClick={submitExam}>Save & Submit</Button>
  
        </div>

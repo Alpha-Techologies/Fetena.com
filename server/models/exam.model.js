@@ -25,9 +25,18 @@ const ExamSchema = new mongoose.Schema(
       enum: ["low", "high"],
       required: true,
     },
+    announcement: [
+      {
+        type: String,
+      },
+      {
+        type: Date,
+        default: Date.now(),
+      },
+    ],
     examType: {
       type: String,
-      enum: ["pdfUpload", "createOnline", "worksheet"],
+      enum: ["pdfUpload", "online", "worksheet"],
       required: true,
     },
     privateAnswer: {
@@ -48,9 +57,8 @@ const ExamSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    invigilatorID: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    socketId: {
+      type: String,
     },
     organization: {
       type: mongoose.Schema.Types.ObjectId,
@@ -84,7 +92,10 @@ const ExamSchema = new mongoose.Schema(
 
     active: {
       type: Boolean,
-      default: false,
+      default: true,
+    },
+    points: {
+      type: Number,
     },
   },
   { timestamps: true }
