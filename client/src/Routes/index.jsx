@@ -86,6 +86,14 @@ const AllRoutes = () => {
         />
 
         <Route
+          path='/take-exam'
+          element={
+            <TakeExamRoute isAuthenticated={isAuthenticated}>
+              <TakeExamScreen />
+            </TakeExamRoute>
+          }></Route>
+
+        <Route
           path='/dashboard'
           element={
             <ProtectedRoutes isAuthenticated={isAuthenticated}>
@@ -155,6 +163,10 @@ const AllRoutes = () => {
           <Route
             path='results'
             element={<ResultsPage />}
+          />
+          <Route
+            path='exam-monitor'
+            element={<MonitoringPage/>}
           />
           <Route
             path='certifications'

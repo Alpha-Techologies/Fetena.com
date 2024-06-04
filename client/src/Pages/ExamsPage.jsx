@@ -5,7 +5,7 @@ import { Icon } from "@iconify/react";
 import { Link,Navigate,useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from 'axios';
-
+import ExamCard from "../Components/ExamCard"
 
 
 const { Search } = Input;
@@ -57,8 +57,6 @@ const ExamsPage = () => {
 
 
   };
-
-
 
   useEffect(() => {
     

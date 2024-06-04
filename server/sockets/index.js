@@ -3,7 +3,7 @@ const notificationSocket = require("./notificationSocket");
 
 const initSocket = (io) => {
   io.on("connection", (socket) => {
-    console.log("New client connected", socket.id);
+    console.log("⚡ Socket: Connected", socket.id);
 
     // Register notification and chat handlers
     notificationSocket(io, socket);
