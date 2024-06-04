@@ -19,10 +19,7 @@ router.use(takeExamRouter);
 
 const { protect, restrictTo } = require("../controller/auth");
 
-router
-  .route("/")
-  .get(protect, restrictTo(true), getAllExam)
-  .post(protect, createExam);
+router.route("/").post(protect, createExam);
 router.route("/my-exam/:id").get(protect, getMyExam);
 router.route("/get-public").get(protect, getPublicExam);
 
@@ -32,6 +29,7 @@ router
   .route("/:id")
   .get(protect, getOneExam)
   .patch(protect, updateExam)
-  .delete(protect, deleteExam);
+  .delete(protect, deleteExam)
+  .get(protect, restrictTo(true), getAllExam);
 
 module.exports = router;
