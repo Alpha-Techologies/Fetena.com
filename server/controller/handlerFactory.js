@@ -6,6 +6,7 @@ const catchAsync = require("../utils/catchAsync");
 const APIFeatures = require("../utils/apiFeatures");
 const dbConn = require("../config/db_Connection");
 const OrganizationExaminer = require("../models/organization.examiner.model");
+const { StatusCodes } = require("http-status-codes");
 // const dbAuth = require("../config/db_Authentication");
 require("events").EventEmitter.prototype._maxListeners = 70;
 require("events").defaultMaxListeners = 70;
@@ -114,7 +115,7 @@ exports.updateOne = (Model) =>
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
     // const doc = await Model.findByIdAndDelete(req.params.id);
-    const model = await Model.findbyId(req.params.id);
+    const model = await Model.findOne({_id: req.params.id});
 
     if (!model) {
       return next(
@@ -123,9 +124,10 @@ exports.deleteOne = (Model) =>
     }
 
     model.active = false;
+    console.log(model)
     await model.save();
 
-    res.status(204).json({
+    res.status(StatusCodes.OK).json({
       status: "success",
       data: null,
     });
