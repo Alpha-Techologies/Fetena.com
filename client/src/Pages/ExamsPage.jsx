@@ -45,7 +45,7 @@ const ExamsPage = () => {
     try {
       const response = await axios.get(`/api/exams/my-exam/${id}?active=${active}&access=${access}`);
       
-     console.log(response.data.data.data,"bitch")
+     console.log(response.data.data.data,"bbbbbbbbb")
       setExams(response.data.data.data);
      
     } catch (error) {
