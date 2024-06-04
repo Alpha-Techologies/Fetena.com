@@ -85,13 +85,13 @@ const AllRoutes = () => {
           element={<VerifyEmail />}
         />
 
-        <Route
+        {/* <Route
           path='/take-exam'
           element={
             <TakeExamRoute isAuthenticated={isAuthenticated}>
               <TakeExamScreen />
             </TakeExamRoute>
-          }></Route>
+          }></Route> */}
 
         <Route
           path='/dashboard'
@@ -164,10 +164,10 @@ const AllRoutes = () => {
             path='results'
             element={<ResultsPage />}
           />
-          <Route
+          {/* <Route
             path='exam-monitor'
             element={<MonitoringPage/>}
-          />
+          /> */}
           <Route
             path='certifications'
             element={<CertificationsPage />}
