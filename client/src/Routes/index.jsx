@@ -35,6 +35,7 @@ import ActivityLogPage from "../Pages/ActivityLogPage";
 import OrganizationStaffPage from "../Pages/OrganizationStaffPage";
 import OrganizationSettingsPage from "../Pages/OrganizationSettingsPage";
 import NotificationPage from "../Pages/NotificationsPage";
+import TakeExamRoute from "../Screens/TakeExamRoute";
 import Preview from "../Pages/Preview";
 import QuestionBank from "../Pages/QuestionBank";
 import EditExam from "../Pages/EditExam";
