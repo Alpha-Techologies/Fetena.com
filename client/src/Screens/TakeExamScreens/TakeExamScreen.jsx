@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import io from "socket.io-client";
 import {
   Button,
@@ -23,6 +23,7 @@ import { MessageList, Input } from "react-chat-elements";
 import useSocketIO from "../../utils/socket/useSocketIO";
 import * as math from "mathjs";
 import { takeExam } from "../../Redux/features/dataActions";
+import Peer from "peerjs";
 const { Header, Sider, Content } = Layout;
 const inputReferance = React.createRef();
 
@@ -438,11 +439,100 @@ const TakeExamScreen = () => {
               className='w-5 h-5 text-primary-500'
               icon='carbon:send-filled'
             />
+
           </div>
         </div>
       </div>
     );
   };
+
+const VideoComponent = () => {
+  const videoRef = useRef(null);
+  const peerClientRef = useRef(null);
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+          socketRef.current = io("http://localhost:3000", {
+            transports: ["websocket"],
+          });
+
+    const setupVideoStream = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
+        });
+
+        if (videoRef.current) {
+          addVideoStream(videoRef.current, stream);
+        }
+
+        peerClientRef.current = new Peer();
+
+        peerClientRef.current.on('open', (streamerId) => {
+          socketRef.current.emit('join-as-streamer', streamerId);
+        });
+
+        peerClientRef.current.on('close', (streamerId) => {
+          socketRef.current.emit('disconnect-as-streamer', streamerId);
+        });
+
+        // console.log(socketRef, 'socketref');
+
+        socketRef.current.on('viewer-connected', (viewerId) => {
+          console.log('viewer connected');
+          connectToNewViewer(viewerId, stream);
+        });
+
+        socketRef.current.on('disconnect', () => {
+          // socketRef.current.emit('disconnect-as-streamer', streamerId);
+        });
+      } catch (error) {
+        console.error('Error accessing media devices:', error);
+      }
+    };
+
+    setupVideoStream();
+
+    return () => {
+      if (peerClientRef.current) {
+        peerClientRef.current.destroy();
+      }
+
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  const addVideoStream = (videoElement, stream) => {
+    videoElement.srcObject = stream;
+    videoElement.muted = true;
+
+    const videoOnPlay = () => {
+      videoElement.play();
+    };
+
+    videoElement.onloadedmetadata = videoOnPlay;
+  };
+
+  const connectToNewViewer = (viewerId, stream) => {
+    peerClientRef.current.call(viewerId, stream);
+  };
+
+  return (
+    <div>
+      <video
+        id="video"
+        width="340"
+        height="120"
+        autoPlay
+        ref={videoRef}
+        muted
+      />
+    </div>
+  );
+};
 
   const ExamScreen = () => {
     const [collapsed, setCollapsed] = useState(false);
@@ -571,6 +661,7 @@ const TakeExamScreen = () => {
             className='w-24 my-4 mx-auto'
           />
           <ExamTools />
+          <VideoComponent />
         </Sider>
         <Layout>
           <Header
