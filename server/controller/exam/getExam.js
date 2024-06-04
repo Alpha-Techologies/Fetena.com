@@ -16,7 +16,6 @@ exports.getPublicExam = catchAsync(async (req, res, next) => {
     organization: { $in: user.organizationsFollowed },
     visibility: "public",
     active: true,
-    access: "open",
   };
 
   let count = new APIFeatures(Exam.find(opt), req.query).filter().count();
