@@ -334,7 +334,7 @@ const MonitoringPage = () => {
     };
 
     const soundToggle = () => {
-      console.log("sound toggle");
+      console.log("sound toggle", videoRef.current.muted);
       videoRef.current.muted = !videoRef.current.muted;
     };
 
@@ -346,21 +346,21 @@ const MonitoringPage = () => {
           onPlay={() => videoOnPlay && videoOnPlay()}
           ref={videoRef}
           id='video'
-          width="340"
-          height="255"
-          className='h-fit'
+          width='340'
+          height='255'
+          className='h-auto max-w-none '
         />
         <canvas
           className='absolute top-0 left-0'
-          width="340"
-          height="255"
+          width='340'
+          height='255'
           ref={canvasRef}
           id='canvas'
         />
         <button
           className='cursor-pointer'
           onClick={soundToggle}>
-          {videoRef.current?.muted ? "Unmute" : "Mute"}
+          {videoRef.current.muted ? "Unmute" : "Mute"}
         </button>
       </div>
     );
