@@ -171,6 +171,7 @@ const MonitoringPage = () => {
       ]).then(() => {
         const videoElement = videoRef.current;
         const canvasElement = canvasRef.current;
+
         const displaySize = {
           width: videoElement.width,
           height: videoElement.height,
@@ -179,9 +180,8 @@ const MonitoringPage = () => {
         setVideoOnPlay(() => {
           canvasElement
 
-            .getContext("2d")
+            .getContext("2d", { willReadFrequently: true })
             .clearRect(0, 0, canvasElement.width, canvasElement.height);
-          console.log("adding the vancaf");
           faceapi.matchDimensions(canvasElement, displaySize);
           setInterval(async () => {
             const detections = await faceapi
@@ -238,10 +238,10 @@ const MonitoringPage = () => {
         console.log("disconnected viewer");
       });
 
-      return () => {
-        newPeer.disconnect();
-        newSocket.disconnect();
-      };
+      // return () => {
+      //   newPeer.disconnect();
+      //   newSocket.disconnect();
+      // };
     }, []);
 
     const addVideoStream = (video, stream) => {
@@ -256,15 +256,22 @@ const MonitoringPage = () => {
     };
 
     return (
-      <div id="video_container">
+      <div id="video_container" className="relative">
         <video
           onPlay={() => videoOnPlay && videoOnPlay()}
           ref={videoRef}
+          className="h-fit"
           id="video"
           width="340"
-          height="120"
+          height="255"
         />
-        <canvas ref={canvasRef} id="canvas" width="340" height="120" />
+        <canvas
+          ref={canvasRef}
+          id="canvas"
+          width="340"
+          height="255"
+          className="absolute top-0 left-0"
+        />
       </div>
     );
   };
