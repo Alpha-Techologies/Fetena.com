@@ -46,9 +46,8 @@ const AllRoutes = () => {
   useEffect(() => {
     dispatch(getMe()).then((res) => {
       console.log(res);
-    })
+    });
   }, [dispatch]);
-
 
   const { isAuthenticated } = useSelector((state) => state.auth);
   return (
@@ -117,24 +116,22 @@ const AllRoutes = () => {
             element={<ExamsPage />}
           />
 
-
-<Route
+          <Route
             path='exams/userexams'
             element={<UserExamsPage />}
           />
-          
+
           <Route
             path='questionbank'
             element={<QuestionBank />}
           />
-
 
           <Route
             path='exams/:id'
             element={<ExamDetailPage />}
           />
 
-<Route
+          <Route
             path='exams/editexam/:id'
             element={<EditExam />}
           />
@@ -166,7 +163,7 @@ const AllRoutes = () => {
           />
           <Route
             path='exam-monitor'
-            element={<MonitoringPage/>}
+            element={<MonitoringPage />}
           />
           <Route
             path='certifications'
@@ -188,8 +185,6 @@ const AllRoutes = () => {
             path='trainingVideos'
             element={<TrainingVideosPage />}
           />
-
-
 
           <Route
             path='support'
