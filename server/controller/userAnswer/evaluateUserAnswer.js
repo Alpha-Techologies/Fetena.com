@@ -28,7 +28,6 @@ exports.evaluateUserAnswer = catchAsync(async (req, res, next) => {
   let questions = exam.questions;
 
   let totalScore = 0;
-  // for 
   const apiKey = process.env.TOGETHER_API_KEY;
   const togetherManager = new TogetherManager(apiKey, _, true);
 
@@ -61,7 +60,17 @@ exports.evaluateUserAnswer = catchAsync(async (req, res, next) => {
             // and give full points if the answer is not empty
             console.log('questionType',question.questionType,'\n')
             if (userAnswer.answerText.trim() !== '') {
+              const prompt =
+              "I am giving you an a question in a json file try to understand and and create an appropriate tags for this question and in your return make it a json file that has an object with a key tag and an array of string that are going to be the tags and make the tags short and concise and answer me with a json format string in which i can take your output and use the json.parse" +
+              JSON.stringify({
+                question: question.questionText,
+                options: question.questionChoice,
+                type: question.questionType,
+              });
 
+              const result = togetherManager.performInference(prompt);
+              console.log('result',result)
+              userAnswer.point = question.points
               totalScore += 0; // Give full points if answer is not empty
                 // totalScore += question.points; // Give full points if answer is not empty
             }

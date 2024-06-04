@@ -34,42 +34,48 @@ class TogetherManager {
         top_p: this.top_p,
         repetition_penalty: this.repetition_penalty,
       });
-
+      
       if (this.streamTokens) {
-
         const reader = result.getReader();
         const parser = createParser(this.onParse);
-
+        let output = '';
         while (true) {
           const { done, value } = await reader.read();
           if (done) {
             break;
           }
-          parser.feed(new TextDecoder().decode(value));
-        }
+          // console.log(typeof(JSON.parse(nesw TextDecoder().decode(value).replaceAll('\\', ''))))
 
-        return this.response;
+          let chunkValue = (new TextDecoder().decode(value));
+          // console.log('chunkValue', chunkValue)
+          // let chunk = parser.feed(chunkValue);
+          parser.feed(chunkValue);
+          // console.log('chunk',chunk)
+
+          // output += " " + chunkValue
+          output += " " + this.response
+        }
+        return output;
       } else {
-        return new APIError("No response found from the AI", 500)
-        // return "No response found from the AI";
+        return result;
       }
+
     } catch (error) {
       console.error("Error occurred during inference:", error);
-      new APIError("An Error occurred during inference", 500)
       return null;
     }
   }
 
   onParse = (event) => {
-    if (event.type === "event") {
+    if (event.type === 'event') {
       const data = event.data;
-      if (data === "[DONE]") {
+      if (data === '[DONE]') {
         return;
       }
       try {
-        const text = JSON.parse(data).choices[0].text ?? "";
+        const text = JSON.parse(data).choices[0].text ?? '';
         console.log({ text });
-        this.response += text;
+        this.response += text
       } catch (e) {
         console.error(e);
       }
