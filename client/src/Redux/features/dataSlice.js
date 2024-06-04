@@ -16,7 +16,8 @@ import {
   deactivateStaff,
   getUserOrganizations,
   getNotifications,
-  updateNotification
+  updateNotification,
+  takeExam
 } from "./dataActions";
 
 const initialState = {
@@ -215,6 +216,17 @@ const dataSlice = createSlice({
         // state.userOrganizations = action.payload.data.data;
       })
       .addCase(updateNotification.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(takeExam.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(takeExam.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+      })
+      .addCase(takeExam.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

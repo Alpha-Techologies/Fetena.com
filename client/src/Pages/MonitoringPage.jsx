@@ -12,12 +12,16 @@ import {
   Collapse,
   Form,
   Alert,
-  InputNumber
+  InputNumber,
 } from "antd";
 import moment from "moment";
 import Button from "../Components/Button";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MessageList } from "react-chat-elements";
+import { useSelector } from "react-redux";
+import useSocketIO from "../utils/socket/useSocketIO";
+import * as faceapi from "face-api.js";
+import Peer from "peerjs";
 
 const inputReferance = React.createRef();
 const { Search, TextArea } = Input;
@@ -26,8 +30,23 @@ const currentTime = moment();
 const MonitoringPage = () => {
   const [activeTabKey1, setActiveTabKey1] = useState("tab1");
   const [inputValue, setInputValue] = useState("");
-  const [examStatus, setExamStatus] = useState("open");
+  const [examStatus, setExamStatus] = useState("closed");
   const [seeStatusOf, setSeeStatusOf] = useState("all");
+  const [chatMessage, setChatMessage] = useState("");
+  const [chatList, setChatList] = useState([]);
+  const { user } = useSelector((state) => state.auth);
+  const [socket] = useSocketIO();
+  console.log(faceapi);
+  const serverURL = "http://localhost:3000";
+  // const socket = io(serverURL);
+
+  // useEffect to join socket of the invigilator
+  useEffect(() => {
+    if (examStatus === "open") {
+      // Emit an event to the server
+      socket.emit("joinInvigilator", "665cd9ad02c0ca39fcda44d4");
+    }
+  }, [examStatus]);
 
   const tabList = [
     {
@@ -59,17 +78,83 @@ const MonitoringPage = () => {
   ];
 
   const ChatWindow = () => {
+    useEffect(() => {
+      console.log(socket, "socket in chat");
+      if (socket) {
+        console.log("receiving message admin", socket);
+
+        const handleReceiveMessage = (message) => {
+          console.log("message received");
+          console.log(message);
+          const newMessage = {
+            position: "left",
+            title: "Examinee",
+            type: "text",
+            text: message.message,
+            date: "message.date",
+          };
+          setChatList((prev) => [...prev, newMessage]);
+        };
+
+        socket.on("receiveMessage", handleReceiveMessage);
+
+        return () => {
+          socket.off("receiveMessage", handleReceiveMessage);
+        };
+      }
+    }, [socket]);
+
+    const announceMessage = () => {
+      console.log("announce message function");
+      if (chatMessage !== "" && socket) {
+        socket.emit("announcement", "665cd9ad02c0ca39fcda44d4", chatMessage);
+        setChatList((prev) => [
+          ...prev,
+          {
+            position: "right",
+            title: "You",
+            type: "text",
+            text: chatMessage,
+            date: "message.date",
+          },
+        ]);
+      }
+    };
+
+    const sendMessage = () => {
+      console.log("send message function");
+      if (chatMessage !== "") {
+        socket.emit("sendMessage", "665cd9ad02c0ca39fcda44d4", true, {
+          sender: user._id,
+          receiver: "6645e752b0e194684daa1ee4",
+          message: chatMessage,
+        });
+        setChatList((prev) => [
+          ...prev,
+          {
+            position: "right",
+            title: "You",
+            type: "text",
+            text: chatMessage,
+            date: "message.date",
+          },
+        ]);
+      }
+    };
+
     return (
       <Card className='h-fit'>
         <div className='flex items-center justify-center text-primary-500 gap-4'>
           {seeStatusOf === "all" ? (
             <Icon
-            className="w-5 h-5"
-            icon='mingcute:announcement-line'
-              
+              className='w-5 h-5'
+              icon='mingcute:announcement-line'
             />
           ) : (
-            <Icon className="w-5 h-5" icon='fluent:chat-12-filled' />
+            <Icon
+              className='w-5 h-5'
+              icon='fluent:chat-12-filled'
+            />
           )}
           <p className='text-md'>
             {seeStatusOf === "all" ? "Announce" : " Message Yohannes Teshome"}
@@ -81,32 +166,25 @@ const MonitoringPage = () => {
             className='message-list mt-2 mb-2 bg-[#f5f5f5] rounded-lg h-full py-2'
             lockable={true}
             toBottomHeight={"100%"}
-            dataSource={[
-              {
-                position: "right",
-                title: "message name",
-                type: "text",
-                text: "message text",
-                date: "message.date",
-              },
-            ]}
+            dataSource={chatList}
           />
-          {/* <Input
-            referance={inputReferance}
-            placeholder='Message All'
-            // multiline={true}
-            value={inputValue}
-            className="border"
-            rightButtons={
-              <Icon
-                className='w-5 h-5 text-primary-500'
-                icon='carbon:send-filled'
-              />
-            }
-          /> */}
+
           <div className='flex items-center gap-2'>
-            <Input placeholder={seeStatusOf === "all" ? 'Message All': 'Message Yohannes Teshome'} />
+            <Input
+              value={chatMessage}
+              onChange={(e) => setChatMessage(e.target.value)}
+              placeholder={
+                seeStatusOf === "all"
+                  ? "Message All"
+                  : "Message Yohannes Teshome"
+              }
+            />
             <Icon
+              onClick={
+                seeStatusOf === "all"
+                  ? () => announceMessage()
+                  : () => sendMessage()
+              }
               className='w-5 h-5 text-primary-500'
               icon='carbon:send-filled'
             />
@@ -149,7 +227,144 @@ const MonitoringPage = () => {
         />
       </Card>
     );
-  }
+  };
+
+  // const VideoMonitorWindow = () => {
+  //   const videoRef = useRef(null);
+  //   const canvasRef = useRef(null);
+  //   // const [socket, setSocket] = useState(null);
+  //   const [myPeer, setMyPeer] = useState(null);
+  //   const [videoOnPlay, setVideoOnPlay] = useState(false);
+
+  //   useEffect(() => {
+  //     const modelUrl = "http://localhost:4000/models";
+  //     Promise.all([
+  //       faceapi.nets.tinyFaceDetector.loadFromUri(modelUrl),
+  //       faceapi.nets.faceLandmark68Net.loadFromUri(modelUrl),
+  //       faceapi.nets.faceRecognitionNet.loadFromUri(modelUrl),
+  //       faceapi.nets.faceExpressionNet.loadFromUri(modelUrl),
+  //     ]).then(() => {
+  //       const videoElement = videoRef.current;
+  //       const canvasElement = canvasRef.current;
+  //       const displaySize = {
+  //         width: videoElement.width,
+  //         height: videoElement.height,
+  //       };
+
+  //       setVideoOnPlay(() => {
+  //         canvasElement
+
+  //           .getContext("2d")
+  //           .clearRect(0, 0, canvasElement.width, canvasElement.height);
+  //         console.log("adding the vancaf");
+  //         faceapi.matchDimensions(canvasElement, displaySize);
+  //         setInterval(async () => {
+  //           const detections = await faceapi
+  //             .detectAllFaces(
+  //               videoElement,
+  //               new faceapi.TinyFaceDetectorOptions()
+  //             )
+  //             .withFaceLandmarks();
+  //           console.log(detections.length);
+
+  //           const resizedDetections = faceapi.resizeResults(
+  //             detections,
+  //             displaySize
+  //           );
+  //           canvasElement
+  //             .getContext("2d")
+  //             .clearRect(0, 0, canvasElement.width, canvasElement.height);
+  //           faceapi.draw.drawDetections(canvasElement, resizedDetections);
+  //           faceapi.draw.drawFaceLandmarks(canvasElement, resizedDetections);
+  //         }, 100);
+  //       });
+  //     });
+
+  //     // const newSocket = io("http://localhost:3000", {
+  //     //   transports: ["websocket"],
+  //     // });
+  //     // setSocket(newSocket);
+
+  //     const newPeer = new Peer();
+  //     setMyPeer(newPeer);
+
+  //     // newSocket.on("connect", () => {
+  //     //   console.log("Connected as viewer");
+  //     // });
+  //     console.log(socket, "the socket");
+
+  //     if (socket) {
+  //       newPeer.on("open", (viewerId) => {
+  //         socket.emit("join-as-viewer", viewerId);
+  //       });
+
+  //       newPeer.on("call", (call) => {
+  //         call.answer();
+  //         call.on("stream", (stream) => {
+  //           addVideoStream(videoRef.current, stream);
+  //         });
+  //       });
+
+  //       newPeer.on("connection", (conn) => {
+  //         conn.on("close", () => {
+  //           setTimeout(reload, 1000);
+  //         });
+  //       });
+  //       console.log(socket, "socekt");
+
+  //       socket.on("disconnect", () => {
+  //         console.log("disconnected viewer");
+  //       });
+  //     }
+
+  //     return () => {
+  //       newPeer.disconnect();
+  //     };
+  //   }, [socket]);
+
+  //   const addVideoStream = (video, stream) => {
+  //     video.srcObject = stream;
+  //     video.addEventListener("loadedmetadata", () => {
+  //       video.play();
+  //     });
+  //   };
+
+  //   const reload = () => {
+  //     window.location.reload();
+  //   };
+
+  //   const soundToggle = () => {
+  //     console.log("sound toggle", videoRef.current.muted);
+  //     videoRef.current.muted = !videoRef.current.muted;
+  //   };
+
+  //   return (
+  //     <div
+  //       id='video_container'
+  //       className='relative'>
+  //       <video
+  //         onPlay={() => videoOnPlay && videoOnPlay()}
+  //         ref={videoRef}
+  //         id='video'
+  //         width='340'
+  //         height='255'
+  //         className='h-auto max-w-none '
+  //       />
+  //       <canvas
+  //         className='absolute top-0 left-0'
+  //         width='340'
+  //         height='255'
+  //         ref={canvasRef}
+  //         id='canvas'
+  //       />
+  //       <button
+  //         className='cursor-pointer'
+  //         onClick={soundToggle}>
+  //         {videoRef.current.muted ? "Unmute" : "Mute"}
+  //       </button>
+  //     </div>
+  //   );
+  // };
 
   const MonitoringTab = () => {
     const overviewTableColumns = [
@@ -482,7 +697,6 @@ const MonitoringPage = () => {
     };
 
     const ResultsIndividualPage = () => {
-      
       return (
         <div className='flex flex-col gap-4'>
           <div className='flex justify-between w-full'>
@@ -652,7 +866,6 @@ const MonitoringPage = () => {
               />
             </div>
             <div className='flex flex-col gap-2 w-full'>
-            
               <div className='flex flex-col gap-2 w-full'>
                 <div className='flex gap-2 items-center justify-between w-full'>
                   <Tag
@@ -661,7 +874,7 @@ const MonitoringPage = () => {
                     <Icon icon='mdi:checkbox-marked-outline' />
                     Manually Marked Question
                   </Tag>
-                  
+
                   <InputNumber
                     className='w-[10%]'
                     min={1}
@@ -765,7 +978,7 @@ const MonitoringPage = () => {
             <p className='font-semibold'>
               <span className='font-bold text-blue-700'>Access : </span>
               <Select
-                defaultValue='open'
+                defaultValue={examStatus}
                 style={{
                   width: 80,
                 }}
@@ -797,7 +1010,10 @@ const MonitoringPage = () => {
             onTabChange={onTab1Change}>
             {contentList[activeTabKey1]}
           </Card>
-          <ChatWindow />
+          <div className='flex flex-col items-center gap-4'>
+            <ChatWindow />
+            {seeStatusOf !== "all" && 'videoMonitorWindow'}
+          </div>
         </div>
       </div>
     </>
