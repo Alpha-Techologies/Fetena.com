@@ -9,10 +9,6 @@ const customFormat = format.combine(
   })
 );
 const logger = createLogger({
-<<<<<<< HEAD
-=======
-
->>>>>>> ab206453d691cc3d1dee9e8034c7e09c91ce41d0
   format: customFormat,
   transports: [
     new transports.Console({ level: "silly" }),
