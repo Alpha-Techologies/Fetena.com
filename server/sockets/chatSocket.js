@@ -7,8 +7,6 @@ const users = {}; // This maps userId to socketId
 const chatSocket = (io, socket) => {
   // Join a room
   socket.on("joinExam", async (examId, takeExamId) => {
-    console.log(takeExamId, "the two ids");
-    console.log(examId, "examId");
     socket.join(examId);
 
     const takeExam = await TakeExam.findOne({ _id: takeExamId });
@@ -20,6 +18,18 @@ const chatSocket = (io, socket) => {
 
     takeExam.socketId = socket.id;
     await takeExam.save();
+
+    // get the exam
+    const exam = await Exam.findOne({ _id: examId });
+
+    if (!exam) {
+      console.log(`Exam ${examId} not found`);
+      return;
+    }
+
+    if (exam.socketId) {
+      io.to(exam.socketId).emit("userJoined", takeExamId);
+    }
 
     // users[userId] = { socketId: socket.id, roomId };
     console.log(`User ${socket.id} joined room ${examId}`);
