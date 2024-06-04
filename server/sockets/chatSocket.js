@@ -43,18 +43,22 @@ const chatSocket = (io, socket) => {
     console.log(`Invigilator ${socket.id} joined room ${examId}`);
   });
 
-  socket.on("announcement", (examId, message) => {
+  socket.on("announcement", async (examId, message) => {
     console.log(`Announcement: ${message}`);
     // get the exam
-    const exam = Exam.findOne({ _id: examId });
+    const exam = await Exam.findOne({ _id: examId });
 
     if (!exam) {
       console.log(`Exam ${examId} not found`);
       return;
     }
 
+    // if (!exam.announcement) {
+    //   exam.announcement = [];
+    // }
+    // console.log(exam);
     exam.announcement.push(message);
-    exam.save();
+    await exam.save();
 
     io.in(examId).emit("announcement", message);
   });
@@ -96,7 +100,7 @@ const chatSocket = (io, socket) => {
     } else {
       // get the socket id from the take exam
       const takeExam = await TakeExam.findOne({
-        user: message.reciever,
+        user: message.receiver,
         exam: examId,
         active: true,
       });
@@ -111,7 +115,10 @@ const chatSocket = (io, socket) => {
 
       const userSocketId = takeExam.socketId;
 
+      console.log(socket.rooms);
+
       // send the message to the user
+      console.log("message sent to examinee", userSocketId);
       io.to(userSocketId).emit("receiveMessage", message);
     }
   });

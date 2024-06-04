@@ -18,7 +18,8 @@ import moment from "moment";
 import Button from "../Components/Button";
 import React, { useState, useEffect } from "react";
 import { MessageList } from "react-chat-elements";
-import { Socket, io } from "socket.io-client";
+import {useSelector} from 'react-redux'
+import useSocketIO from "../utils/socket/useSocketIO";
 import * as faceapi from 'face-api.js'
 import Peer from 'peerjs'
 
@@ -33,32 +34,24 @@ const MonitoringPage = () => {
   const [seeStatusOf, setSeeStatusOf] = useState("all");
   const [chatMessage, setChatMessage] = useState("")
   const [chatList, setChatList] = useState([])
+  const { user } = useSelector((state) => state.auth);
+  const [socket] = useSocketIO()
   console.log(faceapi)
   const serverURL = "http://localhost:3000"
-      const socket = io(serverURL);
+      // const socket = io(serverURL);
 
 
   // useEffect to join socket of the invigilator
   useEffect(() => {
     if (examStatus === 'open') {
 
-      // Handle socket events
-      socket.on("connect", () => {
-        console.log("Connected to the server");
-      });
-
       // Emit an event to the server
       socket.emit("joinInvigilator", "665cd9ad02c0ca39fcda44d4");
 
-      // Clean up the connection when the component unmounts
-      return () => {
-        socket.disconnect();
-      };
     }
   }, [examStatus])
 
-  useEffect(() => {
-  })
+
 
 
   const tabList = [
@@ -93,26 +86,35 @@ const MonitoringPage = () => {
   const ChatWindow = () => {
 
     useEffect(() => {
-      console.log("receiving message");
-      socket.on("receiveMessage", (message) => {
-        console.log("message received");
-        console.log(message);
-        setChatList((prev) => [
-          ...prev,
-          {
-            position: "left",
-            title: "Examinee",
-            type: "text",
-            text: message.message,
-            date: "message.date",
-          },
-        ]);
-      });
+      if (socket) {
+        
+        console.log("receiving message admin", socket);
+
+        const handleReceiveMessage = (message) => {
+          console.log("message received");
+          console.log(message);
+          const newMessage = {position: "left",
+              title: "Examinee",
+              type: "text",
+              text: message.message,
+              date: "message.date",}
+          setChatList((prev) => [
+            ...prev,
+            newMessage,
+          ]);
+        }
+
+        socket.on("receiveMessage", handleReceiveMessage);
+
+        return () => {
+          socket.off("receiveMessage", handleReceiveMessage);
+        };
+      }
     }, [socket]);
 
     const announceMessage = () => {
 console.log("announce message function");
-if (chatMessage !== "") {
+if (chatMessage !== "" && socket) {
   socket.emit("announcement", "665cd9ad02c0ca39fcda44d4", chatMessage);
   setChatList((prev) => [
     ...prev,
@@ -277,11 +279,11 @@ if (chatMessage !== "") {
       // video.srcObject = canvasStream;
     };
 
-    const socket = io("http://localhost:3000", {
-      transports: ["websocket"],
-    });
+    // const socket = io("http://localhost:3000", {
+    //   transports: ["websocket"],
+    // });
 
-    const myPeer = new Peer();
+    // const myPeer = new Peer();
 
     const videoPlayer = document.getElementById("video");
     const soundToggle = document.getElementById("sound");
@@ -290,31 +292,31 @@ if (chatMessage !== "") {
      * Socket Event Handlers
      */
 
-    socket.on("connect", () => {
-      console.log("Connected as viewer");
-    });
+    // socket.on("connect", () => {
+    //   console.log("Connected as viewer");
+    // });
 
-    myPeer.on("open", (viewerId) => {
-      socket.emit("join-as-viewer", viewerId);
-    });
+    // myPeer.on("open", (viewerId) => {
+    //   socket.emit("join-as-viewer", viewerId);
+    // });
 
-    myPeer.on("call", (call) => {
-      call.answer();
-      call.on("stream", (stream) => {
-        addVideoStream(videoPlayer, stream);
-      });
-    });
+    // myPeer.on("call", (call) => {
+    //   call.answer();
+    //   call.on("stream", (stream) => {
+    //     addVideoStream(videoPlayer, stream);
+    //   });
+    // });
 
-    myPeer.on("connection", (conn) => {
-      conn.on("close", () => {
-        setTimeout(reload, 1000);
-      });
-    });
+    // myPeer.on("connection", (conn) => {
+    //   conn.on("close", () => {
+    //     setTimeout(reload, 1000);
+    //   });
+    // });
 
-    socket.on("disconnect", () => {
-      // we dont really care about emitting this to the streamer tbh
-      console.log("disconnected viewer");
-    });
+    // socket.on("disconnect", () => {
+    //   // we dont really care about emitting this to the streamer tbh
+    //   console.log("disconnected viewer");
+    // });
 
     /**
      * Input Event Handlers

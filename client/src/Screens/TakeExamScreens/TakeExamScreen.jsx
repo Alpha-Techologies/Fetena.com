@@ -20,14 +20,13 @@ import Draggable from "react-draggable";
 import "react-chat-elements/dist/main.css";
 import { MessageBox } from "react-chat-elements";
 import { MessageList, Input } from "react-chat-elements";
+import useSocketIO from "../../utils/socket/useSocketIO";
 import * as math from "mathjs";
 import { takeExam } from "../../Redux/features/dataActions";
 const { Header, Sider, Content } = Layout;
 const inputReferance = React.createRef();
 
 const TakeExamScreen = () => {
-  const serverURL = "http://localhost:3000";
-  const socket = io(serverURL);
 
   const roomId = "123efr";
   const { user } = useSelector((state) => state.auth);
@@ -41,12 +40,14 @@ const TakeExamScreen = () => {
   const [showChat, setShowChat] = useState(false);
   const [takeExamId, setTakeExamId] = useState("");
   const [chatMessage, setChatMessage] = useState("");
-  const [chatList, setChatList] = useState([])
+  const [chatList, setChatList] = useState([]);
+  const [socket] = useSocketIO();
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('this is runnning and start is changing');
     if (startExam) {
       dispatch(takeExam("665cd9ad02c0ca39fcda44d4"))
         .then((res) => {
@@ -55,10 +56,6 @@ const TakeExamScreen = () => {
             const temp = res.payload.data._id;
             setTakeExamId(temp);
             console.log(temp, "takeExamId");
-
-            socket.on("connect", () => {
-              console.log("Connected to the server");
-            });
 
             socket.emit(
               "joinExam",
@@ -75,9 +72,6 @@ const TakeExamScreen = () => {
           toast.error("There is some error in the server!");
         });
 
-      // return () => {
-      //   socket.disconnect();
-      // };
     }
   }, [startExam]);
 
@@ -357,44 +351,53 @@ const TakeExamScreen = () => {
   };
 
   const ChatComponent = () => {
-
     useEffect(() => {
-      console.log("receiving message");
-      socket.on("receiveMessage", (message) => {
-        console.log("message received");
-        console.log(message);
-        setChatList((prev) => [
-          ...prev,
-          {
+      if (socket) {
+
+        console.log("receiving message examinee", socket);
+
+        const handleReceiveMessage = (message) => {
+          console.log("message received");
+          console.log(message);
+          const newMessage = {
             position: "left",
             title: "Invigilator",
             type: "text",
             text: message.message,
             date: "message.date",
-          },
-        ]);
-      });
+          };
+          setChatList((prev) => [...prev, newMessage]);
+        }
 
-      socket.on("announcement", (message) => {
-        console.log("announcemet received");
-        console.log(message);
-        setChatList((prev) => [
-          ...prev,
-          {
-            position: "left",
-            title: "Invigilator",
-            type: "text",
-            text: message,
-            date: "message.date",
-          },
-        ]);
-      })
+        const handleReceiveAnnouncement = (message) => {
+          console.log("announcemet received");
+          console.log(message);
+          setChatList((prev) => [
+            ...prev,
+            {
+              position: "left",
+              title: "Invigilator",
+              type: "text",
+              text: message,
+              date: "message.date",
+            },
+          ]);
+        }
 
+        socket.on("receiveMessage", handleReceiveMessage);
+  
+        socket.on("announcement", handleReceiveAnnouncement);
+
+        return () => {
+        socket.off("receiveMessage", handleReceiveMessage);
+        socket.off("announcement", handleReceiveAnnouncement)
+      };
+      }
     }, [socket]);
 
     const sendMessage = () => {
       console.log("send message function");
-      if (chatMessage !== "") {
+      if (chatMessage !== "" && socket) {
         socket.emit("sendMessage", "665cd9ad02c0ca39fcda44d4", false, {
           sender: user._id,
           receiver: "6630daab4db53d7d765f3978",
