@@ -97,8 +97,6 @@ const chatSocket = (io, socket) => {
 
       // send the message to the invigilator
       io.to(invigilatorSocketId).emit("receiveMessage", message);
-
-      
     } else {
       // get the socket id from the take exam
       const takeExam = await TakeExam.findOne({
