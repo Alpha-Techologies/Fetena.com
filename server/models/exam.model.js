@@ -97,6 +97,11 @@ const ExamSchema = new mongoose.Schema(
     points: {
       type: Number,
     },
+    visibility: {
+      type: String,
+      enum: ["private", "public"],
+      default: "public",
+    },
   },
   { timestamps: true }
 );
