@@ -7,8 +7,6 @@ const users = {}; // This maps userId to socketId
 const chatSocket = (io, socket) => {
   // Join a room
   socket.on("joinExam", async (examId, takeExamId) => {
-    console.log(takeExamId, "the two ids");
-    console.log(examId, "examId");
     socket.join(examId);
 
     const takeExam = await TakeExam.findOne({ _id: takeExamId });

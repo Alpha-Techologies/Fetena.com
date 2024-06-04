@@ -507,7 +507,7 @@ const VideoComponent = () => {
 
   const addVideoStream = (videoElement, stream) => {
     videoElement.srcObject = stream;
-    videoElement.muted = true;
+    // videoElement.muted = true;
 
     const videoOnPlay = () => {
       videoElement.play();
