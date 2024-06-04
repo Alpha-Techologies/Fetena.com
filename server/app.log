@@ -1236,3 +1236,7 @@
 2024-06-02T19:22:00.590Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
 2024-06-02T19:22:03.959Z - [INFO   ] - DBconnection succcessful
 2024-06-02T19:22:03.997Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-04T17:17:26.037Z - [INFO   ] - DBconnection succcessful
+2024-06-04T17:17:26.077Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-04T17:17:26.129Z - [INFO   ] - tokens.findOne([{"user":"6645e752b0e194684daa1ee4","refreshToken":"3420bc4fcaf5ed03e802b633a75af5d46a028c7fd804507e184387b61dfc4662ed31b43d186b91fc"},{}])
+2024-06-04T17:17:26.144Z - [INFO   ] - users.find([{"_id":"6645e752b0e194684daa1ee4"},{"projection":{"__v":0,"password":0,"passwordConfirm":0}}])
