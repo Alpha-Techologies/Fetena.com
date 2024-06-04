@@ -79,7 +79,7 @@ const MonitoringPage = () => {
 
   const ChatWindow = () => {
     useEffect(() => {
-      console.log(socket, 'socket in chat');
+      console.log(socket, "socket in chat");
       if (socket) {
         console.log("receiving message admin", socket);
 
@@ -291,7 +291,7 @@ const MonitoringPage = () => {
       // newSocket.on("connect", () => {
       //   console.log("Connected as viewer");
       // });
-      console.log(socket, 'the socket');
+      console.log(socket, "the socket");
 
       if (socket) {
         newPeer.on("open", (viewerId) => {
@@ -333,21 +333,35 @@ const MonitoringPage = () => {
       window.location.reload();
     };
 
+    const soundToggle = () => {
+      console.log("sound toggle");
+      videoRef.current.muted = !videoRef.current.muted;
+    };
+
     return (
-      <div id='video_container'>
+      <div
+        id='video_container'
+        className='relative'>
         <video
           onPlay={() => videoOnPlay && videoOnPlay()}
           ref={videoRef}
           id='video'
-          width='340'
-          height='120'
+          width="340"
+          height="255"
+          className='h-fit'
         />
         <canvas
+          className='absolute top-0 left-0'
+          width="340"
+          height="255"
           ref={canvasRef}
           id='canvas'
-          width='340'
-          height='120'
         />
+        <button
+          className='cursor-pointer'
+          onClick={soundToggle}>
+          {videoRef.current?.muted ? "Unmute" : "Mute"}
+        </button>
       </div>
     );
   };

@@ -449,12 +449,12 @@ const TakeExamScreen = () => {
 const VideoComponent = () => {
   const videoRef = useRef(null);
   const peerClientRef = useRef(null);
-  const socketRef = useRef(null);
+  // const socketRef = useRef(null);
 
   useEffect(() => {
-          socketRef.current = io("http://localhost:3000", {
-            transports: ["websocket"],
-          });
+  //         socketRef.current = io("http://localhost:3000", {
+  //           transports: ["websocket"],
+  //         });
 
     const setupVideoStream = async () => {
       try {
@@ -470,23 +470,23 @@ const VideoComponent = () => {
         peerClientRef.current = new Peer();
 
         peerClientRef.current.on('open', (streamerId) => {
-          socketRef.current.emit('join-as-streamer', streamerId);
+          socket.emit('join-as-streamer', streamerId);
         });
 
         peerClientRef.current.on('close', (streamerId) => {
-          socketRef.current.emit('disconnect-as-streamer', streamerId);
+          socket.emit('disconnect-as-streamer', streamerId);
         });
 
         // console.log(socketRef, 'socketref');
 
-        socketRef.current.on('viewer-connected', (viewerId) => {
+        socket.on('viewer-connected', (viewerId) => {
           console.log('viewer connected');
           connectToNewViewer(viewerId, stream);
         });
 
-        socketRef.current.on('disconnect', () => {
-          // socketRef.current.emit('disconnect-as-streamer', streamerId);
-        });
+        // socket.on('disconnect', () => {
+        //   // socketRef.current.emit('disconnect-as-streamer', streamerId);
+        // });
       } catch (error) {
         console.error('Error accessing media devices:', error);
       }
@@ -499,9 +499,9 @@ const VideoComponent = () => {
         peerClientRef.current.destroy();
       }
 
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-      }
+      // if (socketRef.current) {
+      //   socketRef.current.disconnect();
+      // }
     };
   }, []);
 
