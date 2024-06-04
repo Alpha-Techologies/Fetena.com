@@ -7,7 +7,6 @@ import 'react-quill/dist/quill.snow.css';
 import { toast } from "react-toastify";
 
 
-
 import Preview from "./components/Preview";
 import ExamQuestionForm from "./components/ExamQuestionForm";
 import ExamToolsForm from "./components/ExamToolsForm";
@@ -36,8 +35,10 @@ const CreateExam = () => {
     return savedBasicInfo ? JSON.parse(savedBasicInfo) : {
       examName: "",
       duration: 1 ,
-      examStartDate: null,
-      organization: "org",
+      examDate: "",
+      examStartDate: "",
+      examTime: "",
+      organization: "663e889c6470d66fcf38a4d4",
       privateAnswer: false,
       privateScore: false,
       instruction: "",
@@ -268,7 +269,7 @@ const CreateExam = () => {
 
 
       return (
-        <div className="flex flex-col gap-4 my-4 ">
+        <div className="flex flex-col gap-4">
         <div className="flex gap-4 items-center ">
           <Link to='/dashboard/exams'>
             <Icon icon="fluent-emoji-high-contrast:left-arrow" className="text-2xl text-primary-500" />
@@ -388,22 +389,30 @@ const CreateExam = () => {
 
 
 {activeTabKey === "Success" && (
- <section className='flex flex-col justify-center items-center mt-8'>
- <img
-   loading='lazy'
-   src='https://cdn.builder.io/api/v1/image/assets/TEMP/f036dfadbcb5962fc51b133ce1f5e0f003ad5000218eb6b4df54e7ec1cff714a?apiKey=da0e5699a0964f23ab3a2091e7f935a3&'
-   alt='Submit form icon'
-   className='max-w-full aspect-[1.1] w-[157px]'
- />
- <h2 className='text-lg font-semibold text-left mt-4'>
-  Your exam has been successfully submitted!
- </h2>
+  <section className='flex flex-col justify-center items-center mt-8'>
+    <img
+      loading='lazy'
+      src='https://cdn.builder.io/api/v1/image/assets/TEMP/f036dfadbcb5962fc51b133ce1f5e0f003ad5000218eb6b4df54e7ec1cff714a?apiKey=da0e5699a0964f23ab3a2091e7f935a3&'
+      alt='Submit form icon'
+      className='max-w-full aspect-[1.1] w-[157px]'
+    />
+    <h2 className='text-lg font-semibold text-left mt-4'>
+      Your exam has been successfully submitted!
+    </h2>
 
- <h3 className='text-lg font-semibold text-left mt-4'>
-  Exam key : {examKey}
- </h3>
-</section>
+    <div className=' flex cursor-pointer items-center mt-4 gap-4 border px-4 py-2 rounded-md border-blue-500 bg-blue-50 text-blue-900 mb-8'  onClick={() => {
+          navigator.clipboard.writeText(examKey)
+          toast.success("Exam key copied to clipboard")
+        }}>
+      <h3 className='text-[1rem] font-semibold text-left'>
+        Exam key : {examKey}
+      </h3>
+      
+       <Icon icon="uil:copy" className="font-extrabold text-xl text-blue-900 hover:scale-125 transition-all duration-300" />
+    </div>
+  </section>
 )}
+
 
 
 

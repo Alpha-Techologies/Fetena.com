@@ -3,4 +3,4 @@ const ResultsPage = () => {
     <div>ResultsPage</div>
   )
 }
-export default ResultsPage
+export default ResultsPage;
