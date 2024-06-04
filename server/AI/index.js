@@ -48,7 +48,7 @@ class TogetherManager {
             let chunkValue = (new TextDecoder().decode(value));
             // console.log('chunkValue', chunkValue)
             // let chunk = parser.feed(chunkValue);
-            let chunk = parser.feed(chunkValue);
+            parser.feed(chunkValue);
             // console.log('chunk',chunk)
 
             // output += " " + chunkValue

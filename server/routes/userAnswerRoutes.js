@@ -11,7 +11,7 @@ const {
 } = require('../controller/userAnswer')
 
 router
-    .route("/:id")
+    .route("/eval/:id")
         // .get(getOneQuestion)
         .post(evaluateUserAnswer)
         // .put(updateQuestion)
