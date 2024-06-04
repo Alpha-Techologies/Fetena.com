@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import useSocketIO from "../utils/socket/useSocketIO";
 import * as faceapi from "face-api.js";
 import Peer from "peerjs";
+import axios from "axios";
 
 const inputReferance = React.createRef();
 const { Search, TextArea } = Input;
@@ -36,9 +37,66 @@ const MonitoringPage = () => {
   const [chatList, setChatList] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const [socket] = useSocketIO();
-  console.log(faceapi);
+  const { workspace } = useSelector((state) => state.data);
+  const { userOrganizationsIdAndRole } = useSelector((state) => state.data);
+  const [examsList, setExamsList] = useState([]);
+  const [currentExam, setCurrentExam] = useState("");
+  // console.log(faceapi);
   const serverURL = "http://localhost:3000";
   // const socket = io(serverURL);
+
+  const fetchData = async (page = 1, active = true, access = "") => {
+    const id = workspace._id;
+    console.log("fetching data", userOrganizationsIdAndRole[id], id);
+
+    if (
+      userOrganizationsIdAndRole[id] &&
+      (userOrganizationsIdAndRole[id] === "admin" ||
+        userOrganizationsIdAndRole[id] === "examiner")
+    ) {
+      try {
+        const response = await axios.get(
+          `/api/exams/my-exam/${id}?active=${active}&access=${access}`
+        );
+
+        console.log(response, "bitch");
+        const tempExamsList = response.data.data.data.map((obj) => ({
+          value: obj._id,
+          label: obj.examName,
+        }));
+        console.log(tempExamsList);
+        setExamsList(tempExamsList);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!workspace) {
+      // Handle the case where workspace is null, for example, redirect the user or show an error message
+      navigate("userexams");
+    } else {
+      fetchData(1, true);
+      if (examsList) {
+        const fetchExamDetails = async () => {
+          try {
+            const response = await axios.get(
+              `/api/exams/${examsList[0].value}`
+            );
+            console.log(response, 'response from fetch single exam');
+            setCurrentExam(response.data.data.data[0]);
+            console.log(currentExam)
+          } catch (error) {
+            console.error("Error fetching exam details:", error);
+            // toast.error("Failed to fetch exam details");
+          }
+        };
+
+        fetchExamDetails();
+      }
+    }
+  }, []);
 
   // useEffect to join socket of the invigilator
   useEffect(() => {
@@ -919,103 +977,104 @@ const MonitoringPage = () => {
 
   return (
     <>
-      <div className='flex justify-between gap-4 items-center'>
-        <h1 className='text-3xl font-bold my-2'>Exam Monitoring</h1>
-        <div className='flex items-center justify-center gap-4'>
-          <span>Exam: </span>
-          <Select
-            defaultValue='lucy'
-            style={{
-              width: 120,
-            }}
-            onChange={handleChange}
-            options={[
-              {
-                value: "jack",
-                label: "Jack",
-              },
-              {
-                value: "lucy",
-                label: "Lucy",
-              },
-              {
-                value: "Yiminghe",
-                label: "yiminghe",
-              },
-              {
-                value: "disabled",
-                label: "Disabled",
-                disabled: true,
-              },
-            ]}
-          />
-        </div>
-      </div>
-      <div className='flex flex-col gap-4'>
-        <Card>
-          <div className='flex justify-between my-4'>
-            <p className='font-bold text-lg'>Exam: Exam Name</p>
-            {examStatus === "open" ? (
-              <span className='text-success-500 flex gap-2 items-center'>
-                <Icon icon='heroicons-outline:status-online' />
-                Online
-              </span>
-            ) : (
-              <span className='text-error-500 flex gap-2 items-center'>
-                <Icon icon='codicon:eye-closed' /> Closed{" "}
-              </span>
-            )}
+      {!examsList.length ? (
+        <div>
+          <div className='flex justify-between gap-4 items-center'>
+            <h1 className='text-3xl font-bold my-2'>Exam Monitoring</h1>
           </div>
-          <div className='w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border '>
-            <p className='font-semibold flex items-center gap-2'>
-              <span className='font-bold text-blue-700'>Exam Key : </span>{" "}
-              <span className='italic cursor-pointer'>tyEr23h</span>
-              <Icon
-                className='text-gray-500 '
-                icon='ph:clipboard'
-              />
-            </p>
-            <p className='font-semibold'>
-              <span className='font-bold text-blue-700'>Access : </span>
+          <p>You currently have no exams created.</p>
+        </div>
+      ) : (
+        <div>
+          <div className='flex justify-between gap-4 items-center'>
+            <h1 className='text-3xl font-bold my-2'>Exam Monitoring</h1>
+            <div className='flex items-center justify-center gap-4'>
+              <span>Exam: </span>
               <Select
-                defaultValue={examStatus}
+                defaultValue={examsList[0].value}
                 style={{
-                  width: 80,
+                  width: 120,
                 }}
-                onChange={handleExamStatusChange}
-                options={[
-                  {
-                    value: "open",
-                    label: "Open",
-                  },
-                  {
-                    value: "closed",
-                    label: "Closed",
-                  },
-                ]}
+                onChange={handleChange}
+                options={examsList}
               />
-            </p>
-
-            {/* <Button className='bg-error-500 text-white'>End Exam</Button> */}
+            </div>
           </div>
-        </Card>
-        <div className='flex gap-2 min-h-screen max-h-fit'>
-          <ExamineeListWindow />
-          <Card
-            style={{
-              width: "100%",
-            }}
-            tabList={tabList}
-            activeTabKey={activeTabKey1}
-            onTabChange={onTab1Change}>
-            {contentList[activeTabKey1]}
-          </Card>
-          <div className='flex flex-col items-center gap-4'>
-            <ChatWindow />
-            {seeStatusOf !== "all" && 'videoMonitorWindow'}
+          <div className='flex flex-col gap-4'>
+            <Card>
+              <div className='flex justify-between my-4'>
+                <p className='font-bold text-lg'>
+                  Exam: {currentExam.examName}
+                </p>
+                {examStatus === "open" ? (
+                  <span className='text-success-500 flex gap-2 items-center'>
+                    <Icon icon='heroicons-outline:status-online' />
+                    Online
+                  </span>
+                ) : (
+                  <span className='text-error-500 flex gap-2 items-center'>
+                    <Icon icon='codicon:eye-closed' /> Closed{" "}
+                  </span>
+                )}
+              </div>
+
+              <div className='w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border '>
+                <p className='font-semibold'>
+                  <span className='font-bold text-blue-700'>Starts at : </span>
+                  {new Date(currentExam.startDate).toLocaleString()}
+                </p>
+                <p className='font-semibold'>
+                  <span className='font-bold text-blue-700'>Points : </span>
+                  {currentExam.points}
+                </p>
+                {/* <p className='font-semibold'>
+              <span className='font-bold text-blue-700'>Questions : </span>{exam.questions}
+            </p> */}
+                <p className='font-semibold'>
+                  <span className='font-bold text-blue-700'>Time limit : </span>
+                  {currentExam.duration} Minutes
+                </p>
+                <p className='font-semibold'>
+                  <span className='font-bold text-blue-700'>Access : </span>
+                  <Select
+                    defaultValue={examStatus}
+                    style={{
+                      width: 80,
+                    }}
+                    onChange={handleExamStatusChange}
+                    options={[
+                      {
+                        value: "open",
+                        label: "Open",
+                      },
+                      {
+                        value: "closed",
+                        label: "Closed",
+                      },
+                    ]}
+                  />
+                </p>
+              </div>
+            </Card>
+            <div className='flex gap-2 min-h-screen max-h-fit'>
+              <ExamineeListWindow />
+              <Card
+                style={{
+                  width: "100%",
+                }}
+                tabList={tabList}
+                activeTabKey={activeTabKey1}
+                onTabChange={onTab1Change}>
+                {contentList[activeTabKey1]}
+              </Card>
+              <div className='flex flex-col items-center gap-4'>
+                <ChatWindow />
+                {seeStatusOf !== "all" && "videoMonitorWindow"}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
