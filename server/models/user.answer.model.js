@@ -7,6 +7,10 @@ const AnswerSchema = new mongoose.Schema({
     required: true,
   },
   answerText: String,
+  point:{
+    type: Number,
+    default: 0,
+  }
 });
 
 const UserAnswerSchema = new mongoose.Schema({

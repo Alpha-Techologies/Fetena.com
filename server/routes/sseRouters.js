@@ -5,7 +5,7 @@ const {getChat} = require('../controller/chat/getChat');
 
 router.
     route("/chat/:id")
-        .get(getChat)
+        .post(getChat)
         // .post(sendChat);
 // router.post("/", forgotPassword);
 
