@@ -11,7 +11,7 @@ import {
   Divider,
   FloatButton,
 } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import fetena_logo from "../../assets/fetena_logo.png";
 import moment from "moment";
@@ -47,12 +47,14 @@ const TakeExamScreen = () => {
 
   const navigate = useNavigate();
 
+  const {id} = useParams()
+
 
   // useEffect to join chat room for examinee
   useEffect(() => {
     console.log('this is runnning and start is changing');
     if (startExam) {
-      dispatch(takeExam("665cd9ad02c0ca39fcda44d4"))
+      dispatch(takeExam(id))
         .then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
             console.log(res.payload);
@@ -62,7 +64,7 @@ const TakeExamScreen = () => {
 
             socket.emit(
               "joinExam",
-              "665cd9ad02c0ca39fcda44d4",
+              id,
               res.payload.data._id
             );
           } else {
@@ -195,7 +197,7 @@ const TakeExamScreen = () => {
           open={isModalOpen}
           onOk={handleOk}
           onCancel={handleCancel}>
-          <p>The exam is about to start.</p>
+          <p>This is a high security exam. Make sure to give permission for camera and microphone. The exam is about to start.</p>
         </Modal>
       </>
     );

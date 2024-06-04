@@ -89,7 +89,7 @@ const AllRoutes = () => {
         />
 
         <Route
-          path='/take-exam'
+          path='/take-exam/:id'
           element={
             <TakeExamRoute isAuthenticated={isAuthenticated}>
               <TakeExamScreen />

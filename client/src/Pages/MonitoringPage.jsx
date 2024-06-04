@@ -23,10 +23,13 @@ import useSocketIO from "../utils/socket/useSocketIO";
 import * as faceapi from "face-api.js";
 import Peer from "peerjs";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import _ from 'lodash'
 
 const inputReferance = React.createRef();
 const { Search, TextArea } = Input;
 const currentTime = moment();
+// const _ = require('lodash')
 
 const MonitoringPage = () => {
   const [activeTabKey1, setActiveTabKey1] = useState("tab1");
@@ -41,6 +44,9 @@ const MonitoringPage = () => {
   const { userOrganizationsIdAndRole } = useSelector((state) => state.data);
   const [examsList, setExamsList] = useState([]);
   const [currentExam, setCurrentExam] = useState("");
+  const [examineeList, setExamineeList] = useState([]);
+  const [examineeStatusStats, setExamineeStatusStats] = useState({})
+  const navigate = useNavigate();
   // console.log(faceapi);
   const serverURL = "http://localhost:3000";
   // const socket = io(serverURL);
@@ -59,16 +65,76 @@ const MonitoringPage = () => {
           `/api/exams/my-exam/${id}?active=${active}&access=${access}`
         );
 
-        console.log(response, "bitch");
+        console.log(response, "resp fetch all exams  ");
         const tempExamsList = response.data.data.data.map((obj) => ({
           value: obj._id,
           label: obj.examName,
         }));
         console.log(tempExamsList);
         setExamsList(tempExamsList);
+        console.log(examsList);
+        if (examsList) {
+          await fetchExamDetails(tempExamsList[0].value);
+          await fetchExamineeList(tempExamsList[0].value);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
+    }
+  };
+
+  const getTakeExamId = async(takeExamId) => {
+    try {
+        const response = await axios.get(
+          `/api/exams/exam-taker/${takeExamId}`
+        );
+
+        console.log(response, "resp getTakeExamId  ");
+        
+
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+  }
+
+
+  const fetchExamDetails = async (examId) => {
+    console.log("fetchExamDetails");
+    try {
+      const response = await axios.get(`/api/exams/${examId}`);
+      // console.log(response, 'response from fetch single exam');
+      setCurrentExam(response.data.data.data[0]);
+      // console.log(currentExam)
+    } catch (error) {
+      console.error("Error fetching exam details:", error);
+    }
+  };
+
+  const fetchExamineeList = async (examId) => {
+    try {
+      const response = await axios.get(`/api/exams/exam-history/${examId}`);
+      console.log(examId)
+      console.log(response, "response from fetch single exam");
+      // setExamineeList(response.data.data.data);
+      const tempExamineeList = response.data.data.data
+      setExamineeList(tempExamineeList)
+      const expectedStatuses = [
+        "inprogress",
+        "submitted",
+        "terminated",
+        "interrupted",
+      ];
+      const tempExamineeStatusCount = _.defaults(
+        _.countBy(tempExamineeList, "status"),
+        _.fromPairs(expectedStatuses.map((status) => [status, 0]))
+      );
+      setExamineeStatusStats(tempExamineeStatusCount)
+      console.log(examineeStatusStats, "temp examinee stat");
+      console.log(examineeStatusStats.inprogress, 'examinee stats');
+    } catch (error) {
+      console.error("Error fetching exam details:", error);
+      // toast.error("Failed to fetch exam details");
     }
   };
 
@@ -79,24 +145,29 @@ const MonitoringPage = () => {
     } else {
       fetchData(1, true);
       if (examsList) {
-        const fetchExamDetails = async () => {
-          try {
-            const response = await axios.get(
-              `/api/exams/${examsList[0].value}`
-            );
-            console.log(response, 'response from fetch single exam');
-            setCurrentExam(response.data.data.data[0]);
-            console.log(currentExam)
-          } catch (error) {
-            console.error("Error fetching exam details:", error);
-            // toast.error("Failed to fetch exam details");
-          }
-        };
-
-        fetchExamDetails();
+        // fetchExamDetails(examsList[0].value);
+        // fetchExamineeList(examsList[0].value);
       }
     }
   }, []);
+
+  useEffect(() => {
+    console.log(socket, "socket in join");
+      if (socket) {
+        console.log("receiving userjoined", socket);
+
+        const handleUserJoined = (takeExamId) => {
+          console.log("userJoined received");
+          getTakeExamId(takeExamId)
+        };
+
+        socket.on("userJoined", handleUserJoined);
+
+        return () => {
+          socket.off("receiveMessage", handleUserJoined);
+        };
+      }
+  }, [socket])
 
   // useEffect to join socket of the invigilator
   useEffect(() => {
@@ -114,24 +185,6 @@ const MonitoringPage = () => {
     {
       key: "tab2",
       tab: "Results",
-    },
-  ];
-
-  const examineeList = [
-    {
-      title: "Overview",
-    },
-    {
-      title: "Yohannes Teshome",
-    },
-    {
-      title: "Yohannes Mesganaw",
-    },
-    {
-      title: "Yosef Lakew",
-    },
-    {
-      title: "Tibebe Solomon",
     },
   ];
 
@@ -258,13 +311,33 @@ const MonitoringPage = () => {
         <div className='flex flex-col gap-4'>
           <p className='font-semibold'>Examinees</p>
 
-          <Search
+          {/* <Search
             placeholder='Search Examinee'
             allowClear
-          />
+          /> */}
 
-          <span className='font-semibold italic'>Submitted (4)</span>
+          {/* <span className='font-semibold italic'>Submitted (4)</span> */}
         </div>
+        <List
+          itemLayout='horizontal'
+          dataSource={[{ title: "Overview" }]}
+          renderItem={(item, index) => (
+            <List.Item>
+              <List.Item.Meta
+                avatar={
+                  <Avatar
+                    src={
+                      <Icon icon='material-symbols:overview-outline-rounded' />
+                    }
+                  />
+                }
+                title={
+                  <a onClick={() => setSeeStatusOf("all")}>{item.title}</a>
+                }
+              />
+            </List.Item>
+          )}
+        />
         <List
           itemLayout='horizontal'
           dataSource={examineeList}
@@ -272,12 +345,12 @@ const MonitoringPage = () => {
             <List.Item>
               <List.Item.Meta
                 avatar={
-                  <Avatar
-                    src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
-                  />
+                  <Avatar src={`${serverURL + item.user.profilePhoto}`} />
                 }
                 title={
-                  <a onClick={() => setSeeStatusOf("01234")}>{item.title}</a>
+                  <a onClick={() => setSeeStatusOf(item.user._id)}>
+                    {item.user.fullName}
+                  </a>
                 }
               />
             </List.Item>
@@ -427,10 +500,19 @@ const MonitoringPage = () => {
   const MonitoringTab = () => {
     const overviewTableColumns = [
       {
+        title: "Profile",
+        dataIndex: "profilePhoto",
+        key: "profilePhoto",
+        render: (text) => (
+          <Avatar
+            src={serverURL + text}
+          />
+        ),
+      },
+      {
         title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text) => <a>{text}</a>,
+        dataIndex: "fullName",
+        key:"fullName"
       },
       {
         title: "Email",
@@ -438,9 +520,9 @@ const MonitoringPage = () => {
         key: "email",
       },
       {
-        title: "Warning Count",
-        dataIndex: "warning",
-        key: "warning",
+        title: "Start Time",
+        dataIndex: "startTime",
+        key: "startedAt",
       },
       {
         title: "Status",
@@ -448,10 +530,12 @@ const MonitoringPage = () => {
         dataIndex: "status",
         render: (_, { status }) => (
           <>
-            {status === "Active" ? (
-              <Tag color={"green"}>Active</Tag>
-            ) : status === "Blocked" ? (
-              <Tag color={"red"}>Blocked</Tag>
+            {status === "inprogress" ? (
+              <Tag color={"green"}>In Progress</Tag>
+            ) : status === "Terminated" ? (
+              <Tag color={"red"}>Terminated</Tag>
+            ) : status === "interrupted" ? (
+              <Tag color={"blue"}>Interrupted</Tag>
             ) : (
               <Tag color={"orange"}>Submitted</Tag>
             )}
@@ -465,29 +549,16 @@ const MonitoringPage = () => {
       },
     ];
 
-    const overviewTableData = [
-      {
-        key: "1",
-        name: "John Brown",
-        email: "johnbrown@gmail.com",
-        warning: "3",
-        status: "Blocked",
-      },
-      {
-        key: "2",
-        name: "John Brown",
-        email: "johnbrown@gmail.com",
-        warning: "3",
-        status: "Active",
-      },
-      {
-        key: "3",
-        name: "John Brown",
-        email: "johnbrown@gmail.com",
-        warning: "3",
-        status: "Submitted",
-      },
-    ];
+    const overviewTableData = _.map(examineeList, (item) => ({
+  profilePhoto: item.user.profilePhoto,
+  fullName: item.user.fullName,
+  email: item.user.email,
+  userId: item.user.id,
+  status: item.status,
+  startTime: item.startTime
+}));
+
+    
 
     const MonitoringOverviewPage = () => {
       return (
@@ -495,20 +566,36 @@ const MonitoringPage = () => {
           <div className='grid grid-cols-3 gap-4 w-full'>
             <Card>
               <div>
-                <p className='font-bold text-xl italic'>14</p>
+                <p className='font-bold text-xl italic'>
+                  {examineeStatusStats.inprogress + examineeStatusStats.submitted + examineeStatusStats.interrupted + examineeStatusStats.terminated}
+                </p>
                 <p>Total Examinees</p>
               </div>
             </Card>
             <Card>
               <div>
-                <p className='font-bold text-xl italic'>4</p>
+                <p className='font-bold text-xl italic'>
+                  {examineeStatusStats.submitted}
+                </p>
                 <p>Submitted</p>
               </div>
             </Card>
             <Card>
               <div>
-                <p className='font-bold text-xl italic'>10</p>
+                <p className='font-bold text-xl italic'>{ examineeStatusStats.inprogress}</p>
                 <p>Ongoing</p>
+              </div>
+            </Card>
+            <Card>
+              <div>
+                <p className='font-bold text-xl italic'>{ examineeStatusStats.terminated}</p>
+                <p>Terminated</p>
+              </div>
+            </Card>
+            <Card>
+              <div>
+                <p className='font-bold text-xl italic'>{ examineeStatusStats.interrupted}</p>
+                <p>Interrupted</p>
               </div>
             </Card>
           </div>
@@ -521,6 +608,8 @@ const MonitoringPage = () => {
     };
 
     const MonitoringIndividualPage = () => {
+      const currentUser = _.find(examineeList, (item) => item.user && item.user._id === seeStatusOf)
+      console.log(currentUser, 'currentUser')
       return (
         <div className='flex flex-col gap-4'>
           <div className='flex justify-between w-full'>
@@ -530,12 +619,12 @@ const MonitoringPage = () => {
               <Icon icon='lets-icons:back' />
               Back to Overview
             </div>
-            {"aa" === "a" ? (
+            {currentUser.status === "submitted" ? (
               <div className='bg-green-500 text-white flex items-center gap-2 py-2 px-4 rounded'>
                 <Icon icon='mdi:tick' />
                 Has submitted Exam
               </div>
-            ) : "aa" === "a" ? (
+            ) : currentUser.status === "inprogress" ? (
               <div className='bg-red-500 text-white flex items-center gap-2 py-2 px-4 rounded cursor-pointer'>
                 <Icon icon='material-symbols:tab-close' />
                 End Exam for Student
@@ -552,13 +641,17 @@ const MonitoringPage = () => {
               <span className='font-bold text-xl justified'>
                 Yohannes Teshome
               </span>
-              {false ? (
+              {currentUser.status === "inprogress" ? (
                 <p className='text-green-500 ml-2 flex items-center justify-center'>
                   <Icon icon='icon-park-outline:dot' /> Ongoing
                 </p>
-              ) : (
+              ) : currentUser.status === "submitted" ? (
                 <p className='text-gray-500 ml-2 flex items-center justify-center'>
                   <Icon icon='icon-park-outline:dot' /> Finished
+                </p>
+              ) : (
+                <p className='text-red-500 ml-2 flex items-center justify-center'>
+                  <Icon icon='icon-park-outline:dot' /> Hasn't Finished
                 </p>
               )}
             </div>
@@ -568,7 +661,7 @@ const MonitoringPage = () => {
                 {" "}
                 Email:{" "}
               </span>{" "}
-              0J9qg@example.com
+              {currentUser.user.email}
             </p>
           </div>
 
@@ -588,7 +681,7 @@ const MonitoringPage = () => {
                   <span>
                     Started the Exam at <br />{" "}
                     <span className='italic text-gray-500'>
-                      {currentTime.format()}
+                      {currentUser.startTime}
                     </span>
                   </span>
                 ),
