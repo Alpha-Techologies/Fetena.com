@@ -53,9 +53,9 @@ class TogetherManager {
           // console.log('chunk',chunk)
 
           // output += " " + chunkValue
-          output += " " + this.response
+          // output = this.response
         }
-        return output;
+        return this.response;
       } else {
         return result;
       }
@@ -74,8 +74,7 @@ class TogetherManager {
       }
       try {
         const text = JSON.parse(data).choices[0].text ?? '';
-        console.log({ text });
-        this.response += text
+        this.response += text 
       } catch (e) {
         console.error(e);
       }
@@ -96,4 +95,3 @@ class TogetherManager {
 }
 
 module.exports = TogetherManager;
-
