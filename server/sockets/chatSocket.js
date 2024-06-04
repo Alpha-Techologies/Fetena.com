@@ -7,6 +7,8 @@ const users = {}; // This maps userId to socketId
 const chatSocket = (io, socket) => {
   // Join a room
   socket.on("joinExam", async (examId, takeExamId) => {
+    console.log(takeExamId, "the two ids");
+    console.log(examId, "examId");
     socket.join(examId);
 
     const takeExam = await TakeExam.findOne({ _id: takeExamId });
@@ -60,6 +62,7 @@ const chatSocket = (io, socket) => {
   // Handle sending a chat message
   socket.on("sendMessage", async (examId, isInvigilator, message) => {
     let takeExam = null;
+    console.log(examId, isInvigilator, message);
 
     if (!isInvigilator) {
       // get the socket id from the exam
@@ -73,7 +76,7 @@ const chatSocket = (io, socket) => {
       // update the take exam chat messages
       takeExam = await TakeExam.findOne({
         exam: examId,
-        user: message.reciever,
+        user: message.sender,
         active: true,
       });
 
@@ -86,6 +89,7 @@ const chatSocket = (io, socket) => {
       await takeExam.save();
 
       const invigilatorSocketId = exam.socketId;
+      console.log("message sent successfully");
 
       // send the message to the invigilator
       io.to(invigilatorSocketId).emit("receiveMessage", message);
