@@ -9,7 +9,7 @@ const useSocketIO = () => {
 
   useEffect(() => {
     // Connect to the Socket.IO server
-    const newSocket = io(serverURL); // Replace with your server URL
+    const newSocket = io(serverURL, { transports: ['websocket'] }); // Replace with your server URL
 
     // Set up event listeners
     newSocket.on('connect', () => {

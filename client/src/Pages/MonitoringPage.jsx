@@ -16,12 +16,12 @@ import {
 } from "antd";
 import moment from "moment";
 import Button from "../Components/Button";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MessageList } from "react-chat-elements";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 import useSocketIO from "../utils/socket/useSocketIO";
-import * as faceapi from 'face-api.js'
-import Peer from 'peerjs'
+import * as faceapi from "face-api.js";
+import Peer from "peerjs";
 
 const inputReferance = React.createRef();
 const { Search, TextArea } = Input;
@@ -32,26 +32,21 @@ const MonitoringPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [examStatus, setExamStatus] = useState("closed");
   const [seeStatusOf, setSeeStatusOf] = useState("all");
-  const [chatMessage, setChatMessage] = useState("")
-  const [chatList, setChatList] = useState([])
+  const [chatMessage, setChatMessage] = useState("");
+  const [chatList, setChatList] = useState([]);
   const { user } = useSelector((state) => state.auth);
-  const [socket] = useSocketIO()
-  console.log(faceapi)
-  const serverURL = "http://localhost:3000"
-      // const socket = io(serverURL);
-
+  const [socket] = useSocketIO();
+  console.log(faceapi);
+  const serverURL = "http://localhost:3000";
+  // const socket = io(serverURL);
 
   // useEffect to join socket of the invigilator
   useEffect(() => {
-    if (examStatus === 'open') {
-
+    if (examStatus === "open") {
       // Emit an event to the server
       socket.emit("joinInvigilator", "665cd9ad02c0ca39fcda44d4");
-
     }
-  }, [examStatus])
-
-
+  }, [examStatus]);
 
   const tabList = [
     {
@@ -83,25 +78,23 @@ const MonitoringPage = () => {
   ];
 
   const ChatWindow = () => {
-
     useEffect(() => {
+      console.log(socket, 'socket in chat');
       if (socket) {
-        
         console.log("receiving message admin", socket);
 
         const handleReceiveMessage = (message) => {
           console.log("message received");
           console.log(message);
-          const newMessage = {position: "left",
-              title: "Examinee",
-              type: "text",
-              text: message.message,
-              date: "message.date",}
-          setChatList((prev) => [
-            ...prev,
-            newMessage,
-          ]);
-        }
+          const newMessage = {
+            position: "left",
+            title: "Examinee",
+            type: "text",
+            text: message.message,
+            date: "message.date",
+          };
+          setChatList((prev) => [...prev, newMessage]);
+        };
 
         socket.on("receiveMessage", handleReceiveMessage);
 
@@ -112,68 +105,86 @@ const MonitoringPage = () => {
     }, [socket]);
 
     const announceMessage = () => {
-console.log("announce message function");
-if (chatMessage !== "" && socket) {
-  socket.emit("announcement", "665cd9ad02c0ca39fcda44d4", chatMessage);
-  setChatList((prev) => [
-    ...prev,
-    {
-      position: "right",
-      title: "You",
-      type: "text",
-      text: chatMessage,
-      date: "message.date",
-    },
-  ]);
-}
-    }
+      console.log("announce message function");
+      if (chatMessage !== "" && socket) {
+        socket.emit("announcement", "665cd9ad02c0ca39fcda44d4", chatMessage);
+        setChatList((prev) => [
+          ...prev,
+          {
+            position: "right",
+            title: "You",
+            type: "text",
+            text: chatMessage,
+            date: "message.date",
+          },
+        ]);
+      }
+    };
 
     const sendMessage = () => {
-console.log("send message function");
-if (chatMessage !== "") {
-  socket.emit("sendMessage", "665cd9ad02c0ca39fcda44d4", true, {
-    sender: user._id,
-    receiver: "6645e752b0e194684daa1ee4",
-    message: chatMessage,
-  });
-  setChatList((prev) => [
-    ...prev,
-    {
-      position: "right",
-      title: "You",
-      type: "text",
-      text: chatMessage,
-      date: "message.date",
-    },
-  ]);
-}
-    }
+      console.log("send message function");
+      if (chatMessage !== "") {
+        socket.emit("sendMessage", "665cd9ad02c0ca39fcda44d4", true, {
+          sender: user._id,
+          receiver: "6645e752b0e194684daa1ee4",
+          message: chatMessage,
+        });
+        setChatList((prev) => [
+          ...prev,
+          {
+            position: "right",
+            title: "You",
+            type: "text",
+            text: chatMessage,
+            date: "message.date",
+          },
+        ]);
+      }
+    };
 
     return (
-      <Card className="h-fit">
-        <div className="flex items-center justify-center text-primary-500 gap-4">
+      <Card className='h-fit'>
+        <div className='flex items-center justify-center text-primary-500 gap-4'>
           {seeStatusOf === "all" ? (
-            <Icon className="w-5 h-5" icon="mingcute:announcement-line" />
+            <Icon
+              className='w-5 h-5'
+              icon='mingcute:announcement-line'
+            />
           ) : (
-            <Icon className="w-5 h-5" icon="fluent:chat-12-filled" />
+            <Icon
+              className='w-5 h-5'
+              icon='fluent:chat-12-filled'
+            />
           )}
-          <p className="text-md">
+          <p className='text-md'>
             {seeStatusOf === "all" ? "Announce" : " Message Yohannes Teshome"}
           </p>
         </div>
-        <div className="h-full flex flex-col justify-between">
+        <div className='h-full flex flex-col justify-between'>
           <MessageList
             key={1}
-            className="message-list mt-2 mb-2 bg-[#f5f5f5] rounded-lg h-full py-2"
+            className='message-list mt-2 mb-2 bg-[#f5f5f5] rounded-lg h-full py-2'
             lockable={true}
             toBottomHeight={"100%"}
             dataSource={chatList}
           />
 
           <div className='flex items-center gap-2'>
-            <Input value={chatMessage} onChange={(e) => setChatMessage(e.target.value)} placeholder={seeStatusOf === "all" ? 'Message All': 'Message Yohannes Teshome'} />
+            <Input
+              value={chatMessage}
+              onChange={(e) => setChatMessage(e.target.value)}
+              placeholder={
+                seeStatusOf === "all"
+                  ? "Message All"
+                  : "Message Yohannes Teshome"
+              }
+            />
             <Icon
-              onClick={seeStatusOf === "all" ? () => announceMessage() : () => sendMessage()}
+              onClick={
+                seeStatusOf === "all"
+                  ? () => announceMessage()
+                  : () => sendMessage()
+              }
               className='w-5 h-5 text-primary-500'
               icon='carbon:send-filled'
             />
@@ -185,16 +196,19 @@ if (chatMessage !== "") {
 
   const ExamineeListWindow = () => {
     return (
-      <Card className="w-2/6 h-fit">
-        <div className="flex flex-col gap-4">
-          <p className="font-semibold">Examinees</p>
+      <Card className='w-2/6 h-fit'>
+        <div className='flex flex-col gap-4'>
+          <p className='font-semibold'>Examinees</p>
 
-          <Search placeholder="Search Examinee" allowClear />
+          <Search
+            placeholder='Search Examinee'
+            allowClear
+          />
 
-          <span className="font-semibold italic">Submitted (4)</span>
+          <span className='font-semibold italic'>Submitted (4)</span>
         </div>
         <List
-          itemLayout="horizontal"
+          itemLayout='horizontal'
           dataSource={examineeList}
           renderItem={(item, index) => (
             <List.Item>
@@ -218,7 +232,7 @@ if (chatMessage !== "") {
   const VideoMonitorWindow = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
-    const [socket, setSocket] = useState(null);
+    // const [socket, setSocket] = useState(null);
     const [myPeer, setMyPeer] = useState(null);
     const [videoOnPlay, setVideoOnPlay] = useState(false);
 
@@ -266,44 +280,47 @@ if (chatMessage !== "") {
         });
       });
 
-      const newSocket = io("http://localhost:3000", {
-        transports: ["websocket"],
-      });
-      setSocket(newSocket);
+      // const newSocket = io("http://localhost:3000", {
+      //   transports: ["websocket"],
+      // });
+      // setSocket(newSocket);
 
       const newPeer = new Peer();
       setMyPeer(newPeer);
 
-      newSocket.on("connect", () => {
-        console.log("Connected as viewer");
-      });
+      // newSocket.on("connect", () => {
+      //   console.log("Connected as viewer");
+      // });
+      console.log(socket, 'the socket');
 
-      newPeer.on("open", (viewerId) => {
-        newSocket.emit("join-as-viewer", viewerId);
-      });
-
-      newPeer.on("call", (call) => {
-        call.answer();
-        call.on("stream", (stream) => {
-          addVideoStream(videoRef.current, stream);
+      if (socket) {
+        newPeer.on("open", (viewerId) => {
+          socket.emit("join-as-viewer", viewerId);
         });
-      });
 
-      newPeer.on("connection", (conn) => {
-        conn.on("close", () => {
-          setTimeout(reload, 1000);
+        newPeer.on("call", (call) => {
+          call.answer();
+          call.on("stream", (stream) => {
+            addVideoStream(videoRef.current, stream);
+          });
         });
-      });
 
-      newSocket.on("disconnect", () => {
-        console.log("disconnected viewer");
-      });
+        newPeer.on("connection", (conn) => {
+          conn.on("close", () => {
+            setTimeout(reload, 1000);
+          });
+        });
+        console.log(socket, "socekt");
+
+        socket.on("disconnect", () => {
+          console.log("disconnected viewer");
+        });
+      }
 
       return () => {
         newPeer.disconnect();
-        newSocket.disconnect();
       };
-    }, []);
+    }, [socket]);
 
     const addVideoStream = (video, stream) => {
       video.srcObject = stream;
@@ -317,15 +334,20 @@ if (chatMessage !== "") {
     };
 
     return (
-      <div id="video_container">
+      <div id='video_container'>
         <video
           onPlay={() => videoOnPlay && videoOnPlay()}
           ref={videoRef}
-          id="video"
-          width="340"
-          height="120"
+          id='video'
+          width='340'
+          height='120'
         />
-        <canvas ref={canvasRef} id="canvas" width="340" height="120" />
+        <canvas
+          ref={canvasRef}
+          id='canvas'
+          width='340'
+          height='120'
+        />
       </div>
     );
   };
@@ -397,23 +419,23 @@ if (chatMessage !== "") {
 
     const MonitoringOverviewPage = () => {
       return (
-        <div className="flex flex-col gap-2">
-          <div className="grid grid-cols-3 gap-4 w-full">
+        <div className='flex flex-col gap-2'>
+          <div className='grid grid-cols-3 gap-4 w-full'>
             <Card>
               <div>
-                <p className="font-bold text-xl italic">14</p>
+                <p className='font-bold text-xl italic'>14</p>
                 <p>Total Examinees</p>
               </div>
             </Card>
             <Card>
               <div>
-                <p className="font-bold text-xl italic">4</p>
+                <p className='font-bold text-xl italic'>4</p>
                 <p>Submitted</p>
               </div>
             </Card>
             <Card>
               <div>
-                <p className="font-bold text-xl italic">10</p>
+                <p className='font-bold text-xl italic'>10</p>
                 <p>Ongoing</p>
               </div>
             </Card>
@@ -428,50 +450,49 @@ if (chatMessage !== "") {
 
     const MonitoringIndividualPage = () => {
       return (
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between w-full">
+        <div className='flex flex-col gap-4'>
+          <div className='flex justify-between w-full'>
             <div
               onClick={() => setSeeStatusOf("all")}
-              className="flex items-center gap-2 text-primary-500 cursor-pointer"
-            >
-              <Icon icon="lets-icons:back" />
+              className='flex items-center gap-2 text-primary-500 cursor-pointer'>
+              <Icon icon='lets-icons:back' />
               Back to Overview
             </div>
             {"aa" === "a" ? (
-              <div className="bg-green-500 text-white flex items-center gap-2 py-2 px-4 rounded">
-                <Icon icon="mdi:tick" />
+              <div className='bg-green-500 text-white flex items-center gap-2 py-2 px-4 rounded'>
+                <Icon icon='mdi:tick' />
                 Has submitted Exam
               </div>
             ) : "aa" === "a" ? (
-              <div className="bg-red-500 text-white flex items-center gap-2 py-2 px-4 rounded cursor-pointer">
-                <Icon icon="material-symbols:tab-close" />
+              <div className='bg-red-500 text-white flex items-center gap-2 py-2 px-4 rounded cursor-pointer'>
+                <Icon icon='material-symbols:tab-close' />
                 End Exam for Student
               </div>
             ) : (
-              <div className="bg-blue-500 text-white flex items-center gap-2 py-2 px-4 rounded cursor-pointer">
-                <Icon icon="mdi:restart" />
+              <div className='bg-blue-500 text-white flex items-center gap-2 py-2 px-4 rounded cursor-pointer'>
+                <Icon icon='mdi:restart' />
                 Resume Exam for Student
               </div>
             )}
           </div>
-          <div className="flex flex-col items-start">
-            <div className="flex items-center justify-start">
-              <span className="font-bold text-xl justified">
+          <div className='flex flex-col items-start'>
+            <div className='flex items-center justify-start'>
+              <span className='font-bold text-xl justified'>
                 Yohannes Teshome
               </span>
               {false ? (
-                <p className="text-green-500 ml-2 flex items-center justify-center">
-                  <Icon icon="icon-park-outline:dot" /> Ongoing
+                <p className='text-green-500 ml-2 flex items-center justify-center'>
+                  <Icon icon='icon-park-outline:dot' /> Ongoing
                 </p>
               ) : (
-                <p className="text-gray-500 ml-2 flex items-center justify-center">
-                  <Icon icon="icon-park-outline:dot" /> Finished
+                <p className='text-gray-500 ml-2 flex items-center justify-center'>
+                  <Icon icon='icon-park-outline:dot' /> Finished
                 </p>
               )}
             </div>
-            <p className="text-gray-500">
+            <p className='text-gray-500'>
               {" "}
-              <span className="text-primary-500 font-semibold">
+              <span className='text-primary-500 font-semibold'>
                 {" "}
                 Email:{" "}
               </span>{" "}
@@ -479,60 +500,22 @@ if (chatMessage !== "") {
             </p>
           </div>
 
-          <p className="font-bold ">Examinee History</p>
+          <p className='font-bold '>Examinee History</p>
 
           <Timeline
             items={[
               {
                 dot: (
                   <Icon
-                    className="w-5 h-5"
-                    icon="mdi:stopwatch-start-outline"
+                    className='w-5 h-5'
+                    icon='mdi:stopwatch-start-outline'
                   />
                 ),
                 color: "blue",
                 children: (
                   <span>
                     Started the Exam at <br />{" "}
-                    <span className="italic text-gray-500">
-                      {currentTime.format()}
-                    </span>
-                  </span>
-                ),
-              },
-              {
-                dot: <Icon className="w-5 h-5" icon="octicon:blocked-16" />,
-                color: "red",
-                children: (
-                  <span>
-                    <span className="text-red-500 italic">[BLOCKED]</span>{" "}
-                    Switched Tab at <br />{" "}
-                    <span className="italic text-gray-500">
-                      {currentTime.format()}
-                    </span>
-                  </span>
-                ),
-              },
-              {
-                dot: <Icon className="w-5 h-5" icon="octicon:blocked-16" />,
-                color: "red",
-                children: (
-                  <span>
-                    <span className="text-red-500 italic">[BLOCKED]</span>{" "}
-                    Escaped Full Screen at <br />
-                    <span className="italic text-gray-500">
-                      {currentTime.format()}
-                    </span>
-                  </span>
-                ),
-              },
-              {
-                dot: <Icon className="w-5 h-5" icon="radix-icons:resume" />,
-                color: "blue",
-                children: (
-                  <span>
-                    Re-entered Exam at <br />
-                    <span className="italic text-gray-500">
+                    <span className='italic text-gray-500'>
                       {currentTime.format()}
                     </span>
                   </span>
@@ -540,13 +523,69 @@ if (chatMessage !== "") {
               },
               {
                 dot: (
-                  <Icon className="w-5 h-5" icon="iconoir:submit-document" />
+                  <Icon
+                    className='w-5 h-5'
+                    icon='octicon:blocked-16'
+                  />
+                ),
+                color: "red",
+                children: (
+                  <span>
+                    <span className='text-red-500 italic'>[BLOCKED]</span>{" "}
+                    Switched Tab at <br />{" "}
+                    <span className='italic text-gray-500'>
+                      {currentTime.format()}
+                    </span>
+                  </span>
+                ),
+              },
+              {
+                dot: (
+                  <Icon
+                    className='w-5 h-5'
+                    icon='octicon:blocked-16'
+                  />
+                ),
+                color: "red",
+                children: (
+                  <span>
+                    <span className='text-red-500 italic'>[BLOCKED]</span>{" "}
+                    Escaped Full Screen at <br />
+                    <span className='italic text-gray-500'>
+                      {currentTime.format()}
+                    </span>
+                  </span>
+                ),
+              },
+              {
+                dot: (
+                  <Icon
+                    className='w-5 h-5'
+                    icon='radix-icons:resume'
+                  />
+                ),
+                color: "blue",
+                children: (
+                  <span>
+                    Re-entered Exam at <br />
+                    <span className='italic text-gray-500'>
+                      {currentTime.format()}
+                    </span>
+                  </span>
+                ),
+              },
+              {
+                dot: (
+                  <Icon
+                    className='w-5 h-5'
+                    icon='iconoir:submit-document'
+                  />
                 ),
                 color: "green",
                 children: (
                   <span>
                     Submitted Exam <br />{" "}
-                    <span className="italic text-gray-500">
+                    <span className='italic text-gray-500'>
                       {currentTime.format()}
                     </span>
                   </span>
@@ -620,64 +659,66 @@ if (chatMessage !== "") {
 
     const ResultsOverviewPage = () => {
       return (
-        <div className="flex flex-col gap-2">
-          <div className="grid grid-cols-3 gap-4 w-full">
+        <div className='flex flex-col gap-2'>
+          <div className='grid grid-cols-3 gap-4 w-full'>
             <Card>
               <div>
-                <p className="font-bold text-xl italic">4</p>
+                <p className='font-bold text-xl italic'>4</p>
                 <p>Exams Marked</p>
               </div>
             </Card>
             <Card>
               <div>
-                <p className="font-bold text-xl italic">10</p>
+                <p className='font-bold text-xl italic'>10</p>
                 <p>Ongoing</p>
               </div>
             </Card>
           </div>
-          <Table columns={resultsTableColumns} dataSource={resultsTableData} />
+          <Table
+            columns={resultsTableColumns}
+            dataSource={resultsTableData}
+          />
         </div>
       );
     };
 
     const ResultsIndividualPage = () => {
       return (
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between w-full">
+        <div className='flex flex-col gap-4'>
+          <div className='flex justify-between w-full'>
             <div
               onClick={() => setSeeStatusOf("all")}
-              className="flex items-center gap-2 text-primary-500 cursor-pointer"
-            >
-              <Icon icon="lets-icons:back" />
+              className='flex items-center gap-2 text-primary-500 cursor-pointer'>
+              <Icon icon='lets-icons:back' />
               Back to Overview
             </div>
-            <div className="flex items-center gap-4">
-              <div className="px-4 py-1 rounded-full flex items-center gap-2 border border-primary-500 cursor-pointer">
-                <Icon icon="hugeicons:file-export" /> Export
+            <div className='flex items-center gap-4'>
+              <div className='px-4 py-1 rounded-full flex items-center gap-2 border border-primary-500 cursor-pointer'>
+                <Icon icon='hugeicons:file-export' /> Export
               </div>
-              <div className="px-4 py-1 rounded-full flex items-center gap-2 border border-primary-500 cursor-pointer">
-                <Icon icon="mdi:email-send-outline" /> Send to Email
+              <div className='px-4 py-1 rounded-full flex items-center gap-2 border border-primary-500 cursor-pointer'>
+                <Icon icon='mdi:email-send-outline' /> Send to Email
               </div>
             </div>
           </div>
-          <div className="flex items-start flex-col gap-4">
-            <div className="flex items-center justify-start">
-              <span className="font-bold text-xl justified">
+          <div className='flex items-start flex-col gap-4'>
+            <div className='flex items-center justify-start'>
+              <span className='font-bold text-xl justified'>
                 Yohannes Teshome
               </span>
               {false ? (
-                <p className="text-green-500 ml-2 flex items-center justify-center">
-                  <Icon icon="icon-park-outline:dot" /> Ongoing
+                <p className='text-green-500 ml-2 flex items-center justify-center'>
+                  <Icon icon='icon-park-outline:dot' /> Ongoing
                 </p>
               ) : (
-                <p className="text-gray-500 ml-2 flex items-center justify-center">
-                  <Icon icon="icon-park-outline:dot" /> Finished
+                <p className='text-gray-500 ml-2 flex items-center justify-center'>
+                  <Icon icon='icon-park-outline:dot' /> Finished
                 </p>
               )}
             </div>
-            <p className="text-gray-500">
+            <p className='text-gray-500'>
               {" "}
-              <span className="text-primary-500 font-semibold">
+              <span className='text-primary-500 font-semibold'>
                 {" "}
                 Email:{" "}
               </span>{" "}
@@ -685,21 +726,21 @@ if (chatMessage !== "") {
             </p>
           </div>
           {/* True/False Question */}
-          <Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
-            <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-              <h3 className="text-blue-900 font-semibold text-lg">
+          <Card className=' w-11/12 mx-auto bg-gray-50 rounded-none'>
+            <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+              <h3 className='text-blue-900 font-semibold text-lg'>
                 Question 1
               </h3>
-              <p className="font-semibold text-blue-900">Points 1</p>
+              <p className='font-semibold text-blue-900'>Points 1</p>
             </div>
-            <div className="mt-4 mx-4 flex items-start">
-              <h3 className="font-semibold text-[1rem]">Some question</h3>
+            <div className='mt-4 mx-4 flex items-start'>
+              <h3 className='font-semibold text-[1rem]'>Some question</h3>
             </div>
-            <div className="mt-8 flex items-center h-fit justify-start mx-4 w-72 ">
-              <Form.Item label="Your Answer">
+            <div className='mt-8 flex items-center h-fit justify-start mx-4 w-72 '>
+              <Form.Item label='Your Answer'>
                 <Select defaultActiveFirstOption={"true"}>
-                  <Select.Option value="true">True</Select.Option>
-                  <Select.Option value="false">False</Select.Option>
+                  <Select.Option value='true'>True</Select.Option>
+                  <Select.Option value='false'>False</Select.Option>
                 </Select>
               </Form.Item>
               {/* {true ? (
@@ -714,63 +755,75 @@ if (chatMessage !== "") {
                 />
               )} */}
             </div>
-            <div className="flex flex-col gap-2 w-full">
+            <div className='flex flex-col gap-2 w-full'>
               {"aa" === "a" ? (
-                <Tag className="flex items-center w-fit gap-2" color="blue">
-                  <Icon icon="mdi:checkbox-marked-outline" />
+                <Tag
+                  className='flex items-center w-fit gap-2'
+                  color='blue'>
+                  <Icon icon='mdi:checkbox-marked-outline' />
                   Manually Marked
                 </Tag>
               ) : "aa" === "aa" ? (
-                <Tag className="flex items-center w-fit gap-2" color="green">
-                  <Icon icon="lucide:bot" />
+                <Tag
+                  className='flex items-center w-fit gap-2'
+                  color='green'>
+                  <Icon icon='lucide:bot' />
                   Automatically Marked
                 </Tag>
               ) : (
-                <Tag className="flex items-center w-fit gap-2" color="red">
-                  <Icon icon="mage:file-question-mark" />
+                <Tag
+                  className='flex items-center w-fit gap-2'
+                  color='red'>
+                  <Icon icon='mage:file-question-mark' />
                   Not Yet Marked
                 </Tag>
               )}
-              <div className="flex gap-2 items-center w-full">
+              <div className='flex gap-2 items-center w-full'>
                 <Alert
-                  message="Answered Correctly"
-                  className="w-[90%]"
-                  type="success"
+                  message='Answered Correctly'
+                  className='w-[90%]'
+                  type='success'
                   showIcon
                 />
                 <InputNumber
-                  className="w-[10%]"
+                  className='w-[10%]'
                   min={1}
                   max={10}
                   defaultValue={3}
                 />
               </div>
-              <div className="flex flex-col gap-2 w-full">
+              <div className='flex flex-col gap-2 w-full'>
                 {"aa" === "a" ? (
-                  <Tag className="flex items-center w-fit gap-2" color="blue">
-                    <Icon icon="mdi:checkbox-marked-outline" />
+                  <Tag
+                    className='flex items-center w-fit gap-2'
+                    color='blue'>
+                    <Icon icon='mdi:checkbox-marked-outline' />
                     Manually Marked
                   </Tag>
                 ) : "aa" === "aa" ? (
-                  <Tag className="flex items-center w-fit gap-2" color="green">
-                    <Icon icon="lucide:bot" />
+                  <Tag
+                    className='flex items-center w-fit gap-2'
+                    color='green'>
+                    <Icon icon='lucide:bot' />
                     Automatically Marked
                   </Tag>
                 ) : (
-                  <Tag className="flex items-center w-fit gap-2" color="red">
-                    <Icon icon="mage:file-question-mark" />
+                  <Tag
+                    className='flex items-center w-fit gap-2'
+                    color='red'>
+                    <Icon icon='mage:file-question-mark' />
                     Not Yet Marked
                   </Tag>
                 )}
-                <div className="flex gap-2 items-center w-full">
+                <div className='flex gap-2 items-center w-full'>
                   <Alert
-                    message="Incorrect Answer"
-                    className="w-[90%]"
-                    type="error"
+                    message='Incorrect Answer'
+                    className='w-[90%]'
+                    type='error'
                     showIcon
                   />
                   <InputNumber
-                    className="w-[10%]"
+                    className='w-[10%]'
                     min={1}
                     max={10}
                     defaultValue={3}
@@ -780,31 +833,36 @@ if (chatMessage !== "") {
             </div>
           </Card>
           {/* Short Answer */}
-          <Card className="bg-gray-50 w-11/12 mx-auto my-2">
-            <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-              <h3 className="text-blue-900 font-semibold text-lg">
+          <Card className='bg-gray-50 w-11/12 mx-auto my-2'>
+            <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+              <h3 className='text-blue-900 font-semibold text-lg'>
                 Question 2
               </h3>
-              <p className="font-semibold text-blue-900">Points 1</p>
+              <p className='font-semibold text-blue-900'>Points 1</p>
             </div>
 
-            <div className="mt-4 mx-4 flex items-start ">
-              <h3 className="font-semibold text-[1rem]">Some Question</h3>
+            <div className='mt-4 mx-4 flex items-start '>
+              <h3 className='font-semibold text-[1rem]'>Some Question</h3>
             </div>
 
-            <div className="mt-4 flex items-start mx-4 mb-4">
-              <TextArea rows={4} placeholder="Enter your question here" />
+            <div className='mt-4 flex items-start mx-4 mb-4'>
+              <TextArea
+                rows={4}
+                placeholder='Enter your question here'
+              />
             </div>
-            <div className="flex flex-col gap-2 w-full">
-              <div className="flex flex-col gap-2 w-full">
-                <div className="flex gap-2 items-center justify-between w-full">
-                  <Tag className="flex items-center w-fit gap-2" color="blue">
-                    <Icon icon="mdi:checkbox-marked-outline" />
+            <div className='flex flex-col gap-2 w-full'>
+              <div className='flex flex-col gap-2 w-full'>
+                <div className='flex gap-2 items-center justify-between w-full'>
+                  <Tag
+                    className='flex items-center w-fit gap-2'
+                    color='blue'>
+                    <Icon icon='mdi:checkbox-marked-outline' />
                     Manually Marked Question
                   </Tag>
 
                   <InputNumber
-                    className="w-[10%]"
+                    className='w-[10%]'
                     min={1}
                     max={10}
                     defaultValue={3}
@@ -847,12 +905,12 @@ if (chatMessage !== "") {
 
   return (
     <>
-      <div className="flex justify-between gap-4 items-center">
-        <h1 className="text-3xl font-bold my-2">Exam Monitoring</h1>
-        <div className="flex items-center justify-center gap-4">
+      <div className='flex justify-between gap-4 items-center'>
+        <h1 className='text-3xl font-bold my-2'>Exam Monitoring</h1>
+        <div className='flex items-center justify-center gap-4'>
           <span>Exam: </span>
           <Select
-            defaultValue="lucy"
+            defaultValue='lucy'
             style={{
               width: 120,
             }}
@@ -879,29 +937,32 @@ if (chatMessage !== "") {
           />
         </div>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className='flex flex-col gap-4'>
         <Card>
-          <div className="flex justify-between my-4">
-            <p className="font-bold text-lg">Exam: Exam Name</p>
+          <div className='flex justify-between my-4'>
+            <p className='font-bold text-lg'>Exam: Exam Name</p>
             {examStatus === "open" ? (
-              <span className="text-success-500 flex gap-2 items-center">
-                <Icon icon="heroicons-outline:status-online" />
+              <span className='text-success-500 flex gap-2 items-center'>
+                <Icon icon='heroicons-outline:status-online' />
                 Online
               </span>
             ) : (
-              <span className="text-error-500 flex gap-2 items-center">
-                <Icon icon="codicon:eye-closed" /> Closed{" "}
+              <span className='text-error-500 flex gap-2 items-center'>
+                <Icon icon='codicon:eye-closed' /> Closed{" "}
               </span>
             )}
           </div>
-          <div className="w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border ">
-            <p className="font-semibold flex items-center gap-2">
-              <span className="font-bold text-blue-700">Exam Key : </span>{" "}
-              <span className="italic cursor-pointer">tyEr23h</span>
-              <Icon className="text-gray-500 " icon="ph:clipboard" />
+          <div className='w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border '>
+            <p className='font-semibold flex items-center gap-2'>
+              <span className='font-bold text-blue-700'>Exam Key : </span>{" "}
+              <span className='italic cursor-pointer'>tyEr23h</span>
+              <Icon
+                className='text-gray-500 '
+                icon='ph:clipboard'
+              />
             </p>
-            <p className="font-semibold">
-              <span className="font-bold text-blue-700">Access : </span>
+            <p className='font-semibold'>
+              <span className='font-bold text-blue-700'>Access : </span>
               <Select
                 defaultValue={examStatus}
                 style={{
@@ -924,7 +985,7 @@ if (chatMessage !== "") {
             {/* <Button className='bg-error-500 text-white'>End Exam</Button> */}
           </div>
         </Card>
-        <div className="flex gap-2 min-h-screen max-h-fit">
+        <div className='flex gap-2 min-h-screen max-h-fit'>
           <ExamineeListWindow />
           <Card
             style={{
@@ -932,11 +993,10 @@ if (chatMessage !== "") {
             }}
             tabList={tabList}
             activeTabKey={activeTabKey1}
-            onTabChange={onTab1Change}
-          >
+            onTabChange={onTab1Change}>
             {contentList[activeTabKey1]}
           </Card>
-          <div className="flex flex-col items-center gap-4">
+          <div className='flex flex-col items-center gap-4'>
             <ChatWindow />
             {seeStatusOf !== "all" && <VideoMonitorWindow />}
           </div>

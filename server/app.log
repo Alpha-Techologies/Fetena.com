@@ -1968,3 +1968,5 @@
 2024-06-04T10:03:24.231Z - [INFO   ] - organizationexaminers.find([{"user":"6645e752b0e194684daa1ee4","status":"activated"},{"sort":{"createdAt":-1},"skip":0,"limit":9,"projection":{"__v":0}}])
 2024-06-04T10:03:24.253Z - [INFO   ] - users.find([{"_id":{"$in":["6645e752b0e194684daa1ee4"]}},{"strictPopulate":false,"projection":{"password":0,"passwordConfirm":0}}])
 2024-06-04T10:03:24.256Z - [INFO   ] - organizations.find([{"_id":{"$in":["664744dd75cf6b74ad2ec02e"]}},{"strictPopulate":false}])
+2024-06-04T10:24:49.038Z - [INFO   ] - DBconnection succcessful
+2024-06-04T10:24:49.119Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
