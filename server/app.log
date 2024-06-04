@@ -850,3 +850,7 @@
 2024-05-20T14:41:29.162Z - [INFO   ] - takeexams.findOne([{"exam":"664b491d2068fc9d1b0c5156","user":"662e998e1b1c9802c2665e13"},{}])
 2024-05-20T14:45:10.675Z - [INFO   ] - DBconnection succcessful
 2024-05-20T14:45:10.723Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-04T08:31:12.517Z - [INFO   ] - DBconnection succcessful
+2024-06-04T08:31:12.565Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-04T08:33:04.538Z - [INFO   ] - DBconnection succcessful
+2024-06-04T08:33:04.561Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
