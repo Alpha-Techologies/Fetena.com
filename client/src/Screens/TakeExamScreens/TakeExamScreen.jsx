@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import io from "socket.io-client";
 import {
   Button,
@@ -15,17 +15,20 @@ import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import fetena_logo from "../../assets/fetena_logo.png";
 import moment from "moment";
+import { toast } from "react-toastify";
 import Draggable from "react-draggable";
 import "react-chat-elements/dist/main.css";
 import { MessageBox } from "react-chat-elements";
 import { MessageList, Input } from "react-chat-elements";
+import useSocketIO from "../../utils/socket/useSocketIO";
 import * as math from "mathjs";
+import { takeExam } from "../../Redux/features/dataActions";
 import Peer from "peerjs";
 const { Header, Sider, Content } = Layout;
 const inputReferance = React.createRef();
 
 const TakeExamScreen = () => {
-  const socket = io("http://localhost:3000");
+
   const roomId = "123efr";
   const { user } = useSelector((state) => state.auth);
   const userId = user._id;
@@ -36,11 +39,44 @@ const TakeExamScreen = () => {
   const [isCharging, setIsCharging] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [showChat, setShowChat] = useState(false);
+  const [takeExamId, setTakeExamId] = useState("");
+  const [chatMessage, setChatMessage] = useState("");
+  const [chatList, setChatList] = useState([]);
+  const [socket] = useSocketIO();
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    socket.emit("joinRoom", { userId, roomId });
+    console.log('this is runnning and start is changing');
+    if (startExam) {
+      dispatch(takeExam("665cd9ad02c0ca39fcda44d4"))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            console.log(res.payload);
+            const temp = res.payload.data._id;
+            setTakeExamId(temp);
+            console.log(temp, "takeExamId");
+
+            socket.emit(
+              "joinExam",
+              "665cd9ad02c0ca39fcda44d4",
+              res.payload.data._id
+            );
+          } else {
+            toast.error(res.payload.message);
+            return;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("There is some error in the server!");
+        });
+
+    }
+  }, [startExam]);
+
+  useEffect(() => {
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
@@ -316,6 +352,71 @@ const TakeExamScreen = () => {
   };
 
   const ChatComponent = () => {
+    useEffect(() => {
+      if (socket) {
+
+        console.log("receiving message examinee", socket);
+
+        const handleReceiveMessage = (message) => {
+          console.log("message received");
+          console.log(message);
+          const newMessage = {
+            position: "left",
+            title: "Invigilator",
+            type: "text",
+            text: message.message,
+            date: "message.date",
+          };
+          setChatList((prev) => [...prev, newMessage]);
+        }
+
+        const handleReceiveAnnouncement = (message) => {
+          console.log("announcemet received");
+          console.log(message);
+          setChatList((prev) => [
+            ...prev,
+            {
+              position: "left",
+              title: "Invigilator",
+              type: "text",
+              text: message,
+              date: "message.date",
+            },
+          ]);
+        }
+
+        socket.on("receiveMessage", handleReceiveMessage);
+  
+        socket.on("announcement", handleReceiveAnnouncement);
+
+        return () => {
+        socket.off("receiveMessage", handleReceiveMessage);
+        socket.off("announcement", handleReceiveAnnouncement)
+      };
+      }
+    }, [socket]);
+
+    const sendMessage = () => {
+      console.log("send message function");
+      if (chatMessage !== "" && socket) {
+        socket.emit("sendMessage", "665cd9ad02c0ca39fcda44d4", false, {
+          sender: user._id,
+          receiver: "6630daab4db53d7d765f3978",
+          message: chatMessage,
+        });
+        setChatList((prev) => [
+          ...prev,
+          {
+            position: "right",
+            title: "You",
+            type: "text",
+            text: chatMessage,
+            date: "message.date",
+          },
+        ]);
+      }
+    };
+
     return (
       <div className='h-screen flex flex-col justify-between'>
         <MessageList
@@ -323,33 +424,27 @@ const TakeExamScreen = () => {
           className='message-list mt-2 mb-2'
           lockable={true}
           toBottomHeight={"100%"}
-          dataSource={[
-            {
-              position: "right",
-              title: "message name",
-              type: "text",
-              text: "message text",
-              date: "message.date",
-            },
-          ]}
+          dataSource={chatList}
         />
-        <Input
-          referance={inputReferance}
-          placeholder='Type here...'
-          multiline={true}
-          value={inputValue}
-          rightButtons={
-            <Button
-              color='white'
-              backgroundColor='black'
-              text='Send'
+        <div className='flex items-center gap-2 w-[90%]'>
+          <Input
+            className='w-full'
+            value={chatMessage}
+            placeholder={"Type your message here"}
+            onChange={(e) => setChatMessage(e.target.value)}
+          />
+          <div className='w-[20%]'>
+            <Icon
+              onClick={() => sendMessage()}
+              className='w-5 h-5 text-primary-500'
+              icon='carbon:send-filled'
             />
-          }
-        />
+
+          </div>
+        </div>
       </div>
     );
   };
-
 
 const VideoComponent = () => {
   const videoRef = useRef(null);

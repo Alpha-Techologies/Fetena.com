@@ -16,11 +16,12 @@ import {
 } from "antd";
 import moment from "moment";
 import Button from "../Components/Button";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { MessageList } from "react-chat-elements";
-import { io } from "socket.io-client";
-import * as faceapi from "face-api.js";
-import Peer from "peerjs";
+import {useSelector} from 'react-redux'
+import useSocketIO from "../utils/socket/useSocketIO";
+import * as faceapi from 'face-api.js'
+import Peer from 'peerjs'
 
 const inputReferance = React.createRef();
 const { Search, TextArea } = Input;
@@ -29,9 +30,28 @@ const currentTime = moment();
 const MonitoringPage = () => {
   const [activeTabKey1, setActiveTabKey1] = useState("tab1");
   const [inputValue, setInputValue] = useState("");
-  const [examStatus, setExamStatus] = useState("open");
+  const [examStatus, setExamStatus] = useState("closed");
   const [seeStatusOf, setSeeStatusOf] = useState("all");
-  // console.log(faceapi)
+  const [chatMessage, setChatMessage] = useState("")
+  const [chatList, setChatList] = useState([])
+  const { user } = useSelector((state) => state.auth);
+  const [socket] = useSocketIO()
+  console.log(faceapi)
+  const serverURL = "http://localhost:3000"
+      // const socket = io(serverURL);
+
+
+  // useEffect to join socket of the invigilator
+  useEffect(() => {
+    if (examStatus === 'open') {
+
+      // Emit an event to the server
+      socket.emit("joinInvigilator", "665cd9ad02c0ca39fcda44d4");
+
+    }
+  }, [examStatus])
+
+
 
   const tabList = [
     {
@@ -63,6 +83,72 @@ const MonitoringPage = () => {
   ];
 
   const ChatWindow = () => {
+
+    useEffect(() => {
+      if (socket) {
+        
+        console.log("receiving message admin", socket);
+
+        const handleReceiveMessage = (message) => {
+          console.log("message received");
+          console.log(message);
+          const newMessage = {position: "left",
+              title: "Examinee",
+              type: "text",
+              text: message.message,
+              date: "message.date",}
+          setChatList((prev) => [
+            ...prev,
+            newMessage,
+          ]);
+        }
+
+        socket.on("receiveMessage", handleReceiveMessage);
+
+        return () => {
+          socket.off("receiveMessage", handleReceiveMessage);
+        };
+      }
+    }, [socket]);
+
+    const announceMessage = () => {
+console.log("announce message function");
+if (chatMessage !== "" && socket) {
+  socket.emit("announcement", "665cd9ad02c0ca39fcda44d4", chatMessage);
+  setChatList((prev) => [
+    ...prev,
+    {
+      position: "right",
+      title: "You",
+      type: "text",
+      text: chatMessage,
+      date: "message.date",
+    },
+  ]);
+}
+    }
+
+    const sendMessage = () => {
+console.log("send message function");
+if (chatMessage !== "") {
+  socket.emit("sendMessage", "665cd9ad02c0ca39fcda44d4", true, {
+    sender: user._id,
+    receiver: "6645e752b0e194684daa1ee4",
+    message: chatMessage,
+  });
+  setChatList((prev) => [
+    ...prev,
+    {
+      position: "right",
+      title: "You",
+      type: "text",
+      text: chatMessage,
+      date: "message.date",
+    },
+  ]);
+}
+    }
+
     return (
       <Card className="h-fit">
         <div className="flex items-center justify-center text-primary-500 gap-4">
@@ -81,40 +167,15 @@ const MonitoringPage = () => {
             className="message-list mt-2 mb-2 bg-[#f5f5f5] rounded-lg h-full py-2"
             lockable={true}
             toBottomHeight={"100%"}
-            dataSource={[
-              {
-                position: "right",
-                title: "message name",
-                type: "text",
-                text: "message text",
-                date: "message.date",
-              },
-            ]}
+            dataSource={chatList}
           />
-          {/* <Input
-            referance={inputReferance}
-            placeholder='Message All'
-            // multiline={true}
-            value={inputValue}
-            className="border"
-            rightButtons={
-              <Icon
-                className='w-5 h-5 text-primary-500'
-                icon='carbon:send-filled'
-              />
-            }
-          /> */}
-          <div className="flex items-center gap-2">
-            <Input
-              placeholder={
-                seeStatusOf === "all"
-                  ? "Message All"
-                  : "Message Yohannes Teshome"
-              }
-            />
+
+          <div className='flex items-center gap-2'>
+            <Input value={chatMessage} onChange={(e) => setChatMessage(e.target.value)} placeholder={seeStatusOf === "all" ? 'Message All': 'Message Yohannes Teshome'} />
             <Icon
-              className="w-5 h-5 text-primary-500"
-              icon="carbon:send-filled"
+              onClick={seeStatusOf === "all" ? () => announceMessage() : () => sendMessage()}
+              className='w-5 h-5 text-primary-500'
+              icon='carbon:send-filled'
             />
           </div>
         </div>
@@ -842,7 +903,7 @@ const MonitoringPage = () => {
             <p className="font-semibold">
               <span className="font-bold text-blue-700">Access : </span>
               <Select
-                defaultValue="open"
+                defaultValue={examStatus}
                 style={{
                   width: 80,
                 }}
