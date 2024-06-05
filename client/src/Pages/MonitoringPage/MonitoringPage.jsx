@@ -13,6 +13,7 @@ import ChatWindow from "./ChatWindow";
 import ExamineeListWindow from "./ExamineeListWindow";
 import MonitoringTab from "./MonitoringTab";
 import ResultsTab from "./ResultsTab";
+import VideoMonitorWindow from "./VideoMonitorWindow";
 
 const MonitoringPage = () => {
   const [activeTabKey1, setActiveTabKey1] = useState("tab1");
@@ -154,7 +155,6 @@ const MonitoringPage = () => {
   useEffect(() => {
     if (examStatus === "open") {
       // Emit an event to the server
-      console.log(currentExam._id, "invig id");
       socket.emit("joinInvigilator", currentExam._id);
     }
   }, [examStatus]);
@@ -302,7 +302,9 @@ const MonitoringPage = () => {
                   currentExam={currentExam}
                   socket={socket}
                 />
-                {seeStatusOf !== "all" && "videoMonitorWindow"}
+                {seeStatusOf !== "all" && (
+                  <VideoMonitorWindow socket={socket} />
+                )}
               </div>
             </div>
           </div>

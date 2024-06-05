@@ -25,6 +25,7 @@ import axios from "axios";
 import ExamStartConfirmationModal from "./ExamStartConfirmationModal";
 import ExamTools from "./ExamTools";
 import ChatComponent from "./ChatComponent";
+import VideoComponent from "./VideoComponent";
 
 const { Header, Sider, Content } = Layout;
 
@@ -235,7 +236,7 @@ const TakeExamScreen = () => {
             isCharging={isCharging}
             batteryLevel={batteryLevel}
           />
-          {/* <VideoComponent /> */}
+          <VideoComponent socket={socket} />
           {"VideoComponent"}
         </Sider>
         <Layout>
