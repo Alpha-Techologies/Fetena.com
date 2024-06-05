@@ -80,7 +80,7 @@ const TakeExamScreen = () => {
       socket.on("examTerminated", (takeExamId) => {
         toast.error("Exam Terminated by Invigilator");
         // navigate two pages back
-        navigate(-2);
+        navigate("/dashboard");
       });
     }
   }, [socket]);
