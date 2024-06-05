@@ -6,18 +6,20 @@ import { MessageBox } from "react-chat-elements";
 import { MessageList } from "react-chat-elements";
 import { takeExam } from "../../Redux/features/dataActions";
 import { toast } from "react-toastify";
+import axios from "axios";
 
-const ChatComponent = ({ exam, socket }) => {
+const ChatComponent = ({ exam, socket, takeExamId }) => {
   const { user } = useSelector((state) => state.auth);
   const { currentTakeExamSession } = useSelector((state) => state.data);
   const [chatMessage, setChatMessage] = useState("");
   const [chatList, setChatList] = useState({ chat: [] });
+  const [examinee, setExaminee] = useState({});
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("in the use effect", socket)
+    console.log("in the use effect", socket);
     if (socket) {
-      console.log("recieving message")
+      console.log("recieving message");
       const handleReceiveMessage = (message) => {
         console.log("message received", message);
         const newMessage = {
@@ -45,17 +47,13 @@ const ChatComponent = ({ exam, socket }) => {
         console.log(chatList);
       };
 
-      
+      socket.on("receiveMessage", handleReceiveMessage);
 
-        socket.on("receiveMessage", handleReceiveMessage);
-
-
-        return () => {
-          socket.off("receiveMessage", handleReceiveMessage);
-        };
+      return () => {
+        socket.off("receiveMessage", handleReceiveMessage);
       };
-    }, [socket]);
-
+    }
+  }, [socket]);
 
   useEffect(() => {
     if (socket) {
@@ -76,7 +74,7 @@ const ChatComponent = ({ exam, socket }) => {
             ],
           };
         });
-      }
+      };
       socket.on("announcement", handleReceiveAnnouncement);
 
       return () => {
@@ -86,26 +84,31 @@ const ChatComponent = ({ exam, socket }) => {
   }, [socket]);
 
   useEffect(() => {
-    dispatch(takeExam(exam._id))
-      .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          console.log(res.payload);
-          // const temp = res.payload.data._id;
-          // setTakeExamId(temp);
-          // console.log(temp, "takeExamId");
+    console.log(takeExamId, "takeExam in chat component");
 
-          // socket.emit("joinExam", id, res.payload.data._id);
-        } else {
-          toast.error(res.payload.message);
-          return;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("There is some error in the server!");
-      });
-    if (currentTakeExamSession) {
-      for (const message of currentTakeExamSession.chatMessages) {
+    const getTakeExamId = async (takeExamId) => {
+      try {
+        const response = await axios.get(`/api/exams/exam-taker/${takeExamId}`);
+
+        console.log(response, "resp getTakeExamId  ");
+        const tempExaminee = response.data.data.data[0];
+        console.log(tempExaminee);
+
+        setExaminee(response.data.data.data[0]);
+        console.log(examinee);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (takeExamId) {
+      getTakeExamId(takeExamId);
+    }
+  }, [takeExamId]);
+
+  useEffect(() => {
+    if (Object.keys(examinee).length !== 0) {
+      console.log(examinee, "examinee");
+      for (const message of examinee.chatMessages) {
         const newMessage = {
           position: message.sender === user._id ? "right" : "left",
           title:
@@ -123,7 +126,7 @@ const ChatComponent = ({ exam, socket }) => {
         });
       }
     }
-  }, [dispatch]);
+  }, [examinee]);
 
   const sendMessage = () => {
     if (chatMessage !== "" && socket) {

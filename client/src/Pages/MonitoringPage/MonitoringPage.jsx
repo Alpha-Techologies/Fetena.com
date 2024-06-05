@@ -64,19 +64,6 @@ const MonitoringPage = () => {
     }
   };
 
-  const getTakeExamId = async (takeExamId) => {
-    try {
-      const response = await axios.get(`/api/exams/exam-taker/${takeExamId}`);
-
-      console.log(response, "resp getTakeExamId  ");
-      const tempExaminee = response.data.data.data[0];
-
-      setExamineeList((prev) => [...prev, tempExaminee]);
-      toast.success("New User joined Exam!");
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const fetchExamDetails = async (examId) => {
     console.log("fetchExamDetails");
