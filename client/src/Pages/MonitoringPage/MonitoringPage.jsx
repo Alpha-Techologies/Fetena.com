@@ -1,8 +1,5 @@
 import { Icon } from "@iconify/react";
-import {
-  Select,
-  Card,
-} from "antd";
+import { Select, Card } from "antd";
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import useSocketIO from "../../utils/socket/useSocketIO";
@@ -12,12 +9,10 @@ import { useNavigate } from "react-router-dom";
 import _ from "lodash";
 import { toast } from "react-toastify";
 
-
-import ChatWindow from './ChatWindow'
-import ExamineeListWindow from './ExamineeListWindow'
-import MonitoringTab from './MonitoringTab'
+import ChatWindow from "./ChatWindow";
+import ExamineeListWindow from "./ExamineeListWindow";
+import MonitoringTab from "./MonitoringTab";
 import ResultsTab from "./ResultsTab";
-
 
 const MonitoringPage = () => {
   const [activeTabKey1, setActiveTabKey1] = useState("tab1");
@@ -175,8 +170,19 @@ const MonitoringPage = () => {
   ];
 
   const contentList = {
-    tab1: <MonitoringTab examineeList={examineeList} examineeStatusStats={examineeStatusStats} currentUser={currentUser} setCurrentUser={setCurrentUser} seeStatusOf={seeStatusOf} setSeeStatusOf={setSeeStatusOf} />,
-    tab2: <ResultsTab seeStatusOf={seeStatusOf} setSeeStatusOf={setSeeStatusOf} />,
+    tab1: (
+      <MonitoringTab
+        examineeList={examineeList}
+        examineeStatusStats={examineeStatusStats}
+        currentUser={currentUser}
+        setCurrentUser={setCurrentUser}
+        seeStatusOf={seeStatusOf}
+        setSeeStatusOf={setSeeStatusOf}
+      />
+    ),
+    tab2: (
+      <ResultsTab seeStatusOf={seeStatusOf} setSeeStatusOf={setSeeStatusOf} />
+    ),
   };
 
   const onTab1Change = (key) => {
@@ -195,16 +201,16 @@ const MonitoringPage = () => {
     <>
       {!examsList.length ? (
         <div>
-          <div className='flex justify-between gap-4 items-center'>
-            <h1 className='text-3xl font-bold my-2'>Exam Monitoring</h1>
+          <div className="flex justify-between gap-4 items-center">
+            <h1 className="text-3xl font-bold my-2">Exam Monitoring</h1>
           </div>
           <p>You currently have no exams created.</p>
         </div>
       ) : (
         <div>
-          <div className='flex justify-between gap-4 items-center'>
-            <h1 className='text-3xl font-bold my-2'>Exam Monitoring</h1>
-            <div className='flex items-center justify-center gap-4'>
+          <div className="flex justify-between gap-4 items-center">
+            <h1 className="text-3xl font-bold my-2">Exam Monitoring</h1>
+            <div className="flex items-center justify-center gap-4">
               <span>Exam: </span>
               <Select
                 defaultValue={examsList[0].value}
@@ -216,42 +222,42 @@ const MonitoringPage = () => {
               />
             </div>
           </div>
-          <div className='flex flex-col gap-4'>
+          <div className="flex flex-col gap-4">
             <Card>
-              <div className='flex justify-between my-4'>
-                <p className='font-bold text-lg'>
+              <div className="flex justify-between my-4">
+                <p className="font-bold text-lg">
                   Exam: {currentExam.examName}
                 </p>
                 {examStatus === "open" ? (
-                  <span className='text-success-500 flex gap-2 items-center'>
-                    <Icon icon='heroicons-outline:status-online' />
+                  <span className="text-success-500 flex gap-2 items-center">
+                    <Icon icon="heroicons-outline:status-online" />
                     Online
                   </span>
                 ) : (
-                  <span className='text-error-500 flex gap-2 items-center'>
-                    <Icon icon='codicon:eye-closed' /> Closed{" "}
+                  <span className="text-error-500 flex gap-2 items-center">
+                    <Icon icon="codicon:eye-closed" /> Closed{" "}
                   </span>
                 )}
               </div>
 
-              <div className='w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border '>
-                <p className='font-semibold'>
-                  <span className='font-bold text-blue-700'>Starts at : </span>
+              <div className="w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border ">
+                <p className="font-semibold">
+                  <span className="font-bold text-blue-700">Starts at : </span>
                   {new Date(currentExam.startDate).toLocaleString()}
                 </p>
-                <p className='font-semibold'>
-                  <span className='font-bold text-blue-700'>Points : </span>
+                <p className="font-semibold">
+                  <span className="font-bold text-blue-700">Points : </span>
                   {currentExam.points}
                 </p>
                 {/* <p className='font-semibold'>
               <span className='font-bold text-blue-700'>Questions : </span>{exam.questions}
             </p> */}
-                <p className='font-semibold'>
-                  <span className='font-bold text-blue-700'>Time limit : </span>
+                <p className="font-semibold">
+                  <span className="font-bold text-blue-700">Time limit : </span>
                   {currentExam.duration} Minutes
                 </p>
-                <p className='font-semibold'>
-                  <span className='font-bold text-blue-700'>Access : </span>
+                <p className="font-semibold">
+                  <span className="font-bold text-blue-700">Access : </span>
                   <Select
                     defaultValue={examStatus}
                     style={{
@@ -272,19 +278,28 @@ const MonitoringPage = () => {
                 </p>
               </div>
             </Card>
-            <div className='flex gap-2 min-h-screen max-h-fit'>
-              <ExamineeListWindow examineeList={examineeList} setSeeStatusOf={setSeeStatusOf} />
+            <div className="flex gap-2 min-h-screen max-h-fit">
+              <ExamineeListWindow
+                examineeList={examineeList}
+                setSeeStatusOf={setSeeStatusOf}
+              />
               <Card
                 style={{
                   width: "100%",
                 }}
                 tabList={tabList}
                 activeTabKey={activeTabKey1}
-                onTabChange={onTab1Change}>
+                onTabChange={onTab1Change}
+              >
                 {contentList[activeTabKey1]}
               </Card>
-              <div className='flex flex-col items-center gap-4'>
-                <ChatWindow currentUser={currentUser} seeStatusOf={seeStatusOf} currentExam={currentExam}  />
+              <div className="flex flex-col items-center gap-4">
+                <ChatWindow
+                  currentUser={currentUser}
+                  seeStatusOf={seeStatusOf}
+                  currentExam={currentExam}
+                  socket={socket}
+                />
                 {seeStatusOf !== "all" && "videoMonitorWindow"}
               </div>
             </div>
