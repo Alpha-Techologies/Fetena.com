@@ -17,7 +17,7 @@ import {
   getUserOrganizations,
   getNotifications,
   updateNotification,
-  takeExam
+  takeExam,
 } from "./dataActions";
 
 const initialState = {
@@ -25,6 +25,8 @@ const initialState = {
   error: null,
   workspace: null,
   currentSidebar: "1",
+  currentExamSession: null,
+  currentTakeExamSession: null,
   currentUserOrganizationsIdAndRole: null,
 };
 
@@ -36,7 +38,7 @@ const dataSlice = createSlice({
       state.workspace = null;
     },
     switchSidebar(state, action) {
-      console.log(action, 'action');
+      console.log(action, "action");
       state.currentSidebar = action.payload;
     },
     currentUserOrganizationsIdAndRole(state, action) {
@@ -225,15 +227,20 @@ const dataSlice = createSlice({
       .addCase(takeExam.fulfilled, (state, action) => {
         state.loading = false;
         // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+        state.currentTakeExamSession = action.payload.data;
       })
       .addCase(takeExam.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
-    
   },
 });
 
-export const { switchToPersonalWorkspace, switchSidebar, currentUserOrganizationsIdAndRole } = dataSlice.actions;
+export const {
+  switchToPersonalWorkspace,
+  switchSidebar,
+  currentUserOrganizationsIdAndRole,
+} = dataSlice.actions;
 
 export default dataSlice.reducer;

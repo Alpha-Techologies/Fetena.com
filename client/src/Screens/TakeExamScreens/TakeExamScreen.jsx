@@ -238,7 +238,8 @@ const TakeExamScreen = () => {
               margin: "24px 16px",
               padding: 24,
               minHeight: 280,
-            }}>
+            }}
+            className="overflow-auto">
             <div className='flex flex-col gap-4 my-4 mt-8 '>
               {exam.questions.map((question, index) => (
                 <div

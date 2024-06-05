@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { Input } from "antd";
 import { Icon } from "@iconify/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MessageBox } from "react-chat-elements";
 import { MessageList } from "react-chat-elements";
+import { takeExam } from "../../Redux/features/dataActions";
+
 
 const ChatComponent = ({ exam, socket }) => {
   const { user } = useSelector((state) => state.auth);
+  const {currentTakeExamSession} = useSelector((state) => state.data);
   const [chatMessage, setChatMessage] = useState("");
   const [chatList, setChatList] = useState([]);
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (socket) {
@@ -50,6 +54,39 @@ const ChatComponent = ({ exam, socket }) => {
     }
   }, [socket]);
 
+  useEffect(() => { 
+    dispatch(takeExam(exam._id))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          console.log(res.payload);
+          const temp = res.payload.data._id;
+          setTakeExamId(temp);
+          console.log(temp, "takeExamId");
+
+          socket.emit("joinExam", id, res.payload.data._id);
+        } else {
+          toast.error(res.payload.message);
+          return;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("There is some error in the server!");
+      });
+    if (currentTakeExamSession) {
+      for (const message of currentTakeExamSession.chatMessages) {
+        const newMessage = {
+          position: message.sender === user._id ? "right" : "left",
+          title: message.sender === user._id ? "You" : "Invigilator",
+          type: "text",
+          text: message.message,
+          date: "message.date",
+        };
+        setChatList((prev) => [...prev, newMessage]);
+      }
+    }
+   }, []);
+
   const sendMessage = () => {
     if (chatMessage !== "" && socket) {
       socket.emit("sendMessage", exam._id, false, {
@@ -71,7 +108,7 @@ const ChatComponent = ({ exam, socket }) => {
   };
 
   return (
-    <div className="h-screen flex flex-col justify-between">
+    <div className="h-screen flex flex-col justify-between overflow-auto">
       <MessageList
         key={1}
         className="message-list mt-2 mb-2"
