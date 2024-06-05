@@ -17,8 +17,6 @@ import ProtectedRoutes from "../Screens/ProtectedRoutes";
 import VerifyEmail from "../Screens/AuthScreens/VerifyEmail";
 import TakeExamScreen from "../Screens/TakeExamScreens/TakeExamScreen";
 
-
-
 //Pages
 import DashboardPage from "../Pages/DashboardPage";
 import ProfilePage from "../Pages/ProfilePage";
@@ -42,7 +40,7 @@ import Preview from "../Pages/Preview";
 import QuestionBank from "../Pages/QuestionBank";
 import EditExam from "../Pages/EditExam";
 import UserExamsPage from "../Pages/UserExamsPage";
-import MonitoringPage from "../Pages/MonitoringPage";
+import MonitoringPage from "../Pages/MonitoringPage/MonitoringPage";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
