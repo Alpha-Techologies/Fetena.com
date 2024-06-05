@@ -4,10 +4,44 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from "react";
 import moment from "moment";
 
+const CountDown = ({ startTime, duration }) => {
+  console.log(startTime, duration, "start time and duration");
+  const [timeRemaining, setTimeRemaining] = useState(duration);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = moment();
+      const countdownEnd = moment("2024-06-06T00:55:40.921+00:00").add(duration * 60, "seconds");
+      const remaining = countdownEnd.diff(now, "seconds");
+      setTimeRemaining(remaining);
+      console.log(timeRemaining, "time remaining");
+    }, 1000);
 
-const ExamTools = ({exam, isCharging, batteryLevel}) => {
+    return () => clearInterval(interval);
+  }, [startTime, duration]);
+
+  const minutes = Math.floor(timeRemaining / 60);
+  const seconds = timeRemaining % 60;
+  const formattedTimeRemaining = `${minutes
+    .toString()
+    .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  return (
+    
+      <div>
+        <h2>Countdown</h2>
+        <p>{formattedTimeRemaining}</p>
+      </div>
+  );
+}
+
+
+const ExamTools = ({exam, isCharging, batteryLevel, examinee}) => {
     const [currentTime, setCurrentTime] = useState(moment());
-    const [showCalculator, setShowCalculator] = useState(false);
+  const [showCalculator, setShowCalculator] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  const [duration, setDuration] = useState(0)
+  const [countdown, setCountdown] = useState(null)
+  let countdownStart = null
+  let countdownEnd = null
 
     useEffect(() => {
       const interval = setInterval(() => {
@@ -18,6 +52,34 @@ const ExamTools = ({exam, isCharging, batteryLevel}) => {
         clearInterval(interval);
       };
     }, []);
+  
+  useEffect(() => {
+    if (Object.keys(examinee).length !== 0) {
+      console.log(examinee, "examinee");
+      setStartTime(examinee.startTime);
+      console.log(startTime, "start time");
+      countdownStart = moment(examinee.startTime)
+    }
+  }, [examinee]);
+
+  useEffect(() => {
+    if (exam && Object.keys(examinee).length !== 0) {
+      setDuration(exam.duration);
+      console.log(duration)
+      countdownEnd = countdownStart.add(duration * 60, "seconds");
+    }
+  }, [exam, examinee])
+
+//   useEffect(() => {
+//   const interval = setInterval(() => {
+//     const now = moment();
+//     const diff = countdownEnd.diff(now, "seconds");
+//     setCountdown(diff);
+//   }, 1000);
+
+//   return () => clearInterval(interval);
+// }, [countdownEnd])
+  
   const onChangeSwitch = (checked) => {
     console.log(`switch to ${checked}`);
     setShowCalculator(checked);
@@ -93,6 +155,9 @@ const ExamTools = ({exam, isCharging, batteryLevel}) => {
             icon='mingcute:time-line'
           />
           <p>Time: {currentTime.format("hh:mm")}</p>
+        </div>
+        <div>
+          <CountDown startTime={startTime} duration={duration} />
         </div>
       </div>
     </div>

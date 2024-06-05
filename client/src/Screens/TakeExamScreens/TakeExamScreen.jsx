@@ -10,6 +10,7 @@ import {
   FloatButton,
   Radio,
   Tag,
+  Popconfirm
 } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
@@ -38,6 +39,7 @@ const TakeExamScreen = () => {
   const [inputValue, setInputValue] = useState("");
   const [showChat, setShowChat] = useState(false);
   const [takeExamId, setTakeExamId] = useState("");
+  const [examinee, setExaminee] = useState({})
 
   const [exam, setExam] = useState(null);
   const [socket] = useSocketIO();
@@ -50,7 +52,7 @@ const TakeExamScreen = () => {
 
   // useEffect to join chat room for examinee
   useEffect(() => {
-    console.log("this is runnning and start is changing");
+    // console.log("this is runnning and start is changing");
     if (startExam) {
       dispatch(takeExam(id))
         .then((res) => {
@@ -72,6 +74,30 @@ const TakeExamScreen = () => {
         });
     }
   }, [startExam]);
+
+  useEffect(() => {
+    console.log(takeExamId, "takeExam in chat component");
+
+    const getTakeExamId = async (takeExamId) => {
+      try {
+        const response = await axios.get(`/api/exams/exam-taker/${takeExamId}`);
+
+        console.log(response, "resp getTakeExamId  ");
+        const tempExaminee = response.data.data.data[0];
+        console.log(tempExaminee);
+
+        setExaminee(response.data.data.data[0]);
+        console.log(examinee);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (takeExamId) {
+      getTakeExamId(takeExamId);
+    }
+  }, [takeExamId]);
+
+  
 
   // useEffect to handle battery dispaly and screen change
   useEffect(() => {
@@ -178,12 +204,35 @@ const TakeExamScreen = () => {
     requestFullscreen();
   };
 
-  const handleFinishExam = () => {
-    setStartExam(false);
-    navigate(-1);
-    // document.exitFullscreen();
-    exitFullscreen();
+  const handleFinishExam = async () => {
+
+    const finishExam = async () => {
+      try {
+        const response = await axios.patch(`/api/exams/take-exam/${takeExamId}`, {
+          status: 'submitted'
+        });
+        return response.status
+      } catch (error) {
+        console.error("Error fetching exam details:", error);
+        toast.error("Failed to submit exam");
+      }
+    };
+
+    const resp = await finishExam()
+
+    if (resp === 200) {
+      setStartExam(false);
+      navigate(-1);
+      // document.exitFullscreen();
+      exitFullscreen();
+      toast.success("Exam submitted successfully!")
+    }
+
   };
+
+  const handleCancelFinishExam = (e) => {
+    toast.success("Exam submission canceled!")
+  }
 
 
   const ExamScreen = () => {
@@ -205,7 +254,13 @@ const TakeExamScreen = () => {
             dot: true,
           }}
         />
-        {<ChatComponent exam={exam} socket={socket} takeExamId={takeExamId} />}
+        {
+          <ChatComponent
+            exam={exam}
+            socket={socket}
+            examinee={examinee}
+          />
+        }
         <Sider
           style={{
             width: 600,
@@ -221,7 +276,12 @@ const TakeExamScreen = () => {
             alt='Fetena.com Logo'
             className='w-24 my-4 mx-auto'
           />
-          <ExamTools exam={exam} isCharging={isCharging} batteryLevel={batteryLevel} />
+          <ExamTools
+            examinee={examinee}
+            exam={exam}
+            isCharging={isCharging}
+            batteryLevel={batteryLevel}
+          />
           {/* <VideoComponent /> */}
           {"VideoComponent"}
         </Sider>
@@ -239,7 +299,7 @@ const TakeExamScreen = () => {
               padding: 24,
               minHeight: 280,
             }}
-            className="overflow-auto">
+            className='overflow-auto'>
             <div className='flex flex-col gap-4 my-4 mt-8 '>
               {exam.questions.map((question, index) => (
                 <div
@@ -287,7 +347,6 @@ const TakeExamScreen = () => {
                         </h3>
                       </div>
                       <div className='mt-4 w-full flex items-start mx-4 gap-4'>
-                       
                         <div className='flex flex-col'>
                           <Radio.Group value={question.correctAnswer}>
                             {question.questionChoice.map(
@@ -363,11 +422,19 @@ const TakeExamScreen = () => {
                 </div>
               ))}
             </div>
-            <button
-              onClick={handleFinishExam}
-              className='bg-primary-500 text-white cursor-pointer rounded px-4 py-2'>
-              Finish
-            </button>
+
+            <Popconfirm
+              title='Delete the task'
+              description='Are you sure to submit exam?'
+              onConfirm={handleFinishExam}
+              onCancel={handleCancelFinishExam}
+              okText='Yes'
+              cancelText='No'>
+              <button
+                className='bg-primary-500 text-white cursor-pointer rounded px-4 py-2'>
+                Finish
+              </button>
+            </Popconfirm>
           </Content>
         </Layout>
       </Layout>

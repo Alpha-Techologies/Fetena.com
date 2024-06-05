@@ -8,12 +8,12 @@ import { takeExam } from "../../Redux/features/dataActions";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const ChatComponent = ({ exam, socket, takeExamId }) => {
+const ChatComponent = ({ exam, socket, examinee }) => {
   const { user } = useSelector((state) => state.auth);
   const { currentTakeExamSession } = useSelector((state) => state.data);
   const [chatMessage, setChatMessage] = useState("");
   const [chatList, setChatList] = useState({ chat: [] });
-  const [examinee, setExaminee] = useState({});
+  // const [examinee, setExaminee] = useState({});
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -83,27 +83,27 @@ const ChatComponent = ({ exam, socket, takeExamId }) => {
     }
   }, [socket]);
 
-  useEffect(() => {
-    console.log(takeExamId, "takeExam in chat component");
+  // useEffect(() => {
+  //   console.log(takeExamId, "takeExam in chat component");
 
-    const getTakeExamId = async (takeExamId) => {
-      try {
-        const response = await axios.get(`/api/exams/exam-taker/${takeExamId}`);
+  //   const getTakeExamId = async (takeExamId) => {
+  //     try {
+  //       const response = await axios.get(`/api/exams/exam-taker/${takeExamId}`);
 
-        console.log(response, "resp getTakeExamId  ");
-        const tempExaminee = response.data.data.data[0];
-        console.log(tempExaminee);
+  //       console.log(response, "resp getTakeExamId  ");
+  //       const tempExaminee = response.data.data.data[0];
+  //       console.log(tempExaminee);
 
-        setExaminee(response.data.data.data[0]);
-        console.log(examinee);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    if (takeExamId) {
-      getTakeExamId(takeExamId);
-    }
-  }, [takeExamId]);
+  //       setExaminee(response.data.data.data[0]);
+  //       console.log(examinee);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+  //   if (takeExamId) {
+  //     getTakeExamId(takeExamId);
+  //   }
+  // }, [takeExamId]);
 
   useEffect(() => {
     if (Object.keys(examinee).length !== 0) {
