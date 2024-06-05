@@ -5,9 +5,10 @@ const actionTypes = ["created","edited","archived","loggedIn","deactivated", "de
 
 const logActivity = async (req,actionIndex, {name,id}) => {
 
+      console.log(req.user.id)
       await Log.create({
-        user: req.user.id? req.user._id : 'Unknown',
-        ipAddress: req.ip? req.ip : 'Unknown',
+        user: req.user.id? req.user.id : 'Unknown',
+        ipAddress: req  .ip? req.ip : 'Unknown',
         action:`${actionTypes[actionIndex]}`,
         entity:{
           name,

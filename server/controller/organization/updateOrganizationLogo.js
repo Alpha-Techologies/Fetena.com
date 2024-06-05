@@ -38,7 +38,7 @@ exports.updateOrganizationLogo = catchAsync(async (req, res, next) => {
   organization.logo = logo;
   await organization.save();
 
-  await logActivity(req,1,{name:organization?.modelName,id:organization.id} )
+  await logActivity(req,1,{name:'Organization',id:organization.id} )
 
   res.status(StatusCodes.CREATED).json({
     status: "success",

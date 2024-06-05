@@ -50,7 +50,7 @@ exports.activateExaminer = catchAsync(async (req, res, next) => {
     message: `Your account as an Examiner has been Activated. In the Organization ${organization.name}`,
   });
 
-  await logActivity(req,6,{name:organizationExaminer?.modelName,id:user.id} )
+  await logActivity(req,6,{name:'Organization Examiner',id:user.id} )
 
 
   res.status(StatusCodes.OK).json({

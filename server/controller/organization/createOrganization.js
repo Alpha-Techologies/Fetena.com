@@ -52,7 +52,7 @@ exports.createOrganization = catchAsync(async (req, res, next) => {
     status: "activated",
   });
 
-  await logActivity(req,0,{name:Organization?.modelName,id:newOrganization.id} )
+  await logActivity(req,0,{name:'Organization',id:newOrganization.id} )
 
   res.status(StatusCodes.CREATED).json({
     sucess: true,

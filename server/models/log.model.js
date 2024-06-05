@@ -20,7 +20,7 @@ const logSchema = new mongoose.Schema({
             default:'none'
         },
         id:{
-            type:mongoose.Schema.Types.ObjectId
+            type:String
         }
     }
     },

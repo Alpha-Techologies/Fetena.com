@@ -82,7 +82,7 @@ exports.createExam = catchAsync(async (req, res, next) => {
 
   await exam.save();
 
-  await logActivity(req,0,{name:exam?.modelName,id:exam.id} )
+  await logActivity(req,0,{name:'exam',id:exam.id} )
 
   res.status(201).json({
     status: "success",

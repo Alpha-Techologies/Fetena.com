@@ -43,7 +43,7 @@ exports.deactivateExaminer = catchAsync(async (req, res, next) => {
   // save the organization
   await organizationExaminer.save();
 
-  await logActivity(req,4,{name:organizationExaminer?.modelName,id:userId} )
+  await logActivity(req,4,{name:'organization Examiner',id:userId} )
 
   res.status(StatusCodes.OK).json({
     status: "success",
