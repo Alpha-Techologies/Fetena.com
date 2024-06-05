@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { MessageBox } from "react-chat-elements";
 import { MessageList } from "react-chat-elements";
 import { takeExam } from "../../Redux/features/dataActions";
-
+import { toast } from "react-toastify";
 
 const ChatComponent = ({ exam, socket }) => {
   const { user } = useSelector((state) => state.auth);
-  const {currentTakeExamSession} = useSelector((state) => state.data);
+  const { currentTakeExamSession } = useSelector((state) => state.data);
   const [chatMessage, setChatMessage] = useState("");
-  const [chatList, setChatList] = useState([]);
-  const dispatch = useDispatch()
+  const [chatList, setChatList] = useState({ chat: [] });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (socket) {
@@ -20,50 +20,68 @@ const ChatComponent = ({ exam, socket }) => {
         console.log("message received", message);
         const newMessage = {
           position: "left",
-          title: "Invigilator",
+          title: "Invigilator - Direct Message",
           type: "text",
           text: message.message,
           date: "message.date",
         };
-        setChatList((prev) => [...prev, newMessage]);
+        setChatList((prev) => {
+          return {
+            chat: [
+              ...prev.chat,
+              {
+                position: "left",
+                title: "Invigilator - Direct Message",
+                type: "text",
+                text: message.message,
+                date: "message.date",
+              },
+            ],
+          };
+        });
+
+        console.log(chatList);
       };
 
       const handleReceiveAnnouncement = (message) => {
         console.log("announcemet received");
         console.log(message);
-        setChatList((prev) => [
-          ...prev,
-          {
-            position: "left",
-            title: "Invigilator",
-            type: "text",
-            text: message,
-            date: "message.date",
-          },
-        ]);
-      };
+        setChatList((prev) => {
+          return {
+            chat: [
+              ...prev.chat,
+              {
+                position: "left",
+                title: "Invigilator - Announcement",
+                type: "text",
+                text: message,
+                date: "message.date",
+              },
+            ],
+          };
+        });
+        socket.on("receiveMessage", handleReceiveMessage);
 
-      socket.on("receiveMessage", handleReceiveMessage);
+        socket.on("announcement", handleReceiveAnnouncement);
 
-      socket.on("announcement", handleReceiveAnnouncement);
-
-      return () => {
-        socket.off("receiveMessage", handleReceiveMessage);
-        socket.off("announcement", handleReceiveAnnouncement);
+        return () => {
+          socket.off("receiveMessage", handleReceiveMessage);
+          socket.off("announcement", handleReceiveAnnouncement);
+        };
       };
     }
   }, [socket]);
 
-  useEffect(() => { 
+  useEffect(() => {
     dispatch(takeExam(exam._id))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           console.log(res.payload);
-          const temp = res.payload.data._id;
-          setTakeExamId(temp);
-          console.log(temp, "takeExamId");
+          // const temp = res.payload.data._id;
+          // setTakeExamId(temp);
+          // console.log(temp, "takeExamId");
 
-          socket.emit("joinExam", id, res.payload.data._id);
+          // socket.emit("joinExam", id, res.payload.data._id);
         } else {
           toast.error(res.payload.message);
           return;
@@ -77,15 +95,22 @@ const ChatComponent = ({ exam, socket }) => {
       for (const message of currentTakeExamSession.chatMessages) {
         const newMessage = {
           position: message.sender === user._id ? "right" : "left",
-          title: message.sender === user._id ? "You" : "Invigilator",
+          title:
+            message.sender === user._id
+              ? "You"
+              : "Invigilator - Direct Message",
           type: "text",
           text: message.message,
           date: "message.date",
         };
-        setChatList((prev) => [...prev, newMessage]);
+        setChatList((prev) => {
+          return {
+            chat: [...prev.chat, newMessage],
+          };
+        });
       }
     }
-   }, []);
+  }, []);
 
   const sendMessage = () => {
     if (chatMessage !== "" && socket) {
@@ -94,40 +119,44 @@ const ChatComponent = ({ exam, socket }) => {
         receiver: exam.createdBy._id,
         message: chatMessage,
       });
-      setChatList((prev) => [
-        ...prev,
-        {
-          position: "right",
-          title: "You",
-          type: "text",
-          text: chatMessage,
-          date: "message.date",
-        },
-      ]);
+      setChatList((prev) => {
+        return {
+          chat: [
+            ...prev.chat,
+            {
+              position: "right",
+              title: "You",
+              type: "text",
+              text: chatMessage,
+              date: "message.date",
+            },
+          ],
+        };
+      });
     }
   };
 
   return (
-    <div className="h-screen flex flex-col justify-between overflow-auto">
+    <div className='h-screen flex flex-col justify-between overflow-auto'>
       <MessageList
         key={1}
-        className="message-list mt-2 mb-2"
+        className='message-list mt-2 mb-2'
         lockable={true}
         toBottomHeight={"100%"}
-        dataSource={chatList}
+        dataSource={chatList.chat}
       />
-      <div className="flex items-center gap-2 w-[90%]">
+      <div className='flex items-center gap-2 w-[90%]'>
         <Input
-          className="w-full"
+          className='w-full'
           value={chatMessage}
           placeholder={"Type your message here"}
           onChange={(e) => setChatMessage(e.target.value)}
         />
-        <div className="w-[20%]">
+        <div className='w-[20%]'>
           <Icon
             onClick={() => sendMessage()}
-            className="w-5 h-5 text-primary-500"
-            icon="carbon:send-filled"
+            className='w-5 h-5 text-primary-500'
+            icon='carbon:send-filled'
           />
         </div>
       </div>

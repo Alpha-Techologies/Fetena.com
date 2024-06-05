@@ -138,12 +138,12 @@ const currentTime = moment();
               <Icon icon='lets-icons:back' />
               Back to Overview
             </div>
-            {currentUser.status === "submitted" ? (
+            {currentUser?.status === "submitted" ? (
               <div className='bg-green-500 text-white flex items-center gap-2 py-2 px-4 rounded'>
                 <Icon icon='mdi:tick' />
                 Has submitted Exam
               </div>
-            ) : currentUser.status === "inprogress" ? (
+            ) : currentUser?.status === "inprogress" ? (
               <div className='bg-red-500 text-white flex items-center gap-2 py-2 px-4 rounded cursor-pointer'>
                 <Icon icon='material-symbols:tab-close' />
                 End Exam for Student
@@ -158,13 +158,13 @@ const currentTime = moment();
           <div className='flex flex-col items-start'>
             <div className='flex items-center justify-start'>
               <span className='font-bold text-xl justified'>
-                {currentUser.user.fullName}
+                {currentUser?.user?.fullName}
               </span>
-              {currentUser.status === "inprogress" ? (
+              {currentUser?.status === "inprogress" ? (
                 <p className='text-green-500 ml-2 flex items-center justify-center'>
                   <Icon icon='icon-park-outline:dot' /> Ongoing
                 </p>
-              ) : currentUser.status === "submitted" ? (
+              ) : currentUser?.status === "submitted" ? (
                 <p className='text-gray-500 ml-2 flex items-center justify-center'>
                   <Icon icon='icon-park-outline:dot' /> Finished
                 </p>
@@ -180,7 +180,7 @@ const currentTime = moment();
                 {" "}
                 Email:{" "}
               </span>{" "}
-              {currentUser.user.email}
+              {currentUser?.user?.email}
             </p>
           </div>
 
@@ -200,7 +200,7 @@ const currentTime = moment();
                   <span>
                     Started the Exam at <br />{" "}
                     <span className='italic text-gray-500'>
-                      {currentUser.startTime}
+                      {currentUser?.startTime}
                     </span>
                   </span>
                 ),

@@ -30,6 +30,7 @@ const MonitoringPage = () => {
   const [currentUser, setCurrentUser] = useState({});
   const navigate = useNavigate();
   const serverURL = "http://localhost:3000";
+  let tempExam = {}
 
   const fetchData = async (page = 1, active = true, access = "") => {
     const id = workspace._id;
@@ -82,7 +83,7 @@ const MonitoringPage = () => {
     try {
       const response = await axios.get(`/api/exams/${examId}`);
       // console.log(response, 'response from fetch single exam');
-      const tempExam = response.data.data.data[0];
+      tempExam = response.data.data.data[0];
       setCurrentExam(tempExam);
       console.log(currentExam, "currentExam");
     } catch (error) {
