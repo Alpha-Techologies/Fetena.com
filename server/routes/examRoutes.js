@@ -13,6 +13,7 @@ const {
   getMyExam,
   updateExamResource,
   getPublicExam,
+  updateManyQuestion,
 } = require("../controller/exam");
 
 router.use(takeExamRouter);
@@ -23,6 +24,7 @@ router.route("/").post(protect, createExam);
 router.route("/my-exam/:id").get(protect, getMyExam);
 router.route("/get-public").get(protect, getPublicExam);
 
+router.route("/questions/:id").patch(protect, updateManyQuestion);
 router.route("/resource/:id").patch(protect, updateExamResource);
 
 router
