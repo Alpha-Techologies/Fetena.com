@@ -390,6 +390,8 @@ if (examType === "online") {
     setChoose={setChoose}
     tags={tags}
     setTags={setTags}
+    setBasicInfoValues={setBasicInfoValues} 
+
   
   />
 )}

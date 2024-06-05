@@ -32,7 +32,8 @@ const ExamQuestionForm = ({
   tags,
   setTags,
   setShortAnswer,
-  basicInfoValues
+  basicInfoValues,
+  setBasicInfoValues
   
 
 
@@ -42,8 +43,7 @@ const ExamQuestionForm = ({
 }) => {
 
 
-  const totalPoints = questionsCollection.reduce((total, question) => total + (question.points || 0), 0);
-
+  // const totalPoints = questionsCollection ? questionsCollection.reduce((total, question) => total + (question.points || 0), 0) : 0;
   console.log(basicInfoValues.questions,"olaaaaaaaaaaaaaa");
   console.log(questionsCollection,"questions collection")
   // console.log(BasicInfoForm.questions,"question collection")
@@ -53,12 +53,20 @@ const ExamQuestionForm = ({
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    if (basicInfoValues && basicInfoValues.questions) {
-      setQuestionsCollection(basicInfoValues.questions)
-    }
-  }, [basicInfoValues]);
+  // useEffect(() => {
+  //   if (basicInfoValues && basicInfoValues.questions && Array.isArray(basicInfoValues.questions)) {
+  //     if (questionsCollection.length === 0) {
+  //       setQuestionsCollection(basicInfoValues.questions);
 
+  //     }
+  //     // else {
+  //     //   setBasicInfoValues({ ...basicInfoValues, questions: questionsCollection });
+
+  //     // }
+  //   }
+  // }, []);
+
+  console.log(questionsCollection,"olaaaaaaaaaaaaaa-------------------------");
 
   useEffect(() => {
     if (inputVisible) {
@@ -485,7 +493,7 @@ const ExamQuestionForm = ({
  <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
              <div className="flex gap-8 items-center justify-center">
              <h3 className=" font-semibold text-lg">Total Questions <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
-             <h3 className=" font-semibold text-lg">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3>
+             {/* <h3 className=" font-semibold text-lg">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3> */}
              <Button type="primary" className="px-16" onClick={() => setActiveTabKey("Preview")}>Preview</Button>
  
        </div>

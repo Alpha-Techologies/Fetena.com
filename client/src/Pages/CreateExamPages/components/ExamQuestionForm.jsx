@@ -29,7 +29,9 @@ const ExamQuestionForm = ({
   setActiveTabKey,
   tags,
   setTags,
-  setShortAnswer
+  setShortAnswer,
+  setBasicInfoValues
+
   
 
 
@@ -41,7 +43,7 @@ const ExamQuestionForm = ({
 
   const totalPoints = questionsCollection.reduce((total, question) => total + (question.points || 0), 0);
 
-  
+
 
 
   const [inputVisible, setInputVisible] = useState(false);
