@@ -205,7 +205,7 @@ const TakeExamScreen = () => {
             dot: true,
           }}
         />
-        {showChat && <ChatComponent exam={exam} socket={socket} />}
+        {<ChatComponent exam={exam} socket={socket} />}
         <Sider
           style={{
             width: 600,

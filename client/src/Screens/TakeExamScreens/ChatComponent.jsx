@@ -15,7 +15,9 @@ const ChatComponent = ({ exam, socket }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("in the use effect", socket)
     if (socket) {
+      console.log("recieving message")
       const handleReceiveMessage = (message) => {
         console.log("message received", message);
         const newMessage = {
@@ -43,6 +45,20 @@ const ChatComponent = ({ exam, socket }) => {
         console.log(chatList);
       };
 
+      
+
+        socket.on("receiveMessage", handleReceiveMessage);
+
+
+        return () => {
+          socket.off("receiveMessage", handleReceiveMessage);
+        };
+      };
+    }, [socket]);
+
+
+  useEffect(() => {
+    if (socket) {
       const handleReceiveAnnouncement = (message) => {
         console.log("announcemet received");
         console.log(message);
@@ -60,14 +76,11 @@ const ChatComponent = ({ exam, socket }) => {
             ],
           };
         });
-        socket.on("receiveMessage", handleReceiveMessage);
+      }
+      socket.on("announcement", handleReceiveAnnouncement);
 
-        socket.on("announcement", handleReceiveAnnouncement);
-
-        return () => {
-          socket.off("receiveMessage", handleReceiveMessage);
-          socket.off("announcement", handleReceiveAnnouncement);
-        };
+      return () => {
+        socket.off("announcement", handleReceiveAnnouncement);
       };
     }
   }, [socket]);
@@ -110,7 +123,7 @@ const ChatComponent = ({ exam, socket }) => {
         });
       }
     }
-  }, []);
+  }, [dispatch]);
 
   const sendMessage = () => {
     if (chatMessage !== "" && socket) {

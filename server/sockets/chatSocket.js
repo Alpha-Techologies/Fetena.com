@@ -129,7 +129,7 @@ const chatSocket = (io, socket) => {
       console.log(socket.rooms);
 
       // send the message to the user
-      console.log("message sent to examinee", userSocketId);
+      console.log("message sent to examinee", userSocketId, message);
       io.to(userSocketId).emit("receiveMessage", message);
     }
   });
