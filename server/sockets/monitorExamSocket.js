@@ -2,7 +2,7 @@
 
 const TakeExam = require("../models/take.exam.model");
 
-const monitorExamSocket = (socket, io) => {
+const monitorExamSocket = (io, socket) => {
   socket.on("terminateExaminee", async (takeExamId) => {
     console.log(`Terminating examinee ${takeExamId}`);
     // get the exam
@@ -13,7 +13,7 @@ const monitorExamSocket = (socket, io) => {
       return;
     }
 
-    takeExam.status = "Terminated";
+    takeExam.status = "terminated";
     await takeExam.save();
 
     io.to(takeExam.socketId).emit("examTerminated", takeExamId);

@@ -120,7 +120,8 @@ const MonitoringPage = () => {
   useEffect(() => {
     if (!workspace) {
       // Handle the case where workspace is null, for example, redirect the user or show an error message
-      navigate("userexams");
+      // navigate to the /dashboard/exams/userexams page
+      navigate("/dashboard/exams/userexams");
     } else {
       fetchData(1, true);
       if (examsList) {
@@ -178,6 +179,7 @@ const MonitoringPage = () => {
         setCurrentUser={setCurrentUser}
         seeStatusOf={seeStatusOf}
         setSeeStatusOf={setSeeStatusOf}
+        socket={socket}
       />
     ),
     tab2: (

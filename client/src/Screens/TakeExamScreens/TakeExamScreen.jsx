@@ -22,7 +22,7 @@ import useSocketIO from "../../utils/socket/useSocketIO";
 import { takeExam } from "../../Redux/features/dataActions";
 import axios from "axios";
 
-import ExamStartConfirmationModal from './ExamStartConfirmationModal'
+import ExamStartConfirmationModal from "./ExamStartConfirmationModal";
 import ExamTools from "./ExamTools";
 import ChatComponent from "./ChatComponent";
 
@@ -72,6 +72,17 @@ const TakeExamScreen = () => {
         });
     }
   }, [startExam]);
+
+  //listen for the socket for the exam admin instructions
+  useEffect(() => {
+    if (socket) {
+      socket.on("examTerminated", (takeExamId) => {
+        toast.error("Exam Terminated by Invigilator");
+        // navigate two pages back
+        navigate(-2);
+      });
+    }
+  }, [socket]);
 
   // useEffect to handle battery dispaly and screen change
   useEffect(() => {
@@ -185,21 +196,19 @@ const TakeExamScreen = () => {
     exitFullscreen();
   };
 
-
   const ExamScreen = () => {
     const [collapsed, setCollapsed] = useState(false);
-    
 
     const onChangeTabs = (key) => {
       console.log(key);
     };
 
     return (
-      <Layout className='h-screen'>
+      <Layout className="h-screen">
         <FloatButton
           onClick={() => setShowChat(!showChat)}
-          shape='circle'
-          icon={<Icon icon='grommet-icons:chat' />}
+          shape="circle"
+          icon={<Icon icon="grommet-icons:chat" />}
           tooltip={<div>Exam Chat</div>}
           badge={{
             dot: true,
@@ -210,18 +219,22 @@ const TakeExamScreen = () => {
           style={{
             width: 600,
           }}
-          className='flex flex-col gap-4 text-white h-screen'
+          className="flex flex-col gap-4 text-white h-screen"
           // collapsible
-          theme='light'
+          theme="light"
           // collapsed={collapsed}
           // onCollapse={(value) => setCollapsed(value)}
         >
           <img
             src={fetena_logo}
-            alt='Fetena.com Logo'
-            className='w-24 my-4 mx-auto'
+            alt="Fetena.com Logo"
+            className="w-24 my-4 mx-auto"
           />
-          <ExamTools exam={exam} isCharging={isCharging} batteryLevel={batteryLevel} />
+          <ExamTools
+            exam={exam}
+            isCharging={isCharging}
+            batteryLevel={batteryLevel}
+          />
           {/* <VideoComponent /> */}
           {"VideoComponent"}
         </Sider>
@@ -230,7 +243,8 @@ const TakeExamScreen = () => {
             style={{
               padding: 0,
               backgroundColor: "#fff",
-            }}>
+            }}
+          >
             Exam Session
           </Header>
           <Content
@@ -239,56 +253,52 @@ const TakeExamScreen = () => {
               padding: 24,
               minHeight: 280,
             }}
-            className="overflow-auto">
-            <div className='flex flex-col gap-4 my-4 mt-8 '>
+            className="overflow-auto"
+          >
+            <div className="flex flex-col gap-4 my-4 mt-8 ">
               {exam.questions.map((question, index) => (
-                <div
-                  key={index}
-                  className='mb-4'>
+                <div key={index} className="mb-4">
                   {question.questionType === "True/False" ? (
-                    <Card className=' w-11/12 mx-auto bg-gray-50 rounded-none'>
-                      <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
-                        <h3 className='text-blue-900 font-semibold text-lg'>
+                    <Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
+                      <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                        <h3 className="text-blue-900 font-semibold text-lg">
                           Question {index + 1}
                         </h3>
-                        <p className='font-semibold text-blue-900'>
+                        <p className="font-semibold text-blue-900">
                           Points {question.points}
                         </p>
                       </div>
-                      <div className='mt-4 mx-4 flex items-start'>
-                        <h3 className='font-semibold text-[1rem]'>
+                      <div className="mt-4 mx-4 flex items-start">
+                        <h3 className="font-semibold text-[1rem]">
                           {question.questionText}
                         </h3>
                       </div>
-                      <div className='mt-8 flex items-start mx-4 '>
-                        <Form.Item
-                          label='Your Answer'
-                          className='w-48'>
+                      <div className="mt-8 flex items-start mx-4 ">
+                        <Form.Item label="Your Answer" className="w-48">
                           <Select>
-                            <Select.Option value='true'>True</Select.Option>
-                            <Select.Option value='false'>False</Select.Option>
+                            <Select.Option value="true">True</Select.Option>
+                            <Select.Option value="false">False</Select.Option>
                           </Select>
                         </Form.Item>
                       </div>
                     </Card>
                   ) : question.questionType === "choose" ? (
-                    <Card className='bg-gray-50 w-11/12 mx-auto'>
-                      <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
-                        <h3 className='text-blue-900 font-semibold text-lg'>
+                    <Card className="bg-gray-50 w-11/12 mx-auto">
+                      <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                        <h3 className="text-blue-900 font-semibold text-lg">
                           Question {index + 1}
                         </h3>
-                        <p className='font-semibold text-blue-900'>
+                        <p className="font-semibold text-blue-900">
                           Points {question.points}
                         </p>
                       </div>
-                      <div className='mt-4 mx-4 flex items-start border-b pb-4'>
-                        <h3 className='font-semibold text-[1rem]'>
+                      <div className="mt-4 mx-4 flex items-start border-b pb-4">
+                        <h3 className="font-semibold text-[1rem]">
                           {question.questionText}
                         </h3>
                       </div>
-                      <div className='mt-4 w-full flex items-start mx-4 gap-4'>
-                       
-                        <div className='flex flex-col'>
+                      <div className="mt-4 w-full flex items-start mx-4 gap-4">
+                        <div className="flex flex-col">
                           <Radio.Group value={question.correctAnswer}>
                             {question.questionChoice.map(
                               (choice, choiceIndex) => (
@@ -296,12 +306,13 @@ const TakeExamScreen = () => {
                                   key={choiceIndex}
                                   label={`${String.fromCharCode(
                                     65 + choiceIndex
-                                  )}`}>
-                                  <div className='flex gap-4 justify-center'>
-                                    <p className='font-semibold'>{choice}</p>
-                                    <div className='flex gap-2 items-center'>
+                                  )}`}
+                                >
+                                  <div className="flex gap-4 justify-center">
+                                    <p className="font-semibold">{choice}</p>
+                                    <div className="flex gap-2 items-center">
                                       <Radio value={choice}></Radio>
-                                      <span className='text-blue-700'></span>
+                                      <span className="text-blue-700"></span>
                                     </div>
                                   </div>
                                 </Form.Item>
@@ -312,50 +323,50 @@ const TakeExamScreen = () => {
                       </div>
                     </Card>
                   ) : question.questionType === "shortAnswer" ? (
-                    <Card className='bg-gray-50 w-11/12 mx-auto my-2'>
-                      <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
-                        <h3 className='text-blue-900 font-semibold text-lg'>
+                    <Card className="bg-gray-50 w-11/12 mx-auto my-2">
+                      <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                        <h3 className="text-blue-900 font-semibold text-lg">
                           Question {index + 1}
                         </h3>
-                        <p className='font-semibold text-blue-900'>
+                        <p className="font-semibold text-blue-900">
                           Points {question.points}
                         </p>
                       </div>
 
-                      <div className='mt-4 mx-4 flex items-start '>
-                        <h3 className='font-semibold text-[1rem]'>
+                      <div className="mt-4 mx-4 flex items-start ">
+                        <h3 className="font-semibold text-[1rem]">
                           {question.questionText}
                         </h3>
                       </div>
 
-                      <div className='mt-4 flex items-start mx-4 mb-4'>
+                      <div className="mt-4 flex items-start mx-4 mb-4">
                         <TextArea
                           rows={4}
-                          placeholder='Enter your question here'
+                          placeholder="Enter your question here"
                         />
                       </div>
                     </Card>
                   ) : question.questionType === "essay" ? (
-                    <Card className='bg-gray-50 w-11/12 mx-auto my-8'>
-                      <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
-                        <h3 className='text-blue-900 font-semibold text-lg'>
+                    <Card className="bg-gray-50 w-11/12 mx-auto my-8">
+                      <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                        <h3 className="text-blue-900 font-semibold text-lg">
                           Question {index + 1}
                         </h3>
-                        <p className='font-semibold text-blue-900'>
+                        <p className="font-semibold text-blue-900">
                           Points {question.points}
                         </p>
                       </div>
 
-                      <div className='mt-4 mx-4 flex items-start'>
-                        <h3 className='font-semibold text-[1rem]'>
+                      <div className="mt-4 mx-4 flex items-start">
+                        <h3 className="font-semibold text-[1rem]">
                           {question.questionText}
                         </h3>
                       </div>
 
-                      <div className='mt-4 flex items-start mx-4 mb-4'>
+                      <div className="mt-4 flex items-start mx-4 mb-4">
                         <TextArea
                           rows={4}
-                          placeholder='Enter your question here'
+                          placeholder="Enter your question here"
                         />
                       </div>
                     </Card>
@@ -365,7 +376,8 @@ const TakeExamScreen = () => {
             </div>
             <button
               onClick={handleFinishExam}
-              className='bg-primary-500 text-white cursor-pointer rounded px-4 py-2'>
+              className="bg-primary-500 text-white cursor-pointer rounded px-4 py-2"
+            >
               Finish
             </button>
           </Content>
