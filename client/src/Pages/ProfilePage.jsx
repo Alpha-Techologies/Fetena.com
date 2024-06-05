@@ -177,8 +177,8 @@ const ProfilePage = () => {
 
   return (
     <div>
-      <div className='flex items-center my-4'>
-        <h1 className='text-3xl font-bold'>Profile Details</h1>
+      <div className='flex items-center'>
+      <h1 className='text-2xl font-bold text-blue-900 text-left mb-2'>Profile Details</h1>
       </div>
       <Menu
         onClick={(e) => {

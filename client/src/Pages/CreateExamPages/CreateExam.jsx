@@ -16,21 +16,31 @@ import InstructionForm from "./components/InstructionForm";
 import BasicInfoForm from "./components/BasicInfoForm";
 const { TextArea } = Input;
 
-const tabListNoTitle = [
-  { key: "Basic Info", label: "Basic Info >" },
-  { key: "Instruction", label: "Instruction >" },
-  { key: "Security", label: "Security >" },
-  { key: "Exam Type", label: "Exam Type >" },
-  { key: "Exam Tools", label: "Exam Tools >" },
-  { key: "Exam Questions", label: "Exam Questions >" },
-  { key: "Preview", label: "Preview" },
-  { key: "Success", label: "" },
-];
+
+
+
 
 const CreateExam = () => {
   const [activeTabKey, setActiveTabKey] = useState("Basic Info");
   const [examKey,setExamKey] = useState("");
   const [tags,setTags] = useState([]);
+  const [examType,setExamType] = useState("online");
+
+  const tabListNoTitle = [
+    { key: "Basic Info", label: "Basic Info >" },
+    { key: "Instruction", label: "Instruction >" },
+    { key: "Security", label: "Security >" },
+    { key: "Exam Type", label: "Exam Type >" },
+    { key: "Exam Tools", label: "Exam Tools >" },
+    { key: "Preview", label: "Preview" },
+    { key: "Success", label: "" },
+  ];
+  
+
+  // Conditionally add the "Exam Questions" tab based on examType
+if (examType === "online") {
+  tabListNoTitle.splice(5, 0, { key: "Exam Questions", label: "Exam Questions >" });
+}
 
   const [basicInfoValues, setBasicInfoValues] = useState(() => {
     const savedBasicInfo = localStorage.getItem("basicInfoValues");
@@ -50,6 +60,7 @@ const CreateExam = () => {
       formulasCollection: false,
       uploadMaterials: false,
       material: null,
+      examFile: null,
       questions: [],
       access: "closed",
       tags: []
@@ -293,7 +304,9 @@ const CreateExam = () => {
           <Link to='/dashboard/exams'>
             <Icon icon="fluent-emoji-high-contrast:left-arrow" className="text-2xl text-primary-500" />
           </Link>
-          <h1 className="text-3xl font-bold">Create Exam</h1>
+           <h1 className='text-2xl font-bold text-blue-900 text-left'>Create Exam</h1>
+
+         
         </div>
         <div>
           <Card
@@ -329,7 +342,8 @@ const CreateExam = () => {
 
 
     {activeTabKey === "Exam Type" && (
-    <ExamTypeForm setActiveTabKey={setActiveTabKey}/>
+    <ExamTypeForm setActiveTabKey={setActiveTabKey} examType={examType} setExamType={setExamType}  basicInfoValues={basicInfoValues}
+    setBasicInfoValues={setBasicInfoValues}/>
                 )}
 
 
@@ -343,6 +357,8 @@ const CreateExam = () => {
     uploadProgress={uploadProgress}
     handleUpload={handleUpload}
     setActiveTabKey={setActiveTabKey}
+    examType={examType}
+    setExamType={setExamType}
     />
   )}
 
@@ -389,7 +405,7 @@ const CreateExam = () => {
             setTrueFalse={setTrueFalse} 
             choose={choose} 
             setChoose={setChoose} 
-
+            examType={examType}
             shortAnswer={shortAnswer} 
             setShortAnswer={setShortAnswer} 
             essay={essay} 

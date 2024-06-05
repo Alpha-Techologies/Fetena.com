@@ -125,7 +125,7 @@ const OrganizationSettingsPage = () => {
 
   return (
     <div className='flex flex-col gap-4 items-start'>
-      <h1 className='text-2xl font-bold text-blue-900 text-left'>
+       <h1 className='text-2xl font-bold text-blue-900 text-left'>
         Organizations Settings
       </h1>
       <Card

@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { TweenOneGroup } from 'rc-tween-one';
 import { Icon } from "@iconify/react";
+import BasicInfoForm from "./BasicInfoForm";
 
 
 
@@ -12,6 +13,7 @@ const { TextArea } = Input;
 const ExamQuestionForm = ({
   questionType,
   questionsCollection ,
+  setQuestionsCollection,
   handleQuestionsSave,
   trueFalse,
   trueFalseOnChange,
@@ -29,7 +31,8 @@ const ExamQuestionForm = ({
   setActiveTabKey,
   tags,
   setTags,
-  setShortAnswer
+  setShortAnswer,
+  basicInfoValues
   
 
 
@@ -41,12 +44,21 @@ const ExamQuestionForm = ({
 
   const totalPoints = questionsCollection.reduce((total, question) => total + (question.points || 0), 0);
 
-  
+  console.log(basicInfoValues.questions,"olaaaaaaaaaaaaaa");
+  console.log(questionsCollection,"questions collection")
+  // console.log(BasicInfoForm.questions,"question collection")
 
 
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (basicInfoValues && basicInfoValues.questions) {
+      setQuestionsCollection(basicInfoValues.questions)
+    }
+  }, [basicInfoValues]);
+
 
   useEffect(() => {
     if (inputVisible) {

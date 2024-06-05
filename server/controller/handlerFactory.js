@@ -50,6 +50,8 @@ exports.getAll = (Model, options = "", obj = {}) =>
     if (options === "addExam") opt = { exam: req.params.id };
 
     const page = req.query.page * 1 || 1;
+
+    console.log(opt, options)
     const limit = req.query.limit * 1 || 10;
 
     let count = new APIFeatures(Model.find(opt), req.query).filter().count();

@@ -38,10 +38,22 @@ const ExamsPage = () => {
   const fetchData = async (page=1,active=true,access="") => {
     const id = workspace._id
   
-    if (userOrganizationsIdAndRole[id] && (userOrganizationsIdAndRole[id] === "admin" || userOrganizationsIdAndRole[id] === "examiner")) {
+    if (userOrganizationsIdAndRole[id] && userOrganizationsIdAndRole[id] === "admin") {
 
 
     
+    try {
+      const response = await axios.get(`/api/exams/organizations/${id}?active=${active}&access=${access}`);
+      
+     console.log(response.data.data.data,"bbbbbbbbb")
+      setExams(response.data.data.data);
+     
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  if (userOrganizationsIdAndRole[id] &&  userOrganizationsIdAndRole[id] === "examiner") {
     try {
       const response = await axios.get(`/api/exams/my-exam/${id}?active=${active}&access=${access}`);
       
@@ -51,6 +63,7 @@ const ExamsPage = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+
   }
 
 
@@ -281,7 +294,7 @@ const ExamsPage = () => {
   return (
     <div className='flex flex-col gap-4'>
       <div className='flex justify-between items-center'>
-        <h1 className='text-2xl font-bold text-blue-900 text-left'>Exams</h1>
+         <h1 className='text-2xl font-bold text-blue-900 text-left'>Exams</h1>
 
         
 

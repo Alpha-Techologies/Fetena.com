@@ -59,19 +59,21 @@ const ExamTypeForm = ({setActiveTabKey,setExamType, basicInfoValues,examType,
 
 <Form.Item name="examType" rules={[{ required: true, message: "Please input the exam type!" }]}>
 <Radio.Group
-    className="flex justify-center items-center gap-8"
-    value={examType}
-    onChange={(e) => {
-      const selectedExamType = e.target.value;
-      setExamType(selectedExamType);
-      setBasicInfoValues({
-        ...basicInfoValues,
-        examType: selectedExamType,
-        questions: selectedExamType === 'online' ? basicInfoValues.questions : [],
-        examFile: selectedExamType !== 'online' ? basicInfoValues.examFile : null,
-      });
-    }}
-  >
+  className="flex justify-center items-center gap-8"
+  value={examType}
+  defaultValue={basicInfoValues.examType}
+  onChange={(e) => {
+    const selectedExamType = e.target.value;
+    setExamType(selectedExamType);
+    setBasicInfoValues({
+      ...basicInfoValues,
+      examType: selectedExamType,
+      questions: selectedExamType === 'online' ? basicInfoValues.questions : [],
+      examFile: selectedExamType !== 'online' ? basicInfoValues.examFile : null,
+    });
+  }}
+>
+
     <div className="p-8 border border-gray-200 rounded-lg flex flex-col gap-4 justify-center items-center group hover:bg-blue-600 transition ease-in-out duration-300">
       <Icon icon="teenyicons:pdf-outline" className="text-3xl font-bold text-blue-800 group-hover:text-white" />
       <Radio value="pdfUpload" className="group-hover:text-white">

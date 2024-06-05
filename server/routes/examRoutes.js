@@ -25,11 +25,14 @@ router.route("/get-public").get(protect, getPublicExam);
 
 router.route("/resource/:id").patch(protect, updateExamResource);
 
+router.route("/organizations/:id")
+.get(protect, restrictTo(true), getAllExam);
+
 router
   .route("/:id")
   .get(protect, getOneExam)
   .patch(protect, updateExam)
   .delete(protect, deleteExam)
-  .get(protect, restrictTo(true), getAllExam);
+
 
 module.exports = router;

@@ -56,6 +56,8 @@ if (!exam) {
   return <p>Loading...</p>; // Show a loading indicator while fetching data
 }
 
+console.log(exam.examFile, "exam file")
+console.log(exam.examFile instanceof File, "let me see")
 
 const handlePrint = () => {
   const printableContent = document.getElementById('printable-content').innerHTML;
@@ -174,9 +176,9 @@ const handlePrint = () => {
 
 
 
+{ exam.examType === 'online' &&
 
-
-          <div className="flex flex-col gap-4 my-4 mt-8 ">
+          (<div className="flex flex-col gap-4 my-4 mt-8 ">
   {exam.questions.map((question, index) => (
     <div key={index} className="mb-4">
   
@@ -334,8 +336,32 @@ const handlePrint = () => {
       ) : null}
     </div>
   ))}
-</div>
+</div>)
 
+}
+
+
+
+{exam.examType !== 'online' && exam.examFile && (
+  <Card
+    className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200 mx-auto mt-8 mb-2'
+  >
+    <div className='flex flex-col gap-4 justify-center items-center'>
+      <div className='flex gap-4 justify-center items-center'>
+       
+
+
+      </div>
+      {exam.examFile && (
+        <iframe
+        src={`http://localhost:8080${exam.examFile}`}
+        title={exam.examFile}
+        className="w-[1000px] h-[600px]"
+      />
+      )}
+    </div>
+  </Card>
+)}
 
 <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
              <div className="flex gap-8 items-center justify-center">

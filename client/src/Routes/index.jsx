@@ -37,8 +37,8 @@ import OrganizationSettingsPage from "../Pages/OrganizationSettingsPage";
 import NotificationPage from "../Pages/NotificationsPage";
 import Preview from "../Pages/Preview";
 import QuestionBank from "../Pages/QuestionBank";
-import EditExam from "../Pages/EditExam";
 import UserExamsPage from "../Pages/UserExamsPage";
+import EditExam from './../Pages/EditExamPages/EditExam';
 
 const AllRoutes = () => {
   const dispatch = useDispatch();

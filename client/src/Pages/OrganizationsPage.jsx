@@ -256,7 +256,7 @@ const OrganizationsPage = () => {
       {/* Title */}
       <div className="flex justify-between items-center w-full">
 
-      <h1 className='text-2xl font-bold text-blue-900 text-left'>Organizations</h1>
+       <h1 className='text-2xl font-bold text-blue-900 text-left'>Organizations</h1>
       {/* Search input and sorting options */}
       <div className='flex justify-start w-3/5 gap-4 '>
         <Search

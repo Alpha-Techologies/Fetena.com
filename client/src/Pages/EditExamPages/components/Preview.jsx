@@ -25,17 +25,26 @@ const Preview = ({setActiveTabKey,basicInfoValues, setBasicInfoValues, questions
   const {user} = useSelector((state) => state.auth);
   console.log(basicInfoValues.examFile)
 
+useEffect(() => {
+  if (basicInfoValues.examTime && basicInfoValues.examDate) {
+    setBasicInfoValues({...basicInfoValues, examStartDate: new Date(basicInfoValues.examDate + " " + basicInfoValues.examTime)});
+  }
+  console.log(basicInfoValues.examStartDate,"useeffcet examstart dateeeeeeeeeeeeeee")
+},[]);
 
 
-const submitExam = async () => {
-  if (!basicInfoValues.examName) {
-    toast.error("Please enter the exam name");
-    return;
-  }
-  if (!basicInfoValues.duration) {
-    toast.error("Please enter the duration");
-    return;
-  }
+console.log(basicInfoValues.examStartDate,"useeffcet examstart dateeeeeeeeeeeeeee")
+
+
+const submitExam = async () => {u
+  // if (!basicInfoValues.examName) {
+  //   toast.error("Please enter the exam name");
+  //   return;
+  // }
+  // if (!basicInfoValues.duration) {
+  //   toast.error("Please enter the duration");
+  //   return;
+  // }
   // if (!basicInfoValues.examStartDate) {
   //   toast.error("Please enter the exam start date");
   //   return;
@@ -45,14 +54,14 @@ const submitExam = async () => {
   //   return;
   // }
 
-  if (!basicInfoValues.instruction) {
-    toast.error("Please enter the instruction");
-    return;
-  }
-  if (!basicInfoValues.examType) {
-    toast.error("Please enter the exam type");
-    return;
-  }
+  // if (!basicInfoValues.instruction) {
+  //   toast.error("Please enter the instruction");
+  //   return;
+  // }
+  // if (!basicInfoValues.examType) {
+  //   toast.error("Please enter the exam type");
+  //   return;
+  // }
   if (!basicInfoValues.material) {
       basicInfoValues.uploadMaterials = false;
   }
@@ -60,7 +69,7 @@ const submitExam = async () => {
     basicInfoValues.examStartDate = new Date(basicInfoValues.examDate + " " + basicInfoValues.examTime);
   }
   
-  console.log(basicInfoValues.examStartDate)
+  console.log(basicInfoValues.examStartDate, "examstart dateeeeeeeeeeeeeee")
 
   // if (!basicInfoValues.material || !basicInfoValues.material.name) {
   //   toast.error("Please upload the material");
@@ -68,14 +77,14 @@ const submitExam = async () => {
   // }
 
   // Check if questions are available
-  if (basicInfoValues.examType === "online" && questionsCollection.length === 0) {
-    toast.error("Please add questions to submit the exam.");
-    return;
-  }
+  // if (basicInfoValues.examType === "online" && questionsCollection.length === 0) {
+  //   toast.error("Please add questions to submit the exam.");
+  //   return;
+  // }
 
   try {
     // Make the Axios POST request to save questions
-    const response = await axios.post('/api/questions', questionsCollection);
+    const response = await axios.post(`/api/exams/questions/${basicInfoValues.id}`, questionsCollection);
 
     // Handle success
     console.log('Questions submitted successfully:', response.data.data.data);
