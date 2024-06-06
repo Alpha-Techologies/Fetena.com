@@ -1,14 +1,10 @@
 const Exam = require("../models/exam.model");
 const TakeExam = require("../models/take.exam.model");
 
-// initialize the chat socket
-const users = {}; // This maps userId to socketId
 
 const chatSocket = (io, socket) => {
   // Join a room
   socket.on("joinExam", async (examId, takeExamId) => {
-    console.log(takeExamId, "the two ids");
-    console.log(examId, "examId");
     socket.join(examId);
 
     const takeExam = await TakeExam.findOne({ _id: takeExamId });
@@ -20,6 +16,19 @@ const chatSocket = (io, socket) => {
 
     takeExam.socketId = socket.id;
     await takeExam.save();
+
+    // get the exam
+    const exam = await Exam.findOne({ _id: examId });
+
+    if (!exam) {
+      console.log(`Exam ${examId} not found`);
+      return;
+    }
+
+    console.log(takeExamId, exam, exam.socketId, "jkhhj");
+    if (exam.socketId) {
+      io.to(exam.socketId).emit("userJoined", takeExamId, exam._id);
+    }
 
     // users[userId] = { socketId: socket.id, roomId };
     console.log(`User ${socket.id} joined room ${examId}`);
@@ -93,12 +102,10 @@ const chatSocket = (io, socket) => {
       await takeExam.save();
 
       const invigilatorSocketId = exam.socketId;
-      console.log("message sent successfully");
+      console.log("message sent successfully by examinee", message, invigilatorSocketId);
 
       // send the message to the invigilator
       io.to(invigilatorSocketId).emit("receiveMessage", message);
-
-      
     } else {
       // get the socket id from the take exam
       const takeExam = await TakeExam.findOne({
@@ -120,7 +127,7 @@ const chatSocket = (io, socket) => {
       console.log(socket.rooms);
 
       // send the message to the user
-      console.log("message sent to examinee", userSocketId);
+      console.log("message sent to examinee", userSocketId, message);
       io.to(userSocketId).emit("receiveMessage", message);
     }
   });

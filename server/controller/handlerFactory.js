@@ -4,7 +4,7 @@ const APIError = require("../utils/apiError");
 const catchAsync = require("../utils/catchAsync");
 // const transaction = require("../utils/transaction");
 const APIFeatures = require("../utils/apiFeatures");
-const dbConn = require("../config/db_Connection");
+const { dbConn } = require("../config/db_Connection");
 const OrganizationExaminer = require("../models/organization.examiner.model");
 const { StatusCodes } = require("http-status-codes");
 // const dbAuth = require("../config/db_Authentication");
@@ -90,7 +90,6 @@ exports.getAll = (Model, options = "", obj = {}) =>
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    // console.log(req.params, req.body);
     let doc = await Model.updateOne(
       {
         _id: req.params.id,
@@ -117,7 +116,7 @@ exports.updateOne = (Model) =>
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
     // const doc = await Model.findByIdAndDelete(req.params.id);
-    const model = await Model.findOne({_id: req.params.id});
+    const model = await Model.findOne({ _id: req.params.id });
 
     if (!model) {
       return next(
@@ -126,7 +125,7 @@ exports.deleteOne = (Model) =>
     }
 
     model.active = false;
-    console.log(model)
+    console.log(model);
     await model.save();
 
     res.status(StatusCodes.OK).json({
@@ -159,7 +158,7 @@ exports.createOne = (Model) =>
     const doc = await Model.create(req.body);
     if (!doc) {
       return next(
-        new APIError(`An error occured while creating the document`, 404)
+        new APIError(`An error occured while creating the document`, 500)
       );
     }
     res.status(201).json({
