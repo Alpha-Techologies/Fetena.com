@@ -26,14 +26,6 @@ const ExamsPage = () => {
   const [current, setCurrent] = useState(1); // Current page number
   const navigate = useNavigate();
 
-  console.log("--------------------------------------------------------------------------------------------------------")
-
-  console.log(workspace)
-  console.log(userOrganizationsIdAndRole)
-
-
-
-
 
   const fetchData = async (page=1,active=true,access="") => {
     const id = workspace._id

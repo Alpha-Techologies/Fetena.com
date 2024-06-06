@@ -383,7 +383,7 @@ console.log(basicInfoValues.id,"exammm data id")
           <Icon icon="fluent-emoji-high-contrast:left-arrow" className="text-2xl text-primary-500" />
         </Link>
         <h1 className='text-2xl font-bold text-blue-900 text-left'>Edit Exam</h1>
-        <p> {JSON.stringify(questionsCollection)}</p>
+        {/* <p> {JSON.stringify(questionsCollection)}</p> */}
       </div>
       <div>
         <Card

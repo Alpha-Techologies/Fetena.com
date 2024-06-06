@@ -191,7 +191,7 @@ const ExamQuestionForm = ({
            {questionType === "trueFalse" && (
    <Card className="bg-gray-50 w-5/6 mx-auto my-8">
      <div className="flex gap-8 items-center justify-between mx-4 border-b">
-       <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
+       <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.questions.length + 1}</h3>
        <Form.Item label="points" rules={[{ required: true, type: "number", message: "Please input the points!" }]}>
          <InputNumber min={1} value={trueFalse.points} onChange={(value) => trueFalseOnChange('points', value)} />
        </Form.Item>
@@ -264,7 +264,7 @@ const ExamQuestionForm = ({
  {questionType === "choose" && (
    <Card className="bg-gray-50 w-5/6 mx-auto my-8">
      <div className="flex gap-8 items-center justify-between mx-4 border-b">
-     <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
+     <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.questions.length + 1}</h3>
      <Form.Item label="points" rules={[{ required: true, type: "number", message: "Please input the points!" }]}>
          <InputNumber min={1} value={choose.points} onChange={(value) => chooseOnChange('points', value)} />
        </Form.Item>
@@ -351,7 +351,7 @@ const ExamQuestionForm = ({
  {questionType === "shortAnswer" && (
    <Card className="bg-gray-50 w-5/6 mx-auto my-8">
      <div className="flex gap-8 items-center justify-between mx-4 border-b">
-     <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
+     <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.questions.length + 1}</h3>
        {/* <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}> */}
        <Form.Item label="points" rules={[{ required: true, type: "number", message: "Please input the points!" }]}>
          <InputNumber min={1} value={shortAnswer.points} onChange={(value) => shortAnswerOnChange('points', value)} />
@@ -414,7 +414,7 @@ const ExamQuestionForm = ({
  { questionType === "essay" && (
             <Card className="bg-gray-50 w-5/6 mx-auto my-8">
             <div className="flex gap-8 items-center justify-between mx-4 border-b">
-            <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
+            <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.questions.length + 1}</h3>
               {/* <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}> */}
               <Form.Item label="points" rules={[{ required: true, type: "number", message: "Please input the points!" }]}>
          <InputNumber min={1} value={essay.points} onChange={(value) => essayOnChange('points', value)} />
@@ -492,7 +492,7 @@ const ExamQuestionForm = ({
  
  <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
              <div className="flex gap-8 items-center justify-center">
-             <h3 className=" font-semibold text-lg">Total Questions <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
+             <h3 className=" font-semibold text-lg">Total Questions <span className="text-blue-900"> {questionsCollection.questions.length} </span> </h3>
              {/* <h3 className=" font-semibold text-lg">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3> */}
              <Button type="primary" className="px-16" onClick={() => setActiveTabKey("Preview")}>Preview</Button>
  

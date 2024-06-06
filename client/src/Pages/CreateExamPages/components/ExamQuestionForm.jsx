@@ -11,7 +11,7 @@ const { TextArea } = Input;
 
 const ExamQuestionForm = ({
   questionType,
-  questionsCollection ,
+  questionsCollection,
   handleQuestionsSave,
   trueFalse,
   trueFalseOnChange,
@@ -160,8 +160,8 @@ const ExamQuestionForm = ({
     <div>
       <div className="flex justify-center items-center gap-2 mb-8 mt-4">
 
-<Icon icon="ph:question-bold"  className="text-2xl font-bold text-blue-800" />
-<p className="font-semibold  text-blue-900 text-lg">Enter exam questions</p>
+<Icon icon="ph:question-bold"  className="text-2xl font-bold text-blue-900" />
+<p className="font-semibold  text-blue-900 text-[1.4rem]">Enter exam questions</p>
 </div>
     
     <div>
@@ -474,8 +474,8 @@ const ExamQuestionForm = ({
  
  <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
              <div className="flex gap-8 items-center justify-center">
-             <h3 className=" font-semibold text-lg">Total Questions <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
-             <h3 className=" font-semibold text-lg">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3>
+             <h3 className=" font-semibold text-[1.1rem] flex gap-1 justify-center items-center"><Icon icon="pepicons-pop:question" />Total Questions : <span className="text-blue-900 font-bold"> {questionsCollection.length} </span> </h3>
+             <h3 className=" font-semibold text-[1.1rem] flex gap-1 justify-center items-center"><Icon icon="material-symbols:credit-score-outline" />Total Points : <span className="text-blue-900 font-bold"> {totalPoints} </span> </h3>
              <Button type="primary" className="px-16" onClick={() => setActiveTabKey("Preview")}>Preview</Button>
  
        </div>
