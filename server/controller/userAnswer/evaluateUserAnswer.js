@@ -1,74 +1,89 @@
-// const userAnswer = require("../../models/user.answer.model");
+// const userAnswer = require("../../models/user.userAnswer.questionAnswers[i].model");
 const catchAsync = require("./../../utils/catchAsync");
 const TogetherManager = require("../../AI");
-const Question = require("../../models/question.model");
 const APIError = require("../../utils/apiError");
 const { json } = require("express");
+const { shortAnswer, essay } = require("../../prompts");
 
-function parse(cdata) {
-  //     const data = `data: {"id":"8807d82e5cb9545c-JIB","choices":[{"token_id":29991,"text":"!","logprobs":null,"finish_reason":null}],"model":"meta-llama/Llama-2-70b-chat-hf","usage":null}
-  // data: {"id":"8807d82e5cb9545c-JIB","choices":[{"token_id":13,"text":"n","logprobs":null,"finish_reason":null}],"model":"meta-llama/Llama-2-70b-chat-hf","usage":null}
-  // data: {"id":"8807d82e5cb9545c-JIB","choices":[{"token_id":29902,"text":"I","logprobs":null,"finish_reason":null}],"model":"meta-llama/Llama-2-70b-chat-hf","usage":null}
-  // ...`;
-
-  const data = `{\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29892,\"text\":\",\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":322,\"text\":\" and\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":306,\"text\":\" I\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29915,\"text\":\"'\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":645,\"text\":\"ll\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":367,\"text\":\" be\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":9796,\"text\":\" happy\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":304,\"text\":\" to\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":13563,\"text\":\" chat\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":411,\"text\":\" with\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":366,\"text\":\" you\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29889,\"text\":\".\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":13,\"text\":\"n\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":13,\"text\":\"n\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29902,\"text\":\"I\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29915,\"text\":\"'\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29885,\"text\":\"m\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":263,\"text\":\" a\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":2919,\"text\":\" large\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":4086,\"text\":\" language\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":1904,\"text\":\" model\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29892,\"text\":\",\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":590,\"text\":\" my\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":20890,\"text\":\" responses\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":526,\"text\":\" are\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":5759,\"text\":\" generated\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":2729,\"text\":\" based\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":373,\"text\":\" on\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":278,\"text\":\" the\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":1881,\"text\":\" input\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":306,\"text\":\" I\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":7150,\"text\":\" receive\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29892,\"text\":\",\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":322,\"text\":\" and\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":306,\"text\":\" I\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":508,\"text\":\" can\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":1234,\"text\":\" answer\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":263,\"text\":\" a\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":9377,\"text\":\" wide\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":3464,\"text\":\" range\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":310,\"text\":\" of\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":5155,\"text\":\" questions\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":373,\"text\":\" on\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":5164,\"text\":\" various\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":23820,\"text\":\" topics\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29889,\"text\":\".\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":306,\"text\":\" I\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29915,\"text\":\"'\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29885,\"text\":\"m\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":2337,\"text\":\" always\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":6509,\"text\":\" learning\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":322,\"text\":\" and\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":4857,\"text\":\" impro\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":1747,\"text\":\"ving\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29892,\"text\":\",\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":577,\"text\":\" so\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":3113,\"text\":\" please\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":11460,\"text\":\" bear\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":411,\"text\":\" with\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":592,\"text\":\" me\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":565,\"text\":\" if\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":306,\"text\":\" I\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":1207,\"text\":\" make\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":738,\"text\":\" any\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":28947,\"text\":\" mistakes\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29889,\"text\":\".\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":306,\"text\":\" I\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29915,\"text\":\"'\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29885,\"text\":\"m\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":1244,\"text\":\" here\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":304,\"text\":\" to\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":1371,\"text\":\" help\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":322,\"text\":\" and\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":3867,\"text\":\" provide\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":2472,\"text\":\" information\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":304,\"text\":\" to\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":278,\"text\":\" the\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":1900,\"text\":\" best\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":310,\"text\":\" of\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":590,\"text\":\" my\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":633,\"text\":\" ab\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":9770,\"text\":\"ilities\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29889,\"text\":\".\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":13,\"text\":\"n\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":13,\"text\":\"n\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":10454,\"text\":\"Now\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29892,\"text\":\",\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":825,\"text\":\" what\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":508,\"text\":\" can\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":306,\"text\":\" I\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":1371,\"text\":\" help\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":366,\"text\":\" you\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":411,\"text\":\" with\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":9826,\"text\":\" today\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":29973,\"text\":\"?\",\"logprobs\":null,\"finish_reason\":null}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":null}\n\ndata: {\"id\":\"8807f605bbf35459-JIB\",\"choices\":[{\"token_id\":2,\"text\":\"\",\"logprobs\":null,\"finish_reason\":\"eos\"}],\"model\":\"meta-llama/Llama-2-70b-chat-hf\",\"usage\":{\"prompt_tokens\":4,\"completion_tokens\":96,\"total_tokens\":100}}\n\ndata: [DONE]\n\n"`;
-
-  // Split the data by newline character
-  const lines = data.split("\n");
-
-  // Initialize an array to store parsed objects
-  let parsedData = [];
-
-  // Iterate over each line
-
-  console.log(lines.length);
-  lines.forEach((line) => {
-    // Extract the JSON part of the line
-    // console.log(line)
-    // const jsonData = line.substring(line.indexOf('{'), line.lastIndexOf('}') + 1);
-
-    // Parse the JSON string into an object
-    // console.log((JSON.parse(line)))
-    // console.log((JSON.parse(jsonData)))
-    // const obj = JSON.parse(line);
-    // const obj = JSON.parse(jsonData);
-
-    // Push the object into the parsedData array
-    parsedData.push(line);
-  });
-
-  // Convert the parsedData array to JSON format
-  const jsonData = JSON.stringify(parsedData, null, 2);
-
-  console.log(JSON.parse(jsonData));
-  return JSON.parse(jsonData);
-}
+const UserAnswer = require("../../models/user.answer.model");
+const Exam = require("../../models/exam.model");
 
 exports.evaluateUserAnswer = catchAsync(async (req, res, next) => {
+
   console.log("evaluated");
 
-  const question = await Question.findById(req.params.id);
+  const userAnswer = await UserAnswer.findById(req.params.id);
 
-  if (!question) {
-    return next(new APIError("Question not found", 404));
+  if (!userAnswer) {
+    return next(new APIError("Users answers not found", 404));
   }
 
+  const exam = await Exam.findById(userAnswer.examId)
+  .populate('questions');
+
+  if (!exam) {
+    return next(new APIError("Exam not found", 404));
+  }
+
+  let questions = exam.questions;
+
+  let totalScore = 0;
   const apiKey = process.env.TOGETHER_API_KEY;
   const togetherManager = new TogetherManager(apiKey, _, true);
-  const prompt =
-    "I am giving you an a question in a json file try to understand and and create an appropriate tags for this question and in your return make it a json file that has an object with a key tag and an array of string that are going to be the tags and make the tags short and concise and answer me with a json format string in which i can take your output and use the json.parse" +
-    JSON.stringify({
-      question: question.questionText,
-      options: question.questionChoice,
-      type: question.questionType,
-    });
 
-  const result = await togetherManager.performInference(prompt);
+  for (let i = 0; i < userAnswer.questionAnswers.length; i++) {
 
-  console.log(result);
-  const data = JSON.parse(result);
+    let question = null;
+    for (let j = 0; j < questions.length; j++) {
+        if (questions[j]._id.equals(userAnswer.questionAnswers[i].questionId._id)) {
+            question = questions[j];
+            break;
+        }
+    }
+    if (question) {
+      // Handle different question types separately 
+      const answerText = userAnswer.questionAnswers[i].answerText.toLowerCase().trim();
+      const correctAnswerText = question.correctAnswer.toLowerCase().trim();
 
-  // const data = parse(result)
+        if (question.questionType === 'True/False' || question.questionType === 'choose' || question.questionType === 'matching') {
+            // Perform case-insensitive string comparison for true/false and choice questions
+            // here
+            if (answerText === correctAnswerText) {
+                userAnswer.questionAnswers[i].point = question.points 
+                totalScore += question.points; // Increment score if answers match
+            }
+        } else {
+            // Handle other question types (e.g., short answer, essay)
+            if (userAnswer.questionAnswers[i].answerText.trim() !== '') {
+              // const prompt = shortAnswer(question.questionText, question.correctAnswer, question.points, question.correctAnswer, userAnswer.questionAnswers[i].answerText.trim())
+              
+              // const result = await togetherManager.performInference(prompt);
+              // console.log('result',result.trim());
+              // userAnswer.questionAnswers[i].reason = result.replaceAll('\n','')
+              userAnswer.questionAnswers[i].point = question.points;
+              totalScore += 0; // Give full points if userAnswer.questionAnswers[i] is not empty
+                totalScore += question.points; // Give full points if userAnswer.questionAnswers[i] is not empty
+            }
+          }
+        }
+      } 
+  userAnswer.score = totalScore
+  await userAnswer.save()
 
-  res.status(200).send({ message: result, data });
+  var response = {}
+
+  if(exam.privateScore){
+    // totalScore = 0
+  }
+
+  if(exam.privateAnswer){
+    // userAnswer.questionAnswers = "undefined"
+  }
+
+  response.userAnswer = userAnswer.questionAnswers // userAnswer.questionAnswers[answerText]  // score
+  response.questions = questions  //questions
+  response.score = totalScore
+
+  res.status(200).send({response});
+
 });

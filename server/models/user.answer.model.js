@@ -7,6 +7,14 @@ const AnswerSchema = new mongoose.Schema({
     required: true,
   },
   answerText: String,
+  reason:{
+    type: String,
+    default: 'Based on the criteria',    
+  },
+  point:{
+    type: Number,
+    default: 0,
+  }
 });
 
 const UserAnswerSchema = new mongoose.Schema({
