@@ -127,7 +127,6 @@ const ChatComponent = ({ exam, socket, takeExamId }) => {
       }
     }
   }, [examinee]);
-
   const sendMessage = () => {
     if (chatMessage !== "" && socket) {
       socket.emit("sendMessage", exam._id, false, {
@@ -153,26 +152,26 @@ const ChatComponent = ({ exam, socket, takeExamId }) => {
   };
 
   return (
-    <div className='h-screen flex flex-col justify-between overflow-auto'>
+    <div className="h-screen flex flex-col justify-between overflow-auto">
       <MessageList
         key={1}
-        className='message-list mt-2 mb-2'
+        className="message-list mt-2 mb-2"
         lockable={true}
         toBottomHeight={"100%"}
         dataSource={chatList.chat}
       />
-      <div className='flex items-center gap-2 w-[90%]'>
+      <div className="flex items-center gap-2 w-[90%]">
         <Input
-          className='w-full'
+          className="w-full"
           value={chatMessage}
           placeholder={"Type your message here"}
           onChange={(e) => setChatMessage(e.target.value)}
         />
-        <div className='w-[20%]'>
+        <div className="w-[20%]">
           <Icon
             onClick={() => sendMessage()}
-            className='w-5 h-5 text-primary-500'
-            icon='carbon:send-filled'
+            className="w-5 h-5 text-primary-500"
+            icon="carbon:send-filled"
           />
         </div>
       </div>

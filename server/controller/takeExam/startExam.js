@@ -3,6 +3,7 @@ const Exam = require("../../models/exam.model");
 const { StatusCodes } = require("http-status-codes");
 const APIError = require("../../utils/apiError");
 const TakeExam = require("../../models/take.exam.model");
+const UserAnswer = require("../../models/user.answer.model");
 
 const startExam = catchAsync(async (req, res, next) => {
   const examId = req.params.id;
@@ -50,11 +51,17 @@ const startExam = catchAsync(async (req, res, next) => {
     return next(new APIError("Exam is terminated", StatusCodes.CONFLICT));
   }
 
+  const userAnswer = await UserAnswer.create({
+    questionAnswers: [],
+    score: 0,
+  });
+
   // create the exam take object
   const doc = await TakeExam.create({
     exam: examId,
     user: req.user.id,
     status: "inprogress",
+    userAnswers: userAnswer._id,
   });
 
   res.status(200).json({
