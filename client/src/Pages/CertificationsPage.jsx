@@ -79,12 +79,23 @@ const CertificationsPage = () => {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between gap-4 items-center">
        <h1 className='text-2xl font-bold text-blue-900 text-left'>Certifications</h1>
+       <Button
+          //  onClick={showModall}
+           className="flex items-center gap-1 bg-primary-500 hover:bg-primary-700 text-white font-bold py-[0.5rem] px-4 rounded group">
+            <Icon
+              className="text-white w-4 h-4 group-hover:text-primary-500"
+              icon="mdi:certificate-outline"
+            />{" "}
+            <span className="group-hover:text-primary-500">
+              Create a Certificate
+            </span>
+          </Button>
       </div>
       <div>
         <Card
           style={{ width: "100%" }}
-          tabList={tabListNoTitle}
-          activeTabKey={activeTabKey}
+          // tabList={tabListNoTitle}
+          // activeTabKey={activeTabKey}
           onTabChange={onTabChange}
           tabProps={{ size: "middle" }}
         >
