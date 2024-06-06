@@ -850,6 +850,7 @@
 2024-05-20T14:41:29.162Z - [INFO   ] - takeexams.findOne([{"exam":"664b491d2068fc9d1b0c5156","user":"662e998e1b1c9802c2665e13"},{}])
 2024-05-20T14:45:10.675Z - [INFO   ] - DBconnection succcessful
 2024-05-20T14:45:10.723Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+
 2024-05-21T21:41:11.580Z - [INFO   ] - DBconnection succcessful
 2024-05-21T21:41:11.638Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
 2024-05-21T21:41:17.435Z - [INFO   ] - tokens.findOne([{"user":"66300f3aef1e9e86df85edd7","refreshToken":"b157fac5d1a94430de1bfecce032f721e78e301971b44646e52078b1e1ab95b24c39372169c379a7"},{}])
@@ -1970,3 +1971,56 @@
 2024-06-04T10:03:24.256Z - [INFO   ] - organizations.find([{"_id":{"$in":["664744dd75cf6b74ad2ec02e"]}},{"strictPopulate":false}])
 2024-06-04T10:24:49.038Z - [INFO   ] - DBconnection succcessful
 2024-06-04T10:24:49.119Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+
+2024-06-02T08:31:23.390Z - [INFO   ] - DBconnection successful
+2024-06-02T08:31:23.435Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T08:31:31.527Z - [INFO   ] - tokens.findOne([{"user":"66300a5afb642a758256afa3","refreshToken":"f54f27c2881ef2c72d3ca739f171b9d707c468a4c592ca29b223971a68c1ef697bb9868459ac862d"},{}])
+2024-06-02T08:36:34.541Z - [INFO   ] - exams.insertOne([{"examName":"Sample Exam","duration":60,"instruction":"This is a sample exam for testing purposes.","securityLevel":"low","examType":"createOnline","privateAnswer":false,"privateScore":false,"toolsPermitted":["calculator","pen"],"questions":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"],"access":"open","requiredField":[],"_id":"665c2f129099d6a1ea7a086a","createdBy":"66300a5afb642a758256afa3","invigilatorID":"66300a5afb642a758256afa3","examKey":"{TA0qD","createdAt":"2024-06-02T08:36:34.539Z","updatedAt":"2024-06-02T08:36:34.539Z","__v":0},{}])
+2024-06-02T08:36:48.922Z - [INFO   ] - exams.insertOne([{"examName":"Sample Exam","duration":60,"instruction":"This is a sample exam for testing purposes.","securityLevel":"low","examType":"createOnline","privateAnswer":false,"privateScore":false,"toolsPermitted":["calculator","pen"],"questions":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"],"access":"open","requiredField":[],"_id":"665c2f209099d6a1ea7a086c","createdBy":"66300a5afb642a758256afa3","invigilatorID":"66300a5afb642a758256afa3","examKey":";@Y6{E","createdAt":"2024-06-02T08:36:48.922Z","updatedAt":"2024-06-02T08:36:48.922Z","__v":0},{}])
+2024-06-02T08:37:07.460Z - [INFO   ] - exams.insertOne([{"examName":"Sample Exam","duration":60,"instruction":"This is a sample exam for testing purposes.","securityLevel":"low","examType":"createOnline","privateAnswer":false,"privateScore":false,"toolsPermitted":["calculator","pen"],"questions":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"],"access":"open","requiredField":[],"_id":"665c2f339099d6a1ea7a086e","createdBy":"66300a5afb642a758256afa3","invigilatorID":"66300a5afb642a758256afa3","examKey":"%jm@;&","createdAt":"2024-06-02T08:37:07.460Z","updatedAt":"2024-06-02T08:37:07.460Z","__v":0},{}])
+2024-06-02T10:23:00.056Z - [INFO   ] - DBconnection successful
+2024-06-02T10:23:28.870Z - [INFO   ] - DBconnection successful
+2024-06-02T10:23:58.832Z - [INFO   ] - DBconnection successful
+2024-06-02T10:31:08.042Z - [INFO   ] - DBconnection successful
+2024-06-02T11:00:14.267Z - [INFO   ] - DBconnection successful
+2024-06-02T14:26:08.727Z - [INFO   ] - DBconnection successful
+2024-06-02T14:26:08.764Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-02T14:26:25.481Z - [INFO   ] - tokens.findOne([{"user":"66300a5afb642a758256afa3","refreshToken":"f54f27c2881ef2c72d3ca739f171b9d707c468a4c592ca29b223971a68c1ef697bb9868459ac862d"},{}])
+2024-06-02T14:26:25.514Z - [INFO   ] - exams.insertOne([{"examName":"Sample Exam","duration":60,"instruction":"This is a sample exam for testing purposes.","securityLevel":"low","examType":"createOnline","privateAnswer":false,"privateScore":false,"toolsPermitted":["calculator","pen"],"questions":["664b47762068fc9d1b0c514d","664b47762068fc9d1b0c514e","664b47762068fc9d1b0c514f","664b47762068fc9d1b0c5150","664b47762068fc9d1b0c5151"],"access":"open","requiredField":[],"_id":"665c8111bb405c7c4b6d8ab2","createdBy":"66300a5afb642a758256afa3","invigilatorID":"66300a5afb642a758256afa3","examKey":"tCxpmI","createdAt":"2024-06-02T14:26:25.511Z","updatedAt":"2024-06-02T14:26:25.511Z","__v":0},{}])
+2024-06-03T00:57:46.495Z - [INFO   ] - DBconnection successful
+2024-06-03T00:57:46.498Z - [INFO   ] - organizations.deleteOne([{"_id":"665d150ae1ccd34acca79b80"},{}])
+2024-06-03T00:57:46.529Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-03T00:57:46.560Z - [INFO   ] - organizations.deleteOne([{"_id":"665d150ae1ccd34acca79b84"},{}])
+2024-06-03T01:00:46.407Z - [INFO   ] - DBconnection successful
+2024-06-03T01:00:46.412Z - [INFO   ] - organizations.deleteOne([{"_id":"665d15be70e75cfb8c268cb7"},{}])
+2024-06-03T01:00:46.442Z - [INFO   ] - organizations.deleteOne([{"_id":"665d15be70e75cfb8c268cba"},{}])
+2024-06-03T01:16:26.943Z - [INFO   ] - DBconnection successful
+2024-06-03T01:16:27.004Z - [INFO   ] - DBconnection successful
+2024-06-03T01:16:28.322Z - [INFO   ] - DBconnection successful
+2024-06-03T01:20:52.171Z - [INFO   ] - DBconnection successful
+2024-06-03T01:20:52.341Z - [INFO   ] - DBconnection successful
+2024-06-03T01:20:52.704Z - [INFO   ] - DBconnection successful
+2024-06-03T01:20:52.856Z - [INFO   ] - DBconnection successful
+2024-06-03T01:56:51.426Z - [INFO   ] - DBconnection successful
+2024-06-03T01:56:51.491Z - [INFO   ] - DBconnection successful
+2024-06-03T01:56:51.506Z - [INFO   ] - DBconnection successful
+2024-06-03T17:03:47.202Z - [INFO   ] - DBconnection successful
+2024-06-03T17:03:48.057Z - [INFO   ] - DBconnection successful
+2024-06-03T17:03:48.206Z - [INFO   ] - DBconnection successful
+2024-06-03T17:04:23.909Z - [INFO   ] - DBconnection successful
+2024-06-03T17:04:23.939Z - [INFO   ] - users.createIndex([{"email":1},{"unique":true,"background":true}])
+2024-06-03T17:04:34.875Z - [INFO   ] - DBconnection successful
+2024-06-03T17:04:35.123Z - [INFO   ] - DBconnection successful
+2024-06-03T17:04:35.720Z - [INFO   ] - DBconnection successful
+2024-06-03T17:18:08.185Z - [INFO   ] - DBconnection successful
+2024-06-03T17:18:08.329Z - [INFO   ] - DBconnection successful
+2024-06-03T17:18:08.438Z - [INFO   ] - DBconnection successful
+2024-06-06T11:31:50.023Z - [INFO   ] - DBconnection successful
+2024-06-06T11:31:50.336Z - [INFO   ] - DBconnection successful
+2024-06-06T11:31:50.560Z - [INFO   ] - DBconnection successful
+2024-06-06T11:31:52.061Z - [INFO   ] - DBconnection successful
+2024-06-06T11:54:31.945Z - [INFO   ] - DBconnection successful
+2024-06-06T11:54:31.990Z - [INFO   ] - DBconnection successful
+2024-06-06T11:54:32.259Z - [INFO   ] - DBconnection successful
+2024-06-06T11:54:33.955Z - [INFO   ] - DBconnection successful
+
