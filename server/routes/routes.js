@@ -8,8 +8,7 @@ const organizationRouter = require("./organizationRoutes");
 const notificationRouter = require("./notificationRoutes");
 const userAnswerRouter = require("./userAnswerRoutes");
 const logRouter = require("./logRoutes");
-const sseRouter = require("./sseRouters");
-const chatRouter = require("./chatRoutes");
+
 
 router.use("/users", userRouter);
 router.use("/exams", examRouter);
