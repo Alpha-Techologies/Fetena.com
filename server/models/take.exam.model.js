@@ -67,9 +67,10 @@ const takeExamSchema = new mongoose.Schema({
         "submitted",
         "terminated",
         "interrupted",
-        "completed"
+        "completed",
       ],
-      message: "examStatus can be either pending, inprogress, submitted, terminated, interrupted or completed",
+      message:
+        "examStatus can be either pending, inprogress, submitted, terminated, interrupted or completed",
     },
   },
   startTime: {
@@ -87,6 +88,13 @@ const takeExamSchema = new mongoose.Schema({
   ],
   chatMessages: [chatMessageSchema],
   userActivityLogs: [userActivityLogSchema],
+  socketId: {
+    type: String,
+  },
+  active: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const TakeExam = mongoose.model("TakeExam", takeExamSchema);

@@ -7,15 +7,17 @@ import { Card, Divider } from "antd";
 import { Icon } from "@iconify/react";
 import Button from "../Components/Button";
 import { Link } from "react-router-dom";
+import ExamCard from "../Components/ExamCard";
 
 const OrganizationsDetails = () => {
   const { "*": id } = useParams();
   const dispatch = useDispatch();
   const [organizationDetail, setOrganizationDetail] = useState({});
   const { user } = useSelector((state) => state.auth);
+  const [activeTabKey, setActiveTabKey] = useState("exams");
 
   useEffect(() => {
-    dispatch(getOneOrganization({id, field: ''}))
+    dispatch(getOneOrganization({ id, field: "" }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           const dataTemp = res.payload.data.data[0];
@@ -28,15 +30,62 @@ const OrganizationsDetails = () => {
       });
   }, []);
 
+  const onTabChange = (key) => {
+    setActiveTabKey(key);
+  };
+
+  const ExamPageView = () => {
+    return (
+      <div className='flex flex-wrap gap-4'>
+        <ExamCard />
+        <ExamCard />
+        <ExamCard />
+        <ExamCard />
+        <ExamCard />
+        <ExamCard />
+        <ExamCard />
+        <ExamCard />
+        <ExamCard />
+        <ExamCard />
+        <ExamCard />
+        <ExamCard />
+      </div>
+    );
+  };
+
+  const contentList = {
+    exams: <ExamPageView />,
+    personnel: "as",
+  };
+
+  const tabList = [
+    {
+      key: "exams",
+      tab: "Exams",
+    },
+    {
+      key: "personnel",
+      tab: "Personnel",
+    },
+  ];
+
   return (
     <div>
-      <div className='my-4 bg-white rounded h-full flex'>
-      <Link to='/dashboard/organizations' className="p-4">
-        <Icon icon="fluent-emoji-high-contrast:left-arrow"  className="text-3xl text-primary-500" />
-            
-            </Link>
+      <div className='flex gap-4 items-center'>
+        <Link
+          to='/dashboard/organizations'
+          className='p-4'>
+          <Icon
+            icon='fluent-emoji-high-contrast:left-arrow'
+            className='text-3xl text-primary-500'
+          />
+        </Link>
+        <h1 className='text-3xl font-bold justify-self-start'>
+          Organization Details
+        </h1>
+      </div>
+      <div className='my-4 bg-white rounded h-[10%] flex'>
         <div className='flex gap-2 items-center w-[70%] my-0'>
-          
           <img
             className='w-1/2 rounded-full cursor-pointer'
             src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
@@ -83,26 +132,51 @@ const OrganizationsDetails = () => {
             </div>
           </div>
         </div>
-        
-        <div className='flex flex-col items-start justify-center w-1/2 my-0 border-l-2 pl-2'>
+
+        <div className='flex flex-col items-start justify-center w-1/2 my-0 pl-2'>
           <div className='flex gap-4'>
             <p className='font-semibold'>Email:</p>
-            <p>{organizationDetail.email === "" ? "N/A" : organizationDetail.email }</p>
+            <p>
+              {organizationDetail.email === ""
+                ? "N/A"
+                : organizationDetail.email}
+            </p>
           </div>
           <div className='flex gap-4'>
             <p className='font-semibold'>Address:</p>
-            <p>{organizationDetail.address === "" ? "N/A" : organizationDetail.address}</p>
+            <p>
+              {organizationDetail.address === ""
+                ? "N/A"
+                : organizationDetail.address}
+            </p>
           </div>
           <div className='flex gap-4'>
             <p className='font-semibold'>Phone:</p>
-            <p>{organizationDetail.phone === "" ? "N/A" : "+251 - " + organizationDetail.phone}</p>
+            <p>
+              {organizationDetail.phone === ""
+                ? "N/A"
+                : "+251 - " + organizationDetail.phone}
+            </p>
           </div>
           <div className='flex gap-4'>
             <p className='font-semibold'>Website:</p>
-            <p>{organizationDetail.website === "" ? "N/A" : organizationDetail.website}</p>
+            <p>
+              {organizationDetail.website === ""
+                ? "N/A"
+                : organizationDetail.website}
+            </p>
           </div>
         </div>
       </div>
+      <Card
+        style={{
+          width: "100%",
+        }}
+        tabList={tabList}
+        activeTabKey={activeTabKey}
+        onTabChange={onTabChange}>
+        {contentList[activeTabKey]}
+      </Card>
     </div>
   );
 };

@@ -6,6 +6,7 @@ const catchAsync = require("../utils/catchAsync");
 const APIFeatures = require("../utils/apiFeatures");
 const dbConn = require("../config/db_Connection");
 const OrganizationExaminer = require("../models/organization.examiner.model");
+const { StatusCodes } = require("http-status-codes");
 // const dbAuth = require("../config/db_Authentication");
 require("events").EventEmitter.prototype._maxListeners = 70;
 require("events").defaultMaxListeners = 70;
@@ -49,6 +50,8 @@ exports.getAll = (Model, options = "", obj = {}) =>
     if (options === "addExam") opt = { exam: req.params.id };
 
     const page = req.query.page * 1 || 1;
+
+    console.log(opt, options)
     const limit = req.query.limit * 1 || 10;
 
     let count = new APIFeatures(Model.find(opt), req.query).filter().count();
@@ -113,13 +116,20 @@ exports.updateOne = (Model) =>
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findByIdAndDelete(req.params.id);
-    if (!doc) {
+    // const doc = await Model.findByIdAndDelete(req.params.id);
+    const model = await Model.findOne({_id: req.params.id});
+
+    if (!model) {
       return next(
         new APIError(`No document found with id = ${req.params.id}`, 404)
       );
     }
-    res.status(204).json({
+
+    model.active = false;
+    console.log(model)
+    await model.save();
+
+    res.status(StatusCodes.OK).json({
       status: "success",
       data: null,
     });

@@ -20,9 +20,10 @@ const RelatedExams = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/api/exams?limit=4&fields=examName,organization");
+        // /api/exams?fields=examName,organization&page=${page}&sort=-createdAt
+        const response = await axios.get("/api/exams?limit=4&fields=examName,organization&sort=-createdAt");
         setExams(response.data.data.data);
-        console.log(response.data.data.data);
+        console.log(response.data.data.data,'related exams');
       } catch (error) {
         console.error("Error fetching data:", error);
       }

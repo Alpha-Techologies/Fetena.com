@@ -35,6 +35,10 @@ import ActivityLogPage from "../Pages/ActivityLogPage";
 import OrganizationStaffPage from "../Pages/OrganizationStaffPage";
 import OrganizationSettingsPage from "../Pages/OrganizationSettingsPage";
 import NotificationPage from "../Pages/NotificationsPage";
+import Preview from "../Pages/Preview";
+import QuestionBank from "../Pages/QuestionBank";
+import UserExamsPage from "../Pages/UserExamsPage";
+import EditExam from './../Pages/EditExamPages/EditExam';
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -81,6 +85,14 @@ const AllRoutes = () => {
           element={<VerifyEmail />}
         />
 
+        {/* <Route
+          path='/take-exam'
+          element={
+            <TakeExamRoute isAuthenticated={isAuthenticated}>
+              <TakeExamScreen />
+            </TakeExamRoute>
+          }></Route> */}
+
         <Route
           path='/dashboard'
           element={
@@ -104,9 +116,32 @@ const AllRoutes = () => {
             path='exams'
             element={<ExamsPage />}
           />
+
+
+<Route
+            path='exams/userexams'
+            element={<UserExamsPage />}
+          />
+          
+          <Route
+            path='questionbank'
+            element={<QuestionBank />}
+          />
+
+
           <Route
             path='exams/:id'
             element={<ExamDetailPage />}
+          />
+
+<Route
+            path='exams/editexam/:id'
+            element={<EditExam />}
+          />
+
+          <Route
+            path='exams/preview/:id'
+            element={<Preview />}
           />
           <Route
             path='create-exam'
@@ -129,6 +164,10 @@ const AllRoutes = () => {
             path='results'
             element={<ResultsPage />}
           />
+          {/* <Route
+            path='exam-monitor'
+            element={<MonitoringPage/>}
+          /> */}
           <Route
             path='certifications'
             element={<CertificationsPage />}
@@ -149,6 +188,8 @@ const AllRoutes = () => {
             path='trainingVideos'
             element={<TrainingVideosPage />}
           />
+
+
 
           <Route
             path='support'

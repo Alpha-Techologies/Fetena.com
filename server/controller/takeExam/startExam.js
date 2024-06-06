@@ -24,11 +24,30 @@ const startExam = catchAsync(async (req, res, next) => {
     user: req.user.id,
   });
 
+  if (isExamStarted) {
+    return res.status(200).json({
+      status: "success",
+      data: isExamStarted,
+    });
+  }
+
   // check if the exam is currently in progress or if he has not started the exam
   if (isExamStarted && isExamStarted.status === "inprogress") {
     return next(
       new APIError("Exam is already in progress", StatusCodes.CONFLICT)
     );
+  }
+
+  //check if exam is submitted
+  if (isExamStarted && isExamStarted.status === "submitted") {
+    return next(
+      new APIError("Exam is already submitted", StatusCodes.CONFLICT)
+    );
+  }
+
+  //check if the exam is terminated
+  if (isExamStarted && isExamStarted.status === "terminated") {
+    return next(new APIError("Exam is terminated", StatusCodes.CONFLICT));
   }
 
   // create the exam take object
