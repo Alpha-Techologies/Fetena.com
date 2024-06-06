@@ -53,17 +53,21 @@ const ExamDetailPage = () => {
         <div className='flex gap-4'>
 
        { workspace &&
+       <>
         <Link
           to={`/dashboard/exams/editexam/${id}`}
           className='flex items-center gap-2 bg-blue-50 hover:bg-primary-600 hover:text-white text-primary-800 border  border-primary-200 font-bold py-2 px-4 rounded '>
         
           <Icon icon="line-md:pencil-twotone" /> Edit
-        </Link>}
+        </Link>
         <Link
           to={'/take-exam/' + id}
           className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded'>
           <Icon className='w-5 h-5' icon='system-uicons:write' /> Take Exam
         </Link>
+        </>
+
+        }
         </div>
       </div>
       <div>

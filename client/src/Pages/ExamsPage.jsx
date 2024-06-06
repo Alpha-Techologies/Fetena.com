@@ -1,25 +1,10 @@
-import {
-  Card,
-  Form,
-  Button,
-  Input,
-  Avatar,
-  Pagination,
-  Badge,
-  Tag,
-  Space,
-  Table,
-  Popover,
-  Modal,
-  Select,
-} from "antd";
+import { Card, Form, Input, Space, Table, Popover, Modal, Select } from "antd";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import ExamCard from "../Components/ExamCard";
 
 const { Search } = Input;
 
@@ -116,38 +101,30 @@ const ExamsPage = () => {
       title: "Action",
       key: "action",
       render: (text, record) => (
-        <Space
-          size='middle'
-          className='grid grid-cols-4 gap-2'>
-          <Popover
-            title='Edit Exam'
-            trigger='hover'>
+        <Space size="middle" className="grid grid-cols-4 gap-2">
+          <Popover title="Edit Exam" trigger="hover">
             <Link to={`/dashboard/exams/editexam/${record.key}`}>
               <Icon
-                icon='line-md:pencil-twotone'
-                className='text-blue-800 font-bold text-2xl hover:text-black'
+                icon="line-md:pencil-twotone"
+                className="text-blue-800 font-bold text-2xl hover:text-black"
               />
             </Link>
           </Popover>
 
-          <Popover
-            title='Exam Details'
-            trigger='hover'>
+          <Popover title="Exam Details" trigger="hover">
             <Link to={`/dashboard/exams/${record.key}`}>
               <Icon
-                icon='mdi:eye'
-                className='text-blue-800 font-bold text-2xl hover:text-black'
+                icon="mdi:eye"
+                className="text-blue-800 font-bold text-2xl hover:text-black"
               />
             </Link>
           </Popover>
 
-          <Popover
-            title='Preview Exam'
-            trigger='hover'>
+          <Popover title="Preview Exam" trigger="hover">
             <Link to={`/dashboard/exams/preview/${record.key}`}>
               <Icon
-                icon='fa6-solid:binoculars'
-                className='text-blue-800 font-bold text-2xl hover:text-black'
+                icon="fa6-solid:binoculars"
+                className="text-blue-800 font-bold text-2xl hover:text-black"
               />
             </Link>
           </Popover>
@@ -156,23 +133,25 @@ const ExamsPage = () => {
           <>
             {record.active ? (
               <Popover
-                title='Delete Exam'
-                trigger='hover'
-                className='cursor-pointer'>
+                title="Delete Exam"
+                trigger="hover"
+                className="cursor-pointer"
+              >
                 <Icon
-                  icon='material-symbols:delete'
-                  className='text-blue-800 font-bold text-2xl hover:text-black'
+                  icon="material-symbols:delete"
+                  className="text-blue-800 font-bold text-2xl hover:text-black"
                   onClick={() => confirmDelete(record.key)}
                 />
               </Popover>
             ) : (
               <Popover
-                title='Restore Exam'
-                trigger='hover'
-                className='cursor-pointer'>
+                title="Restore Exam"
+                trigger="hover"
+                className="cursor-pointer"
+              >
                 <Icon
-                  icon='pajamas:redo'
-                  className='text-blue-800 font-bold text-2xl hover:text-black'
+                  icon="pajamas:redo"
+                  className="text-blue-800 font-bold text-2xl hover:text-black"
                   onClick={() => confirmRestore(record.key)}
                 />
               </Popover>
@@ -202,18 +181,19 @@ const ExamsPage = () => {
   const data = exams.map((exam) => ({
     key: exam._id,
     examName: exam.examName,
-    examKey: <span className='font-bold text-blue-900'>{exam.examKey}</span>,
+    examKey: <span className="font-bold text-blue-900">{exam.examKey}</span>,
     createdBy: exam.createdBy.firstName + " " + exam.createdBy.lastName,
     createdAt: new Date(exam.createdAt).toLocaleString(),
     securityLevel: exam.securityLevel,
     access: (
       <span
         onClick={() => handleAccess(exam._id, exam.access)}
-        className='font-semibold cursor-pointer border rounded-xl  flex items-center justify-center'
+        className="font-semibold cursor-pointer border rounded-xl  flex items-center justify-center"
         style={{
           color: exam.access === "open" ? "green" : "red",
           borderColor: exam.access === "open" ? "green" : "red",
-        }}>
+        }}
+      >
         {exam.access}
       </span>
     ),
@@ -281,97 +261,89 @@ const ExamsPage = () => {
   };
 
   return (
-    <div className='flex flex-col gap-4'>
-      <div className='flex justify-between items-center'>
-         <h1 className='text-2xl font-bold text-blue-900 text-left'>Exams</h1>
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-blue-900 text-left">Exams</h1>
 
-        
+        <div className="flex justify-center items-center gap-4">
+          <div className="flex flex-col justify-start w-86">
+            <Search
+              placeholder="Search Exams"
+              allowClear
+              enterButton="Search"
+              size="medium"
+              onSearch={onSearch}
+            />
+          </div>
 
-       
-<div className='flex justify-center items-center gap-4'>
+          <span className="flex items-center">
+            <span className="w-full font-semibold text-[1rem] text-blue-800">
+              Status :
+            </span>
+            <Select
+              defaultValue=""
+              className="h-full ml-2"
+              style={{
+                width: "auto",
+                minWidth: 100, // Ensure a minimum width for better appearance
+              }}
+              onChange={(value) => filterByStatus(value)}
+              options={[
+                {
+                  value: "Active",
+                  label: "Active",
+                },
+                {
+                  value: "Archived",
+                  label: "Archived",
+                },
+              ]}
+              dropdownMatchSelectWidth={false} // Prevent the dropdown from matching the select's width
+            />
+          </span>
 
+          <span className="flex items-center">
+            <span className="w-full font-semibold text-[1rem] text-blue-800">
+              Access :
+            </span>
 
-        <div className='flex flex-col justify-start w-86'>
-          <Search
-            placeholder='Search Exams'
-            allowClear
-            enterButton='Search'
-            size='medium'
-            onSearch={onSearch}
-          />
+            <Select
+              defaultValue=""
+              className="h-full ml-2"
+              style={{
+                width: "auto",
+                minWidth: 100, // Ensure a minimum width for better appearance
+              }}
+              onChange={(value) => filterByAccess(value)}
+              options={[
+                {
+                  value: "Open",
+                  label: "Open",
+                },
+                {
+                  value: "Closed",
+                  label: "Closed",
+                },
+              ]}
+            />
+          </span>
+
+          {workspace?._id in userOrganizationsIdAndRole && (
+            <Link
+              to="/dashboard/create-exam"
+              className="flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-[0.5rem] px-4 rounded"
+            >
+              <Icon
+                className="text-white w-4 h-4"
+                icon="material-symbols:add"
+              />{" "}
+              Create Exam
+            </Link>
+          )}
         </div>
-
-        <span className='flex items-center'>
-  <span className='w-full font-semibold text-[1rem] text-blue-800'>Status :</span>
-  <Select
-  
-    defaultValue=''
-    className='h-full ml-2'
-    style={{
-      width: 'auto',
-      minWidth: 100, // Ensure a minimum width for better appearance
-    }}
-    onChange={(value) => filterByStatus(value)}
-    options={[
-      {
-        value: "Active",
-        label: "Active",
-      },
-      {
-        value: "Archived",
-        label: "Archived",
-      },
-    ]}
-    dropdownMatchSelectWidth={false} // Prevent the dropdown from matching the select's width
-  />
-</span>
-
-
-
-        <span className='flex items-center'>
-          <span className='w-full font-semibold text-[1rem] text-blue-800'>Access :</span>
-
-          <Select
-            defaultValue=''
-            className='h-full ml-2'
-            style={{
-              width: "auto",
-              minWidth: 100, // Ensure a minimum width for better appearance
-            }}
-            onChange={(value) => filterByAccess(value)}
-            options={[
-              {
-                value: "Open",
-                label: "Open",
-              },
-              {
-                value: "Closed",
-                label: "Closed",
-              },
-            ]}
-          />
-        </span>
-
-
-      
-
-        {workspace?._id in userOrganizationsIdAndRole && (
-          <Link
-            to='/dashboard/create-exam'
-            className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-[0.5rem] px-4 rounded'>
-            <Icon className='text-white w-4 h-4' icon='material-symbols:add' />{" "}
-            Create Exam
-          </Link>
-        )}
-
-</div>
       </div>
       <div>
-        <Table
-          columns={columns}
-          dataSource={data}
-        />
-        ;
+        <Table columns={columns} dataSource={data} />;
       </div>
     </div>
   );

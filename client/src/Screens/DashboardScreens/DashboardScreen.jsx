@@ -286,10 +286,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='exam-monitor'
-        onClick={() => dispatch(switchSidebar("3"))}>
+        onClick={() => dispatch(switchSidebar("4"))}>
         Exam Monitoring
       </Link>,
-      "3",
+      "4",
       <Icon
         className='w-5 h-5'
         icon='ic:outline-monitor-heart'
@@ -298,10 +298,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='activities'
-        onClick={() => dispatch(switchSidebar("4"))}>
+        onClick={() => dispatch(switchSidebar("5ki"))}>
         Activity Log
       </Link>,
-      "4",
+      "5",
       <Icon
         className='w-4 h-4'
         icon='octicon:log-24'
