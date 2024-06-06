@@ -4,7 +4,7 @@ const APIError = require("../utils/apiError");
 const catchAsync = require("../utils/catchAsync");
 // const transaction = require("../utils/transaction");
 const APIFeatures = require("../utils/apiFeatures");
-const {dbConn} = require("../config/db_Connection");
+const { dbConn } = require("../config/db_Connection");
 const OrganizationExaminer = require("../models/organization.examiner.model");
 const { StatusCodes } = require("http-status-codes");
 // const dbAuth = require("../config/db_Authentication");
@@ -93,7 +93,7 @@ exports.updateOne = (Model) =>
         _id: req.params.id,
       },
       req.body,
-      { 
+      {
         new: true,
         runValidators: true,
       }

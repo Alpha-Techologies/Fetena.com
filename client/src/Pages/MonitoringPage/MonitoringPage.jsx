@@ -174,6 +174,7 @@ const MonitoringPage = () => {
         setSeeStatusOf={setSeeStatusOf}
         currentExam={currentExam}
         currentUser={currentUser}
+        fetchExamDetails={fetchExamDetails}
       />
     ),
   };
