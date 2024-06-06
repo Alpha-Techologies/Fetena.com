@@ -71,9 +71,9 @@ const CertificationsPage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 my-4">
+    <div className="flex flex-col gap-4">
       <div className="flex justify-between gap-4 items-center">
-        <h1 className="text-3xl font-bold text-blue-900">Certifications</h1>
+       <h1 className='text-2xl font-bold text-blue-900 text-left'>Certifications</h1>
       </div>
       <div>
         <Card

@@ -15,7 +15,7 @@ const SupportPage = () => {
       <Card
       
       
-      className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200"
+      className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200 "
           style={{
             width: 380,
             // marginTop: 16,
@@ -54,7 +54,7 @@ const SupportPage = () => {
 
 
   return (
-    <div className='flex flex-col gap-4 p-4'>
+    <div className='flex flex-col gap-4 px-4'>
 
 
      

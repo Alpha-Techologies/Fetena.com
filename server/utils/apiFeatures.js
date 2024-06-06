@@ -77,6 +77,7 @@ class APIFeatures {
       // for user Answer 
       { path: "userId", options: { strictPopulate: false } },
       { path: "examId", options: { strictPopulate: false } },
+      { path: "createdBy", options: { strictPopulate: false } },
     ];
 
     let populateObj = [];

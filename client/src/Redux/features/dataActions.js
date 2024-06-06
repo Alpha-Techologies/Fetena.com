@@ -277,7 +277,7 @@ export const updateNotification = createAsyncThunk(
   async ({id, notification}, { rejectWithValue }) => {
     console.log(id, notification);
     try {
-      const { data } = await axios.get(
+      const { data } = await axios.patch(
         `${url}/notifications/${id}`, notification
       );
       return data;
@@ -286,3 +286,15 @@ export const updateNotification = createAsyncThunk(
     }
   }
 );
+
+export const takeExam = createAsyncThunk(
+  "data/takeExam",
+  async (id, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(`${url}/exams/start-exam/${id}`);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+)
