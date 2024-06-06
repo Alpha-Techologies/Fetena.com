@@ -390,9 +390,7 @@ console.log(basicInfoValues.id,"exammm data id")
           style={{ width: "100%" }}
           tabList={tabListNoTitle}
           activeTabKey={activeTabKey}
-          tabBarExtraContent={
-            (activeTabKey === "Exam Questions" && <Button onClick={handleSave}>Ai question generator</Button>)
-          }
+         
           onTabChange={setActiveTabKey}
           tabProps={{ size: "middle" }}
         >

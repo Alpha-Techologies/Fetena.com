@@ -113,17 +113,7 @@ const handlePrint = () => {
 
           <div className="w-full  flex flex-wrap gap-16 py-2 px-8 my-4">
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Organization : </span>AASTU <span><Icon icon="gravity-ui:seal-check" className="text-lg text-blue-800" /></span></p>
-          <div className='flex gap-1'>
-          <span className="font-bold text-blue-700">Tags : </span>
-          {
-            exam.tags?.map((tag) => (
-              <Tag color={"yellow"}>{tag}</Tag>
-            ))
-          }
-                {/* <Tag color={"yellow"}>English</Tag>
-                <Tag color={"red"}>Maths</Tag>
-                <Tag color={"blue"}>Physics</Tag> */}
-              </div>
+
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Created by : </span>{user.firstName} {user.lastName} </p>
         
 

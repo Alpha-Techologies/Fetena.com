@@ -15,8 +15,8 @@ import axios from "axios";
 const Preview = ({setActiveTabKey,basicInfoValues, setBasicInfoValues, questionsCollection , setQuestionsCollection , choiceCount,  chooseOnChange, setExamKey,examType}) => {
 
   // console.log(basicInfoValues.id,"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiidddddddddddddddddddddddddddddddddddd")
-  console.log(questionsCollection.questions,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
-  console.log(basicInfoValues,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+  // console.log(questionsCollection.questions,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+  // console.log(basicInfoValues,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
   const totalPoints = questionsCollection.questions.reduce((total, question) => total + (question.points || 0), 0);  const { workspace } = useSelector((state) => state.data);
 
   const [questionCount,setQuestionCount] = useState(0);
@@ -243,7 +243,7 @@ const confirmDeleteQuestion = () => {
 
   return (
     <div>
-       <div className="flex justify-center items-center gap-2 mb-8 mt-4">
+       <div className="flex justify-center items-center gap-2 mb-4 mt-2">
 
 <Icon icon="material-symbols:preview"  className="text-2xl font-bold text-blue-800" />
 <p className="font-semibold  text-blue-900 text-lg">Exam Preview</p>
@@ -272,17 +272,7 @@ const confirmDeleteQuestion = () => {
 
           <div className="w-full  flex flex-wrap gap-16 py-2 px-8 my-4">
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Organization : </span>AASTU <span><Icon icon="gravity-ui:seal-check" className="text-lg text-blue-800" /></span></p>
-          <div className='flex gap-1'>
-          <span className="font-bold text-blue-700">Tags : </span>
-          {
-            basicInfoValues.tags?.map((tag) => (
-              <Tag color={"yellow"}>{tag}</Tag>
-            ))
-          }
-                {/* <Tag color={"yellow"}>English</Tag>
-                <Tag color={"red"}>Maths</Tag>
-                <Tag color={"blue"}>Physics</Tag> */}
-              </div>
+   
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Created by : </span>{user.firstName} {user.lastName} </p>
         
 
@@ -745,9 +735,22 @@ const confirmDeleteQuestion = () => {
 
 <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
              <div className="flex gap-8 items-center justify-center">
-             <h3 className=" font-semibold text-[1rem]">Total Questions : <span className="text-blue-900"> {questionsCollection.questions .length} </span> </h3>
-             <h3 className=" font-semibold text-[1rem]">Total Points :<span className="text-blue-900"> {totalPoints} </span> </h3>
-             <Button type="primary" className="px-16" onClick={submitExam}>Save & Submit</Button>
+             <h3 className=" font-semibold text-[1rem] flex gap-1 justify-center items-center">
+          <Icon icon="pepicons-pop:question" className="text-blue-900" />
+            Total Questions :{" "}
+            <span className="text-blue-900">
+              {" "}
+              {questionsCollection.questions.length}{" "}
+            </span>{" "}
+          </h3>
+          <h3 className=" font-semibold text-[1rem] flex gap-1 justify-center items-center">
+          <Icon icon="material-symbols:credit-score-outline"  className="text-blue-900" />
+            Total Points :<span className="text-blue-900"> {totalPoints} </span>{" "}
+          </h3>
+        
+
+             <Button type="primary" className="px-8 flex gap-2 items-center font-semibold bg-primary-500" onClick={submitExam}><Icon  icon="lucide:save"  className="text-xl text-white" />{" "} Save & Submit</Button>
+
  
        </div>
  </Card>

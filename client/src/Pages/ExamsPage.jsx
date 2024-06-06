@@ -291,6 +291,8 @@ const ExamsPage = () => {
         
 
        
+<div className='flex justify-center items-center gap-4'>
+
 
         <div className='flex flex-col justify-start w-86'>
           <Search
@@ -305,8 +307,9 @@ const ExamsPage = () => {
 
 
         <span className='flex items-center'>
-  <span className='w-full font-semibold text-blue-800'>Status :</span>
+  <span className='w-full font-semibold text-[1rem] text-blue-800'>Status :</span>
   <Select
+  
     defaultValue=''
     className='h-full ml-2'
     style={{
@@ -331,7 +334,7 @@ const ExamsPage = () => {
 
 
         <span className='flex items-center'>
-          <span className='w-full font-semibold text-blue-800'>Access :</span>
+          <span className='w-full font-semibold text-[1rem] text-blue-800'>Access :</span>
 
           <Select
             defaultValue=''
@@ -355,40 +358,18 @@ const ExamsPage = () => {
         </span>
 
 
-        {/* <span className='flex items-center'>
-          <span className='w-full font-semibold text-blue-800'>Created by :</span>
-
-          <Select
-            defaultValue=''
-            className='h-full ml-2'
-            style={{
-              width: 'auto',
-              minWidth: 100, // Ensure a minimum width for better appearance
-            }}
-            // onChange={(value) => filterOrganization(value)}
-            options={[
-              {
-                value: "Active",
-                label: "Active",
-              },
-              {
-                value: "Archived",
-                label: "Archived",
-              },
-            ]}
-          />
-        </span> */}
+      
 
         {workspace?._id in userOrganizationsIdAndRole && (
           <Link
             to='/dashboard/create-exam'
-            className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-[0.5rem] px-4 rounded ml-4'>
+            className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-[0.5rem] px-4 rounded'>
             <Icon className='text-white w-4 h-4' icon='material-symbols:add' />{" "}
             Create Exam
           </Link>
         )}
 
-
+</div>
       </div>
       <div>
        

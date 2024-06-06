@@ -26,6 +26,7 @@ import InstructionForm from "./components/InstructionForm";
 import BasicInfoForm from "./components/BasicInfoForm";
 const { TextArea } = Input;
 import QuestionBank from "./components/QuestionBank";
+import AiQuestionGenerator from "./components/AiQuestionGenerator";
 
 const CreateExam = () => {
   const [activeTabKey, setActiveTabKey] = useState("Basic Info");
@@ -35,6 +36,7 @@ const CreateExam = () => {
   const [importedExams, setImportedExams] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenn, setIsModalOpenn] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -46,6 +48,16 @@ const CreateExam = () => {
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+
+  const showModall = () => {
+    setIsModalOpenn(true);  };
+  const handleOkk = () => {
+    setIsModalOpenn(false);
+  };
+  const handleCancell = () => {
+    setIsModalOpenn(false);
   };
 
   const tabListNoTitle = [
@@ -81,7 +93,7 @@ const CreateExam = () => {
           privateScore: false,
           instruction: "",
           securityLevel: "low",
-          examType: "",
+          examType: "online",
           calculator: false,
           formulasCollection: false,
           uploadMaterials: false,
@@ -334,7 +346,15 @@ const CreateExam = () => {
         isModalOpen={isModalOpen}
         setImportedExams={setImportedExams}
         importedExams={importedExams}
+        setActiveTabKey={setActiveTabKey}
       />
+
+      <AiQuestionGenerator
+       handleCancell={handleCancell}
+       handleOkk={handleOkk}
+       isModalOpenn={isModalOpenn}
+       setActiveTabKey={setActiveTabKey}
+       />
 
       <div className="flex gap-4 items-center justify-between ">
         <div className="flex items-center gap-2">
@@ -359,7 +379,9 @@ const CreateExam = () => {
             />{" "}
             Question Bank
           </Button>
-          <Button className="flex items-center gap-1 bg-primary-500 hover:bg-primary-700 text-white font-bold py-[0.5rem] px-4 rounded group">
+          <Button
+           onClick={showModall}
+           className="flex items-center gap-1 bg-primary-500 hover:bg-primary-700 text-white font-bold py-[0.5rem] px-4 rounded group">
             <Icon
               className="text-white w-4 h-4 group-hover:text-primary-500"
               icon="mdi:robot-outline"

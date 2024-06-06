@@ -112,7 +112,7 @@ const ExamTypeForm = ({setActiveTabKey,setExamType, basicInfoValues,examType,
 
 </Form.Item>
 <div className="flex justify-end">
-<Button className="px-16" type="primary" onClick={() => setActiveTabKey("Exam Tools")}>Next</Button>
+<Button className="px-16 bg-primary-500" type="primary" onClick={() => setActiveTabKey("Exam Tools")}>Next</Button>
 
 </div>
 </div>

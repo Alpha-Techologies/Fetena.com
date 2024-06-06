@@ -50,7 +50,6 @@ const ExamDetailPage = () => {
            <h1 className='text-2xl font-bold text-blue-900 text-left'>Exam Details</h1>
         </div>
 
-        <div className='flex flex-col justify-start w-96'></div>
         <div className='flex gap-4'>
 
        { workspace &&

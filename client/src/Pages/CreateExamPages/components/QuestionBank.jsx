@@ -7,15 +7,19 @@ const { TextArea } = Input;
 
 const { Panel } = Collapse;
 
-const QuestionBank = ({ handleCancel, handleOk, isModalOpen,setImportedExams,importedExams }) => {
+const QuestionBank = ({ handleCancel, handleOk, isModalOpen,setImportedExams,importedExams,setActiveTabKey }) => {
   const { workspace } = useSelector((state) => state.data);
   const { userOrganizationsIdAndRole } = useSelector((state) => state.data);
   const [exams, setExams] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [addedQuestions, setAddedQuestions] = useState(new Set());
 
   const handleAddQuestion = (question) => {
+    delete question._id;
     setImportedExams([...importedExams, question]);
+    setAddedQuestions(prevState => new Set([...prevState, question._id]));
+    setActiveTabKey("Preview")
   };
 
   console.log(importedExams);
@@ -79,8 +83,14 @@ const QuestionBank = ({ handleCancel, handleOk, isModalOpen,setImportedExams,imp
                   </div>
                 </div>
                 <div className="mt-2 text-end">
-                  <Button className="mt-2 text-[0.8rem] w-auto text-right px-8 py-0" type="primary" onClick={() => handleAddQuestion(question)}>Add</Button>
-                </div>
+                <Button
+  className="mt-2 text-[0.8rem] w-auto text-right px-8 py-0"
+  type="primary"
+  disabled={addedQuestions.has(question._id)}
+  onClick={() => handleAddQuestion(question)}
+>
+  {addedQuestions.has(question._id) ? 'Added' : 'Add'}
+</Button>                </div>
               </Card>
             )}
 
@@ -115,8 +125,14 @@ const QuestionBank = ({ handleCancel, handleOk, isModalOpen,setImportedExams,imp
                   </Radio.Group>
                 </div>
                 <div className=" text-end">
-                <Button className="mt-2 text-[0.8rem] w-auto text-right px-8 py-0" type="primary" onClick={() => handleAddQuestion(question)}>Add</Button>
-                </div>
+                <Button
+  className="mt-2 text-[0.8rem] w-auto text-right px-8 py-0"
+  type="primary"
+  disabled={addedQuestions.has(question._id)}
+  onClick={() => handleAddQuestion(question)}
+>
+  {addedQuestions.has(question._id) ? 'Added' : 'Add'}
+</Button>                </div>
               </Card>
             )}
 
@@ -135,8 +151,14 @@ const QuestionBank = ({ handleCancel, handleOk, isModalOpen,setImportedExams,imp
                 </div>
   
                 <div className=" text-end mt-4">
-                <Button className="mt-2 text-[0.8rem] w-auto text-right px-8 py-0" type="primary" onClick={() => handleAddQuestion(question)}>Add</Button>
-                </div>
+                <Button
+  className="mt-2 text-[0.8rem] w-auto text-right px-8 py-0"
+  type="primary"
+  disabled={addedQuestions.has(question._id)}
+  onClick={() => handleAddQuestion(question)}
+>
+  {addedQuestions.has(question._id) ? 'Added' : 'Add'}
+</Button>                </div>
    
       
      </Card>
@@ -162,8 +184,14 @@ const QuestionBank = ({ handleCancel, handleOk, isModalOpen,setImportedExams,imp
 </div>
 
 <div className=" text-end mt-4">
-<Button className="mt-2 text-[0.8rem] w-auto text-right px-8 py-0" type="primary" onClick={() => handleAddQuestion(question)}>Add</Button>
-                </div>
+<Button
+  className="mt-2 text-[0.8rem] w-auto text-right px-8 py-0"
+  type="primary"
+  disabled={addedQuestions.has(question._id)}
+  onClick={() => handleAddQuestion(question)}
+>
+  {addedQuestions.has(question._id) ? 'Added' : 'Add'}
+</Button>                </div>
 
   
  </Card>

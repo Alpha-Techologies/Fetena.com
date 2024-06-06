@@ -257,12 +257,12 @@ const Preview = ({
 
   return (
     <div>
-      <div className="flex justify-center items-center gap-2 mb-8 mt-4">
+      <div className="flex justify-center items-center gap-2 mb-4 mt-2">
         <Icon
           icon="material-symbols:preview"
           className="text-2xl font-bold text-blue-800"
         />
-        <p className="font-semibold  text-blue-900 text-lg">Exam Preview</p>
+        <p className="font-semibold  text-blue-900 text-lg">Exam Edit & Preview</p>
       </div>
 
       <div>
@@ -308,15 +308,7 @@ const Preview = ({
                 />
               </span>
             </p>
-            <div className="flex gap-1">
-              <span className="font-bold text-blue-700">Tags : </span>
-              {basicInfoValues.tags?.map((tag) => (
-                <Tag color={"yellow"}>{tag}</Tag>
-              ))}
-              {/* <Tag color={"yellow"}>English</Tag>
-                <Tag color={"red"}>Maths</Tag>
-                <Tag color={"blue"}>Physics</Tag> */}
-            </div>
+           
             <p className="font-semibold flex gap-2 items-center justify-center">
               <span className="font-bold text-blue-700">Created by : </span>
               {user.firstName} {user.lastName}{" "}
@@ -759,25 +751,35 @@ const Preview = ({
                 className="w-[1000px] h-[600px]"
               />
             )}
+
+
           </div>
         </Card>
       )}
 
+<Button type="primary"
+  onClick={() => setActiveTabKey("Exam Questions")}
+ className="px-8 font-semibold bg-white hover:bg-blue-700 text-blue-500 shadow-none border border-blue-500 hover:border-blue-700 font-boldpx-8   group">
+          <div className="flex gap-2 items-center"> <Icon  icon="tabler:edit" className="text-xl text-blue-500 group-hover:text-white" />{" "}Add More Questions</div>
+          </Button>
+          
       <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
         <div className="flex gap-8 items-center justify-center">
-          <h3 className=" font-semibold text-[1rem]">
+          <h3 className=" font-semibold text-[1rem] flex gap-1 justify-center items-center">
+          <Icon icon="pepicons-pop:question" className="text-blue-900" />
             Total Questions :{" "}
             <span className="text-blue-900">
               {" "}
               {questionsCollection.length}{" "}
             </span>{" "}
           </h3>
-          <h3 className=" font-semibold text-[1rem]">
+          <h3 className=" font-semibold text-[1rem] flex gap-1 justify-center items-center">
+          <Icon icon="material-symbols:credit-score-outline"  className="text-blue-900" />
             Total Points :<span className="text-blue-900"> {totalPoints} </span>{" "}
           </h3>
-          <Button type="primary" className="px-16" onClick={submitExam}>
-            Save & Submit
-          </Button>
+        
+   
+          <Button type="primary" className="px-8 flex gap-2 items-center font-semibold bg-primary-500" onClick={submitExam}><Icon  icon="lucide:save"  className="text-xl text-white" />{" "} Save & Submit</Button>
         </div>
       </Card>
     </div>

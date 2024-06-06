@@ -168,10 +168,17 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to="exam-monitor" onClick={() => dispatch(switchSidebar("3"))}>
-        Exam Monitoring
+      <Link to="certifications" onClick={() => dispatch(switchSidebar("3"))}>
+        Certifications
       </Link>,
       "3",
+      <Icon className="w-5 h-5" icon="la:award" />
+    ),
+    getItem(
+      <Link to="exam-monitor" onClick={() => dispatch(switchSidebar("4"))}>
+        Exam Monitoring
+      </Link>,
+      "4",
       <Icon
         className="w-5 h-5"
         icon="ic:outline-monitor-heart"
@@ -179,17 +186,17 @@ const DashboardScreen = () => {
     ),
     { type: "divider" },
     getItem(
-      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("4"))}>
+      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("5"))}>
         Training Videos
       </Link>,
-      "4",
+      "5",
       <Icon className="w-5 h-5" icon="healthicons:i-training-class-outline" />
     ),
     getItem(
-      <Link to="support" onClick={() => dispatch(switchSidebar("5"))}>
+      <Link to="support" onClick={() => dispatch(switchSidebar("6"))}>
         Support
       </Link>,
-      "5",
+      "6",
       <Icon
         className="w-5 h-5"
         icon="material-symbols:contact-support-outline"
@@ -221,6 +228,13 @@ const DashboardScreen = () => {
         className='w-5 h-5'
         icon='healthicons:i-exam-multiple-choice-outline'
       />
+    ),
+    getItem(
+      <Link to="certifications" onClick={() => dispatch(switchSidebar("3"))}>
+        Certifications
+      </Link>,
+      "3",
+      <Icon className="w-5 h-5" icon="la:award" />
     ),
 
     // getItem(
@@ -275,10 +289,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='support'
-        onClick={() => dispatch(switchSidebar("8"))}>
+        onClick={() => dispatch(switchSidebar("9"))}>
         Support
       </Link>,
-      "8",
+      "9",
       <Icon
         className='w-5 h-5'
         icon='material-symbols:contact-support-outline'
@@ -287,6 +301,7 @@ const DashboardScreen = () => {
   ];
 
   const changeWorkspace = (workspace, userRole) => {
+
     if (workspace === "personal") {
       setUserRole(userRole);
       setCurrentWorkspace(workspace);
@@ -297,6 +312,7 @@ const DashboardScreen = () => {
       navigate("/dashboard");
       return;
     }
+
     setCurrentWorkspace(workspace);
     console.log(currentWorkspace);
     dispatch(switchWorkspace({ id: workspace, field: "" }))
