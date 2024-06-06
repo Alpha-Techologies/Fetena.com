@@ -52,6 +52,7 @@ const startExam = catchAsync(async (req, res, next) => {
   }
 
   const userAnswer = await UserAnswer.create({
+    examId: examId,
     questionAnswers: [],
     score: 0,
   });

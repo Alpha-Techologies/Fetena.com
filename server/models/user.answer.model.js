@@ -7,17 +7,22 @@ const AnswerSchema = new mongoose.Schema({
     required: true,
   },
   answerText: String,
-  reason:{
+  reason: {
     type: String,
-    default: 'Based on the criteria',    
+    default: "Based on the criteria",
   },
-  point:{
+  point: {
     type: Number,
     default: 0,
-  }
+  },
 });
 
 const UserAnswerSchema = new mongoose.Schema({
+  examId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Exam",
+    required: true,
+  },
   score: {
     type: Number,
     default: 0,
