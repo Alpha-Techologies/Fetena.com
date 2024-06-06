@@ -424,7 +424,7 @@ const TakeExamScreen = () => {
             </div>
 
             <Popconfirm
-              title='Delete the task'
+              title='Confirmation'
               description='Are you sure to submit exam?'
               onConfirm={handleFinishExam}
               onCancel={handleCancelFinishExam}
