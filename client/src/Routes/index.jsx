@@ -15,7 +15,7 @@ import ResetPasswordScreen from "../Screens/AuthScreens/ResetPasswordScreen";
 import DashboardScreen from "../Screens/DashboardScreens/DashboardScreen";
 import ProtectedRoutes from "../Screens/ProtectedRoutes";
 import VerifyEmail from "../Screens/AuthScreens/VerifyEmail";
-
+import TakeExamScreen from "../Screens/TakeExamScreens/TakeExamScreen";
 
 //Pages
 import DashboardPage from "../Pages/DashboardPage";
@@ -35,9 +35,11 @@ import ActivityLogPage from "../Pages/ActivityLogPage";
 import OrganizationStaffPage from "../Pages/OrganizationStaffPage";
 import OrganizationSettingsPage from "../Pages/OrganizationSettingsPage";
 import NotificationPage from "../Pages/NotificationsPage";
+import TakeExamRoute from "../Screens/TakeExamRoute";
 import Preview from "../Pages/Preview";
 import QuestionBank from "../Pages/QuestionBank";
 import UserExamsPage from "../Pages/UserExamsPage";
+import MonitoringPage from "../Pages/MonitoringPage/MonitoringPage";
 import EditExam from './../Pages/EditExamPages/EditExam';
 
 const AllRoutes = () => {
@@ -46,9 +48,8 @@ const AllRoutes = () => {
   useEffect(() => {
     dispatch(getMe()).then((res) => {
       console.log(res);
-    })
+    });
   }, [dispatch]);
-
 
   const { isAuthenticated } = useSelector((state) => state.auth);
   return (
@@ -85,8 +86,8 @@ const AllRoutes = () => {
           element={<VerifyEmail />}
         />
 
-        {/* <Route
-          path='/take-exam'
+        <Route
+          path='/take-exam/:id'
           element={
             <TakeExamRoute isAuthenticated={isAuthenticated}>
               <TakeExamScreen />
@@ -117,24 +118,22 @@ const AllRoutes = () => {
             element={<ExamsPage />}
           />
 
-
-<Route
+          <Route
             path='exams/userexams'
             element={<UserExamsPage />}
           />
-          
+
           <Route
             path='questionbank'
             element={<QuestionBank />}
           />
-
 
           <Route
             path='exams/:id'
             element={<ExamDetailPage />}
           />
 
-<Route
+          <Route
             path='exams/editexam/:id'
             element={<EditExam />}
           />
@@ -166,8 +165,8 @@ const AllRoutes = () => {
           />
           {/* <Route
             path='exam-monitor'
-            element={<MonitoringPage/>}
-          /> */}
+            element={<MonitoringPage />}
+          />
           <Route
             path='certifications'
             element={<CertificationsPage />}
@@ -188,8 +187,6 @@ const AllRoutes = () => {
             path='trainingVideos'
             element={<TrainingVideosPage />}
           />
-
-
 
           <Route
             path='support'

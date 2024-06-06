@@ -80,22 +80,49 @@ const takeExamSchema = new mongoose.Schema({
   endTime: {
     type: Date,
   },
-  userAnswers: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "UserAnswer",
-    },
-  ],
+  userAnswers: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "UserAnswer",
+  },
+
   chatMessages: [chatMessageSchema],
   userActivityLogs: [userActivityLogSchema],
   socketId: {
     type: String,
+  },
+  examEndTime: {
+    type: Date,
   },
   active: {
     type: Boolean,
     default: true,
   },
 });
+
+takeExamSchema.methods.sendChat = async function (chatMessage) {
+  // if already followed return
+  // if (this.organizationsFollowed.includes(id)) return this;
+
+  this.chatMessages.push(chatMessage);
+
+  // const organizationFollowed = await OrganizationFollower.findOne({
+  //   organization: id,
+  // });
+
+  // if (organizationFollowed) {
+  //   organizationFollowed.follower.push(this._id);
+  //   await organizationFollowed.save();
+  // } else {
+  //   const newOrganizationFollower = new OrganizationFollower({
+  //     organization: id,
+  //     follower: [this._id],
+  //   });
+  //   await newOrganizationFollower.save();
+  // }
+
+  this.save();
+  return this;
+};
 
 const TakeExam = mongoose.model("TakeExam", takeExamSchema);
 

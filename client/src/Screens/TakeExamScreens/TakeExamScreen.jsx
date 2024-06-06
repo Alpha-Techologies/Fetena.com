@@ -1,37 +1,37 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import io from "socket.io-client";
 import {
-  Button,
-  Modal,
+  Card,
+  Form,
+  Input,
+  Select,
   Layout,
-  Menu,
-  Tabs,
-  Switch,
-  Divider,
   FloatButton,
+  Radio,
+  Tag,
+  Popconfirm,
 } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import fetena_logo from "../../assets/fetena_logo.png";
 import moment from "moment";
 import { toast } from "react-toastify";
-import Draggable from "react-draggable";
 import "react-chat-elements/dist/main.css";
-import { MessageBox } from "react-chat-elements";
-import { MessageList, Input } from "react-chat-elements";
+
 import useSocketIO from "../../utils/socket/useSocketIO";
-import * as math from "mathjs";
 import { takeExam } from "../../Redux/features/dataActions";
-import Peer from "peerjs";
+import axios from "axios";
+
+import ExamStartConfirmationModal from "./ExamStartConfirmationModal";
+import ExamTools from "./ExamTools";
+import ChatComponent from "./ChatComponent";
+import debounce from "lodash/debounce";
+
 const { Header, Sider, Content } = Layout;
-const inputReferance = React.createRef();
 
 const TakeExamScreen = () => {
-
-  const roomId = "123efr";
   const { user } = useSelector((state) => state.auth);
-  const userId = user._id;
   const [startExam, setStartExam] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isUserSwitchingAway, setIsUserSwitchingAway] = useState(false);
@@ -40,31 +40,37 @@ const TakeExamScreen = () => {
   const [inputValue, setInputValue] = useState("");
   const [showChat, setShowChat] = useState(false);
   const [takeExamId, setTakeExamId] = useState("");
-  const [chatMessage, setChatMessage] = useState("");
-  const [chatList, setChatList] = useState([]);
+  const [userAnswersId, setUserAnswersId] = useState("");
+  const [examinee, setExaminee] = useState({});
+
+  const [exam, setExam] = useState(null);
   const [socket] = useSocketIO();
   const dispatch = useDispatch();
+  const { TextArea } = Input;
 
   const navigate = useNavigate();
 
+  const { id } = useParams();
 
   // useEffect to join chat room for examinee
   useEffect(() => {
-    console.log('this is runnning and start is changing');
+    // console.log("this is runnning and start is changing");
     if (startExam) {
-      dispatch(takeExam("665cd9ad02c0ca39fcda44d4"))
+      dispatch(takeExam(id))
         .then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
             console.log(res.payload);
             const temp = res.payload.data._id;
             setTakeExamId(temp);
-            console.log(temp, "takeExamId");
-
-            socket.emit(
-              "joinExam",
-              "665cd9ad02c0ca39fcda44d4",
-              res.payload.data._id
+            setUserAnswersId(res.payload.data.userAnswers);
+            console.log(
+              temp,
+              "takeExamId",
+              res.payload.data.userAnswers,
+              "userAnswersId"
             );
+
+            socket.emit("joinExam", id, res.payload.data._id);
           } else {
             toast.error(res.payload.message);
             return;
@@ -74,12 +80,32 @@ const TakeExamScreen = () => {
           console.log(error);
           toast.error("There is some error in the server!");
         });
-
     }
   }, [startExam]);
 
+  useEffect(() => {
+    console.log(takeExamId, "takeExam in chat component");
 
-// useEffect to handle battery dispaly and screen change
+    const getTakeExamId = async (takeExamId) => {
+      try {
+        const response = await axios.get(`/api/exams/exam-taker/${takeExamId}`);
+
+        console.log(response, "resp getTakeExamId  ");
+        const tempExaminee = response.data.data.data[0];
+        console.log(tempExaminee);
+
+        setExaminee(response.data.data.data[0]);
+        console.log(examinee);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (takeExamId) {
+      getTakeExamId(takeExamId);
+    }
+  }, [takeExamId]);
+
+  // useEffect to handle battery dispaly and screen change
   useEffect(() => {
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -109,6 +135,22 @@ const TakeExamScreen = () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
+
+  // useEffect to load the exam
+  useEffect(() => {
+    const fetchExamDetails = async () => {
+      try {
+        const response = await axios.get(`/api/exams/${id}`);
+        setExam(response.data.data.data[0]);
+        console.log("this is the fuckn data", response.data.data.data[0]);
+      } catch (error) {
+        console.error("Error fetching exam details:", error);
+        toast.error("Failed to fetch exam details");
+      }
+    };
+
+    fetchExamDetails();
+  }, [id]);
 
   const requestFullscreen = () => {
     const element = document.documentElement;
@@ -168,492 +210,135 @@ const TakeExamScreen = () => {
     requestFullscreen();
   };
 
-  const handleFinishExam = () => {
-    setStartExam(false);
-    navigate(-1);
-    // document.exitFullscreen();
-    exitFullscreen();
-  };
-
-  const ExamStartConfirmationModal = () => {
-    const [isModalOpen, setIsModalOpen] = useState(true);
-    const showModal = () => {
-      setIsModalOpen(true);
-    };
-    const handleOk = () => {
-      setIsModalOpen(false);
-      handleStartExam();
-    };
-    const handleCancel = () => {
-      setIsModalOpen(false);
-      navigate(-1);
-    };
-    return (
-      <>
-        <Modal
-          title='Get Ready for your Exam'
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}>
-          <p>The exam is about to start.</p>
-        </Modal>
-      </>
-    );
-  };
-
-  const Calculator = () => {
-    const [expression, setExpression] = useState("");
-    const [screenVal, setScreenVal] = useState("");
-    const [customVariables, setCustomVariables] = useState({});
-
-    const [mode, setMode] = useState("rad");
-
-    const handleCalcChange = (e) => {
-      setExpression(e.target.value);
-    };
-
-    const handleCalcClick = (input) => {
-      setExpression((prevExpression) => prevExpression + input);
-    };
-
-    const calculate = () => {
+  const handleFinishExam = async () => {
+    const finishExam = async () => {
       try {
-        const allVariables = {
-          ...customVariables,
-          pi: Math.PI,
-          e: Math.E,
-          // Add factorial function
-          fact: math.factorial,
-          sin: mode === "rad" ? Math.sin : math.sin,
-          cos: mode === "rad" ? Math.cos : math.cos,
-          tan: mode === "rad" ? Math.tan : math.tan,
-          asin: mode === "rad" ? Math.asin : math.asin,
-          acos: mode === "rad" ? Math.acos : math.acos,
-          atan: mode === "rad" ? Math.atan : math.atan,
-        };
-
-        const result = math.evaluate(expression, allVariables);
-        if (typeof result === "number" && !isNaN(result)) {
-          setScreenVal(Number(result).toFixed(4));
-        } else {
-          setScreenVal("Error: Invalid expression");
-        }
-      } catch (error) {
-        setScreenVal("Error: Invalid expression");
-      }
-    };
-
-    const clearScreen = () => {
-      setExpression("");
-      setScreenVal("");
-    };
-
-    const backspace = () => {
-      const newExpression = expression.slice(0, -1);
-      setExpression(newExpression);
-    };
-
-    const toggleMode = () => {
-      // Toggle between "rad" and "deg" modes
-      setMode(mode === "rad" ? "deg" : "rad");
-    };
-
-    return (
-      <Draggable>
-        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-[#3A4764] text-white text-center h-fit w-[650px] p-4 rounded-lg'>
-          <div className='flex flex-col gap-4'>
-            <div className='input-section bg-[#182034] w-full h-[100px] px-4 rounded flex flex-col'>
-              <div
-                className='screen text-right text-[#EAE3DC] font-bold text-lg h-[25px]'
-                value={expression}>
-                {expression}
-              </div>
-              <Divider className='bg-white w-[80%]' />
-              <div className='output text-right text-green-500 text-xl font-bold'>
-                {screenVal}
-              </div>
-            </div>
-
-            <div className='button-section flex bg-[#232C43] gap-4 h-fit rounded p-4'>
-              <div className='numeric-pad grid grid-cols-3 gap-2'>
-                {["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].map(
-                  (input) => (
-                    <button
-                      className='w-16 h-16 rounded bg-[#EAE3DC] font-bold text-2xl text-[#232C43]'
-                      key={input}
-                      onClick={() => handleCalcClick(input)}>
-                      {input}
-                    </button>
-                  )
-                )}
-                <button
-                  className='w-16 h-16 rounded bg-[#EAE3DC] font-bold text-2xl text-[#232C43]'
-                  onClick={() => handleCalcClick(".")}>
-                  ,
-                </button>
-              </div>
-              <div className='operators grid grid-cols-4 gap-2'>
-                {[
-                  "+",
-                  "-",
-                  "*",
-                  "/",
-                  "^",
-                  "sqrt(",
-                  "sin(",
-                  "cos(",
-                  "tan(",
-                  "cbrt(",
-                  "asin(",
-                  "acos(",
-                  "atan(",
-                  // Add open parenthesis
-                  "(",
-                  // Add close parenthesis
-                  ")",
-                ].map((input) => (
-                  <button
-                    className='w-16 h-16 rounded bg-[#EAE3DC] font-bold text-2xl text-[#232C43]'
-                    key={input}
-                    onClick={() => handleCalcClick(input)}>
-                    {input}
-                  </button>
-                ))}
-
-                <button
-                  className='w-16 h-16 rounded bg-[#EAE3DC] font-bold text-2xl text-[#232C43] flex items-center justify-center'
-                  onClick={() => handleCalcClick("pi")}>
-                  <Icon icon='mdi:pi' />
-                </button>
-              </div>
-              <div className='control-buttons grid grid-cols-1 gap-2'>
-                <button
-                  className='w-16 h-16 rounded bg-yellow-500 font-bold text-2xl text-[#EAE3DC]'
-                  onClick={clearScreen}>
-                  C
-                </button>
-                <button
-                  className='w-16 h-16 rounded bg-green-500 font-bold text-2xl text-[#EAE3DC]'
-                  onClick={calculate}>
-                  =
-                </button>
-                <button
-                  className='w-16 h-16 rounded bg-error-500 font-bold text-2xl text-[#EAE3DC]'
-                  onClick={backspace}>
-                  del
-                </button>
-                <button
-                  className='w-16 h-16 rounded bg-[#EAE3DC] font-bold text-2xl text-[#232C43] flex items-center justify-center'
-                  onClick={() => handleCalcClick("fact(")}>
-                  <Icon icon='streamline:factorial' />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Draggable>
-    );
-  };
-
-  const ChatComponent = () => {
-    useEffect(() => {
-      if (socket) {
-
-        console.log("receiving message examinee", socket);
-
-        const handleReceiveMessage = (message) => {
-          console.log("message received");
-          console.log(message);
-          const newMessage = {
-            position: "left",
-            title: "Invigilator",
-            type: "text",
-            text: message.message,
-            date: "message.date",
-          };
-          setChatList((prev) => [...prev, newMessage]);
-        }
-
-        const handleReceiveAnnouncement = (message) => {
-          console.log("announcemet received");
-          console.log(message);
-          setChatList((prev) => [
-            ...prev,
-            {
-              position: "left",
-              title: "Invigilator",
-              type: "text",
-              text: message,
-              date: "message.date",
-            },
-          ]);
-        }
-
-        socket.on("receiveMessage", handleReceiveMessage);
-  
-        socket.on("announcement", handleReceiveAnnouncement);
-
-        return () => {
-        socket.off("receiveMessage", handleReceiveMessage);
-        socket.off("announcement", handleReceiveAnnouncement)
-      };
-      }
-    }, [socket]);
-
-    const sendMessage = () => {
-      console.log("send message function");
-      if (chatMessage !== "" && socket) {
-        socket.emit("sendMessage", "665cd9ad02c0ca39fcda44d4", false, {
-          sender: user._id,
-          receiver: "6630daab4db53d7d765f3978",
-          message: chatMessage,
-        });
-        setChatList((prev) => [
-          ...prev,
+        const response = await axios.patch(
+          `/api/exams/take-exam/${takeExamId}`,
           {
-            position: "right",
-            title: "You",
-            type: "text",
-            text: chatMessage,
-            date: "message.date",
-          },
-        ]);
+            status: "submitted",
+          }
+        );
+        return response.status;
+      } catch (error) {
+        console.error("Error fetching exam details:", error);
+        toast.error("Failed to submit exam");
       }
     };
 
-    return (
-      <div className='h-screen flex flex-col justify-between'>
-        <MessageList
-          key={1}
-          className='message-list mt-2 mb-2'
-          lockable={true}
-          toBottomHeight={"100%"}
-          dataSource={chatList}
-        />
-        <div className='flex items-center gap-2 w-[90%]'>
-          <Input
-            className='w-full'
-            value={chatMessage}
-            placeholder={"Type your message here"}
-            onChange={(e) => setChatMessage(e.target.value)}
-          />
-          <div className='w-[20%]'>
-            <Icon
-              onClick={() => sendMessage()}
-              className='w-5 h-5 text-primary-500'
-              icon='carbon:send-filled'
-            />
+    const resp = await finishExam();
 
-          </div>
-        </div>
-      </div>
-    );
+    if (resp === 200) {
+      setStartExam(false);
+      navigate(-1);
+      // document.exitFullscreen();
+      exitFullscreen();
+      toast.success("Exam submitted successfully!");
+    }
   };
-
-// const VideoComponent = () => {
-//   const videoRef = useRef(null);
-//   const peerClientRef = useRef(null);
-
-//   useEffect(() => {
-//     const setupVideoStream = async () => {
-//       try {
-//         const stream = await navigator.mediaDevices.getUserMedia({
-//           video: true,
-//           audio: true,
-//         });
-
-//         if (videoRef.current) {
-//           addVideoStream(videoRef.current, stream);
-//         }
-
-//         peerClientRef.current = new Peer();
-
-//         peerClientRef.current.on('open', (streamerId) => {
-//           socket.emit('join-as-streamer', streamerId);
-//         });
-
-//         peerClientRef.current.on('close', (streamerId) => {
-//           socket.emit('disconnect-as-streamer', streamerId);
-//         });
-
-
-//         socket.on('viewer-connected', (viewerId) => {
-//           console.log('viewer connected');
-//           connectToNewViewer(viewerId, stream);
-//         });
-
-        
-//       } catch (error) {
-//         console.error('Error accessing media devices:', error);
-//       }
-//     };
-
-//     setupVideoStream();
-
-//     return () => {
-//       if (peerClientRef.current) {
-//         peerClientRef.current.destroy();
-//       }
-
-//     };
-//   }, []);
-
-//   const addVideoStream = (videoElement, stream) => {
-//     videoElement.srcObject = stream;
-//     videoElement.muted = true;
-
-//     const videoOnPlay = () => {
-//       videoElement.play();
-//     };
-
-//     videoElement.onloadedmetadata = videoOnPlay;
-//   };
-
-//   const connectToNewViewer = (viewerId, stream) => {
-//     peerClientRef.current.call(viewerId, stream);
-//   };
-
-//   return (
-//     <div>
-//       <video
-//         id="video"
-//         width="340"
-//         height="120"
-//         autoPlay
-//         ref={videoRef}
-//         muted
-//       />
-//     </div>
-//   );
-// };
 
   const ExamScreen = () => {
     const [collapsed, setCollapsed] = useState(false);
-    const [currentTime, setCurrentTime] = useState(moment());
-    const [showCalculator, setShowCalculator] = useState(false);
+    const [answers, setAnswer] = useState({});
+
+    console.log("answer will now be recorded");
 
     useEffect(() => {
-      const interval = setInterval(() => {
-        setCurrentTime(moment());
-      }, 1000 * 60);
+      // send the answer to the server using axios
+      const postAnswer = async () => {
+        try {
+          console.log("posting answer to the server", answers, userAnswersId);
+          const answerResponse = [];
+          for (const key in answers) {
+            answerResponse.push({
+              questionId: key,
+              answerText: answers[key],
+            });
+          }
 
-      return () => {
-        clearInterval(interval);
+          await axios.post(`/api/useranswers/${userAnswersId}`, {
+            questionAnswers: answerResponse,
+          });
+        } catch (error) {
+          console.error("Error sending answer to the server:", error);
+          toast.error("Failed to send answer to the server");
+        }
       };
-    }, []);
+
+      postAnswer();
+    }, [answers]);
+
+    const handleFinishExam = async () => {
+      try {
+        // submit the exam and get the evaluation from the backend
+        const response = await axios.post(
+          `/api/useranswers/eval/${userAnswersId}`
+        );
+        await axios.patch(`/api/exams/take-exam/${takeExamId}`, {
+          status: "completed",
+          examEndTime: Date.now(),
+        });
+
+        console.log(response);
+        navigate("/dashboard");
+      } catch (error) {
+        console.error("Error fetching exam details:", error);
+        toast.error("Failed to submit exam");
+      }
+    };
+
+    // add debounce for the handle answer
+    const debounceHandleAnswer = useCallback(
+      debounce((questionId, answer) => {
+        setAnswer({
+          ...answers,
+          [questionId]: answer,
+        });
+      }, 300)
+    );
+
+    const handleAnswer = (questionId, answer) => {
+      console.log("handle answer", questionId, answer);
+      debounceHandleAnswer(questionId, answer);
+    };
 
     const onChangeTabs = (key) => {
       console.log(key);
     };
 
-    const ExamTools = () => {
-      const onChangeSwitch = (checked) => {
-        console.log(`switch to ${checked}`);
-        setShowCalculator(checked);
-      };
-      return (
-        <div className='flex flex-col flex-grow gap-12 h-auto justify-between'>
-          <Menu
-            theme='light'
-            mode='inline'
-            defaultSelectedKeys={["1"]}
-            items={[
-              {
-                key: "1",
-                // icon: <UserOutlined />,
-                label: "Exam",
-              },
-              {
-                key: "2",
-                // icon: <UserOutlined />,
-                label: "References",
-              },
-            ]}
-          />
-          {showCalculator && <Calculator />}
-          <div className='flex flex-col gap-2 items-center justify-center text-black'>
-            <div className='flex gap-2 items-center justify-center'>
-              <Icon
-                className='w-5 h-5'
-                icon='ph:calculator-fill'
-              />
-              <p>Calculator</p>
-              <Switch
-                size='small'
-                defaultChecked={showCalculator}
-                onChange={onChangeSwitch}
-              />
-            </div>
-            <div className='flex gap-2'>
-              {isCharging ? (
-                <Icon
-                  className='text-green-500 w-6 h-6'
-                  icon='tabler:battery-charging'
-                />
-              ) : batteryLevel < 10 ? (
-                <Icon
-                  className='text-error-500 w-6 h-6'
-                  icon='tabler:battery'
-                />
-              ) : batteryLevel < 40 ? (
-                <Icon
-                  className='text-yellow-500 w-6 h-6'
-                  icon='tabler:battery-2'
-                />
-              ) : batteryLevel < 50 ? (
-                <Icon
-                  className='text-yellow-500 w-6 h-6'
-                  icon='tabler:battery-3'
-                />
-              ) : (
-                <Icon
-                  className='text-green-500 w-6 h-6'
-                  icon='tabler:battery-4-filled'
-                />
-              )}
-              <p>Battery Level: {batteryLevel}%</p>
-            </div>
-
-            <div className='flex gap-2'>
-              <Icon
-                className='w-6 h-6 text-primary-500'
-                icon='mingcute:time-line'
-              />
-              <p>Time: {currentTime.format("hh:mm")}</p>
-            </div>
-          </div>
-        </div>
-      );
-    };
-
     return (
-      <Layout className='h-screen'>
+      <Layout className="h-screen">
         <FloatButton
           onClick={() => setShowChat(!showChat)}
-          shape='circle'
-          icon={<Icon icon='grommet-icons:chat' />}
+          shape="circle"
+          icon={<Icon icon="grommet-icons:chat" />}
           tooltip={<div>Exam Chat</div>}
           badge={{
             dot: true,
           }}
         />
-        {showChat && <ChatComponent />}
+        {<ChatComponent exam={exam} socket={socket} examinee={examinee} />}
         <Sider
           style={{
             width: 600,
           }}
-          className='flex flex-col gap-4 text-white h-screen'
+          className="flex flex-col gap-4 text-white h-screen"
           // collapsible
-          theme='light'
+          theme="light"
           // collapsed={collapsed}
           // onCollapse={(value) => setCollapsed(value)}
         >
           <img
             src={fetena_logo}
-            alt='Fetena.com Logo'
-            className='w-24 my-4 mx-auto'
+            alt="Fetena.com Logo"
+            className="w-24 my-4 mx-auto"
           />
-          <ExamTools />
+          <ExamTools
+            exam={exam}
+            isCharging={isCharging}
+            batteryLevel={batteryLevel}
+            examinee={examinee}
+          />
           {/* <VideoComponent /> */}
           {"VideoComponent"}
         </Sider>
@@ -662,7 +347,8 @@ const TakeExamScreen = () => {
             style={{
               padding: 0,
               backgroundColor: "#fff",
-            }}>
+            }}
+          >
             Exam Session
           </Header>
           <Content
@@ -670,8 +356,148 @@ const TakeExamScreen = () => {
               margin: "24px 16px",
               padding: 24,
               minHeight: 280,
-            }}>
-            <button onClick={handleFinishExam}>Finish</button>
+            }}
+            className="overflow-auto"
+          >
+            <div className="flex flex-col gap-4 my-4 mt-8 ">
+              {exam.questions.map((question, index) => (
+                <div key={index} className="mb-4">
+                  {question.questionType === "True/False" ? (
+                    <Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
+                      <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                        <h3 className="text-blue-900 font-semibold text-lg">
+                          Question {index + 1}
+                        </h3>
+                        <p className="font-semibold text-blue-900">
+                          Points {question.points}
+                        </p>
+                      </div>
+                      <div className="mt-4 mx-4 flex items-start">
+                        <h3 className="font-semibold text-[1rem]">
+                          {question.questionText}
+                        </h3>
+                      </div>
+                      <div className="mt-8 flex items-start mx-4 ">
+                        <Form.Item label="Your Answer" className="w-48">
+                          <Select
+                            onChange={(value) =>
+                              handleAnswer(question._id, value)
+                            }
+                          >
+                            <Select.Option value="true">True</Select.Option>
+                            <Select.Option value="false">False</Select.Option>
+                          </Select>
+                        </Form.Item>
+                      </div>
+                    </Card>
+                  ) : question.questionType === "choose" ? (
+                    <Card className="bg-gray-50 w-11/12 mx-auto">
+                      <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                        <h3 className="text-blue-900 font-semibold text-lg">
+                          Question {index + 1}
+                        </h3>
+                        <p className="font-semibold text-blue-900">
+                          Points {question.points}
+                        </p>
+                      </div>
+                      <div className="mt-4 mx-4 flex items-start border-b pb-4">
+                        <h3 className="font-semibold text-[1rem]">
+                          {question.questionText}
+                        </h3>
+                      </div>
+                      <div className="mt-4 w-full flex items-start mx-4 gap-4">
+                        <div className="flex flex-col">
+                          <Radio.Group
+                            onChange={(e) =>
+                              handleAnswer(question._id, e.target.value)
+                            }
+                          >
+                            {question.questionChoice.map(
+                              (choice, choiceIndex) => (
+                                <Form.Item
+                                  key={choiceIndex}
+                                  label={`${String.fromCharCode(
+                                    65 + choiceIndex
+                                  )}`}
+                                >
+                                  <div className="flex gap-4 justify-center">
+                                    <p className="font-semibold">{choice}</p>
+                                    <div className="flex gap-2 items-center">
+                                      <Radio value={choice}></Radio>
+                                      <span className="text-blue-700"></span>
+                                    </div>
+                                  </div>
+                                </Form.Item>
+                              )
+                            )}
+                          </Radio.Group>
+                        </div>
+                      </div>
+                    </Card>
+                  ) : question.questionType === "shortAnswer" ? (
+                    <Card className="bg-gray-50 w-11/12 mx-auto my-2">
+                      <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                        <h3 className="text-blue-900 font-semibold text-lg">
+                          Question {index + 1}
+                        </h3>
+                        <p className="font-semibold text-blue-900">
+                          Points {question.points}
+                        </p>
+                      </div>
+
+                      <div className="mt-4 mx-4 flex items-start ">
+                        <h3 className="font-semibold text-[1rem]">
+                          {question.questionText}
+                        </h3>
+                      </div>
+
+                      <div className="mt-4 flex items-start mx-4 mb-4">
+                        <TextArea
+                          rows={4}
+                          onChange={(e) =>
+                            handleAnswer(question._id, e.target.value)
+                          }
+                          placeholder="Enter your question here"
+                        />
+                      </div>
+                    </Card>
+                  ) : question.questionType === "essay" ? (
+                    <Card className="bg-gray-50 w-11/12 mx-auto my-8">
+                      <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                        <h3 className="text-blue-900 font-semibold text-lg">
+                          Question {index + 1}
+                        </h3>
+                        <p className="font-semibold text-blue-900">
+                          Points {question.points}
+                        </p>
+                      </div>
+
+                      <div className="mt-4 mx-4 flex items-start">
+                        <h3 className="font-semibold text-[1rem]">
+                          {question.questionText}
+                        </h3>
+                      </div>
+
+                      <div className="mt-4 flex items-start mx-4 mb-4">
+                        <TextArea
+                          rows={4}
+                          onChange={(e) =>
+                            handleAnswer(question._id, e.target.value)
+                          }
+                          placeholder="Enter your question here"
+                        />
+                      </div>
+                    </Card>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={handleFinishExam}
+              className="bg-primary-500 text-white cursor-pointer rounded px-4 py-2"
+            >
+              Finish
+            </button>
           </Content>
         </Layout>
       </Layout>
@@ -681,7 +507,7 @@ const TakeExamScreen = () => {
   return !startExam ? (
     <div>
       {" "}
-      <ExamStartConfirmationModal />{" "}
+      <ExamStartConfirmationModal handleStartExam={handleStartExam} />{" "}
     </div>
   ) : (
     <div>
