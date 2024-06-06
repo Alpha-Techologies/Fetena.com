@@ -1,77 +1,68 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('LoginScreen tests', () => {
+test.describe('Login Page', () => {
   test.beforeEach(async ({ page }) => {
-    // Navigate to the login page
-    await page.goto('http://localhost:8080/api/users/login'); // Change this URL to the correct one for your app
+    await page.goto('http://localhost:4000/login');
   });
 
-  test('should display login form', async ({ page }) => {
-    // Check if the login form and necessary elements are visible
-    await expect(page.getByRole('heading', { name: 'Log In' })).toBeVisible();
-    await expect(page.getByPlaceholder('Email')).toBeVisible();
-    await expect(page.getByPlaceholder('Password')).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Log in' })).toBeVisible();
+  test('should render the login page correctly', async ({ page }) => {
+    // Verify that the logo is visible
+    const logo = page.locator('img[alt=""]');
+    await expect(logo).toBeVisible();
+    
+    // Verify the presence of the login form
+    const loginFormTitle = page.locator('h1:has-text("Log In")');
+    await expect(loginFormTitle).toBeVisible();
+    
+    const emailInput = page.locator('input[type="email"]');
+    const passwordInput = page.locator('input[type="password"]');
+    const loginButton = page.locator('button:has-text("Log in")');
+
+    await expect(emailInput).toBeVisible();
+    await expect(passwordInput).toBeVisible();
+    await expect(loginButton).toBeVisible();
   });
 
-  test('should display validation messages for empty fields', async ({ page }) => {
-    // Click the login button without entering email and password
-    await page.getByRole('button', { name: 'Log in' }).click();
+  test('should show validation errors if form is submitted without input', async ({ page }) => {
+    await page.click('button:has-text("Log in")');
 
-    // Check for validation messages
-    await expect(page.getByText('Please input your email!')).toBeVisible();
-    await expect(page.getByText('Please input your password!')).toBeVisible();
+    // Verify error messages
+    const emailErrorMessage = page.locator('.ant-form-item-explain:has-text("Please input your email!")');
+    const passwordErrorMessage = page.locator('.ant-form-item-explain:has-text("Please input your password!")');
+
+    await expect(emailErrorMessage).toBeVisible();
+    await expect(passwordErrorMessage).toBeVisible();
   });
 
-  test('should display validation message for invalid email', async ({ page }) => {
-    // Enter invalid email and a password
-    await page.getByPlaceholder('Email').fill('invalid-email');
-    await page.getByPlaceholder('Password').fill('password123');
+  test('should show error message on invalid login', async ({ page }) => {
+    // Mock backend responses (if applicable)
+    // Mock Redux state, e.g., using MSW (Mock Service Worker)
 
-    // Click the login button
-    await page.getByRole('button', { name: 'Log in' }).click();
+    await page.fill('input[name="email"]', 'invalid@example.com');
+    await page.fill('input[name="password"]', 'wrongpassword');
+    await page.click('button:has-text("Log in")');
 
-    // Check for validation message for invalid email
-    await expect(page.getByText('Please input a valid email address!')).toBeVisible();
+    // Verify toast error message
+    const toastMessage = page.locator('.Toastify__toast:has-text("Something is wrong!")');
+    await expect(toastMessage).toBeVisible();
   });
 
-  test('should login successfully with correct credentials', async ({ page }) => {
-    // Mock the API response for login
-    await page.route('**/login', route =>
-      route.fulfill({
-        status: 200,
-        body: JSON.stringify({ status: 'fulfilled' }),
-      })
-    );
+  test('should redirect to dashboard on successful login', async ({ page }) => {
+    // Mock backend responses (if applicable)
+    // Mock Redux state, e.g., using MSW (Mock Service Worker)
 
-    // Enter valid email and password
-    await page.getByPlaceholder('Email').fill('test@example.com');
-    await page.getByPlaceholder('Password').fill('password123');
+    await page.fill('input[name="email"]', 'testuser@example.com');
+    await page.fill('input[name="password"]', 'correctpassword');
+    await page.click('button:has-text("Log in")');
 
-    // Click the login button
-    await page.getByRole('button', { name: 'Log in' }).click();
-
-    // Check if redirected to dashboard
-    await page.waitForURL('http://localhost:3000/dashboard'); // Change this URL to the correct one for your app
+    // Verify redirection to dashboard
+    await page.waitForURL('http://localhost:4000/dashboard');
+    await expect(page).toHaveURL('http://localhost:4000/dashboard');
   });
 
-  test('should show error toast on login failure', async ({ page }) => {
-    // Mock the API response for login failure
-    await page.route('**/login', route =>
-      route.fulfill({
-        status: 401,
-        body: JSON.stringify({ status: 'rejected', message: 'Invalid credentials' }),
-      })
-    );
-
-    // Enter valid email and password
-    await page.getByPlaceholder('Email').fill('test@example.com');
-    await page.getByPlaceholder('Password').fill('wrongpassword');
-
-    // Click the login button
-    await page.getByRole('button', { name: 'Log in' }).click();
-
-    // Check for error toast message
-    await expect(page.getByText('Invalid credentials')).toBeVisible();
+  test('should navigate to sign up page when clicking "Sign up"', async ({ page }) => {
+    await page.click('a:has-text("Sign up")');
+    await page.waitForURL('http://localhost:4000/register');
+    await expect(page).toHaveURL('http://localhost:4000/register');
   });
 });
