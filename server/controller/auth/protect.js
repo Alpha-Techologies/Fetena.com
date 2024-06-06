@@ -1,8 +1,8 @@
 const { StatusCodes } = require("http-status-codes");
-const catchAsync = require("../../../utils/catchAsync");
-const { attachCookiesToResponse, isToken } = require("../../../utils/jwt");
-const APIError = require("../../../utils/apiError");
-const { TokenModel } = require("../../../models/Token.model");
+const catchAsync = require("../../utils/catchAsync");
+const { attachCookiesToResponse, isToken } = require("../../utils/jwt");
+const APIError = require("../../utils/apiError");
+const { TokenModel } = require("../../models/Token.model");
 
 exports.protect = catchAsync(async (req, res, next) => {
   const { refreshToken, accessToken } = req.signedCookies;
@@ -20,7 +20,6 @@ exports.protect = catchAsync(async (req, res, next) => {
       user: userId,
       refreshToken: payload.refreshToken,
     });
-
 
     if (!existingToken || !existingToken?.isValid) {
       return next(
