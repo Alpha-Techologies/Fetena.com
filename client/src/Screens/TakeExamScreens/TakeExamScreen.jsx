@@ -10,7 +10,7 @@ import {
   FloatButton,
   Radio,
   Tag,
-  Popconfirm
+  Popconfirm,
 } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
@@ -41,7 +41,7 @@ const TakeExamScreen = () => {
   const [showChat, setShowChat] = useState(false);
   const [takeExamId, setTakeExamId] = useState("");
   const [userAnswersId, setUserAnswersId] = useState("");
-  const [examinee, setExaminee] = useState({})
+  const [examinee, setExaminee] = useState({});
 
   const [exam, setExam] = useState(null);
   const [socket] = useSocketIO();
@@ -104,8 +104,6 @@ const TakeExamScreen = () => {
       getTakeExamId(takeExamId);
     }
   }, [takeExamId]);
-
-  
 
   // useEffect to handle battery dispaly and screen change
   useEffect(() => {
@@ -218,29 +216,30 @@ const TakeExamScreen = () => {
   }
 
   const handleFinishExam = async () => {
-
     const finishExam = async () => {
       try {
-        const response = await axios.patch(`/api/exams/take-exam/${takeExamId}`, {
-          status: 'submitted'
-        });
-        return response.status
+        const response = await axios.patch(
+          `/api/exams/take-exam/${takeExamId}`,
+          {
+            status: "submitted",
+          }
+        );
+        return response.status;
       } catch (error) {
         console.error("Error fetching exam details:", error);
         toast.error("Failed to submit exam");
       }
     };
 
-    const resp = await finishExam()
+    const resp = await finishExam();
 
     if (resp === 200) {
       setStartExam(false);
       navigate(-1);
       // document.exitFullscreen();
       exitFullscreen();
-      toast.success("Exam submitted successfully!")
+      toast.success("Exam submitted successfully!");
     }
-
   };
 
   const ExamScreen = () => {
@@ -262,7 +261,7 @@ const TakeExamScreen = () => {
             });
           }
 
-          axios.post(`/api/useranswers/${userAnswersId}`, {
+          await axios.post(`/api/useranswers/${userAnswersId}`, {
             questionAnswers: answerResponse,
           });
         } catch (error) {
@@ -274,13 +273,23 @@ const TakeExamScreen = () => {
       postAnswer();
     }, [answers]);
 
-    const handleFinishExam = () => {
+    const handleFinishExam = async () => {
       try {
-        postAnswer();
-
         // submit the exam and get the evaluation from the backend
-        // const response = await axios.post(`/api/useranswers/eval/${takeExamId}`);
-      } catch (error) {}
+        const response = await axios.post(
+          `/api/useranswers/eval/${userAnswersId}`
+        );
+        await axios.patch(`/api/exams/take-exam/${takeExamId}`, {
+          status: "completed",
+          examEndTime: Date.now(),
+        });
+
+        console.log(response);
+        navigate("/dashboard");
+      } catch (error) {
+        console.error("Error fetching exam details:", error);
+        toast.error("Failed to submit exam");
+      }
     };
 
     // add debounce for the handle answer
@@ -313,13 +322,7 @@ const TakeExamScreen = () => {
             dot: true,
           }}
         />
-        {
-          <ChatComponent
-            exam={exam}
-            socket={socket}
-            examinee={examinee}
-          />
-        }
+        {<ChatComponent exam={exam} socket={socket} examinee={examinee} />}
         <Sider
           style={{
             width: 600,
@@ -339,6 +342,7 @@ const TakeExamScreen = () => {
             exam={exam}
             isCharging={isCharging}
             batteryLevel={batteryLevel}
+            examinee={examinee}
           />
           {/* <VideoComponent /> */}
           {"VideoComponent"}

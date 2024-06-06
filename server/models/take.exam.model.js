@@ -90,11 +90,39 @@ const takeExamSchema = new mongoose.Schema({
   socketId: {
     type: String,
   },
+  examEndTime: {
+    type: Date,
+  },
   active: {
     type: Boolean,
     default: true,
   },
 });
+
+takeExamSchema.methods.sendChat = async function (chatMessage) {
+  // if already followed return
+  // if (this.organizationsFollowed.includes(id)) return this;
+
+  this.chatMessages.push(chatMessage);
+
+  // const organizationFollowed = await OrganizationFollower.findOne({
+  //   organization: id,
+  // });
+
+  // if (organizationFollowed) {
+  //   organizationFollowed.follower.push(this._id);
+  //   await organizationFollowed.save();
+  // } else {
+  //   const newOrganizationFollower = new OrganizationFollower({
+  //     organization: id,
+  //     follower: [this._id],
+  //   });
+  //   await newOrganizationFollower.save();
+  // }
+
+  this.save();
+  return this;
+};
 
 const TakeExam = mongoose.model("TakeExam", takeExamSchema);
 

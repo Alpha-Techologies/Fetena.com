@@ -6,85 +6,84 @@ const catchAsync = require("../utils/catchAsync");
 const APIFeatures = require("../utils/apiFeatures");
 const {dbConn} = require("../config/db_Connection");
 const OrganizationExaminer = require("../models/organization.examiner.model");
-const { StatusCodes } = require("http-status-codes");
 // const dbAuth = require("../config/db_Authentication");
 require("events").EventEmitter.prototype._maxListeners = 70;
 require("events").defaultMaxListeners = 70;
 
-exports.getOne = (Model) =>
-  catchAsync(async (req, res, next) => {
-    let query = new APIFeatures(Model.findById(req.params.id), req.query)
-      .filter()
-      .field()
-      .populate();
+// exports.getOne = (Model) =>
+//   catchAsync(async (req, res, next) => {
+//     let query = new APIFeatures(Model.findById(req.params.id), req.query)
+//       .filter()
+//       .field()
+//       .populate();
 
-    const doc = await query.query;
+//     const doc = await query.query;
 
-    if (!doc) {
-      return next(new APIError(`No document found with ${req.params.id}`, 404));
-    }
+//     if (!doc) {
+//       return next(new APIError(`No document found with ${req.params.id}`, 404));
+//     }
 
-    res.status(200).json({
-      status: "succcess",
-      results: doc.length,
-      data: {
-        data: doc,
-      },
-    });
-  });
+//     res.status(200).json({
+//       status: "succcess",
+//       results: doc.length,
+//       data: {
+//         data: doc,
+//       },
+//     });
+//   });
 
-exports.getAll = (Model, options = "", obj = {}) =>
-  catchAsync(async (req, res, next) => {
-    // currentTime, pathname, method
-    // const {currentTime,_parsedOriginalUrl} = req
-    // console.log(currentTime)
-    // console.log(_parsedOriginalUrl.pathname)
+// exports.getAll = (Model, options = "", obj = {}) =>
+//   catchAsync(async (req, res, next) => {
+//     // currentTime, pathname, method
+//     // const {currentTime,_parsedOriginalUrl} = req
+//     // console.log(currentTime)
+//     // console.log(_parsedOriginalUrl.pathname)
 
-    let opt = {};
-    if (options === "addUser") opt = { user: req.user.id };
-    if (options === "addOrganization") opt = { organization: req.params.id };
-    if (options === "addExaminerStatus")
-      opt = { user: req.user.id, status: "activated" };
-    if (options === "addExamCreater")
-      opt = { createdBy: req.user.id, organization: req.params.id };
-    if (options === "addExam") opt = { exam: req.params.id };
+//     let opt = {};
+//     if (options === "addUser") opt = { user: req.user.id };
+//     if (options === "addOrganization") opt = { organization: req.params.id };
+//     if (options === "addExaminerStatus")
+//       opt = { user: req.user.id, status: "activated" };
+//     if (options === "addExamCreater")
+//       opt = { createdBy: req.user.id, organization: req.params.id };
+//     if (options === "addExam") opt = { exam: req.params.id };
 
-    const page = req.query.page * 1 || 1;
-    const limit = req.query.limit * 1 || 10;
+//     const page = req.query.page * 1 || 1;
+//     const limit = req.query.limit * 1 || 10;
 
-    let count = new APIFeatures(Model.find(opt), req.query).filter().count();
-    let total = await count.query;
+//     let count = new APIFeatures(Model.find(opt), req.query).filter().count();
+//     let total = await count.query;
 
-    let query = new APIFeatures(Model.find(opt), req.query)
-      .filter()
-      .field()
-      .sort()
-      .paginate()
-      .populate();
+//     let query = new APIFeatures(Model.find(opt), req.query)
+//       .filter()
+//       .field()
+//       .sort()
+//       .paginate()
+//       .populate();
 
-    const doc = await query.query;
+//     const doc = await query.query;
 
-    if (!doc) {
-      return next(
-        new APIError(`No document found with id = ${req.params.id}`, 404)
-      );
-    }
+//     if (!doc) {
+//       return next(
+//         new APIError(`No document found with id = ${req.params.id}`, 404)
+//       );
+//     }
 
-    res.status(200).json({
-      status: "succcess",
-      data: {
-        data: doc,
-        results: doc.length,
-        paginationData: {
-          total,
-          totalPages: Math.ceil(total / limit),
-          currentPage: page,
-          showingFrom: limit * (page - 1) + 1,
-          showingUntil: limit * page > total ? total : limit * page,
-        },
-      },
-    });
-  });
+//     res.status(200).json({
+//       status: "succcess",
+//       data: {
+//         data: doc,
+//         results: doc.length,
+//         paginationData: {
+//           total,
+//           totalPages: Math.ceil(total / limit),
+//           currentPage: page,
+//           showingFrom: limit * (page - 1) + 1,
+//           showingUntil: limit * page > total ? total : limit * page,
+//         },
+//       },
+//     });
+//   });
 
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
@@ -113,20 +112,13 @@ exports.updateOne = (Model) =>
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
-    // const doc = await Model.findByIdAndDelete(req.params.id);
-    const model = await Model.findOne({ _id: req.params.id });
-
-    if (!model) {
+    const doc = await Model.findByIdAndDelete(req.params.id);
+    if (!doc) {
       return next(
         new APIError(`No document found with id = ${req.params.id}`, 404)
       );
     }
-
-    model.active = false;
-    console.log(model);
-    await model.save();
-
-    res.status(StatusCodes.OK).json({
+    res.status(204).json({
       status: "success",
       data: null,
     });
