@@ -212,6 +212,11 @@ const TakeExamScreen = () => {
     requestFullscreen();
   };
 
+  const handleCancelFinishExam = () => {
+    toast.success("Exited the Exam!")
+    setStartExam(false)
+  }
+
   const handleFinishExam = async () => {
 
     const finishExam = async () => {

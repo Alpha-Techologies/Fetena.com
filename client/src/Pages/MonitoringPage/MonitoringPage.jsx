@@ -18,7 +18,7 @@ import { current } from "@reduxjs/toolkit";
 const MonitoringPage = () => {
   const [activeTabKey1, setActiveTabKey1] = useState("tab1");
   const [inputValue, setInputValue] = useState("");
-  const [examStatus, setExamStatus] = useState("closed");
+  const [examStatus, setExamStatus] = useState();
   const [seeStatusOf, setSeeStatusOf] = useState("all");
   const { user } = useSelector((state) => state.auth);
   const [socket] = useSocketIO();
@@ -72,6 +72,7 @@ const MonitoringPage = () => {
       // console.log(response, 'response from fetch single exam');
       tempExam = response.data.data.data[0];
       setCurrentExam(tempExam);
+      setExamStatus(tempExam.access);
       console.log(currentExam, "currentExam");
     } catch (error) {
       console.error("Error fetching exam details:", error);
@@ -185,6 +186,7 @@ const MonitoringPage = () => {
   };
 
   const handleExamStatusChange = async (value) => {
+    console.log(examStatus,currentExam.access, 'examStatus')
     const changeExamStatus = async (status) => {
       try {
         const response = await axios.patch(`/api/exams/${currentExam._id}`, {
@@ -271,7 +273,7 @@ const MonitoringPage = () => {
                 <p className='font-semibold'>
                   <span className='font-bold text-blue-700'>Access : </span>
                   <Select
-                    defaultValue={examStatus}
+                    defaultValue={currentExam.access === "open" ? "open" : "closed"}
                     onChange={handleExamStatusChange}
                     style={{
                       width: 80,
