@@ -90,6 +90,9 @@ const takeExamSchema = new mongoose.Schema({
   socketId: {
     type: String,
   },
+  examEndTime: {
+    type: Date,
+  },
   active: {
     type: Boolean,
     default: true,

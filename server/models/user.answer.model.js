@@ -15,6 +15,10 @@ const AnswerSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  manuallyMarked: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const UserAnswerSchema = new mongoose.Schema({

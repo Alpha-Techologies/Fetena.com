@@ -256,7 +256,7 @@ const TakeExamScreen = () => {
             });
           }
 
-          axios.post(`/api/useranswers/${userAnswersId}`, {
+          await axios.post(`/api/useranswers/${userAnswersId}`, {
             questionAnswers: answerResponse,
           });
         } catch (error) {
@@ -274,7 +274,13 @@ const TakeExamScreen = () => {
         const response = await axios.post(
           `/api/useranswers/eval/${userAnswersId}`
         );
+        await axios.patch(`/api/exams/take-exam/${takeExamId}`, {
+          status: "completed",
+          examEndTime: Date.now(),
+        });
+
         console.log(response);
+        navigate("/dashboard");
       } catch (error) {
         console.error("Error fetching exam details:", error);
         toast.error("Failed to submit exam");

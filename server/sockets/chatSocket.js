@@ -1,8 +1,6 @@
 const Exam = require("../models/exam.model");
 const TakeExam = require("../models/take.exam.model");
 
-// initialize the chat socket
-const users = {}; // This maps userId to socketId
 
 const chatSocket = (io, socket) => {
   // Join a room
