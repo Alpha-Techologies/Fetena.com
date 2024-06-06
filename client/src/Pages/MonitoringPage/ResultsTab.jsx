@@ -21,6 +21,8 @@ const ResultsTab = ({
   setSeeStatusOf,
   currentExam,
   currentUser,
+  setCurrentUser,
+  examineeList
 }) => {
   const [resultsTableData, setResultsTableData] = useState([]);
   const [completedExamsCount, setCompletedExamsCount] = useState(0);
@@ -123,69 +125,76 @@ const ResultsTab = ({
 
   const ResultsOverviewPage = () => {
     return (
-      <div className="flex flex-col gap-2">
-        <div className="grid grid-cols-3 gap-4 w-full">
+      <div className='flex flex-col gap-2'>
+        <div className='grid grid-cols-3 gap-4 w-full'>
           <Card>
             <div>
-              <p className="font-bold text-xl italic">{examCount.completed}</p>
+              <p className='font-bold text-xl italic'>{examCount.completed}</p>
               <p>Exams Marked</p>
             </div>
           </Card>
           <Card>
             <div>
-              <p className="font-bold text-xl italic">{examCount.ongoing}</p>
+              <p className='font-bold text-xl italic'>{examCount.ongoing}</p>
               <p>Ongoing</p>
             </div>
           </Card>
         </div>
-        <Table columns={resultsTableColumns} dataSource={resultsTableData} />
+        <Table
+          columns={resultsTableColumns}
+          dataSource={resultsTableData}
+        />
       </div>
     );
   };
 
   const ResultsIndividualPage = () => {
+    const tempCurrentUser = _.find(
+      examineeList,
+      (item) => item.user && item.user._id === seeStatusOf
+    );
+    setCurrentUser(tempCurrentUser);
     //TODO: Automatic Grading Reason from AI for the Grading
     return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between w-full">
+      <div className='flex flex-col gap-4'>
+        <div className='flex justify-between w-full'>
           <div
             onClick={() => setSeeStatusOf("all")}
-            className="flex items-center gap-2 text-primary-500 cursor-pointer"
-          >
-            <Icon icon="lets-icons:back" />
+            className='flex items-center gap-2 text-primary-500 cursor-pointer'>
+            <Icon icon='lets-icons:back' />
             Back to Overview
           </div>
-          <div className="flex items-center gap-4">
-            <div className="px-4 py-1 rounded-full flex items-center gap-2 border border-primary-500 cursor-pointer">
-              <Icon icon="hugeicons:file-export" /> Export
+          <div className='flex items-center gap-4'>
+            <div className='px-4 py-1 rounded-full flex items-center gap-2 border border-primary-500 cursor-pointer'>
+              <Icon icon='hugeicons:file-export' /> Export
             </div>
-            <div className="px-4 py-1 rounded-full flex items-center gap-2 border border-primary-500 cursor-pointer">
-              <Icon icon="mdi:email-send-outline" /> Send to Email
+            <div className='px-4 py-1 rounded-full flex items-center gap-2 border border-primary-500 cursor-pointer'>
+              <Icon icon='mdi:email-send-outline' /> Send to Email
             </div>
           </div>
         </div>
-        <div className="flex items-start flex-col gap-4">
-          <div className="flex items-center justify-start">
-            <span className="font-bold text-xl justified">
-              {currentUser.user.fullName}
+        <div className='flex items-start flex-col gap-4'>
+          <div className='flex items-center justify-start'>
+            <span className='font-bold text-xl justified'>
+              {currentUser?.user?.fullName}
             </span>
-            {currentUser.status === "inprogress" ? (
-              <p className="text-green-500 ml-2 flex items-center justify-center">
-                <Icon icon="icon-park-outline:dot" /> Ongoing
+            {currentUser?.status === "inprogress" ? (
+              <p className='text-green-500 ml-2 flex items-center justify-center'>
+                <Icon icon='icon-park-outline:dot' /> Ongoing
               </p>
             ) : (
-              <p className="text-gray-500 ml-2 flex items-center justify-center">
-                <Icon icon="icon-park-outline:dot" /> Finished
+              <p className='text-gray-500 ml-2 flex items-center justify-center'>
+                <Icon icon='icon-park-outline:dot' /> Finished
               </p>
             )}
           </div>
-          <p className="text-gray-500">
+          <p className='text-gray-500'>
             {" "}
-            <span className="text-primary-500 font-semibold">
+            <span className='text-primary-500 font-semibold'>
               {" "}
               Email:{" "}
             </span>{" "}
-            {currentUser.user.email}
+            {currentUser?.user?.email}
           </p>
         </div>
 
@@ -193,45 +202,53 @@ const ResultsTab = ({
           console.log(
             "the question",
             question,
-            currentUser.userAnswers.questionAnswers[index]
+            currentUser?.userAnswers?.questionAnswers[index]
           );
-          const answer = currentUser.userAnswers.questionAnswers[index];
+          const answer = currentUser?.userAnswers?.questionAnswers[index];
+          if (!answer) {
+            return;
+          }
           if (
             question.questionType === "True/False" ||
             question.questionType === "choose"
           ) {
             return (
-              <Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
-                <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-                  <h3 className="text-blue-900 font-semibold text-lg">
+              <Card className=' w-11/12 mx-auto bg-gray-50 rounded-none'>
+                <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                  <h3 className='text-blue-900 font-semibold text-lg'>
                     Question {index + 1}
                   </h3>
-                  <p className="font-semibold text-blue-900">
+                  <p className='font-semibold text-blue-900'>
                     Points {question.points}
                   </p>
                 </div>
-                <div className="mt-4 mx-4 flex items-start">
-                  <h3 className="font-semibold text-[1rem]">
+                <div className='mt-4 mx-4 flex items-start'>
+                  <h3 className='font-semibold text-[1rem]'>
                     {question.questionText}
                   </h3>
                 </div>
-                <div className="mt-8 flex items-center h-fit justify-start mx-4 w-72 ">
-                  <div className="flex flex-col w-full gap-2">
+                <div className='mt-8 flex items-center h-fit justify-start mx-4 w-72 '>
+                  <div className='flex flex-col w-full gap-2'>
                     {question.questionChoice.map((choice, index) => {
-                      if (choice === answer.answerText) {
+                      if (choice === answer?.answerText) {
                         return (
                           <Alert
                             showIcon
                             message={choice}
                             type={
-                              choice.correctAnswer === answer.answerText
+                              choice.correctAnswer === answer?.answerText
                                 ? "success"
                                 : "error"
                             }
                           />
                         );
                       }
-                      return <Alert message={choice} type="info" />;
+                      return (
+                        <Alert
+                          message={choice}
+                          type='info'
+                        />
+                      );
                     })}
                   </div>
                   {/* <Form.Item label="Examinee Answer">
@@ -252,59 +269,57 @@ const ResultsTab = ({
                 />
               )} */}
                 </div>
-                <div className="flex flex-col gap-2 w-full">
-                  {answer.manuallyMarked ? (
+                <div className='flex flex-col gap-2 w-full'>
+                  {answer?.manuallyMarked ? (
                     <>
                       <Tag
-                        className="flex items-center w-fit gap-2"
-                        color="blue"
-                      >
-                        <Icon icon="mdi:checkbox-marked-outline" />
+                        className='flex items-center w-fit gap-2'
+                        color='blue'>
+                        <Icon icon='mdi:checkbox-marked-outline' />
                         Manually Marked
                       </Tag>
                     </>
                   ) : (
-                    <div className="flex w-fit gap-2 p-4">
+                    <div className='flex w-fit gap-2 p-4'>
                       <Tag
-                        className="flex items-center w-fit gap-2"
-                        color="green"
-                      >
-                        <Icon icon="lucide:bot" />
+                        className='flex items-center w-fit gap-2'
+                        color='green'>
+                        <Icon icon='lucide:bot' />
                         Automatically Marked
                       </Tag>
-                      <div className="flex">{answer.reason}</div>
+                      <div className='flex'>{answer?.reason}</div>
                     </div>
                   )}
-                  {question.correctAnswer === answer.answerText ? (
-                    <div className="flex gap-2 items-center w-full">
+                  {question.correctAnswer === answer?.answerText ? (
+                    <div className='flex gap-2 items-center w-full'>
                       <Alert
-                        message="Answered Correctly"
-                        className="w-[90%]"
-                        type="success"
+                        message='Answered Correctly'
+                        className='w-[90%]'
+                        type='success'
                         showIcon
                       />
                       <InputNumber
-                        className="w-[10%]"
+                        className='w-[10%]'
                         min={0}
                         max={100000}
-                        defaultValue={answer.point}
+                        defaultValue={answer?.point}
                         disabled={true}
                       />
                     </div>
                   ) : (
-                    <div className="flex flex-col gap-2 w-full">
-                      <div className="flex gap-2 items-center w-full">
+                    <div className='flex flex-col gap-2 w-full'>
+                      <div className='flex gap-2 items-center w-full'>
                         <Alert
-                          message="Incorrect Answer"
-                          className="w-[90%]"
-                          type="error"
+                          message='Incorrect Answer'
+                          className='w-[90%]'
+                          type='error'
                           showIcon
                         />
                         <InputNumber
-                          className="w-[10%]"
+                          className='w-[10%]'
                           min={0}
                           max={100000}
-                          defaultValue={answer.point}
+                          defaultValue={answer?.point}
                           disabled={true}
                         />
                       </div>
@@ -315,51 +330,49 @@ const ResultsTab = ({
             );
           } else {
             return (
-              <Card className="bg-gray-50 w-11/12 mx-auto my-2">
-                <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-                  <h3 className="text-blue-900 font-semibold text-lg">
+              <Card className='bg-gray-50 w-11/12 mx-auto my-2'>
+                <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                  <h3 className='text-blue-900 font-semibold text-lg'>
                     Question {index + 1}
                   </h3>
-                  <p className="font-semibold text-blue-900">
+                  <p className='font-semibold text-blue-900'>
                     Points {question.points}
                   </p>
                 </div>
 
-                <div className="mt-4 mx-4 flex items-start ">
-                  <h3 className="font-semibold text-[1rem]">
+                <div className='mt-4 mx-4 flex items-start '>
+                  <h3 className='font-semibold text-[1rem]'>
                     {question.questionText}
                   </h3>
                 </div>
 
-                <div className="mt-4 flex items-start mx-4 mb-4">
+                <div className='mt-4 flex items-start mx-4 mb-4'>
                   <TextArea
                     rows={4}
                     value={answer.answerText}
                     disabled={true}
                   />
                 </div>
-                <div className="flex flex-col gap-2 w-full">
-                  <div className="flex flex-col gap-2 w-full">
-                    <div className="flex gap-2 items-center justify-between w-full">
+                <div className='flex flex-col gap-2 w-full'>
+                  <div className='flex flex-col gap-2 w-full'>
+                    <div className='flex gap-2 items-center justify-between w-full'>
                       {answer.manuallyMarked ? (
                         <Tag
-                          className="flex items-center w-fit gap-2"
-                          color="blue"
-                        >
-                          <Icon icon="mdi:checkbox-marked-outline" />
+                          className='flex items-center w-fit gap-2'
+                          color='blue'>
+                          <Icon icon='mdi:checkbox-marked-outline' />
                           Manually Marked
                         </Tag>
                       ) : (
                         <Tag
-                          className="flex items-center w-fit gap-2"
-                          color="green"
-                        >
-                          <Icon icon="lucide:bot" />
+                          className='flex items-center w-fit gap-2'
+                          color='green'>
+                          <Icon icon='lucide:bot' />
                           Automatically Marked
                         </Tag>
                       )}
                       <InputNumber
-                        className="w-[10%]"
+                        className='w-[10%]'
                         min={0}
                         max={100000}
                         defaultValue={answer.point}
