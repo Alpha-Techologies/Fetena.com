@@ -59,3 +59,4 @@ exports.joinOrganization = catchAsync(async (req, res, next) => {
       "You have successfully requested to join the organization. Please wait for the admin to approve your request.",
   });
 });
+

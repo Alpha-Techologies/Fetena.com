@@ -160,7 +160,7 @@ exports.createOne = (Model) =>
     const doc = await Model.create(req.body);
     if (!doc) {
       return next(
-        new APIError(`An error occured while creating the document`, 404)
+        new APIError(`An error occured while creating the document`, 500)
       );
     }
 
