@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.19",
+    "@playwright/test": "^1.44.1",
     "@reduxjs/toolkit": "^2.2.3",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "antd": "^5.16.2",
