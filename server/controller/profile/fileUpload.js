@@ -85,6 +85,6 @@ const fileUpload =
 // //   return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
 // // };
 
-// module.exports = {
-//   fileUpload,
-// };
+module.exports = {
+  fileUpload,
+};
