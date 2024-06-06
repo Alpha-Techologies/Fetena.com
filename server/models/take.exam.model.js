@@ -80,12 +80,11 @@ const takeExamSchema = new mongoose.Schema({
   endTime: {
     type: Date,
   },
-  userAnswers: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "UserAnswer",
-    },
-  ],
+  userAnswers: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "UserAnswer",
+  },
+
   chatMessages: [chatMessageSchema],
   userActivityLogs: [userActivityLogSchema],
   socketId: {

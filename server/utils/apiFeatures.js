@@ -74,6 +74,7 @@ class APIFeatures {
       { path: "follower", options: { strictPopulate: false } },
       { path: "organization", options: { strictPopulate: false } },
       { path: "createdBy", options: { strictPopulate: false } },
+      { path: "userAnswers", options: { strictPopulate: false } },
     ];
     let populateObj = [];
     if (this.queryString.fields) {
