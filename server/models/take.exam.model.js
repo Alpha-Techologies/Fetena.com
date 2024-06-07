@@ -31,10 +31,6 @@ const userActivityLogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // actionType tells the severity of the action taken by the examinee
-  // actionType: 'low' -> low severity
-  // actionType: 'medium' -> medium severity
-  // actionType: 'high' -> high severity
   actionType: {
     type: String,
     enum: ["low", "medium", "high"],
