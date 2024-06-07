@@ -201,6 +201,8 @@ const MonitoringPage = () => {
           access: status,
         });
         // console.log(response, "response from fetch single exam");
+
+        socket.emit("closeExam", currentExam._id);
         return response.status;
       } catch (error) {
         console.error("Error fetching exam details:", error);
@@ -281,9 +283,7 @@ const MonitoringPage = () => {
                 <p className="font-semibold">
                   <span className="font-bold text-blue-700">Access : </span>
                   <Select
-                    defaultValue={
-                      currentExam.access === "open" ? "open" : "closed"
-                    }
+                    value={currentExam.access}
                     onChange={handleExamStatusChange}
                     style={{
                       width: 80,

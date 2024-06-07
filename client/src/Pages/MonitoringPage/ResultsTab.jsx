@@ -153,7 +153,11 @@ const ResultsTab = ({
     );
   };
 
-  const ResultsIndividualPage = () => {
+  const ResultsIndividualPage = ({
+    currentUser,
+    fetchExamDetails,
+    setCurrentUser,
+  }) => {
     const editQuestionPoint = async (question, answer) => {
       if (question.points < answer.point) {
         toast.error(
@@ -567,7 +571,11 @@ const ResultsTab = ({
       {seeStatusOf === "all" ? (
         <ResultsOverviewPage />
       ) : (
-        <ResultsIndividualPage />
+        <ResultsIndividualPage
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          fetchExamDetails={fetchExamDetails}
+        />
       )}
     </div>
   );
