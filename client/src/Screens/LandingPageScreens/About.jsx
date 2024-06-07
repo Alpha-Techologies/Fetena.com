@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-const Home = () => {
+const About = () => {
 
   const navigate = useNavigate()
 
@@ -36,7 +36,8 @@ const Home = () => {
 
   return (
     <>
-      <NavBar />
+      <h1 className='text-4xl font-bold'>About</h1>
+
       <HeroSection />
       <WhyChooseUsSection />
       <FeatureSection1 featuresData={featuresData} />
@@ -52,4 +53,4 @@ const Home = () => {
     </>
   );
 };
-export default Home;
+export default About;

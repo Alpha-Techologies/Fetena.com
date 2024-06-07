@@ -63,6 +63,7 @@ const ActivityLogPage = () => {
           columns={columns}
           dataSource={data}
           rowKey={"key"}
+          scroll={{ x: 900 }}
         />
         ;
       </div>

@@ -1,20 +1,14 @@
-import { Card, Form, Input, Space, Table, Popover, Modal, Select } from "antd";
+import { Card, Form, Input, Space, Table, Popover, Modal, Select, Button, Dropdown } from "antd";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-
 const { Search } = Input;
 
-
-
-const { Meta } = Card;
-
 const ExamsPage = () => {
-  const [activeTabKey, setActiveTabKey] = useState("All");
   const [basicInfoForm] = Form.useForm();
   const { workspace } = useSelector((state) => state.data);
   const { userOrganizationsIdAndRole } = useSelector((state) => state.data);
@@ -24,12 +18,9 @@ const ExamsPage = () => {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState(""); // Search text
 
-
-  const onSearch = (value, _e, info) => {
+  const onSearch = (value) => {
     setSearchText(value); // Update search text
-    console.log(searchText);
-  }
-
+  };
 
   const fetchData = async (page = 1, active = true, access = "") => {
     const id = workspace._id;
@@ -44,28 +35,20 @@ const ExamsPage = () => {
           `/api/exams/my-exam/${id}?active=${active}&access=${access}&examName=${searchText}`
         );
 
-        console.log(response.data.data.data, "bitch");
         setExams(response.data.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     }
-    
   };
 
   useEffect(() => {
     if (!workspace) {
-      // Handle the case where workspace is null, for example, redirect the user or show an error message
       navigate("userexams");
     } else {
       fetchData(1, true);
     }
   }, [searchText]);
-
-
-  // const onSearchh = debounce((event) => {
-  //   setSearchText(event.target.value);
-  // }, 500); // Debounce the search input by 500ms
 
   const onPaginationChange = (page) => {
     setCurrent(page); // Update the current page
@@ -104,7 +87,6 @@ const ExamsPage = () => {
       dataIndex: "access",
       key: "access",
     },
-
     {
       title: "Action",
       key: "action",
@@ -137,7 +119,6 @@ const ExamsPage = () => {
             </Link>
           </Popover>
 
-          {console.log("record", record)}
           <>
             {record.active ? (
               <Popover
@@ -171,32 +152,24 @@ const ExamsPage = () => {
   ];
 
   const filterByStatus = (key) => {
-    if (key === "Active") {
-      fetchData(1);
-    } else {
-      fetchData(1, false);
-    }
+    fetchData(1, key === "Active");
   };
 
   const filterByAccess = (key) => {
-    if (key === "Open") {
-      fetchData(1, true, "open");
-    } else {
-      fetchData(1, true, "closed");
-    }
+    fetchData(1, true, key.toLowerCase());
   };
 
   const data = exams.map((exam) => ({
     key: exam._id,
     examName: exam.examName,
     examKey: <span className="font-bold text-blue-900">{exam.examKey}</span>,
-    createdBy: exam.createdBy.firstName + " " + exam.createdBy.lastName,
+    createdBy: `${exam.createdBy.firstName} ${exam.createdBy.lastName}`,
     createdAt: new Date(exam.createdAt).toLocaleString(),
     securityLevel: exam.securityLevel,
     access: (
       <span
         onClick={() => handleAccess(exam._id, exam.access)}
-        className="font-semibold cursor-pointer border rounded-xl  flex items-center justify-center"
+        className="font-semibold cursor-pointer border rounded-xl flex items-center justify-center"
         style={{
           color: exam.access === "open" ? "green" : "red",
           borderColor: exam.access === "open" ? "green" : "red",
@@ -232,23 +205,16 @@ const ExamsPage = () => {
 
   const handleAccess = async (examId, access) => {
     try {
-      if (access === "open") {
-        await axios.patch(`/api/exams/${examId}`, { access: "closed" });
-        toast.success("Exam access changed successfully");
-      } else {
-        await axios.patch(`/api/exams/${examId}`, { access: "open" });
-        toast.success("Exam access changed successfully");
-      }
-
+      await axios.patch(`/api/exams/${examId}`, { access: access === "open" ? "closed" : "open" });
+      toast.success("Exam access changed successfully");
       fetchData(1, true);
     } catch (error) {
-      console.error("Error restoring exam:", error);
-      toast.error("Failed to restore exam");
+      console.error("Error changing exam access:", error);
+      toast.error("Failed to change exam access");
     }
   };
 
   const confirmDelete = (examId) => {
-    console.log("exam id", examId);
     Modal.confirm({
       title: "Are you sure you want to delete this exam?",
       okText: "Yes",
@@ -268,90 +234,153 @@ const ExamsPage = () => {
     });
   };
 
+  const profileMenuItems = [
+    {
+      label: <div className="flex-col justify-start w-86 flex">
+      <Search
+        placeholder="Search Exams"
+        allowClear
+        enterButton="Search"
+        size="medium"
+        onSearch={onSearch}
+      />
+    </div>,
+      key: "1",
+    },
+    {
+      type: "divider",
+    },
+    {
+      label: (
+        <span className="flex items-center">
+        <span className="w-full font-semibold text-[1rem] text-blue-800">
+          Status:
+        </span>
+        <Select
+          defaultValue="Active"
+          className="h-full ml-2"
+          style={{ width: "auto", minWidth: 100 }}
+          onChange={filterByStatus}
+          options={[
+            { value: "Active", label: "Active" },
+            { value: "Archived", label: "Archived" },
+          ]}
+          dropdownMatchSelectWidth={false}
+        />
+      </span>
+      ),
+      key: "2",
+    },
+    {
+      type: "divider",
+    },
+    {
+      label: (
+        <span className="flex items-center">
+            <span className="w-full font-semibold text-[1rem] text-blue-800">
+              Access:
+            </span>
+            <Select
+              defaultValue="Open"
+              className="h-full ml-2"
+              style={{ width: "auto", minWidth: 100 }}
+              onChange={filterByAccess}
+              options={[
+                { value: "Open", label: "Open" },
+                { value: "Closed", label: "Closed" },
+              ]}
+            />
+          </span>
+      ),
+      key: "3",
+    },
+    {
+      type: "divider",
+    },
+    {
+      label: (
+        workspace?._id in userOrganizationsIdAndRole && (
+          <Link
+            to="/dashboard/create-exam"
+            className="flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-[0.5rem] px-4 rounded"
+          >
+            <Icon className="text-white w-4 h-4" icon="material-symbols:add" />
+            <span className="text-white">Create Exam</span>
+          </Link>
+        )
+      ),
+      key: "4",
+    }
+  ];
+
+  
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-blue-900 text-left">Exams</h1>
-
-        <div className="flex justify-center items-center gap-4">
-          <div className="flex flex-col justify-start w-86">
+        <Dropdown menu={{ items: profileMenuItems }} trigger={["click"]} className="md:hidden flex">
+          <Icon icon="typcn:th-menu" className="text-blue-800 text-3xl font-bold cursor-pointer hover:text-black" />
+        </Dropdown>
+        <div className="justify-center items-center gap-4 hidden md:flex">
+          <div className="flex-col justify-start w-86 flex">
             <Search
-              placeholder='Search Exams'
+              placeholder="Search Exams"
               allowClear
-              enterButton='Search'
-              size='medium'
+              enterButton="Search"
+              size="medium"
               onSearch={onSearch}
             />
           </div>
-
           <span className="flex items-center">
             <span className="w-full font-semibold text-[1rem] text-blue-800">
-              Status :
+              Status:
             </span>
             <Select
               defaultValue="Active"
               className="h-full ml-2"
-              style={{
-                width: "auto",
-                minWidth: 100, // Ensure a minimum width for better appearance
-              }}
-              onChange={(value) => filterByStatus(value)}
+              style={{ width: "auto", minWidth: 100 }}
+              onChange={filterByStatus}
               options={[
-                {
-                  value: "Active",
-                  label: "Active",
-                },
-                {
-                  value: "Archived",
-                  label: "Archived",
-                },
+                { value: "Active", label: "Active" },
+                { value: "Archived", label: "Archived" },
               ]}
-              dropdownMatchSelectWidth={false} // Prevent the dropdown from matching the select's width
+              dropdownMatchSelectWidth={false}
             />
           </span>
-
           <span className="flex items-center">
             <span className="w-full font-semibold text-[1rem] text-blue-800">
-              Access :
+              Access:
             </span>
-
             <Select
               defaultValue="Open"
               className="h-full ml-2"
-              style={{
-                width: "auto",
-                minWidth: 100, // Ensure a minimum width for better appearance
-              }}
-              onChange={(value) => filterByAccess(value)}
+              style={{ width: "auto", minWidth: 100 }}
+              onChange={filterByAccess}
               options={[
-                {
-                  value: "Open",
-                  label: "Open",
-                },
-                {
-                  value: "Closed",
-                  label: "Closed",
-                },
+                { value: "Open", label: "Open" },
+                { value: "Closed", label: "Closed" },
               ]}
             />
           </span>
-
           {workspace?._id in userOrganizationsIdAndRole && (
             <Link
               to="/dashboard/create-exam"
               className="flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-[0.5rem] px-4 rounded"
             >
-              <Icon
-                className="text-white w-4 h-4"
-                icon="material-symbols:add"
-              />{" "}
+              <Icon className="text-white w-4 h-4" icon="material-symbols:add" />
               Create Exam
             </Link>
           )}
         </div>
       </div>
-      <div>
-        <Table columns={columns} dataSource={data} />;
+      <div className="w-full overflow-auto">
+        <Table
+          columns={columns}
+          dataSource={data}
+          pagination={{ current, total: pages * 10, onChange: onPaginationChange }}
+          scroll={{ x: 900 }}
+        />
       </div>
     </div>
   );

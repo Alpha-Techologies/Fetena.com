@@ -139,7 +139,7 @@ const OrganizationSettingsPage = () => {
           onFinish={onFinish}
           initialValues={initialValues}
           layout='vertical'>
-            <div className="grid grid-cols-2 gap-x-8 ">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 ">
 
            
             <div>

@@ -35,7 +35,7 @@ const TrainingVideosPage = () => {
       </div>
       <div>
         <Card style={{ width: "100%" }}>
-          <div className="grid grid-cols-4 gap-4">
+          <div className="flex flex-wrap gap-4">
             <ExamCard />
             <ExamCard />
             <ExamCard />

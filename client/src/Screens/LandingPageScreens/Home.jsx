@@ -10,13 +10,16 @@ import Footer from "../../Components/Footer";
 import TestimonySection from "../../Components/TestimonySection";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import About  from "./About";
+import Customers from "./Customers";
 
 const Home = () => {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
+  const [displayPage, setDisplayPage] = useState("home");
 
-  const { isAuthenticated } = useSelector((state) => state.auth)
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -36,18 +39,30 @@ const Home = () => {
 
   return (
     <>
-      <NavBar />
-      <HeroSection />
-      <WhyChooseUsSection />
-      <FeatureSection1 featuresData={featuresData} />
-      <FeatureSection2 featuresData={featuresData} />
-      <FeatureSection1 featuresData={featuresData} />
-      <FeatureSection2 featuresData={featuresData} />
+      <NavBar
+        displayPage={displayPage}
+        setDisplayPage={setDisplayPage}
+      />
+      {displayPage === "home" ? (
+        <>
+          <HeroSection />
+          <WhyChooseUsSection />
+          <FeatureSection1 featuresData={featuresData} />
+          <FeatureSection2 featuresData={featuresData} />
+          <FeatureSection1 featuresData={featuresData} />
+          <FeatureSection2 featuresData={featuresData} />
 
-      <TestimonySection />
-      <HowItWorks />
+          <TestimonySection />
+          <HowItWorks />
 
-      <Cta />
+          <Cta />
+        </>
+      ) : displayPage === "customers" ? (
+        <Customers />
+      ) : (
+        <About />
+      )}
+
       <Footer />
     </>
   );

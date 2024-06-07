@@ -356,7 +356,7 @@ const CreateExam = () => {
        setActiveTabKey={setActiveTabKey}
        />
 
-      <div className="flex gap-4 items-center justify-between ">
+      <div className="flex flex-wrap gap-4 items-center justify-between ">
         <div className="flex items-center gap-2">
           <Link to="/dashboard/exams">
             <Icon

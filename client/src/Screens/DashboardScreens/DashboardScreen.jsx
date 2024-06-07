@@ -34,7 +34,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const DashboardScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [orgModal, setOrgModal] = useState(false);
   const [workspaceDropdownItems, setWorkspaceDropdownItems] = useState([]);
   const [currentWorkspace, setCurrentWorkspace] = useState("personal");
@@ -574,7 +574,7 @@ const DashboardScreen = () => {
             zIndex: 1,
             width: "100%",
           }}>
-          <h1 className='text-xl font-semibold text-primary-500'>
+          <h1 className='hidden lg:flex  text-xl font-semibold text-primary-500 '>
             {"Hello there, " + user.firstName + " " + user.lastName + "!"}
           </h1>
           <div className='inline-flex items-center justify-center gap-4'>

@@ -185,6 +185,7 @@ const OrganizationStaffPage = () => {
           columns={columns}
           dataSource={staffs}
           rowKey={"id"}
+          scroll={{ x: 900 }}
         />
         ;
       </div>

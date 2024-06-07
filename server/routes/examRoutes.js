@@ -18,7 +18,7 @@ const {
 
 router.use(takeExamRouter);
 
-const { protect } = require("../controller/auth");
+const { protect,restrictTo } = require("../controller/auth");
 
 
 router.route("/").get(protect, getAllExam).post(protect, createExam);
