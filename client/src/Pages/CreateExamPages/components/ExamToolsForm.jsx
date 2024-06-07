@@ -14,7 +14,9 @@ const ExamToolsForm = ({
     uploading,
     uploadProgress,
     handleUpload,
-    setActiveTabKey
+    setActiveTabKey,
+    examType,
+    setExamType
   }) => {  return (
     <div>
 
@@ -72,7 +74,7 @@ const ExamToolsForm = ({
 
     </div>
     <div className="flex justify-end">
-<Button className="px-16" type="primary" onClick={() => setActiveTabKey("Exam Questions")}>Next</Button>
+<Button className="px-16 bg-primary-500" type="primary" onClick={() => examType !== "online" ? setActiveTabKey("Preview") : setActiveTabKey("Exam Questions")}>Next</Button>
 
 </div>
 

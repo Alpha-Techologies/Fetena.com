@@ -204,12 +204,17 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link
-        to='exam-monitor'
-        onClick={() => dispatch(switchSidebar("3"))}>
-        Exam Monitoring
+      <Link to="certifications" onClick={() => dispatch(switchSidebar("3"))}>
+        Certifications
       </Link>,
       "3",
+      <Icon className="w-5 h-5" icon="la:award" />
+    ),
+    getItem(
+      <Link to="exam-monitor" onClick={() => dispatch(switchSidebar("4"))}>
+        Exam Monitoring
+      </Link>,
+      "4",
       <Icon
         className='w-5 h-5'
         icon='ic:outline-monitor-heart'
@@ -217,24 +222,17 @@ const DashboardScreen = () => {
     ),
     { type: "divider" },
     getItem(
-      <Link
-        to='trainingVideos'
-        onClick={() => dispatch(switchSidebar("4"))}>
+      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("5"))}>
         Training Videos
       </Link>,
-      "4",
-      <Icon
-        className='w-5 h-5'
-        icon='healthicons:i-training-class-outline'
-      />
+      "5",
+      <Icon className="w-5 h-5" icon="healthicons:i-training-class-outline" />
     ),
     getItem(
-      <Link
-        to='support'
-        onClick={() => dispatch(switchSidebar("5"))}>
+      <Link to="support" onClick={() => dispatch(switchSidebar("6"))}>
         Support
       </Link>,
-      "5",
+      "6",
       <Icon
         className='w-5 h-5'
         icon='material-symbols:contact-support-outline'
@@ -267,6 +265,13 @@ const DashboardScreen = () => {
         icon='healthicons:i-exam-multiple-choice-outline'
       />
     ),
+    getItem(
+      <Link to="certifications" onClick={() => dispatch(switchSidebar("3"))}>
+        Certifications
+      </Link>,
+      "3",
+      <Icon className="w-5 h-5" icon="la:award" />
+    ),
 
     // getItem(
     //   <Link to="questionbank" onClick={() => dispatch(switchSidebar("3"))}>
@@ -281,10 +286,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='exam-monitor'
-        onClick={() => dispatch(switchSidebar("3"))}>
+        onClick={() => dispatch(switchSidebar("4"))}>
         Exam Monitoring
       </Link>,
-      "3",
+      "4",
       <Icon
         className='w-5 h-5'
         icon='ic:outline-monitor-heart'
@@ -293,10 +298,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='activities'
-        onClick={() => dispatch(switchSidebar("4"))}>
+        onClick={() => dispatch(switchSidebar("5ki"))}>
         Activity Log
       </Link>,
-      "4",
+      "5",
       <Icon
         className='w-4 h-4'
         icon='octicon:log-24'
@@ -305,10 +310,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='staffs'
-        onClick={() => dispatch(switchSidebar("5"))}>
+        onClick={() => dispatch(switchSidebar("6"))}>
         Staff
       </Link>,
-      "5",
+      "6",
       <Icon
         className='w-5 h-5'
         icon='fluent:people-team-16-regular'
@@ -317,10 +322,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='settings'
-        onClick={() => dispatch(switchSidebar("6"))}>
+        onClick={() => dispatch(switchSidebar("7"))}>
         Settings
       </Link>,
-      "6",
+      "7",
       <Icon
         className='w-5 h-5'
         icon='uil:setting'
@@ -330,10 +335,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='trainingVideos'
-        onClick={() => dispatch(switchSidebar("7"))}>
+        onClick={() => dispatch(switchSidebar("8"))}>
         Training Videos
       </Link>,
-      "7",
+      "8",
       <Icon
         className='w-5 h-5'
         icon='healthicons:i-training-class-outline'
@@ -342,10 +347,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='support'
-        onClick={() => dispatch(switchSidebar("8"))}>
+        onClick={() => dispatch(switchSidebar("9"))}>
         Support
       </Link>,
-      "8",
+      "9",
       <Icon
         className='w-5 h-5'
         icon='material-symbols:contact-support-outline'
@@ -354,6 +359,7 @@ const DashboardScreen = () => {
   ];
 
   const changeWorkspace = (workspace, userRole) => {
+
     if (workspace === "personal") {
       setUserRole(userRole);
       setCurrentWorkspace(workspace);
@@ -364,6 +370,7 @@ const DashboardScreen = () => {
       navigate("/dashboard");
       return;
     }
+
     setCurrentWorkspace(workspace);
     console.log(currentWorkspace);
     dispatch(switchWorkspace({ id: workspace, field: "" }))

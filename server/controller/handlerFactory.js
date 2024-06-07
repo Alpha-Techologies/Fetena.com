@@ -4,7 +4,7 @@ const APIError = require("../utils/apiError");
 const catchAsync = require("../utils/catchAsync");
 // const transaction = require("../utils/transaction");
 const APIFeatures = require("../utils/apiFeatures");
-const {dbConn} = require("../config/db_Connection");
+const { dbConn } = require("../config/db_Connection");
 const OrganizationExaminer = require("../models/organization.examiner.model");
 const { StatusCodes } = require("http-status-codes");
 // const dbAuth = require("../config/db_Authentication");
@@ -50,6 +50,8 @@ exports.getAll = (Model, options = "", obj = {}) =>
     if (options === "addExam") opt = { exam: req.params.id };
 
     const page = req.query.page * 1 || 1;
+
+    console.log(opt, options)
     const limit = req.query.limit * 1 || 10;
 
     let count = new APIFeatures(Model.find(opt), req.query).filter().count();
@@ -93,7 +95,7 @@ exports.updateOne = (Model) =>
         _id: req.params.id,
       },
       req.body,
-      { 
+      {
         new: true,
         runValidators: true,
       }
@@ -156,7 +158,7 @@ exports.createOne = (Model) =>
     const doc = await Model.create(req.body);
     if (!doc) {
       return next(
-        new APIError(`An error occured while creating the document`, 404)
+        new APIError(`An error occured while creating the document`, 500)
       );
     }
     res.status(201).json({

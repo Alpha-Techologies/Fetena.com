@@ -120,6 +120,8 @@ const OrganizationsPage = () => {
       });
   };
 
+
+
   // Function to handle sorting option change
   const onSortOptionChange = (value) => {
     setSortOption(value); // Update sorting option
@@ -138,6 +140,7 @@ const OrganizationsPage = () => {
         toast.error("There is some error while fetching organizations!"); // Notify user of error
       });
   };
+
 
   // Function to handle sorting order change
   const onSortOrderChange = (value) => {
@@ -250,13 +253,15 @@ const OrganizationsPage = () => {
       });
   }
 
+
+
   // JSX to render the Organizations page
   return (
     <div className='flex flex-col gap-4 items-start'>
       {/* Title */}
       <div className="flex justify-between items-center w-full">
 
-      <h1 className='text-2xl font-bold text-blue-900 text-left'>Organizations</h1>
+       <h1 className='text-2xl font-bold text-blue-900 text-left'>Organizations</h1>
       {/* Search input and sorting options */}
       <div className='flex justify-start w-3/5 gap-4 '>
         <Search
@@ -271,7 +276,7 @@ const OrganizationsPage = () => {
           <span className='w-full font-semibold text-blue-800'>Filter:</span>
 
           <Select
-            defaultValue=''
+            defaultValue='verified'
             className='h-full'
             style={{
               width: 120,
@@ -326,7 +331,7 @@ const OrganizationsPage = () => {
 
       {/* Rendering organizations based on the active tab */}
       {activeTabKey === "All" && (
-        <div className='flex flex-wrap gap-8'>
+        <div className='flex flex-wrap gap-2 w-full'>
           {isLoading ? (
             <Loading />
           ) : (
@@ -338,7 +343,7 @@ const OrganizationsPage = () => {
               onTabChange={onTabChange}
               tabProps={{ size: "middle" }}>
               {organizations.length > 0 ? (
-                <div className='flex flex-wrap gap-2 '>
+                <div className='flex flex-wrap gap-2 w-full'>
                   {organizations.map((organization, index) => (
                     <Card
                       style={{ width: 300 }}

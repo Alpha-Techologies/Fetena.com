@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 
 function HowItWorksStep({ imageSrc, title, description }) {
   return (
-    <div className="flex flex-col items-center text-center text-white max-md:mt-10 hover:scale-105 transition-all ease-in-out duration-300 px-4">
+    <div  className="flex flex-col items-center text-center text-white max-md:mt-10 hover:scale-105 transition-all ease-in-out duration-300 px-4">
       <div className="border aspect-square w-[55px] h-[55px] bg-blue-900 rounded-full flex justify-center items-center text-white group-hover:border-white group-hover:text-white">
         <Icon icon="mdi-light:home" className="text-3xl font-bold transition-colors duration-300" />
       </div>
@@ -38,7 +38,7 @@ function HowItWorks() {
   ];
 
   return (
-    <section className="px-4 py-8 bg-blue-900 md:py-20 md:px-10 lg:px-16 xl:px-24">
+    <section id="how-it-works" className="px-4 py-8 bg-blue-900 md:py-20 md:px-10 lg:px-16 xl:px-24">
       <div className="max-w-6xl mx-auto">
         <h2 className="mb-16  text-3xl font-bold text-center text-white md:text-4xl">
           How TalentHub Ethiopia works?

@@ -8,11 +8,13 @@ import {
   Input,
   Alert,
   InputNumber,
+  Button,
 } from "antd";
 import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import _ from "lodash";
+import { toast } from "react-toastify";
 
 const { TextArea } = Input;
 
@@ -21,6 +23,7 @@ const ResultsTab = ({
   setSeeStatusOf,
   currentExam,
   currentUser,
+  fetchExamDetails,
   setCurrentUser,
   examineeList
 }) => {
@@ -55,7 +58,6 @@ const ResultsTab = ({
   ];
 
   useEffect(() => {
-    console.log("currentuser", currentUser, "currentexam", currentExam);
     if (currentExam) {
       const fetchMarkedResult = async () => {
         try {
@@ -83,11 +85,16 @@ const ResultsTab = ({
           });
 
           const examTakers = response.data.data.data.map((examTaker) => {
+            console.log(currentExam, " the exam");
+            const totalPoints = currentExam.questions.reduce(
+              (acc, question) => acc + question.points,
+              0
+            );
             return {
               key: examTaker._id,
               name: examTaker.user.fullName,
               email: examTaker.user.email,
-              points: `${examTaker.points}/${currentExam.totalPoints}`,
+              points: `${examTaker.userAnswers.score}/${totalPoints}`,
               submissionTime: moment(examTaker.examEndTime).format(),
             };
           });
@@ -149,6 +156,36 @@ const ResultsTab = ({
   };
 
   const ResultsIndividualPage = () => {
+    const editQuestionPoint = async (question, answer) => {
+      if (question.points < answer.point) {
+        toast.error(
+          "Points cannot be more than the total points of the question"
+        );
+        return;
+      }
+
+      //calculate the total points
+      const totalPoints = currentUser.userAnswers.questionAnswers.reduce(
+        (acc, question) => {
+          return acc + question.point;
+        },
+        0
+      );
+
+      currentUser.userAnswers.score = totalPoints;
+
+      try {
+        const response = await axios.post(
+          `/api/useranswers/${currentUser.userAnswers._id}`,
+          currentUser.userAnswers
+        );
+        toast.success("Points Updated");
+        fetchExamDetails(currentExam._id);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     const tempCurrentUser = _.find(
       examineeList,
       (item) => item.user && item.user._id === seeStatusOf
@@ -242,13 +279,11 @@ const ResultsTab = ({
                             }
                           />
                         );
-                      }
-                      return (
-                        <Alert
-                          message={choice}
-                          type='info'
-                        />
-                      );
+
+                      } else if (choice == question.correctAnswer)
+                        return <Alert message={choice} type="warning" />;
+                      return <Alert message={choice} type="info" />;
+
                     })}
                   </div>
                   {/* <Form.Item label="Examinee Answer">
@@ -269,16 +304,18 @@ const ResultsTab = ({
                 />
               )} */}
                 </div>
-                <div className='flex flex-col gap-2 w-full'>
-                  {answer?.manuallyMarked ? (
-                    <>
+                <div className="flex flex-col gap-2 w-full">
+                  {answer.manuallyMarked ? (
+                    <div className="flex w-fit p-4">
+
                       <Tag
                         className='flex items-center w-fit gap-2'
                         color='blue'>
                         <Icon icon='mdi:checkbox-marked-outline' />
                         Manually Marked
                       </Tag>
-                    </>
+                      <div className="flex">Marked by the Examiner</div>
+                    </div>
                   ) : (
                     <div className='flex w-fit gap-2 p-4'>
                       <Tag
@@ -290,41 +327,46 @@ const ResultsTab = ({
                       <div className='flex'>{answer?.reason}</div>
                     </div>
                   )}
-                  {question.correctAnswer === answer?.answerText ? (
-                    <div className='flex gap-2 items-center w-full'>
+
+                  <div className="flex flex-col gap-2 w-full">
+                    {question.correctAnswer === answer.answerText ? (
+
                       <Alert
                         message='Answered Correctly'
                         className='w-[90%]'
                         type='success'
                         showIcon
                       />
+                    ) : (
+                      <Alert
+                        message="Incorrect Answer"
+                        className="w-[90%]"
+                        type="error"
+                        showIcon
+                      />
+                    )}
+
+                    <div className="flex gap-2 items-center justify-end">
+                      points:
                       <InputNumber
-                        className='w-[10%]'
+                        className="w-[20%]"
                         min={0}
                         max={100000}
-                        defaultValue={answer?.point}
-                        disabled={true}
+                        value={answer.point}
+                        onChange={(value) => {
+                          answer.point = value;
+                          answer.manuallyMarked = true;
+                        }}
+
                       />
+                      <Button
+                        onClick={(e) => editQuestionPoint(question, answer)}
+                      >
+                        Save Points
+                      </Button>
                     </div>
-                  ) : (
-                    <div className='flex flex-col gap-2 w-full'>
-                      <div className='flex gap-2 items-center w-full'>
-                        <Alert
-                          message='Incorrect Answer'
-                          className='w-[90%]'
-                          type='error'
-                          showIcon
-                        />
-                        <InputNumber
-                          className='w-[10%]'
-                          min={0}
-                          max={100000}
-                          defaultValue={answer?.point}
-                          disabled={true}
-                        />
-                      </div>
-                    </div>
-                  )}
+                  </div>
+
                 </div>
               </Card>
             );
@@ -372,12 +414,20 @@ const ResultsTab = ({
                         </Tag>
                       )}
                       <InputNumber
-                        className='w-[10%]'
+                        className="w-[20%]"
                         min={0}
                         max={100000}
-                        defaultValue={answer.point}
-                        disabled={true}
+                        value={answer.point}
+                        onChange={(value) => {
+                          answer.point = value;
+                          answer.manuallyMarked = true;
+                        }}
                       />
+                      <Button
+                        onClick={() => editQuestionPoint(question, answer)}
+                      >
+                        Save Points
+                      </Button>
                     </div>
                   </div>
                 </div>

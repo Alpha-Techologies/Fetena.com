@@ -12,7 +12,11 @@ exports.getPublicExam = catchAsync(async (req, res, next) => {
   const page = req.query.page * 1 || 1;
   const limit = req.query.limit * 1 || 10;
 
-  const opt = { organization: { $in: user.organizationsFollowed } };
+  const opt = {
+    organization: { $in: user.organizationsFollowed },
+    visibility: "public",
+    active: true,
+  };
 
   let count = new APIFeatures(Exam.find(opt), req.query).filter().count();
   let total = await count.query;

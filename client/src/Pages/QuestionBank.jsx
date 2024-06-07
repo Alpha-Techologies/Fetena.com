@@ -196,7 +196,7 @@ const QuestionBank = () => {
   return (
     <div className='flex flex-col gap-4'>
       <div className='flex justify-between items-center'>
-        <h1 className='text-2xl font-bold text-blue-900 text-left'>Question bank</h1>
+         <h1 className='text-2xl font-bold text-blue-900 text-left'>Question bank</h1>
 
         
 

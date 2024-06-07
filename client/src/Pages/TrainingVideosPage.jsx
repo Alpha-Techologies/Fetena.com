@@ -31,7 +31,7 @@ const TrainingVideosPage = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between gap-4 items-center">
-      <h1 className='text-2xl font-bold text-blue-900 text-left'>Training Videos</h1>
+       <h1 className='text-2xl font-bold text-blue-900 text-left'>Training Videos</h1>
       </div>
       <div>
         <Card style={{ width: "100%" }}>

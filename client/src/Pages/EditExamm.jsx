@@ -12,7 +12,7 @@ const { TextArea } = Input;
 
 
 
-const EditExam = () => {
+const EditExamm = () => {
     const { workspace } = useSelector((state) => state.data);
     const { user } = useSelector((state) => state.auth);
     const { id } = useParams(); // Get the exam ID from the URL
@@ -62,7 +62,7 @@ const EditExam = () => {
               className='text-2xl text-primary-500'
             />
           </Link>
-          <h1 className='text-2xl font-bold text-primary-600'>Edit Exam</h1>
+           <h1 className='text-2xl font-bold text-blue-900 text-left'>Edit Exam</h1>
         </div>
   
         <Card style={{ width: "100%" }} tabProps={{ size: "middle" }}>
@@ -207,5 +207,5 @@ const EditExam = () => {
     );
   };
   
-  export default EditExam;
+  export default EditExamm;
   

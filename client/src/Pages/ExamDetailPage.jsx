@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
 import { Link, useParams } from "react-router-dom";
 import axios from 'axios';
+import { useSelector } from "react-redux";
 // import RelatedExams from "../Components/RelatedExams";
 
 const { Search } = Input;
@@ -15,6 +16,7 @@ const { Meta } = Card;
 const ExamDetailPage = () => {
   const { id } = useParams(); // Get the exam ID from the URL
   const [exam, setExam] = useState(null);
+  const { workspace } = useSelector((state) => state.data);
 
   useEffect(() => {
     const fetchExamDetails = async () => {
@@ -45,13 +47,13 @@ const ExamDetailPage = () => {
               className='text-2xl text-primary-500'
             />
           </Link>
-          <h1 className='text-2xl font-bold text-primary-600'>Exam Details</h1>
+           <h1 className='text-2xl font-bold text-blue-900 text-left'>Exam Details</h1>
         </div>
 
-        <div className='flex flex-col justify-start w-96'></div>
         <div className='flex gap-4'>
 
-       
+       { workspace &&
+       <>
         <Link
           to={`/dashboard/exams/editexam/${id}`}
           className='flex items-center gap-2 bg-blue-50 hover:bg-primary-600 hover:text-white text-primary-800 border  border-primary-200 font-bold py-2 px-4 rounded '>
@@ -59,10 +61,12 @@ const ExamDetailPage = () => {
           <Icon icon="line-md:pencil-twotone" /> Edit
         </Link>
         <Link
-          to={'/take-exam/' + id}
+         
           className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded'>
-          <Icon className='w-5 h-5' icon='system-uicons:write' /> Take Exam
+          <Icon className='w-5 h-5'  icon="mdi:certificate-outline" /> Add Certification
         </Link>
+        </>
+        }
         </div>
       </div>
       <div>
@@ -130,7 +134,7 @@ const ExamDetailPage = () => {
           </div>
           <div className='flex justify-center items-center my-4'>
             <Link
-              to='/take-exam'
+              to={'/take-exam/' + id}
               className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded text-center w-36'>
               <Icon className='w-5 h-5' icon='system-uicons:write' /> Take Exam
             </Link>
