@@ -310,10 +310,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='staffs'
-        onClick={() => dispatch(switchSidebar("5"))}>
+        onClick={() => dispatch(switchSidebar("6"))}>
         Staff
       </Link>,
-      "5",
+      "6",
       <Icon
         className='w-5 h-5'
         icon='fluent:people-team-16-regular'
@@ -322,10 +322,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='settings'
-        onClick={() => dispatch(switchSidebar("6"))}>
+        onClick={() => dispatch(switchSidebar("7"))}>
         Settings
       </Link>,
-      "6",
+      "7",
       <Icon
         className='w-5 h-5'
         icon='uil:setting'
@@ -335,10 +335,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='trainingVideos'
-        onClick={() => dispatch(switchSidebar("7"))}>
+        onClick={() => dispatch(switchSidebar("8"))}>
         Training Videos
       </Link>,
-      "7",
+      "8",
       <Icon
         className='w-5 h-5'
         icon='healthicons:i-training-class-outline'

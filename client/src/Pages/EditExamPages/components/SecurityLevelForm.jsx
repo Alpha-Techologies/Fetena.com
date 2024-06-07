@@ -30,7 +30,8 @@ const SecurityLevelForm = ({setActiveTabKey,basicInfoValues }) => {
   </Radio.Group>
 </Form.Item>
 <div className="flex justify-end">
-<Button className="px-16" type="primary" onClick={() => setActiveTabKey("Exam Type")}>Next</Button>
+<Button           className="px-16 bg-primary-500"
+ type="primary" onClick={() => setActiveTabKey("Exam Type")}>Next</Button>
 
 </div>
 </div>

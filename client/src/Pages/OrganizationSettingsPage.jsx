@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateOrganization, updateOrganizationLogo, switchWorkspace } from "../Redux/features/dataActions";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { Icon } from "@iconify/react";
 
 const OrganizationSettingsPage = () => {
   const { workspace } = useSelector((state) => state.data);
@@ -128,16 +129,21 @@ const OrganizationSettingsPage = () => {
        <h1 className='text-2xl font-bold text-blue-900 text-left'>
         Organizations Settings
       </h1>
+
       <Card
-        style={{ width: "60%" }}
+        style={{ width: "100%" }}
         className='px-4'>
         <Form
-          className='w-full'
+          className="w-full"
           form={form}
           onFinish={onFinish}
           initialValues={initialValues}
           layout='vertical'>
-          <Form.Item
+            <div className="grid grid-cols-2 gap-x-8 ">
+
+           
+            <div>
+            <Form.Item
             label='Organization Name'
             required
             name={"name"}
@@ -159,43 +165,66 @@ const OrganizationSettingsPage = () => {
             required>
             <Input placeholder='Enter your address' />
           </Form.Item>
-          <input
-            type='file'
-            accept='image/*'
-            ref={fileInputRef}
-            onChange={handleFileChange} // Update this line
-          />
-            <div className='flex items-center gap-2 mt-2'>
-              <img
-                src={pictureData.logo ? URL.createObjectURL(pictureData.logo) : url + workspace.logo}
-                alt='Uploaded Photo'
-                className='uploaded-photo w-48 h-56'
-              />
-            </div>
-          
+          <div>
+
           <Form.Item
+            label='Organization Photo'
+
+            required>      
+<input
+  type='file'
+  accept='image/*'
+  ref={fileInputRef}
+  onChange={handleFileChange} // Update this line
+/>
+</Form.Item>
+  <div className='flex items-center gap-2 my-4'>
+    <img
+      src={pictureData.logo ? URL.createObjectURL(pictureData.logo) : url + workspace.logo}
+      alt='Uploaded Photo'
+      className='uploaded-photo w-48 h-56'
+    />
+  </div>
+  </div>
+
+            </div>
+            <div>
+            <Form.Item
             label='Email'
             name={"email"}>
             <Input placeholder='Enter your organziation email' />
           </Form.Item>
+         
+         
           <Form.Item
             label='Phone Number'
             name={"phone"}>
             <Input placeholder='Enter your orgnaization phone number' />
           </Form.Item>
+         
           <Form.Item
             label='Website'
             name={"website"}>
             <Input placeholder='Enter your organization website' />
           </Form.Item>
+            </div>
+            </div>
+          
+            {/* <Button type="primary" className="px-8 flex gap-2 items-center font-semibold bg-primary-500" onClick={submitExam}><Icon  icon="lucide:save"  className="text-xl text-white" />{" "} Save & Submit</Button> */}
+<div className="w-full flex gap-2 items-center justify-center">
+
+
           <Form.Item>
             <Button
+              className="px-8 flex gap-2 items-center font-semibold bg-primary-500 w-full"
               type='primary'
               htmlType='submit'>
-              Update Organization
+              <Icon  icon="lucide:save"  className="text-xl text-white" />{" "}Update Organization
             </Button>
           </Form.Item>
+          </div>
         </Form>
+        
       </Card>
     </div>
   );

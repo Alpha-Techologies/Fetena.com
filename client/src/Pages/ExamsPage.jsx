@@ -6,9 +6,10 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
+
 const { Search } = Input;
 
-const onSearch = (value, _e, info) => console.log(info?.source, value);
+
 
 const { Meta } = Card;
 
@@ -21,13 +22,14 @@ const ExamsPage = () => {
   const [pages, setPages] = useState(1); // Total pages of organizations
   const [current, setCurrent] = useState(1); // Current page number
   const navigate = useNavigate();
+  const [searchText, setSearchText] = useState(""); // Search text
 
-  console.log(
-    "--------------------------------------------------------------------------------------------------------"
-  );
 
-  console.log(workspace);
-  console.log(userOrganizationsIdAndRole);
+  const onSearch = (value, _e, info) => {
+    setSearchText(value); // Update search text
+    console.log(searchText);
+  }
+
 
   const fetchData = async (page = 1, active = true, access = "") => {
     const id = workspace._id;
@@ -39,7 +41,7 @@ const ExamsPage = () => {
     ) {
       try {
         const response = await axios.get(
-          `/api/exams/my-exam/${id}?active=${active}&access=${access}`
+          `/api/exams/my-exam/${id}?active=${active}&access=${access}&examName=${searchText}`
         );
 
         console.log(response.data.data.data, "bitch");
@@ -48,6 +50,7 @@ const ExamsPage = () => {
         console.error("Error fetching data:", error);
       }
     }
+    
   };
 
   useEffect(() => {
@@ -57,7 +60,12 @@ const ExamsPage = () => {
     } else {
       fetchData(1, true);
     }
-  }, []);
+  }, [searchText]);
+
+
+  // const onSearchh = debounce((event) => {
+  //   setSearchText(event.target.value);
+  // }, 500); // Debounce the search input by 500ms
 
   const onPaginationChange = (page) => {
     setCurrent(page); // Update the current page
@@ -268,10 +276,10 @@ const ExamsPage = () => {
         <div className="flex justify-center items-center gap-4">
           <div className="flex flex-col justify-start w-86">
             <Search
-              placeholder="Search Exams"
+              placeholder='Search Exams'
               allowClear
-              enterButton="Search"
-              size="medium"
+              enterButton='Search'
+              size='medium'
               onSearch={onSearch}
             />
           </div>
@@ -281,7 +289,7 @@ const ExamsPage = () => {
               Status :
             </span>
             <Select
-              defaultValue=""
+              defaultValue="Active"
               className="h-full ml-2"
               style={{
                 width: "auto",
@@ -308,7 +316,7 @@ const ExamsPage = () => {
             </span>
 
             <Select
-              defaultValue=""
+              defaultValue="Open"
               className="h-full ml-2"
               style={{
                 width: "auto",

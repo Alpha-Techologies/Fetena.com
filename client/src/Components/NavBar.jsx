@@ -66,7 +66,7 @@ const NavBar = () => {
             </li>
             <li>
               <a
-                href='#'
+                href='#how-it-works'
                 className='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary-500 md:p-0 '>
                 How It Works
               </a>

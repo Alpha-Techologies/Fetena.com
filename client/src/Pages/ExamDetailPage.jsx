@@ -61,12 +61,11 @@ const ExamDetailPage = () => {
           <Icon icon="line-md:pencil-twotone" /> Edit
         </Link>
         <Link
-          to={'/take-exam/' + id}
+         
           className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded'>
-          <Icon className='w-5 h-5' icon='system-uicons:write' /> Take Exam
+          <Icon className='w-5 h-5'  icon="mdi:certificate-outline" /> Add Certification
         </Link>
         </>
-
         }
         </div>
       </div>
@@ -135,7 +134,7 @@ const ExamDetailPage = () => {
           </div>
           <div className='flex justify-center items-center my-4'>
             <Link
-              to='/take-exam'
+              to={'/take-exam/' + id}
               className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded text-center w-36'>
               <Icon className='w-5 h-5' icon='system-uicons:write' /> Take Exam
             </Link>

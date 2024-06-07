@@ -8,7 +8,6 @@ import axios from 'axios';
 
 const { Search } = Input;
 
-const onSearch = (value, _e, info) => console.log(info?.source, value);
 
 const { Meta } = Card;
 
@@ -35,16 +34,24 @@ const UserExamsPage = () => {
   const [exams, setExams] = useState([]);
   const [pages, setPages] = useState(1); // Total pages of organizations
   const [current, setCurrent] = useState(1); // Current page number
-  const fetchData = async (page=1) => {
+  const [searchText, setSearchText] = useState(""); // Search text
+
+  const onSearch = (value, _e, info) => {
+    setSearchText(value); // Update search text
+    console.log(searchText);
+  }
+
+
+
+  const fetchData = async (page = 1) => {
     try {
-      const response = await axios.get(`/api/exams/get-public?fields=examName,organization&page=${page}&sort=-createdAt`);
+      const response = await axios.get(`/api/exams/get-public?fields=examName,organization&page=${page}&sort=-createdAt&examName=${searchText}`);
       setExams(response.data.data.data);
-      setPages(response.data.data.total / 10); // Assuming 10 items per page
+      setPages(response.data.data.totalPages); // Set the total number of pages
     } catch (error) {
-      console.error("Error fetching data:", error);
+      toast.error("Error fetching data:", error);
     }
   };
-
 
 
 
@@ -53,7 +60,7 @@ const UserExamsPage = () => {
     
 
     fetchData();
-  }, []);
+  }, [searchText]);
 
 
   const onTabChange = (key) => {
