@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test"
+import { test, expect } from "@playwright/test";
 
 // Mock user credentials
 const validEmail = "johnrobitm@gmail.com";
