@@ -108,6 +108,8 @@ const Preview = ({
     }
 console.log("one add questions start-------------------------------------------------------------------------------------------")
     try {
+      console.log("one add questions startrrrrrrrrrrrrr-------------------------------------------------------------------------------------------")
+
       // Make the Axios POST request to save questions
       const response = await axios.post("/api/questions", questionsCollection);
 
