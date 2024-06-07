@@ -14,11 +14,12 @@ import ExamineeListWindow from "./ExamineeListWindow";
 import MonitoringTab from "./MonitoringTab";
 import ResultsTab from "./ResultsTab";
 import VideoMonitorWindow from "./VideoMonitorWindow";
+import { current } from "@reduxjs/toolkit";
 
 const MonitoringPage = () => {
   const [activeTabKey1, setActiveTabKey1] = useState("tab1");
   const [inputValue, setInputValue] = useState("");
-  const [examStatus, setExamStatus] = useState("closed");
+  const [examStatus, setExamStatus] = useState();
   const [seeStatusOf, setSeeStatusOf] = useState("all");
   const { user } = useSelector((state) => state.auth);
   const [socket] = useSocketIO();
@@ -31,6 +32,7 @@ const MonitoringPage = () => {
   const [currentUser, setCurrentUser] = useState({});
   const navigate = useNavigate();
   const serverURL = "http://localhost:3000";
+  let tempExam = {};
 
   const fetchData = async (page = 1, active = true, access = "") => {
     const id = workspace._id;
@@ -64,27 +66,14 @@ const MonitoringPage = () => {
     }
   };
 
-  const getTakeExamId = async (takeExamId) => {
-    try {
-      const response = await axios.get(`/api/exams/exam-taker/${takeExamId}`);
-
-      console.log(response, "resp getTakeExamId  ");
-      const tempExaminee = response.data.data.data[0];
-
-      setExamineeList((prev) => [...prev, tempExaminee]);
-      toast.success("New User joined Exam!");
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
   const fetchExamDetails = async (examId) => {
     console.log("fetchExamDetails");
     try {
       const response = await axios.get(`/api/exams/${examId}`);
       // console.log(response, 'response from fetch single exam');
-      const tempExam = response.data.data.data[0];
+      tempExam = response.data.data.data[0];
       setCurrentExam(tempExam);
+      setExamStatus(tempExam.access);
       console.log(currentExam, "currentExam");
     } catch (error) {
       console.error("Error fetching exam details:", error);
@@ -180,10 +169,19 @@ const MonitoringPage = () => {
         seeStatusOf={seeStatusOf}
         setSeeStatusOf={setSeeStatusOf}
         socket={socket}
+        fetchExamineeList={fetchExamineeList}
       />
     ),
     tab2: (
-      <ResultsTab seeStatusOf={seeStatusOf} setSeeStatusOf={setSeeStatusOf} />
+      <ResultsTab
+        seeStatusOf={seeStatusOf}
+        setSeeStatusOf={setSeeStatusOf}
+        currentExam={currentExam}
+        currentUser={currentUser}
+        fetchExamDetails={fetchExamDetails}
+        setCurrentUser={setCurrentUser}
+        examineeList={examineeList}
+      />
     ),
   };
 
@@ -195,8 +193,30 @@ const MonitoringPage = () => {
     fetchExamDetails(value);
   };
 
-  const handleExamStatusChange = (value) => {
-    setExamStatus(value);
+  const handleExamStatusChange = async (value) => {
+    console.log(examStatus, currentExam.access, "examStatus");
+    const changeExamStatus = async (status) => {
+      try {
+        const response = await axios.patch(`/api/exams/${currentExam._id}`, {
+          access: status,
+        });
+        // console.log(response, "response from fetch single exam");
+        return response.status;
+      } catch (error) {
+        console.error("Error fetching exam details:", error);
+      }
+    };
+    if (examStatus === "closed") {
+      const resp = await changeExamStatus("open");
+      if (resp === 200) {
+        setExamStatus(value);
+      }
+    } else {
+      const resp = await changeExamStatus("closed");
+      if (resp === 200) {
+        setExamStatus(value);
+      }
+    }
   };
 
   return (
@@ -261,11 +281,13 @@ const MonitoringPage = () => {
                 <p className="font-semibold">
                   <span className="font-bold text-blue-700">Access : </span>
                   <Select
-                    defaultValue={examStatus}
+                    defaultValue={
+                      currentExam.access === "open" ? "open" : "closed"
+                    }
+                    onChange={handleExamStatusChange}
                     style={{
                       width: 80,
                     }}
-                    onChange={handleExamStatusChange}
                     options={[
                       {
                         value: "open",

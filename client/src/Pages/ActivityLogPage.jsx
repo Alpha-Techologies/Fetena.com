@@ -55,14 +55,15 @@ const ActivityLogPage = () => {
     },
   ];
   return (
-    <div className='flex flex-col gap-4 items-start my-4'>
-      <h1 className='text-3xl font-bold justify-self-start'>Activity Logs</h1>
-      <div className='flex flex-col gap-4 items-start my-4'>
+    <div className='flex flex-col gap-4 items-start'>
+       <h1 className='text-2xl font-bold text-blue-900 text-left'>Activity Logs</h1>
+      <div className='flex flex-col gap-4 items-start  w-full'>
         <Table
           className='w-full'
           columns={columns}
           dataSource={data}
           rowKey={"key"}
+          scroll={{ x: 900 }}
         />
         ;
       </div>

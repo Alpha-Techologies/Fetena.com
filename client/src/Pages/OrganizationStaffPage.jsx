@@ -176,15 +176,16 @@ const OrganizationStaffPage = () => {
 
   return (
     <div className='flex flex-col gap-4 items-start'>
-      <h1 className='text-2xl font-bold text-blue-900 text-left'>
+       <h1 className='text-2xl font-bold text-blue-900 text-left'>
         Organization Staffs
       </h1>
-      <div className='flex flex-col gap-4 items-start'>
+      <div className='flex flex-col gap-4 items-start w-full'>
         <Table
           className="w-full"
           columns={columns}
           dataSource={staffs}
           rowKey={"id"}
+          scroll={{ x: 900 }}
         />
         ;
       </div>

@@ -13,7 +13,7 @@ const FeatureSection2 = ({ featuresData }) => {
             <p className="my-8 text-gray-600">{description}</p>
             <Link
               to={btnLink}
-              className="self-center w-auto px-8 mr-4 border-0 text-white text-lg hover:bg-secondary bg-primary hover:text-white rounded-md py-2 px-4"
+              className='flex items-center justify-center'
             >
               
               

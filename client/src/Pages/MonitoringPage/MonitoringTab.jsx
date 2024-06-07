@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import { Tag, Table, Card, Avatar, Timeline } from "antd";
 import _ from "lodash";
 import moment from "moment";
+import { useEffect } from "react";
 
 const MonitoringTab = ({
   examineeStatusStats,
@@ -11,6 +12,7 @@ const MonitoringTab = ({
   seeStatusOf,
   setSeeStatusOf,
   socket,
+  fetchExamineeList,
 }) => {
   const serverURL = "http://localhost:3000";
   const currentTime = moment();
@@ -71,7 +73,11 @@ const MonitoringTab = ({
     startTime: item.startTime,
   }));
 
-  const MonitoringOverviewPage = () => {
+  const MonitoringOverviewPage = ({
+    examineeStatusStats,
+    overviewTableColumns,
+    overviewTableData,
+  }) => {
     return (
       <div className="flex flex-col gap-2">
         <div className="grid grid-cols-3 gap-4 w-full">
@@ -124,21 +130,29 @@ const MonitoringTab = ({
     );
   };
 
-  const MonitoringIndividualPage = () => {
+  const MonitoringIndividualPage = ({
+    examineeList,
+    setCurrentUser,
+    currentUser,
+    socket,
+    fetchExamineeList,
+  }) => {
+    useEffect(() => {
+      if (socket) {
+        socket.on("userActivityLog", (takeExamId, activityLog) => {
+          fetchExamineeList(currentUser.exam);
+        });
+      }
+    });
+
     const tempCurrentUser = _.find(
       examineeList,
       (item) => item.user && item.user._id === seeStatusOf
     );
+
     setCurrentUser(tempCurrentUser);
 
-    // handle end exam for student
-    const handleEndExam = () => {
-      // socket emit to end exam for student
-      socket.emit("terminateExaminee", tempCurrentUser._id);
-      setCurrentUser(tempCurrentUser);
-    };
-
-    console.log(currentUser, "currentUser");
+    // TODO: after merging the branch that has the end exam for user functionality add the userActivityLogs for the Terminated.
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between w-full">
@@ -149,16 +163,13 @@ const MonitoringTab = ({
             <Icon icon="lets-icons:back" />
             Back to Overview
           </div>
-          {currentUser.status === "submitted" ? (
+          {currentUser?.status === "submitted" ? (
             <div className="bg-green-500 text-white flex items-center gap-2 py-2 px-4 rounded">
               <Icon icon="mdi:tick" />
               Has submitted Exam
             </div>
-          ) : currentUser.status === "inprogress" ? (
-            <div
-              onClick={handleEndExam}
-              className="bg-red-500 text-white flex items-center gap-2 py-2 px-4 rounded cursor-pointer"
-            >
+          ) : currentUser?.status === "inprogress" ? (
+            <div className="bg-red-500 text-white flex items-center gap-2 py-2 px-4 rounded cursor-pointer">
               <Icon icon="material-symbols:tab-close" />
               End Exam for Student
             </div>
@@ -172,13 +183,14 @@ const MonitoringTab = ({
         <div className="flex flex-col items-start">
           <div className="flex items-center justify-start">
             <span className="font-bold text-xl justified">
-              {currentUser.user.fullName}
+              {currentUser?.user?.fullName}
             </span>
-            {currentUser.status === "inprogress" ? (
+            {currentUser?.status === "inprogress" ? (
               <p className="text-green-500 ml-2 flex items-center justify-center">
                 <Icon icon="icon-park-outline:dot" /> Ongoing
               </p>
-            ) : currentUser.status === "submitted" ? (
+            ) : currentUser?.status === "completed" ||
+              currentUser?.status === "submitted" ? (
               <p className="text-gray-500 ml-2 flex items-center justify-center">
                 <Icon icon="icon-park-outline:dot" /> Finished
               </p>
@@ -194,13 +206,40 @@ const MonitoringTab = ({
               {" "}
               Email:{" "}
             </span>{" "}
-            {currentUser.user.email}
+            {currentUser?.user?.email}
           </p>
         </div>
 
         <p className="font-bold ">Examinee History</p>
-
-        <Timeline
+        <Timeline>
+          {currentUser?.userActivityLogs.slice().map((item, index) => (
+            <Timeline.Item
+              key={index}
+              dot={
+                <Icon
+                  className="w-5 h-5"
+                  icon={
+                    item.actionType === "warning"
+                      ? "octicon:blocked-16"
+                      : "octicon:blocked-16"
+                  }
+                />
+              }
+              color={item.actionType === "warning" ? "red" : "blue"}
+            >
+              <span>
+                <span className="text-red-500 italic"></span> {item.action}{" "}
+                <br />
+                <span className="text-black-500">Reason </span> {item.reason}{" "}
+                <br />
+                <span className="italic text-gray-500">
+                  {new Date(item.timestamp).toLocaleString()}
+                </span>
+              </span>
+            </Timeline.Item>
+          ))}
+        </Timeline>
+        {/* <Timeline
           items={[
             {
               dot: (
@@ -211,7 +250,7 @@ const MonitoringTab = ({
                 <span>
                   Started the Exam at <br />{" "}
                   <span className="italic text-gray-500">
-                    {currentUser.startTime}
+                    {currentUser?.startTime}
                   </span>
                 </span>
               ),
@@ -267,7 +306,7 @@ const MonitoringTab = ({
               ),
             },
           ]}
-        />
+        /> */}
       </div>
     );
   };
@@ -275,9 +314,19 @@ const MonitoringTab = ({
   return (
     <>
       {seeStatusOf === "all" ? (
-        <MonitoringOverviewPage />
+        <MonitoringOverviewPage
+          overviewTableColumns={overviewTableColumns}
+          overviewTableData={overviewTableData}
+          examineeStatusStats={examineeStatusStats}
+        />
       ) : (
-        <MonitoringIndividualPage />
+        <MonitoringIndividualPage
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          examineeList={examineeList}
+          socket={socket}
+          fetchExamineeList={fetchExamineeList}
+        />
       )}
     </>
   );

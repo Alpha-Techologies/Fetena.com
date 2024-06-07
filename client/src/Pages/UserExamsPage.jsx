@@ -8,7 +8,6 @@ import axios from 'axios';
 
 const { Search } = Input;
 
-const onSearch = (value, _e, info) => console.log(info?.source, value);
 
 const { Meta } = Card;
 
@@ -35,16 +34,24 @@ const UserExamsPage = () => {
   const [exams, setExams] = useState([]);
   const [pages, setPages] = useState(1); // Total pages of organizations
   const [current, setCurrent] = useState(1); // Current page number
-  const fetchData = async (page=1) => {
+  const [searchText, setSearchText] = useState(""); // Search text
+
+  const onSearch = (value, _e, info) => {
+    setSearchText(value); // Update search text
+    console.log(searchText);
+  }
+
+
+
+  const fetchData = async (page = 1) => {
     try {
-      const response = await axios.get(`/api/exams/get-public?fields=examName,organization&page=${page}&sort=-createdAt`);
+      const response = await axios.get(`/api/exams/get-public?fields=examName,organization&page=${page}&sort=-createdAt&examName=${searchText}`);
       setExams(response.data.data.data);
-      setPages(response.data.data.total / 10); // Assuming 10 items per page
+      setPages(response.data.data.totalPages); // Set the total number of pages
     } catch (error) {
-      console.error("Error fetching data:", error);
+      toast.error("Error fetching data:", error);
     }
   };
-
 
 
 
@@ -53,7 +60,7 @@ const UserExamsPage = () => {
     
 
     fetchData();
-  }, []);
+  }, [searchText]);
 
 
   const onTabChange = (key) => {
@@ -96,12 +103,7 @@ const UserExamsPage = () => {
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
-              <h3 className='font-bold text-md'>{examName}</h3>
-              <div className='flex gap-1'>
-                <Tag color={"yellow"}>English</Tag>
-                <Tag color={"red"}>Maths</Tag>
-                <Tag color={"blue"}>Physics</Tag>
-              </div>
+            <h3 className='font-bold text-md text-primary-500 truncate'>{examName}</h3>              
               <p className='font-semibold flex gap-2 items-center justify-center'>
                 {organization?.name}{" "}
                 {organization?.isVerified && (
@@ -120,7 +122,7 @@ const UserExamsPage = () => {
   return (
     <div className='flex flex-col gap-4'>
       <div className='flex justify-between gap-4 items-center'>
-        <h1 className='text-2xl font-bold text-blue-900 text-left'>Exams</h1>
+         <h1 className='text-2xl font-bold text-blue-900 text-left'>Exams</h1>
 
         <div className='flex flex-col justify-start w-96'>
           <Search
@@ -144,10 +146,11 @@ const UserExamsPage = () => {
       <div>
         <Card
           style={{ width: "100%" }}
-          tabList={tabListNoTitle}
+          // tabList={tabListNoTitle}
           activeTabKey={activeTabKey}
           onTabChange={onTabChange}
-          tabProps={{ size: "middle" }}>
+          // tabProps={{ size: "middle" }}
+          >
           {activeTabKey === "All" && (
             <>
               <div className='flex flex-wrap gap-2'>

@@ -5,88 +5,128 @@ import { useDispatch, useSelector } from "react-redux";
 import { MessageBox } from "react-chat-elements";
 import { MessageList } from "react-chat-elements";
 import { takeExam } from "../../Redux/features/dataActions";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-
-const ChatComponent = ({ exam, socket }) => {
+const ChatComponent = ({ exam, socket, examinee }) => {
   const { user } = useSelector((state) => state.auth);
-  const {currentTakeExamSession} = useSelector((state) => state.data);
+  const { currentTakeExamSession } = useSelector((state) => state.data);
   const [chatMessage, setChatMessage] = useState("");
-  const [chatList, setChatList] = useState([]);
-  const dispatch = useDispatch()
+  const [chatList, setChatList] = useState({ chat: [] });
+  // const [examinee, setExaminee] = useState({});
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    // console.log("in the use effect", socket);
     if (socket) {
+      // console.log("recieving message");
       const handleReceiveMessage = (message) => {
         console.log("message received", message);
         const newMessage = {
           position: "left",
-          title: "Invigilator",
+          title: "Invigilator - Direct Message",
           type: "text",
           text: message.message,
           date: "message.date",
         };
-        setChatList((prev) => [...prev, newMessage]);
-      };
+        setChatList((prev) => {
+          return {
+            chat: [
+              ...prev.chat,
+              {
+                position: "left",
+                title: "Invigilator - Direct Message",
+                type: "text",
+                text: message.message,
+                date: "message.date",
+              },
+            ],
+          };
+        });
 
-      const handleReceiveAnnouncement = (message) => {
-        console.log("announcemet received");
-        console.log(message);
-        setChatList((prev) => [
-          ...prev,
-          {
-            position: "left",
-            title: "Invigilator",
-            type: "text",
-            text: message,
-            date: "message.date",
-          },
-        ]);
+        // console.log(chatList);
       };
 
       socket.on("receiveMessage", handleReceiveMessage);
 
+      return () => {
+        socket.off("receiveMessage", handleReceiveMessage);
+      };
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    if (socket) {
+      const handleReceiveAnnouncement = (message) => {
+        console.log("announcemet received");
+        console.log(message);
+        setChatList((prev) => {
+          return {
+            chat: [
+              ...prev.chat,
+              {
+                position: "left",
+                title: "Invigilator - Announcement",
+                type: "text",
+                text: message,
+                date: "message.date",
+              },
+            ],
+          };
+        });
+      };
       socket.on("announcement", handleReceiveAnnouncement);
 
       return () => {
-        socket.off("receiveMessage", handleReceiveMessage);
         socket.off("announcement", handleReceiveAnnouncement);
       };
     }
   }, [socket]);
 
-  useEffect(() => { 
-    dispatch(takeExam(exam._id))
-      .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          console.log(res.payload);
-          const temp = res.payload.data._id;
-          setTakeExamId(temp);
-          console.log(temp, "takeExamId");
+  // useEffect(() => {
+  //   console.log(takeExamId, "takeExam in chat component");
 
-          socket.emit("joinExam", id, res.payload.data._id);
-        } else {
-          toast.error(res.payload.message);
-          return;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("There is some error in the server!");
-      });
-    if (currentTakeExamSession) {
-      for (const message of currentTakeExamSession.chatMessages) {
+  //   const getTakeExamId = async (takeExamId) => {
+  //     try {
+  //       const response = await axios.get(`/api/exams/exam-taker/${takeExamId}`);
+
+  //       console.log(response, "resp getTakeExamId  ");
+  //       const tempExaminee = response.data.data.data[0];
+  //       console.log(tempExaminee);
+
+  //       setExaminee(response.data.data.data[0]);
+  //       console.log(examinee);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+  //   if (takeExamId) {
+  //     getTakeExamId(takeExamId);
+  //   }
+  // }, [takeExamId]);
+
+  useEffect(() => {
+    if (Object.keys(examinee).length !== 0) {
+      // console.log(examinee, "examinee");
+      for (const message of examinee.chatMessages) {
         const newMessage = {
           position: message.sender === user._id ? "right" : "left",
-          title: message.sender === user._id ? "You" : "Invigilator",
+          title:
+            message.sender === user._id
+              ? "You"
+              : "Invigilator - Direct Message",
           type: "text",
           text: message.message,
           date: "message.date",
         };
-        setChatList((prev) => [...prev, newMessage]);
+        setChatList((prev) => {
+          return {
+            chat: [...prev.chat, newMessage],
+          };
+        });
       }
     }
-   }, []);
-
+  }, [examinee]);
   const sendMessage = () => {
     if (chatMessage !== "" && socket) {
       socket.emit("sendMessage", exam._id, false, {
@@ -94,16 +134,20 @@ const ChatComponent = ({ exam, socket }) => {
         receiver: exam.createdBy._id,
         message: chatMessage,
       });
-      setChatList((prev) => [
-        ...prev,
-        {
-          position: "right",
-          title: "You",
-          type: "text",
-          text: chatMessage,
-          date: "message.date",
-        },
-      ]);
+      setChatList((prev) => {
+        return {
+          chat: [
+            ...prev.chat,
+            {
+              position: "right",
+              title: "You",
+              type: "text",
+              text: chatMessage,
+              date: "message.date",
+            },
+          ],
+        };
+      });
     }
   };
 
@@ -114,7 +158,7 @@ const ChatComponent = ({ exam, socket }) => {
         className="message-list mt-2 mb-2"
         lockable={true}
         toBottomHeight={"100%"}
-        dataSource={chatList}
+        dataSource={chatList.chat}
       />
       <div className="flex items-center gap-2 w-[90%]">
         <Input

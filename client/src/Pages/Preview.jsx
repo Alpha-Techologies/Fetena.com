@@ -52,9 +52,12 @@ const Preview = () => {
     fetchExamDetails();
   }, [id]);
 
-  if (!exam) {
-    return <p>Loading...</p>; // Show a loading indicator while fetching data
-  }
+if (!exam) {
+  return <p>Loading...</p>; // Show a loading indicator while fetching data
+}
+
+console.log(exam.examFile, "exam file")
+console.log(exam.examFile instanceof File, "let me see")
 
   const handlePrint = () => {
     const printableContent =
@@ -116,31 +119,13 @@ const Preview = () => {
               {/* <p className="font-semibold"><span className="font-bold text-blue-700">Allowed Attempts : </span>Unlimited</p> */}
             </div>
 
-            <div className='w-full  flex flex-wrap gap-16 py-2 px-8 my-4'>
-              <p className='font-semibold flex gap-2 items-center justify-center'>
-                <span className='font-bold text-blue-700'>Organization : </span>
-                AASTU{" "}
-                <span>
-                  <Icon
-                    icon='gravity-ui:seal-check'
-                    className='text-lg text-blue-800'
-                  />
-                </span>
-              </p>
-              <div className='flex gap-1'>
-                <span className='font-bold text-blue-700'>Tags : </span>
-                {exam.tags?.map((tag) => (
-                  <Tag color={"yellow"}>{tag}</Tag>
-                ))}
-                {/* <Tag color={"yellow"}>English</Tag>
-                <Tag color={"red"}>Maths</Tag>
-                <Tag color={"blue"}>Physics</Tag> */}
-              </div>
-              <p className='font-semibold flex gap-2 items-center justify-center'>
-                <span className='font-bold text-blue-700'>Created by : </span>
-                {user.firstName} {user.lastName}{" "}
-              </p>
-            </div>
+          <div className="w-full  flex flex-wrap gap-16 py-2 px-8 my-4">
+          <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Organization : </span>AASTU <span><Icon icon="gravity-ui:seal-check" className="text-lg text-blue-800" /></span></p>
+
+          <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Created by : </span>{user.firstName} {user.lastName} </p>
+        
+
+</div>
 
             <div className='w-full  flex flex-col gap-2 py-4 px-8 my-4 items-start'>
               <h3 className='text-xl font-bold text-blue-900'>Instructions</h3>
@@ -190,60 +175,68 @@ const Preview = () => {
           </p>
         </div>
 
-        <div className='flex flex-col gap-4 my-4 mt-8 '>
-          {exam.questions.map((question, index) => (
-            <div
-              key={index}
-              className='mb-4'>
-              {question.questionType === "True/False" ? (
-                <Card className=' w-11/12 mx-auto bg-gray-50 rounded-none'>
-                  <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
-                    <h3 className='text-blue-900 font-semibold text-lg'>
-                      Question {index + 1}
-                    </h3>
-                    <p className='font-semibold text-blue-900'>
-                      Points {question.points}
-                    </p>
-                  </div>
-                  <div className='mt-4 mx-4 flex items-start'>
-                    <h3 className='font-semibold text-[1rem]'>
-                      {question.questionText}
-                    </h3>
-                  </div>
-                  <div className='mt-8 flex items-start mx-4 '>
-                    <Form.Item
-                      label='Your Answer'
-                      className='w-48'>
-                      <Select>
-                        <Select.Option value='true'>True</Select.Option>
-                        <Select.Option value='false'>False</Select.Option>
-                      </Select>
-                    </Form.Item>
-                  </div>
-                </Card>
-              ) : question.questionType === "choose" ? (
-                <Card className='bg-gray-50 w-11/12 mx-auto'>
-                  <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
-                    <h3 className='text-blue-900 font-semibold text-lg'>
-                      Question {index + 1}
-                    </h3>
-                    <p className='font-semibold text-blue-900'>
-                      Points {question.points}
-                    </p>
-                  </div>
-                  <div className='mt-4 mx-4 flex items-start border-b pb-4'>
-                    <h3 className='font-semibold text-[1rem]'>
-                      {question.questionText}
-                    </h3>
-                  </div>
-                  <div className='mt-4 w-full flex items-start mx-4 gap-4'>
-                    {/* <Form.Item label="Choice Number" rules={[{ required: true, message: "Please select the choice number" }]} className="w-48">
-      <Select onChange={(value) => setChoiceCount(value)} defaultValue={2}>
-        {[2, 3, 4, 5].map((count) => (
-          <Select.Option key={count} value={count}>{count}</Select.Option>
-        ))}
+
+
+
+
+{ exam.examType === 'online' &&
+
+          (<div className="flex flex-col gap-4 my-4 mt-8 ">
+  {exam.questions.map((question, index) => (
+    <div key={index} className="mb-4">
+  
+      {question.questionType === "True/False" ? (
+
+
+
+
+
+
+<Card className="mx-auto bg-gray-50 rounded-none">
+<div className="flex gap-8 items-center justify-between  border-b pb-2">
+  <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
+    <p className="font-semibold text-blue-900">Points {question.points}</p>
+  </div>
+  <div className="mt-4  flex items-start">
+   <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
+  </div>
+  <div className="mt-8 flex items-start ">
+    <Form.Item label="Your Answer" className="w-48">
+      <Select >
+        <Select.Option value="true">True</Select.Option>
+        <Select.Option value="false">False</Select.Option>
       </Select>
-    </Form.Item> */}
+    </Form.Item>
+  </div>
+ 
+</Card>
+
+
+
+
+
+
+
+
+
+      ) : question.questionType === "choose" ? (
+        
+
+
+
+
+
+<Card className="bg-gray-50 mx-auto">
+  <div className="flex gap-8 items-center justify-between border-b pb-2">
+    <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
+    <p className="font-semibold text-blue-900">Points {question.points}</p>
+
+  </div>
+  <div className="mt-4 flex items-start border-b pb-4">
+  <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
+  </div>
+  <div className="mt-4 w-full flex items-start  gap-4">
+
                     <div className='flex flex-col'>
                       <Radio.Group value={question.correctAnswer}>
                         {question.questionChoice.map((choice, choiceIndex) => (
@@ -264,8 +257,8 @@ const Preview = () => {
                   </div>
                 </Card>
               ) : question.questionType === "shortAnswer" ? (
-                <Card className='bg-gray-50 w-11/12 mx-auto my-2'>
-                  <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                <Card className='bg-gray-50  mx-auto'>
+                  <div className='flex gap-8 items-center justify-between  border-b pb-2'>
                     <h3 className='text-blue-900 font-semibold text-lg'>
                       Question {index + 1}
                     </h3>
@@ -274,13 +267,13 @@ const Preview = () => {
                     </p>
                   </div>
 
-                  <div className='mt-4 mx-4 flex items-start '>
+                  <div className='mt-4 flex items-start '>
                     <h3 className='font-semibold text-[1rem]'>
                       {question.questionText}
                     </h3>
                   </div>
 
-                  <div className='mt-4 flex items-start mx-4 mb-4'>
+                  <div className='mt-4 flex items-start mb-4'>
                     <TextArea
                       rows={4}
                       placeholder='Enter your question here'
@@ -288,8 +281,8 @@ const Preview = () => {
                   </div>
                 </Card>
               ) : question.questionType === "essay" ? (
-                <Card className='bg-gray-50 w-11/12 mx-auto my-8'>
-                  <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                <Card className='bg-gray-50  mx-auto '>
+                  <div className='flex gap-8 items-center justify-between border-b pb-2'>
                     <h3 className='text-blue-900 font-semibold text-lg'>
                       Question {index + 1}
                     </h3>
@@ -298,37 +291,72 @@ const Preview = () => {
                     </p>
                   </div>
 
-                  <div className='mt-4 mx-4 flex items-start'>
+                  <div className='mt-4  flex items-start'>
                     <h3 className='font-semibold text-[1rem]'>
                       {question.questionText}
                     </h3>
                   </div>
 
-                  <div className='mt-4 flex items-start mx-4 mb-4'>
-                    <TextArea
-                      rows={4}
-                      placeholder='Enter your question here'
-                    />
-                  </div>
-                </Card>
-              ) : null}
-            </div>
-          ))}
-        </div>
-
-        <Card className=' mx-auto mt-8 mb-2 shadow-sm '>
-          <div className='flex gap-8 items-center justify-center'>
-            <h3 className=' font-semibold text-[1rem]'>
-              Total Questions :{" "}
-              <span className='text-blue-900'> {exam.questions.length} </span>{" "}
-            </h3>
-            <h3 className=' font-semibold text-[1rem]'>
-              Total Points{" "}
-              <span className='text-blue-900'> {exam.points} </span>{" "}
-            </h3>
-          </div>
-        </Card>
+     <div className="mt-4 flex items-start mb-4">
+       <TextArea
+         rows={4}
+         placeholder="Enter your question here"
+       
+         
+       />
+     </div>
+    
+       
       </Card>
+
+      ) : null}
+    </div>
+  ))}
+</div>)
+
+}
+
+
+
+{exam.examType !== 'online' && exam.examFile && (
+  <Card
+    className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200 mx-auto mt-8 mb-2'
+  >
+    <div className='flex flex-col gap-4 justify-center items-center'>
+      <div className='flex gap-4 justify-center items-center'>
+       
+
+
+      </div>
+      {exam.examFile && (
+        <iframe
+        src={`http://localhost:8080${exam.examFile}`}
+        title={exam.examFile}
+        className="w-[1000px] h-[600px]"
+      />
+      )}
+    </div>
+  </Card>
+)}
+
+<Card className=" mx-auto mt-8 mb-2 shadow-sm ">
+             <div className="flex gap-8 items-center justify-center">
+             <h3 className=" font-semibold text-[1rem]">Total Questions : <span className="text-blue-900"> {exam.questions.length} </span> </h3>
+       <h3 className=" font-semibold text-[1rem]">Total Points <span className="text-blue-900"> {exam.points} </span> </h3> 
+         
+ 
+       </div>
+ </Card>
+
+
+
+
+
+
+
+
+
+    </Card>
     </>
   );
 };
