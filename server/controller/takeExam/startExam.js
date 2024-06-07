@@ -11,11 +11,11 @@ const startExam = catchAsync(async (req, res, next) => {
   const exam = await Exam.findById(examId);
 
   if (!exam) {
-    return next(APIError("Exam not found", StatusCodes.BAD_REQUEST));
+    return next(new APIError("Exam not found", StatusCodes.BAD_REQUEST));
   }
 
   // check the exam status if it is closed or not
-  if (exam.status === "closed") {
+  if (exam.access === "closed") {
     return next(new APIError("Exam is closed", StatusCodes.BAD_REQUEST));
   }
 
