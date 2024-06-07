@@ -88,9 +88,10 @@ const Preview = ({
       basicInfoValues.examStartDate = new Date(
         basicInfoValues.examDate + " " + basicInfoValues.examTime
       );
+      console.log(basicInfoValues.examStartDate,"aheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     }
 
-    console.log(basicInfoValues.examStartDate);
+    console.log(basicInfoValues.examStartDate,"aheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 
     // if (!basicInfoValues.material || !basicInfoValues.material.name) {
     //   toast.error("Please upload the material");
@@ -105,7 +106,7 @@ const Preview = ({
       toast.error("Please add questions to submit the exam.");
       return;
     }
-
+console.log("one add questions start-------------------------------------------------------------------------------------------")
     try {
       // Make the Axios POST request to save questions
       const response = await axios.post("/api/questions", questionsCollection);
@@ -144,7 +145,6 @@ const Preview = ({
             updatedBasicInfoValues.formulasCollection && "formulasCollection",
             updatedBasicInfoValues.uploadMaterials && "uploadMaterials",
           ].filter(Boolean), // Filters out any falsy values
-          tags: updatedBasicInfoValues.tags,
           points: updatedBasicInfoValues.points,
           examFile: updatedBasicInfoValues.examFile,
           questions: response.data.data.data, // Ensure the questions are from the response
@@ -172,11 +172,12 @@ const Preview = ({
       console.error("Error submitting exam:", error);
       toast.error("Error submitting exam. Please try again later.");
     }
+    console.log("one add questions end-------------------------------------------------------------------------------------------")
 
     setBasicInfoValues({
       examName: "",
       duration: 1,
-      examStartDate: Date.now(),
+      examStartDate: null,
       organization: "663e889c6470d66fcf38a4d4",
       privateAnswer: false,
       privateScore: false,
@@ -279,6 +280,11 @@ const Preview = ({
               {basicInfoValues.examStartDate
                 ? new Date(basicInfoValues.examStartDate).toLocaleString()
                 : ""}
+                {
+                  new Date(
+                    basicInfoValues.examDate + " " + basicInfoValues.examTime
+                  ).toLocaleString()
+                }
             </p>
             <p className="font-semibold">
               <span className="font-bold text-blue-700">Points : </span>

@@ -31,7 +31,6 @@ import AiQuestionGenerator from "./components/AiQuestionGenerator";
 const CreateExam = () => {
   const [activeTabKey, setActiveTabKey] = useState("Basic Info");
   const [examKey, setExamKey] = useState("");
-  const [tags, setTags] = useState([]);
   const [examType, setExamType] = useState("online");
   const [importedExams, setImportedExams] = useState([]);
 
@@ -467,8 +466,6 @@ const CreateExam = () => {
                 setShortAnswer={setShortAnswer}
                 shortAnswer={shortAnswer}
                 setChoose={setChoose}
-                tags={tags}
-                setTags={setTags}
                 setBasicInfoValues={setBasicInfoValues}
               />
             )}
