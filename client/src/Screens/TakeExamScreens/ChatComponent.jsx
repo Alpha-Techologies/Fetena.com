@@ -17,9 +17,9 @@ const ChatComponent = ({ exam, socket, examinee }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("in the use effect", socket);
+    // console.log("in the use effect", socket);
     if (socket) {
-      console.log("recieving message");
+      // console.log("recieving message");
       const handleReceiveMessage = (message) => {
         console.log("message received", message);
         const newMessage = {
@@ -44,7 +44,7 @@ const ChatComponent = ({ exam, socket, examinee }) => {
           };
         });
 
-        console.log(chatList);
+        // console.log(chatList);
       };
 
       socket.on("receiveMessage", handleReceiveMessage);
@@ -107,7 +107,7 @@ const ChatComponent = ({ exam, socket, examinee }) => {
 
   useEffect(() => {
     if (Object.keys(examinee).length !== 0) {
-      console.log(examinee, "examinee");
+      // console.log(examinee, "examinee");
       for (const message of examinee.chatMessages) {
         const newMessage = {
           position: message.sender === user._id ? "right" : "left",

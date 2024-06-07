@@ -1,8 +1,4 @@
 const Question = require("../../models/question.model");
-const factory = require("./../handlerFactory")
+const factory = require("./../handlerFactory");
 
-
-exports.updateQuestion = function () {
-  return  factory.updateOne(Question)
-}
-
+exports.updateQuestion = factory.updateOne(Question);

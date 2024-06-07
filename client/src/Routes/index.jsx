@@ -42,6 +42,7 @@ import UserExamsPage from "../Pages/UserExamsPage";
 import EditExam from './../Pages/EditExamPages/EditExam';
 import CertificationPage from "../Pages/Certification";
 import Certification from "../Pages/Certification";
+import MonitoringPage from "../Pages/MonitoringPage/MonitoringPage";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -76,7 +77,7 @@ const AllRoutes = () => {
           element={
             <ProtectedRoutes isAuthenticated={isAuthenticated}>
               <DashboardScreen />
-            </ProtectedRoutes>
+          </ProtectedRoutes>
           }
         >
           <Route path="" element={<DashboardPage />} />
@@ -108,10 +109,10 @@ const AllRoutes = () => {
             path='results'
             element={<ResultsPage />}
           />
-          {/* <Route
+          <Route
             path='exam-monitor'
             element={<MonitoringPage/>}
-          /> */}
+          />
           <Route
             path='certifications'
             element={<CertificationsPage />}

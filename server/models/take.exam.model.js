@@ -31,6 +31,9 @@ const userActivityLogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  reason: {
+    type: String,
+  },
   // actionType tells the severity of the action taken by the examinee
   // actionType: 'low' -> low severity
   // actionType: 'medium' -> medium severity

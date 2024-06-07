@@ -11,6 +11,7 @@ import {
   Radio,
   Tag,
   Popconfirm,
+  Modal,
 } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
@@ -51,6 +52,9 @@ const TakeExamScreen = () => {
   const navigate = useNavigate();
 
   const { id } = useParams();
+
+  const [showUserActivityModal, setShowUserActivityModal] = useState(false);
+  const [userActivityMessage, setUserActivityMessage] = useState("");
 
   // useEffect to join chat room for examinee
   useEffect(() => {
@@ -109,6 +113,7 @@ const TakeExamScreen = () => {
   useEffect(() => {
     document.addEventListener("fullscreenchange", handleFullscreenChange);
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("blur", handleBlur);
 
     const getBatteryInfo = async () => {
       try {
@@ -133,6 +138,7 @@ const TakeExamScreen = () => {
     return () => {
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("blur", handleBlur);
     };
   }, []);
 
@@ -152,18 +158,63 @@ const TakeExamScreen = () => {
     fetchExamDetails();
   }, [id]);
 
-  const requestFullscreen = () => {
+  const requestFullscreen = async () => {
     const element = document.documentElement;
 
     if (element.requestFullscreen) {
-      element.requestFullscreen();
+      await element.requestFullscreen();
     } else if (element.mozRequestFullScreen) {
-      element.mozRequestFullScreen();
+      await element.mozRequestFullScreen();
     } else if (element.webkitRequestFullscreen) {
-      element.webkitRequestFullscreen();
+      await element.webkitRequestFullscreen();
     } else if (element.msRequestFullscreen) {
-      element.msRequestFullscreen();
+      await element.msRequestFullscreen();
     }
+  };
+
+  // function that handles the examinee activities that will caouse the user to be blocked
+
+  const promptUserExplanation = (message) => {
+    // prompt the user to explain why he/she was blocked
+    // set a timeout of 30 second for the user to come back and explain before blocking
+
+    // use a set time out to block the user and promise
+    // start the count down from 30 seconds
+    // if the user comes back and explains the reason, then unblock the user
+
+    // setCountDown(30);
+
+    // const interval = setInterval(() => {
+    //   setCountDown((prev) => prev - 1);
+    // }, 1000);
+
+    // setTimeout(() => {
+    //   clearInterval(interval);
+    // }, 30000);
+
+    setShowUserActivityModal(true);
+    setUserActivityMessage(message);
+  };
+
+  const handleUserActivity = async () => {
+    // warn the user to return to the exam with the message and give the user 30 seconds
+    setShowUserActivityModal(false);
+    console.log("User activity message:", userActivityMessage);
+    await requestFullscreen();
+    // try {
+    //   // send the user activity to the server using socket
+    //   socket.emit("userActivity", {
+    //     message: userActivityMessage,
+    //     explanation: userExplanation,
+    //   });
+    // } catch (error) {
+    //   console.error("Error sending user activity to the server:", error);
+    //   toast.error("Failed to send user activity to the server");
+    // }
+  };
+
+  const handleBlur = () => {
+    promptUserExplanation("User is switching away from the tab/window");
   };
 
   const handleFullscreenChange = () => {
@@ -179,6 +230,7 @@ const TakeExamScreen = () => {
       setIsFullscreen(false);
       console.log("not in fullscreen mode");
       // alert("You are not in fullscreen mode")
+      promptUserExplanation("You are not in fullscreen mode");
       // requestFullscreen(); // Re-request fullscreen to prevent exit
     }
   };
@@ -199,6 +251,7 @@ const TakeExamScreen = () => {
     if (document.visibilityState === "hidden") {
       setIsUserSwitchingAway(true);
       // alert("User is switching away from the fullscreen tab/window");
+      promptUserExplanation("User is switching away from the tab/window");
     } else {
       setIsUserSwitchingAway(false);
       // console.log("User is back to the fullscreen tab/window");
@@ -240,14 +293,14 @@ const TakeExamScreen = () => {
   const ExamScreen = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [answers, setAnswer] = useState({});
+    const [userExplanation, setUserExplanation] = useState("");
 
-    console.log("answer will now be recorded");
 
     useEffect(() => {
       // send the answer to the server using axios
       const postAnswer = async () => {
         try {
-          console.log("posting answer to the server", answers, userAnswersId);
+          if(Object.keys(answers).length === 0) return;
           const answerResponse = [];
           for (const key in answers) {
             answerResponse.push({
@@ -261,12 +314,30 @@ const TakeExamScreen = () => {
           });
         } catch (error) {
           console.error("Error sending answer to the server:", error);
-          toast.error("Failed to send answer to the server");
         }
       };
 
       postAnswer();
     }, [answers]);
+
+    useEffect(() => {
+      // receive the answers from the server using axios
+      const getAnswer = async () => {
+        try {
+          const response = await axios.get(`/api/useranswers/${userAnswersId}`);
+          const answers = response.data.data.data[0].questionAnswers;
+          const temp = {};
+          answers.forEach((answer) => {
+            temp[answer.questionId] = answer.answerText;
+          });
+          setAnswer(temp);
+        } catch (error) {
+          console.error("Error fetching answer from the server:", error);
+        }
+      };
+
+      getAnswer();
+    }, []);
 
     const handleFinishExam = async () => {
       try {
@@ -308,6 +379,36 @@ const TakeExamScreen = () => {
 
     return (
       <Layout className="h-screen">
+        <Modal
+          title="Locked Out"
+          open={showUserActivityModal}
+          onOk={handleUserActivity}
+          // onCancel={handleFinishExam}
+          footer={[
+            <button
+              key="back"
+              onClick={handleUserActivity}
+              className="bg-primary-500 text-white cursor-pointer rounded px-4 py-2"
+            >
+              Submit
+            </button>,
+          ]}
+        >
+          <div className="">
+            You have been temporarly locked out from the exam
+          </div>
+          <div>This is because: </div>
+          <div>{userActivityMessage}</div>
+          {/* <div>
+            The Exam Will Automatically Terminate in : {countDown} Seconds
+          </div> */}
+          <Input
+            placeholder="enter your explanation here"
+            onChange={(e) => {
+              setUserExplanation(e.target.value);
+            }}
+          />
+        </Modal>
         <FloatButton
           onClick={() => setShowChat(!showChat)}
           shape="circle"
@@ -383,6 +484,7 @@ const TakeExamScreen = () => {
                             onChange={(value) =>
                               handleAnswer(question._id, value)
                             }
+                            value={answers[question._id]}
                           >
                             <Select.Option value="true">True</Select.Option>
                             <Select.Option value="false">False</Select.Option>
@@ -411,6 +513,7 @@ const TakeExamScreen = () => {
                             onChange={(e) =>
                               handleAnswer(question._id, e.target.value)
                             }
+                            value={answers[question._id]}
                           >
                             {question.questionChoice.map(
                               (choice, choiceIndex) => (
@@ -457,6 +560,7 @@ const TakeExamScreen = () => {
                           onChange={(e) =>
                             handleAnswer(question._id, e.target.value)
                           }
+                          value={answers[question._id]}
                           placeholder="Enter your question here"
                         />
                       </div>
@@ -484,6 +588,7 @@ const TakeExamScreen = () => {
                           onChange={(e) =>
                             handleAnswer(question._id, e.target.value)
                           }
+                          value={answers[question._id]}
                           placeholder="Enter your question here"
                         />
                       </div>
