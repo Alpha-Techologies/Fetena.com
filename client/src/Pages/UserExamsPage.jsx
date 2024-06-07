@@ -96,12 +96,7 @@ const UserExamsPage = () => {
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
-              <h3 className='font-bold text-md'>{examName}</h3>
-              <div className='flex gap-1'>
-                <Tag color={"yellow"}>English</Tag>
-                <Tag color={"red"}>Maths</Tag>
-                <Tag color={"blue"}>Physics</Tag>
-              </div>
+            <h3 className='font-bold text-md text-primary-500 truncate'>{examName}</h3>              
               <p className='font-semibold flex gap-2 items-center justify-center'>
                 {organization?.name}{" "}
                 {organization?.isVerified && (
@@ -144,10 +139,11 @@ const UserExamsPage = () => {
       <div>
         <Card
           style={{ width: "100%" }}
-          tabList={tabListNoTitle}
+          // tabList={tabListNoTitle}
           activeTabKey={activeTabKey}
           onTabChange={onTabChange}
-          tabProps={{ size: "middle" }}>
+          // tabProps={{ size: "middle" }}
+          >
           {activeTabKey === "All" && (
             <>
               <div className='flex flex-wrap gap-2'>

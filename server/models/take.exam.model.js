@@ -22,19 +22,17 @@ const chatMessageSchema = new mongoose.Schema({
 });
 
 const userActivityLogSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
   action: {
     type: String,
     required: true,
   },
-  actionType: {
+  reason: {
     type: String,
-    enum: ["low", "medium", "high"],
   },
+  // actionType tells the severity of the action taken by the examinee
+  // actionType: 'low' -> low severity
+  // actionType: 'medium' -> medium severity
+  // actionType: 'high' -> high severity
 
   timestamp: {
     type: Date,
@@ -76,16 +74,18 @@ const takeExamSchema = new mongoose.Schema({
   endTime: {
     type: Date,
   },
-  userAnswers: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "UserAnswer",
-    },
-  ],
+  userAnswers: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "UserAnswer",
+  },
+
   chatMessages: [chatMessageSchema],
   userActivityLogs: [userActivityLogSchema],
   socketId: {
     type: String,
+  },
+  examEndTime: {
+    type: Date,
   },
   active: {
     type: Boolean,

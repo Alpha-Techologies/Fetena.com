@@ -5,4 +5,3 @@ exports.evaluateUserAnswer = function() {
 
     return factory.createMany(userAnswer)
 }
-

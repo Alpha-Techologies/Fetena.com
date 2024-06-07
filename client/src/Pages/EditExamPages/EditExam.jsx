@@ -71,12 +71,15 @@ if (examType === "online") {
   tabListNoTitle.splice(5, 0, { key: "Exam Questions", label: "Exam Questions >" });
 }
 
+const [questionsCollection, setQuestionsCollection] = useState({'questions': []});
+
 
 useEffect(() => {
   const fetchExamDetails = async () => {
     try {
       const response = await axios.get(`/api/exams/${id}`);
       const examData = response.data.data.data[0];
+      console.log(examData, "exxxxxxxxxaaaaaaaaaammmmmmmmmm data");
       if (examData) {
         const examDate = new Date(examData.startDate);
         setBasicInfoValues({
@@ -101,6 +104,7 @@ useEffect(() => {
           access: examData.access,
           tags: examData.tags
         });
+        setQuestionsCollection({ 'questions': examData.questions }); // Update questionsCollection here
       } else {
         console.error("Exam data is undefined or empty");
         toast.error("Failed to fetch exam details");
@@ -179,10 +183,6 @@ console.log(basicInfoValues.id,"exammm data id")
   })
 
 
-  const [questionsCollection, setQuestionsCollection] = useState(() => {
-    const savedQuestions = localStorage.getItem("questionsCollection");
-    return savedQuestions ? JSON.parse(savedQuestions) : [];
-  });
 
 
   const [questionType, setQuestionType] = useState("");
@@ -269,9 +269,10 @@ console.log(basicInfoValues.id,"exammm data id")
        
 
   // Append trueFalse to questionsCollection
-  setQuestionsCollection(prevQuestions => [...prevQuestions, trueFalse]);
-
+  console.log(questionsCollection)
+  setQuestionsCollection((prevQuestions) => ({ ...prevQuestions, questions: [...prevQuestions.questions, trueFalse] }));
   toast.success("Question saved successfully")
+
   // Reset trueFalse state to its default values
   setTrueFalse({
     questionText: "",
@@ -299,8 +300,8 @@ console.log(basicInfoValues.id,"exammm data id")
         toast.error("Please enter all the fields")
         return;
       }
+      setQuestionsCollection(prevQuestions => {return {'questions' : [...prevQuestions['questions'], structuredChoose]}});
 
-      setQuestionsCollection([...questionsCollection, structuredChoose]);
       toast.success("Question saved successfully")
 
       setChoose({
@@ -320,7 +321,8 @@ console.log(basicInfoValues.id,"exammm data id")
         toast.error("Please enter all the fields")
         return;
       }
-      setQuestionsCollection([...questionsCollection, shortAnswer]);
+      setQuestionsCollection(prevQuestions => {return {'questions' : [...prevQuestions['questions'], shortAnswer]}});
+
       toast.success("Question saved successfully")
       setShortAnswer({
         questionText: "",
@@ -336,7 +338,8 @@ console.log(basicInfoValues.id,"exammm data id")
         toast.error("Please enter all the fields")
         return;
       }
-      setQuestionsCollection([...questionsCollection, essay]);
+      setQuestionsCollection(prevQuestions => {return {'questions' : [...prevQuestions['questions'], essay]}});
+
       toast.success("Question saved successfully")
       setEssay({
         questionText: "",
@@ -380,15 +383,14 @@ console.log(basicInfoValues.id,"exammm data id")
           <Icon icon="fluent-emoji-high-contrast:left-arrow" className="text-2xl text-primary-500" />
         </Link>
         <h1 className='text-2xl font-bold text-blue-900 text-left'>Edit Exam</h1>
+        {/* <p> {JSON.stringify(questionsCollection)}</p> */}
       </div>
       <div>
         <Card
           style={{ width: "100%" }}
           tabList={tabListNoTitle}
           activeTabKey={activeTabKey}
-          tabBarExtraContent={
-            (activeTabKey === "Exam Questions" && <Button onClick={handleSave}>Ai question generator</Button>)
-          }
+         
           onTabChange={setActiveTabKey}
           tabProps={{ size: "middle" }}
         >
@@ -448,37 +450,38 @@ console.log(basicInfoValues.id,"exammm data id")
                   tags={tags}
                   setTags={setTags}
                   basicInfoValues={basicInfoValues}
-                />
-              )}
-              {activeTabKey === "Preview" && (
-                <Preview 
-                  basicInfoValues={basicInfoValues} 
                   setBasicInfoValues={setBasicInfoValues} 
-                  trueFalse={trueFalse} 
-                  setTrueFalse={setTrueFalse} 
-                  choose={choose} 
-                  setChoose={setChoose} 
-                  examType={examType}
-                  shortAnswer={shortAnswer} 
-                  setShortAnswer={setShortAnswer} 
-                  essay={essay} 
-                  setEssay={setEssay} 
-                  questionsCollection={questionsCollection} 
-                  setQuestionsCollection={setQuestionsCollection} 
-                  questionType={questionType} 
-                  setQuestionType={setQuestionType} 
-                  choiceCount={choiceCount} 
-                  setChoiceCount={setChoiceCount} 
-                  trueFalseOnChange={trueFalseOnChange} 
-                  chooseOnChange={chooseOnChange} 
-                  essayOnChange={essayOnChange} 
-                  shortAnswerOnChange={shortAnswerOnChange} 
-                  handleQuestionsSave={handleQuestionsSave} 
-                  setExamKey={setExamKey}
-                  setActiveTabKey={setActiveTabKey}
-                 
+
                 />
               )}
+             {activeTabKey === "Preview" && (
+  <Preview 
+    basicInfoValues={basicInfoValues} 
+    setBasicInfoValues={setBasicInfoValues} 
+    trueFalse={trueFalse} 
+    setTrueFalse={setTrueFalse} 
+    choose={choose} 
+    setChoose={setChoose} 
+    examType={examType}
+    shortAnswer={shortAnswer} 
+    setShortAnswer={setShortAnswer} 
+    essay={essay} 
+    setEssay={setEssay} 
+    questionsCollection={questionsCollection} // Pass questionsCollection instead of basicInfoValues.questions
+    setQuestionsCollection={setQuestionsCollection} 
+    questionType={questionType} 
+    setQuestionType={setQuestionType} 
+    choiceCount={choiceCount} 
+    setChoiceCount={setChoiceCount} 
+    trueFalseOnChange={trueFalseOnChange} 
+    chooseOnChange={chooseOnChange} 
+    essayOnChange={essayOnChange} 
+    shortAnswerOnChange={shortAnswerOnChange} 
+    handleQuestionsSave={handleQuestionsSave} 
+    setExamKey={setExamKey}
+    setActiveTabKey={setActiveTabKey}
+  />
+)}
               {activeTabKey === "Success" && (
                 <section className='flex flex-col justify-center items-center mt-8'>
                   <img

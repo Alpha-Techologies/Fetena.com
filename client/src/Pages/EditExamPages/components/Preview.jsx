@@ -12,31 +12,37 @@ import axios from "axios";
 
 
 
-const Preview = ({setActiveTabKey,basicInfoValues, setBasicInfoValues, questionsCollection, setQuestionsCollection, choiceCount,  chooseOnChange, setExamKey,examType}) => {
+const Preview = ({setActiveTabKey,basicInfoValues, setBasicInfoValues, questionsCollection , setQuestionsCollection , choiceCount,  chooseOnChange, setExamKey,examType}) => {
 
-  const totalPoints = questionsCollection.reduce((total, question) => total + (question.points || 0), 0);
-  const { workspace } = useSelector((state) => state.data);
-  console.log(workspace._id,"points")
+  // console.log(basicInfoValues.id,"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiidddddddddddddddddddddddddddddddddddd")
+  // console.log(questionsCollection.questions,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+  // console.log(basicInfoValues,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+  const totalPoints = questionsCollection.questions.reduce((total, question) => total + (question.points || 0), 0);  const { workspace } = useSelector((state) => state.data);
 
   const [questionCount,setQuestionCount] = useState(0);
+
+  // setquestionsCollection.questions (basicInfoValues.questions)
+  console.log(basicInfoValues.questions,"olaaaaaaaaaaaaaa222222222222222222");
+
 
   const updateQuestionCount = () => { setQuestionCount(questionCount + 1) }
 
   const {user} = useSelector((state) => state.auth);
-  console.log(basicInfoValues.examFile)
+  // console.log(basicInfoValues.examFile)
 
-useEffect(() => {
-  if (basicInfoValues.examTime && basicInfoValues.examDate) {
-    setBasicInfoValues({...basicInfoValues, examStartDate: new Date(basicInfoValues.examDate + " " + basicInfoValues.examTime)});
-  }
-  console.log(basicInfoValues.examStartDate,"useeffcet examstart dateeeeeeeeeeeeeee")
-},[]);
+  // useEffect(() => {
+  //   if (basicInfoValues && basicInfoValues.questions && Array.isArray(basicInfoValues.questions)) {
+  //     if (questionsCollection.questions .length === 0) {
+  //       setQuestionsCollection (basicInfoValues.questions);
+  //     }
+  //   }
+  // }, [basicInfoValues, questionsCollection.questions ]);
+
+// console.log(basicInfoValues.examStartDate,"useeffcet examstart dateeeeeeeeeeeeeee")
 
 
-console.log(basicInfoValues.examStartDate,"useeffcet examstart dateeeeeeeeeeeeeee")
-
-
-const submitExam = async () => {u
+const submitExam = async () => {
+  console.log("submit exam nigga")
   // if (!basicInfoValues.examName) {
   //   toast.error("Please enter the exam name");
   //   return;
@@ -69,7 +75,7 @@ const submitExam = async () => {u
     basicInfoValues.examStartDate = new Date(basicInfoValues.examDate + " " + basicInfoValues.examTime);
   }
   
-  console.log(basicInfoValues.examStartDate, "examstart dateeeeeeeeeeeeeee")
+  // console.log(basicInfoValues.examStartDate, "examstart dateeeeeeeeeeeeeee")
 
   // if (!basicInfoValues.material || !basicInfoValues.material.name) {
   //   toast.error("Please upload the material");
@@ -77,70 +83,54 @@ const submitExam = async () => {u
   // }
 
   // Check if questions are available
-  // if (basicInfoValues.examType === "online" && questionsCollection.length === 0) {
+  // if (basicInfoValues.examType === "online" && questionsCollection.questions .length === 0) {
   //   toast.error("Please add questions to submit the exam.");
   //   return;
   // }
 
   try {
     // Make the Axios POST request to save questions
-    const response = await axios.post(`/api/exams/questions/${basicInfoValues.id}`, questionsCollection);
-
+    console.log(questionsCollection.questions ,"questions collection about to be sent")
+    console.log(basicInfoValues.id,"id aobut to be sent")
+    const obj = {
+      "questions" : questionsCollection.questions 
+    }
+    const response = await axios.patch(`/api/exams/questions/${basicInfoValues.id}`, obj);
     // Handle success
     console.log('Questions submitted successfully:', response.data.data.data);
-    setQuestionsCollection([]);
-    localStorage.removeItem('questionsCollection');
+    // setquestionsCollection ([]);
+    // localStorage.removeItem('questionsCollection.questions ');
 
     // setExamKey(response.data.data.exam.examKey);
-
-    const updatedBasicInfoValues = { ...basicInfoValues, questions: response.data.data.data,points:totalPoints };
-    setBasicInfoValues(updatedBasicInfoValues);
-
-
-    const examDataToSend = new FormData();
-
-    examDataToSend.append(
-      "data",
-      JSON.stringify(
-        {
-          examName: updatedBasicInfoValues.examName,
-          duration: updatedBasicInfoValues.duration,
-          startDate: updatedBasicInfoValues.examStartDate,
-          organization: workspace._id,
-          privateAnswer: updatedBasicInfoValues.privateAnswer,
-          privateScore: updatedBasicInfoValues.privateScore,
-          instruction: updatedBasicInfoValues.instruction,
-          securityLevel: updatedBasicInfoValues.securityLevel,
-          examType: updatedBasicInfoValues.examType,
-          access: updatedBasicInfoValues.access,
-          toolsPermitted: [
-            updatedBasicInfoValues.calculator && "calculator",
-            updatedBasicInfoValues.formulasCollection && "formulasCollection",
-            updatedBasicInfoValues.uploadMaterials && "uploadMaterials"
-          ].filter(Boolean), // Filters out any falsy values
-          tags: updatedBasicInfoValues.tags,
-          points: updatedBasicInfoValues.points,
-          examFile: updatedBasicInfoValues.examFile,
-          questions: response.data.data.data // Ensure the questions are from the response
-        }
-      )
-    )
+    const examDataToSend =   {
+      examName: basicInfoValues.examName,
+      duration: basicInfoValues.duration,
+      startDate: basicInfoValues.examStartDate,
+      organization: workspace._id,
+      privateAnswer: basicInfoValues.privateAnswer,
+      privateScore: basicInfoValues.privateScore,
+      instruction: basicInfoValues.instruction,
+      securityLevel: basicInfoValues.securityLevel,
+      examType: basicInfoValues.examType,
+      access: basicInfoValues.access,
+      toolsPermitted: [
+        basicInfoValues.calculator && "calculator",
+        basicInfoValues.formulasCollection && "formulasCollection",
+        basicInfoValues.uploadMaterials && "uploadMaterials"
+      ].filter(Boolean), // Filters out any falsy values
+      tags: basicInfoValues.tags,
+      points: basicInfoValues.points,
 
 
-    if (updatedBasicInfoValues.material) {
-      examDataToSend.append("material", updatedBasicInfoValues.material);
     }
 
 
-   console.log(examDataToSend)
-   
-    // Send examData to the /api/exams endpoint with authentication header
-    const examResponse = await axios.post('/api/exams', examDataToSend);
+    const examResponse = await axios.patch(`/api/exams/${basicInfoValues.id}`, examDataToSend);
 
     console.log('Exam data submitted successfully:', examResponse);
     toast.success("Exam submitted successfully.");
 
-    // Clear questionsCollection and remove from local storage
+    // Clear questionsCollection.questions  and remove from local storage
     setExamKey(examResponse.data.data.exam.examKey)
    
     setActiveTabKey('Success');
@@ -154,27 +144,7 @@ const submitExam = async () => {u
 
 
  
-    setBasicInfoValues(
-      {
-        examName: "",
-        duration: 1 ,
-        examStartDate: Date.now(),
-        organization: "663e889c6470d66fcf38a4d4",
-        privateAnswer: false,
-        privateScore: false,
-        instruction: "",
-        securityLevel: "low",
-        examType: "",
-        calculator: false,
-        formulasCollection: false,
-        uploadMaterials: false,
-        material: null,
-        questions: [],
-        access: "closed",
-        points:0,
-        examFile: null
-      }
-    );
+  
     localStorage.removeItem('basicInfoValues');
 
 
@@ -190,7 +160,7 @@ const [isModalVisible, setIsModalVisible] = useState(false);
 
 
 const handleEditQuestion = (index) => {
-  const question = questionsCollection[index];
+  const question = questionsCollection.questions[index];
   setEditingQuestion({ ...question, index });
   setIsModalVisible(true);
 };
@@ -208,12 +178,18 @@ const handleEditQuestion = (index) => {
 
 
 const handleOk = () => {
-  const updatedQuestions = [...questionsCollection];
+  // Access the questions array directly from questionsCollection
+  const updatedQuestions = [...questionsCollection.questions];
+  // Update the question at the specified index
   updatedQuestions[editingQuestion.index] = editingQuestion;
-  setQuestionsCollection(updatedQuestions);
+  // Set the updated questions array back into questionsCollection
+  setQuestionsCollection({ ...questionsCollection, questions: updatedQuestions });
+  // Close the modal
   setIsModalVisible(false);
+  // Clear the editingQuestion state
   setEditingQuestion(null);
 };
+
 
 const handleCancel = () => {
   setIsModalVisible(false);
@@ -230,12 +206,13 @@ const handleCancel = () => {
 const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 const [deleteIndex, setDeleteIndex] = useState(null);
 
-
+// Example of updated deleteQuestion function
 const deleteQuestion = (index) => {
-  const updatedQuestions = [...questionsCollection];
-  updatedQuestions.splice(index, 1); // Remove the question at the specified index
-  setQuestionsCollection(updatedQuestions);
+  const updatedQuestions = [...questionsCollection.questions];
+  updatedQuestions.splice(index, 1);
+  setQuestionsCollection({ ...questionsCollection, questions: updatedQuestions });
 };
+
 
 
 // Function to handle opening the delete confirmation modal
@@ -266,7 +243,7 @@ const confirmDeleteQuestion = () => {
 
   return (
     <div>
-       <div className="flex justify-center items-center gap-2 mb-8 mt-4">
+       <div className="flex justify-center items-center gap-2 mb-4 mt-2">
 
 <Icon icon="material-symbols:preview"  className="text-2xl font-bold text-blue-800" />
 <p className="font-semibold  text-blue-900 text-lg">Exam Preview</p>
@@ -284,8 +261,9 @@ const confirmDeleteQuestion = () => {
   {basicInfoValues.examStartDate ? new Date(basicInfoValues.examStartDate).toLocaleString() : ""}
 </p>
 <p className="font-semibold"><span className="font-bold text-blue-700">Points : </span>{totalPoints}</p>
+{/* <p className="font-semibold"><span className="font-bold text-blue-700">Points : </span>3</p> */}
 
-<p className="font-semibold"><span className="font-bold text-blue-700">Questions : </span>{questionsCollection.length}</p>
+<p className="font-semibold"><span className="font-bold text-blue-700">Questions : </span>{questionsCollection.questions .length}</p>
 <p className="font-semibold"><span className="font-bold text-blue-700">Time limit : </span>{basicInfoValues.duration} Minutes</p>
 
 {/* <p className="font-semibold"><span className="font-bold text-blue-700">Allowed Attempts : </span>Unlimited</p> */}
@@ -294,17 +272,7 @@ const confirmDeleteQuestion = () => {
 
           <div className="w-full  flex flex-wrap gap-16 py-2 px-8 my-4">
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Organization : </span>AASTU <span><Icon icon="gravity-ui:seal-check" className="text-lg text-blue-800" /></span></p>
-          <div className='flex gap-1'>
-          <span className="font-bold text-blue-700">Tags : </span>
-          {
-            basicInfoValues.tags?.map((tag) => (
-              <Tag color={"yellow"}>{tag}</Tag>
-            ))
-          }
-                {/* <Tag color={"yellow"}>English</Tag>
-                <Tag color={"red"}>Maths</Tag>
-                <Tag color={"blue"}>Physics</Tag> */}
-              </div>
+   
           <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Created by : </span>{user.firstName} {user.lastName} </p>
         
 
@@ -564,7 +532,8 @@ const confirmDeleteQuestion = () => {
 
 
 
-  {questionsCollection.map((question, index) => (
+  {questionsCollection.questions.map((question, index) => (
+    
     <div key={index} className="mb-4">
 
 
@@ -573,11 +542,6 @@ const confirmDeleteQuestion = () => {
       
   
       {question.questionType === "True/False" ? (
-
-
-
-
-
 
 <Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
 <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
@@ -771,9 +735,22 @@ const confirmDeleteQuestion = () => {
 
 <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
              <div className="flex gap-8 items-center justify-center">
-             <h3 className=" font-semibold text-[1rem]">Total Questions : <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
-             <h3 className=" font-semibold text-[1rem]">Total Points :<span className="text-blue-900"> {totalPoints} </span> </h3>
-             <Button type="primary" className="px-16" onClick={submitExam}>Save & Submit</Button>
+             <h3 className=" font-semibold text-[1rem] flex gap-1 justify-center items-center">
+          <Icon icon="pepicons-pop:question" className="text-blue-900" />
+            Total Questions :{" "}
+            <span className="text-blue-900">
+              {" "}
+              {questionsCollection.questions.length}{" "}
+            </span>{" "}
+          </h3>
+          <h3 className=" font-semibold text-[1rem] flex gap-1 justify-center items-center">
+          <Icon icon="material-symbols:credit-score-outline"  className="text-blue-900" />
+            Total Points :<span className="text-blue-900"> {totalPoints} </span>{" "}
+          </h3>
+        
+
+             <Button type="primary" className="px-8 flex gap-2 items-center font-semibold bg-primary-500" onClick={submitExam}><Icon  icon="lucide:save"  className="text-xl text-white" />{" "} Save & Submit</Button>
+
  
        </div>
  </Card>

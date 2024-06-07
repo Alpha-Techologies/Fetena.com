@@ -93,7 +93,7 @@ exports.updateOne = (Model) =>
         _id: req.params.id,
       },
       req.body,
-      { 
+      {
         new: true,
         runValidators: true,
       }
@@ -117,7 +117,7 @@ exports.updateOne = (Model) =>
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
     // const doc = await Model.findByIdAndDelete(req.params.id);
-    const model = await Model.findOne({_id: req.params.id});
+    const model = await Model.findOne({ _id: req.params.id });
 
     if (!model) {
       return next(
@@ -126,7 +126,7 @@ exports.deleteOne = (Model) =>
     }
 
     model.active = false;
-    console.log(model)
+    console.log(model);
     await model.save();
 
     await logActivity(req,5,{name:Model?.modelName,id:req.params.id} )
