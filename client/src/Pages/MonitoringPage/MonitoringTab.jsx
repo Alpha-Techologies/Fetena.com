@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import { Tag, Table, Card, Avatar, Timeline } from "antd";
 import _ from "lodash";
 import moment from "moment";
+import { useEffect } from "react";
 
 const MonitoringTab = ({
   examineeStatusStats,
@@ -10,6 +11,8 @@ const MonitoringTab = ({
   setCurrentUser,
   seeStatusOf,
   setSeeStatusOf,
+  socket,
+  fetchExamineeList,
 }) => {
   const serverURL = "http://localhost:3000";
   const currentTime = moment();
@@ -131,13 +134,25 @@ const MonitoringTab = ({
     examineeList,
     setCurrentUser,
     currentUser,
+    socket,
+    fetchExamineeList,
   }) => {
+    useEffect(() => {
+      if (socket) {
+        socket.on("userActivityLog", (takeExamId, activityLog) => {
+          fetchExamineeList(currentUser.exam);
+        });
+      }
+    });
+
     const tempCurrentUser = _.find(
       examineeList,
       (item) => item.user && item.user._id === seeStatusOf
     );
+
     setCurrentUser(tempCurrentUser);
-    console.log(currentUser, "currentUser");
+
+    // TODO: after merging the branch that has the end exam for user functionality add the userActivityLogs for the Terminated.
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between w-full">
@@ -174,7 +189,8 @@ const MonitoringTab = ({
               <p className="text-green-500 ml-2 flex items-center justify-center">
                 <Icon icon="icon-park-outline:dot" /> Ongoing
               </p>
-            ) : currentUser?.status === "submitted" ? (
+            ) : currentUser?.status === "completed" ||
+              currentUser?.status === "submitted" ? (
               <p className="text-gray-500 ml-2 flex items-center justify-center">
                 <Icon icon="icon-park-outline:dot" /> Finished
               </p>
@@ -195,8 +211,35 @@ const MonitoringTab = ({
         </div>
 
         <p className="font-bold ">Examinee History</p>
-
-        <Timeline
+        <Timeline>
+          {currentUser?.userActivityLogs.slice().map((item, index) => (
+            <Timeline.Item
+              key={index}
+              dot={
+                <Icon
+                  className="w-5 h-5"
+                  icon={
+                    item.actionType === "warning"
+                      ? "octicon:blocked-16"
+                      : "octicon:blocked-16"
+                  }
+                />
+              }
+              color={item.actionType === "warning" ? "red" : "blue"}
+            >
+              <span>
+                <span className="text-red-500 italic"></span> {item.action}{" "}
+                <br />
+                <span className="text-black-500">Reason </span> {item.reason}{" "}
+                <br />
+                <span className="italic text-gray-500">
+                  {new Date(item.timestamp).toLocaleString()}
+                </span>
+              </span>
+            </Timeline.Item>
+          ))}
+        </Timeline>
+        {/* <Timeline
           items={[
             {
               dot: (
@@ -263,7 +306,7 @@ const MonitoringTab = ({
               ),
             },
           ]}
-        />
+        /> */}
       </div>
     );
   };
@@ -281,6 +324,8 @@ const MonitoringTab = ({
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
           examineeList={examineeList}
+          socket={socket}
+          fetchExamineeList={fetchExamineeList}
         />
       )}
     </>

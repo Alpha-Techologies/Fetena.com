@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Card,
   Form,
@@ -20,6 +20,7 @@ const { Header, Sider, Content } = Layout;
 import ExamTools from "./ExamTools";
 import ChatComponent from "./ChatComponent";
 import debounce from "lodash/debounce";
+import { useNavigate } from "react-router-dom";
 
 const ExamScreen = ({
   socket,
@@ -28,6 +29,7 @@ const ExamScreen = ({
   requestFullscreen,
   userAnswersId,
   takeExamId,
+  setStartExam,
 }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [answers, setAnswer] = useState({});
@@ -41,6 +43,7 @@ const ExamScreen = ({
   const [inputValue, setInputValue] = useState("");
   const [isUserSwitchingAway, setIsUserSwitchingAway] = useState(false);
   const { TextArea } = Input;
+  const navigate = useNavigate();
 
   // useEffect to handle battery dispaly and screen change
   useEffect(() => {
@@ -76,6 +79,23 @@ const ExamScreen = ({
   }, []);
 
   useEffect(() => {
+    console.log("examinee", examinee);
+
+    if (Object.keys(examinee).length !== 0) {
+      // the examinee has no information recorded in hte server
+      if (examinee.userActivityLogs.length === 0) {
+        // send the user activity to the server using socket
+        socket.emit("userActivityLog", takeExamId, exam._id, {
+          action: "User has started the exam",
+          reason: "-",
+          actionType: "info",
+        });
+      } else {
+        // ask the user why re-entered the exam
+        promptUserExplanation("User has re-entered the exam");
+      }
+    }
+
     // receive the answers from the server using axios
     const getAnswer = async () => {
       try {
@@ -137,6 +157,7 @@ const ExamScreen = ({
     const userActivity = {
       action: userActivityMessage,
       reason: userExplanation,
+      actionType: "warning",
     };
 
     console.log(userActivity, takeExamId, takeExamId, "user activity");
@@ -155,23 +176,58 @@ const ExamScreen = ({
     // }
   };
   const handleFinishExam = async () => {
-    try {
-      // submit the exam and get the evaluation from the backend
-      const response = await axios.post(
-        `/api/useranswers/eval/${userAnswersId}`
-      );
-      await axios.patch(`/api/exams/take-exam/${takeExamId}`, {
-        status: "completed",
-        examEndTime: Date.now(),
-      });
+    const finishExam = async () => {
+      try {
+        const response = await axios.patch(
+          `/api/exams/take-exam/${takeExamId}`,
+          {
+            status: "submitted",
+          }
+        );
 
-      console.log(response);
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Error fetching exam details:", error);
-      toast.error("Failed to submit exam");
-    }
+        // socket give info about exam End
+        socket.emit("userActivityLog", takeExamId, exam?._id, {
+          actionType: "info",
+          action: "Exam Submitted",
+          reason: "-",
+        });
+        console.log(response, "eserjio");
+        return response.status;
+      } catch (error) {
+        console.error("Error fetching exam details:", error);
+        toast.error("Failed to submit exam");
+        return error.response.status;
+      }
+    };
+
+    const resp = await finishExam();
+
+    if (resp === 200) {
+      setStartExam(false);
+      navigate(-1);
+      // document.exitFullscreen();
+      exitFullscreen();
+      toast.success("Exam submitted successfully!");
+    } 
   };
+  //   const handleFinishExam = async () => {
+  //     try {
+  //       // submit the exam and get the evaluation from the backend
+  //       const response = await axios.post(
+  //         `/api/useranswers/eval/${userAnswersId}`
+  //       );
+  //       await axios.patch(`/api/exams/take-exam/${takeExamId}`, {
+  //         status: "completed",
+  //         examEndTime: Date.now(),
+  //       });
+
+  //       console.log(response);
+  //       navigate("/dashboard");
+  //     } catch (error) {
+  //       console.error("Error fetching exam details:", error);
+  //       toast.error("Failed to submit exam");
+  //     }
+  //   };
 
   // function that handles the examinee activities that will caouse the user to be blocked
   const promptUserExplanation = (message) => {

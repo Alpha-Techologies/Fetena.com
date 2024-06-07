@@ -167,6 +167,8 @@ const MonitoringPage = () => {
         setCurrentUser={setCurrentUser}
         seeStatusOf={seeStatusOf}
         setSeeStatusOf={setSeeStatusOf}
+        socket={socket}
+        fetchExamineeList={fetchExamineeList}
       />
     ),
     tab2: (

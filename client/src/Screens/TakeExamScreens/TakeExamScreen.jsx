@@ -1,22 +1,6 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import io from "socket.io-client";
-import {
-  Card,
-  Form,
-  Input,
-  Select,
-  Layout,
-  FloatButton,
-  Radio,
-  Tag,
-  Popconfirm,
-  Modal,
-} from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-import { Icon } from "@iconify/react";
-import fetena_logo from "../../assets/fetena_logo.png";
-import moment from "moment";
 import { toast } from "react-toastify";
 import "react-chat-elements/dist/main.css";
 
@@ -25,12 +9,7 @@ import { takeExam } from "../../Redux/features/dataActions";
 import axios from "axios";
 
 import ExamStartConfirmationModal from "./ExamStartConfirmationModal";
-import ExamTools from "./ExamTools";
-import ChatComponent from "./ChatComponent";
-import debounce from "lodash/debounce";
 import ExamScreen from "./ExamScreen";
-
-const { Header, Sider, Content } = Layout;
 
 const TakeExamScreen = () => {
   const { user } = useSelector((state) => state.auth);
@@ -44,7 +23,6 @@ const TakeExamScreen = () => {
   const [exam, setExam] = useState(null);
   const [socket] = useSocketIO();
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const { id } = useParams();
@@ -70,6 +48,8 @@ const TakeExamScreen = () => {
             socket.emit("joinExam", id, res.payload.data._id);
           } else {
             toast.error(res.payload.message);
+            console.log("go back");
+            navigate(-1);
             return;
           }
         })
@@ -240,33 +220,6 @@ const TakeExamScreen = () => {
   const handleCancelFinishExam = () => {
     toast.success("Exited the Exam!");
     setStartExam(false);
-  };
-
-  const handleFinishExam = async () => {
-    const finishExam = async () => {
-      try {
-        const response = await axios.patch(
-          `/api/exams/take-exam/${takeExamId}`,
-          {
-            status: "submitted",
-          }
-        );
-        return response.status;
-      } catch (error) {
-        console.error("Error fetching exam details:", error);
-        toast.error("Failed to submit exam");
-      }
-    };
-
-    const resp = await finishExam();
-
-    if (resp === 200) {
-      setStartExam(false);
-      navigate(-1);
-      // document.exitFullscreen();
-      exitFullscreen();
-      toast.success("Exam submitted successfully!");
-    }
   };
 
   // const ExamScreen = () => {
@@ -603,6 +556,7 @@ const TakeExamScreen = () => {
         userAnswersId={userAnswersId}
         startExam={startExam}
         takeExamId={takeExamId}
+        setStartExam={setStartExam}
       />{" "}
     </div>
   );
