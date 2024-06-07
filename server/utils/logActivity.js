@@ -8,6 +8,7 @@ const logActivity = async (req,actionIndex, {name,id}) => {
       console.log(req.user.id)
       await Log.create({
         user: req.user.id? req.user.id : 'Unknown',
+        organization:req.organization?req.organization:'',
         ipAddress: req  .ip? req.ip : 'Unknown',
         action:`${actionTypes[actionIndex]}`,
         entity:{

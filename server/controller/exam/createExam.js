@@ -85,6 +85,7 @@ exports.createExam = catchAsync(async (req, res, next) => {
 
   await exam.save();
 
+  req.organization = exam.organization
   await logActivity(req,0,{name:'exam',id:exam.id} )
 
   res.status(201).json({
