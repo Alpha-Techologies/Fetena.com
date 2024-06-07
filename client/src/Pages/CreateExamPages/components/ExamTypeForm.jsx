@@ -53,13 +53,13 @@ const ExamTypeForm = ({setActiveTabKey,setExamType, basicInfoValues,examType,
 
     <div className="flex justify-center items-center gap-2 mb-8 mt-4">
 
-    <Icon icon="ph:exam" className="text-2xl font-bold text-blue-800" />
+    <Icon icon="ph:exam" className="text-2xl font-bold text-blue-800 lg:flex hidden" />
 <p className="font-semibold  text-blue-900 text-lg">Enter the Exam type you want to create here</p>
 </div>
 
-<Form.Item name="examType" rules={[{ required: true, message: "Please input the exam type!" }]}>
+<Form.Item name="examType">
 <Radio.Group
-    className="flex justify-center items-center gap-8"
+    className="flex flex-wrap justify-center items-center gap-8"
     value={examType}
     onChange={(e) => {
       const selectedExamType = e.target.value;

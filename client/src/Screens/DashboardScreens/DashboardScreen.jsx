@@ -34,7 +34,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const DashboardScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [orgModal, setOrgModal] = useState(false);
   const [workspaceDropdownItems, setWorkspaceDropdownItems] = useState([]);
   const [currentWorkspace, setCurrentWorkspace] = useState("personal");
@@ -286,10 +286,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='exam-monitor'
-        onClick={() => dispatch(switchSidebar("3"))}>
+        onClick={() => dispatch(switchSidebar("4"))}>
         Exam Monitoring
       </Link>,
-      "3",
+      "4",
       <Icon
         className='w-5 h-5'
         icon='ic:outline-monitor-heart'
@@ -298,10 +298,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='activities'
-        onClick={() => dispatch(switchSidebar("4"))}>
+        onClick={() => dispatch(switchSidebar("5ki"))}>
         Activity Log
       </Link>,
-      "4",
+      "5",
       <Icon
         className='w-4 h-4'
         icon='octicon:log-24'
@@ -310,10 +310,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='staffs'
-        onClick={() => dispatch(switchSidebar("5"))}>
+        onClick={() => dispatch(switchSidebar("6"))}>
         Staff
       </Link>,
-      "5",
+      "6",
       <Icon
         className='w-5 h-5'
         icon='fluent:people-team-16-regular'
@@ -322,10 +322,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='settings'
-        onClick={() => dispatch(switchSidebar("6"))}>
+        onClick={() => dispatch(switchSidebar("7"))}>
         Settings
       </Link>,
-      "6",
+      "7",
       <Icon
         className='w-5 h-5'
         icon='uil:setting'
@@ -335,10 +335,10 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='trainingVideos'
-        onClick={() => dispatch(switchSidebar("7"))}>
+        onClick={() => dispatch(switchSidebar("8"))}>
         Training Videos
       </Link>,
-      "7",
+      "8",
       <Icon
         className='w-5 h-5'
         icon='healthicons:i-training-class-outline'
@@ -574,7 +574,7 @@ const DashboardScreen = () => {
             zIndex: 1,
             width: "100%",
           }}>
-          <h1 className='text-xl font-semibold text-primary-500'>
+          <h1 className='hidden lg:flex  text-xl font-semibold text-primary-500 '>
             {"Hello there, " + user.firstName + " " + user.lastName + "!"}
           </h1>
           <div className='inline-flex items-center justify-center gap-4'>

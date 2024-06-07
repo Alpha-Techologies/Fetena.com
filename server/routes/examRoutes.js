@@ -18,9 +18,10 @@ const {
 
 router.use(takeExamRouter);
 
-const { protect, restrictTo } = require("../controller/auth");
+const { protect,restrictTo } = require("../controller/auth");
 
-router.route("/").post(protect, createExam);
+
+router.route("/").get(protect, getAllExam).post(protect, createExam);
 router.route("/my-exam/:id").get(protect, getMyExam);
 router.route("/get-public").get(protect, getPublicExam);
 

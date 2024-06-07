@@ -258,7 +258,9 @@ const confirmDeleteQuestion = () => {
           <p className="font-semibold"><span className="font-bold text-blue-700">Exam Name : </span>{basicInfoValues.examName}</p>
           <p className="font-semibold">
   <span className="font-bold text-blue-700">Starting date & time : </span>
-  {basicInfoValues.examStartDate ? new Date(basicInfoValues.examStartDate).toLocaleString() : ""}
+  {new Date(
+        basicInfoValues.examDate + " " + basicInfoValues.examTime
+      ).toLocaleString()}
 </p>
 <p className="font-semibold"><span className="font-bold text-blue-700">Points : </span>{totalPoints}</p>
 {/* <p className="font-semibold"><span className="font-bold text-blue-700">Points : </span>3</p> */}
@@ -543,15 +545,15 @@ const confirmDeleteQuestion = () => {
   
       {question.questionType === "True/False" ? (
 
-<Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
-<div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+<Card className="mx-auto bg-gray-50 rounded-none">
+<div className="flex gap-8 items-center justify-between border-b pb-2">
   <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
     <p className="font-semibold text-blue-900">Points {question.points}</p>
   </div>
-  <div className="mt-4 mx-4 flex items-start border-b pb-4">
+  <div className="mt-4 flex items-start border-b pb-4">
    <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
-  <div className="mt-8 flex items-start mx-4 ">
+  <div className="mt-8 flex items-start">
     <Form.Item label="Your Answer" className="w-48">
       <Select >
         <Select.Option value="true">True</Select.Option>
@@ -561,7 +563,7 @@ const confirmDeleteQuestion = () => {
   </div>
  {/* Example for the 'True/False' question type */}
 
-  <div className="flex justify-end items-center mx-4">
+  <div className="flex justify-end items-center">
     <Button type="link" onClick={() => handleEditQuestion(index)}>
     <Icon icon="mage:edit" className="text-blue-800 text-2xl hover:text-gray-900" />
     </Button>
@@ -582,15 +584,15 @@ const confirmDeleteQuestion = () => {
 
 
       ) : question.questionType === "choose" ? (
-        <Card className="bg-gray-50 w-11/12 mx-auto">
-          <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+        <Card className="bg-gray-50  mx-auto">
+          <div className="flex gap-8 items-center justify-between  border-b pb-2">
             <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
             <p className="font-semibold text-blue-900">Points {question.points}</p>
           </div>
-          <div className="mt-4 mx-4 flex items-start border-b pb-4">
+          <div className="mt-4 flex items-start border-b pb-4">
             <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
           </div>
-          <div className="mt-4 w-full flex items-start mx-4 gap-4">
+          <div className="mt-4 w-full flex items-start gap-4">
             <Radio.Group value={question.correctAnswer}>
               {question.questionChoice.map((choice, choiceIndex) => (
                 <Form.Item key={choiceIndex} label={`${String.fromCharCode(65 + choiceIndex)}`}>
@@ -605,7 +607,7 @@ const confirmDeleteQuestion = () => {
               ))}
             </Radio.Group>
           </div>
-          <div className="flex justify-end items-center mx-4">
+          <div className="flex justify-end items-center">
             <Button type="link" onClick={() => handleEditQuestion(index)}>
               <Icon icon="mage:edit" className="text-blue-800 text-2xl hover:text-gray-900" />
             </Button>
@@ -620,19 +622,19 @@ const confirmDeleteQuestion = () => {
 
 
 
-<Card className="bg-gray-50 w-11/12 mx-auto my-2">
-<div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+<Card className="bg-gray-50 mx-auto my-2">
+<div className="flex gap-8 items-center justify-between border-b pb-2">
     <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
     <p className="font-semibold text-blue-900">Points {question.points}</p>
 
   </div>
  
      
-  <div className="mt-4 mx-4 flex items-start border-b pb-4">
+  <div className="mt-4 flex items-start border-b pb-4">
      <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
 
-     <div className="mt-4 flex items-start mx-4 mb-4">
+     <div className="mt-4 flex items-start mb-4">
        <TextArea
          rows={4}
          placeholder="Enter your question here"
@@ -640,7 +642,7 @@ const confirmDeleteQuestion = () => {
          
        />
      </div>
-     <div className="flex justify-end items-center mx-4">
+     <div className="flex justify-end items-center">
     <Button type="link" onClick={() => handleEditQuestion(index)}>
     <Icon icon="mage:edit" className="text-blue-800 text-2xl hover:text-gray-900" />
     </Button>
@@ -666,19 +668,19 @@ const confirmDeleteQuestion = () => {
         
 
 
-        <Card className="bg-gray-50 w-11/12 mx-auto my-8">
-         <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+        <Card className="bg-gray-50 mx-auto my-8">
+         <div className="flex gap-8 items-center justify-between border-b pb-2">
     <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
     <p className="font-semibold text-blue-900">Points {question.points}</p>
 
   </div>
     
         
-  <div className="mt-4 mx-4 flex items-start border-b pb-4">
+  <div className="mt-4 flex items-start border-b pb-4">
         <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
 
-     <div className="mt-4 flex items-start mx-4 mb-4">
+     <div className="mt-4 flex items-start mb-4">
        <TextArea
          rows={4}
          placeholder="Enter your question here"
@@ -686,7 +688,7 @@ const confirmDeleteQuestion = () => {
          
        />
      </div>
-     <div className="flex justify-end items-center mx-4">
+     <div className="flex justify-end items-center">
     <Button type="link" onClick={() => handleEditQuestion(index)}>
     <Icon icon="mage:edit" className="text-blue-800 text-2xl hover:text-gray-900" />
     </Button>

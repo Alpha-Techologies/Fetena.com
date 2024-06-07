@@ -276,7 +276,7 @@ const OrganizationsPage = () => {
           <span className='w-full font-semibold text-blue-800'>Filter:</span>
 
           <Select
-            defaultValue=''
+            defaultValue='verified'
             className='h-full'
             style={{
               width: 120,
@@ -331,7 +331,7 @@ const OrganizationsPage = () => {
 
       {/* Rendering organizations based on the active tab */}
       {activeTabKey === "All" && (
-        <div className='flex flex-wrap gap-2'>
+        <div className='flex flex-wrap gap-2 w-full'>
           {isLoading ? (
             <Loading />
           ) : (
@@ -343,7 +343,7 @@ const OrganizationsPage = () => {
               onTabChange={onTabChange}
               tabProps={{ size: "middle" }}>
               {organizations.length > 0 ? (
-                <div className='flex flex-wrap gap-2'>
+                <div className='flex flex-wrap gap-2 w-full'>
                   {organizations.map((organization, index) => (
                     <Card
                       style={{ width: 300 }}

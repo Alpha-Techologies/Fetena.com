@@ -1,8 +1,8 @@
-const Button = ({text, color, px, py, textColor}) => {
+const Button = ({text}) => {
   return (
     <button
       type='button'
-      className={` text-${textColor} border border-${color} bg-${color} hover:bg-white hover:text-${color} hover:border hover:border-${color} focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-${px} py-${py} text-center transition-all ease-in-out duration-300 `}>
+      className="flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-semibold py-[0.4rem] px-8 rounded-md text-md">
       {text}
     </button>
   );

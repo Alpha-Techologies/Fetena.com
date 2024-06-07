@@ -5,18 +5,12 @@ import {
   Button,
   Select,
   InputNumber,
-  DatePicker,
-  Radio,
-  Switch,
+
 } from "antd";
-import { TimePicker } from "antd";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
+
 import "react-quill/dist/quill.snow.css";
 import React, { useEffect, useRef, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
-import { Tag, theme } from "antd";
-import { TweenOneGroup } from "rc-tween-one";
+import { theme } from "antd";
 
 const { TextArea } = Input;
 
@@ -26,7 +20,6 @@ const BasicInfoForm = ({
   setActiveTabKey,
 }) => {
   const { token } = theme.useToken();
-  const [tags, setTags] = useState([]);
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef(null);
@@ -37,54 +30,15 @@ const BasicInfoForm = ({
     }
   }, [inputVisible]);
 
-  const handleClose = (removedTag) => {
-    const newTags = tags.filter((tag) => tag !== removedTag);
-    console.log(newTags);
-    setTags(newTags);
-  };
+
   const showInput = () => {
     setInputVisible(true);
   };
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
-  const handleInputConfirm = () => {
-    if (inputValue && tags.indexOf(inputValue) === -1) {
-      const newTags = [...tags, inputValue];
-      setTags(newTags);
-      setBasicInfoValues({ ...basicInfoValues, tags: newTags });
-      console.log({ ...basicInfoValues, tags: newTags });
-    } else {
-      setBasicInfoValues({ ...basicInfoValues, tags });
-      console.log(basicInfoValues);
-    }
-    setInputVisible(false);
-    setInputValue("");
-  };
 
-  const forMap = (tag) => (
-    <span
-      key={tag}
-      style={{
-        display: "inline-block",
-      }}
-    >
-      <Tag
-        closable
-        onClose={(e) => {
-          e.preventDefault();
-          handleClose(tag);
-        }}
-      >
-        {tag}
-      </Tag>
-    </span>
-  );
-  const tagChild = tags.map(forMap);
-  const tagPlusStyle = {
-    background: token.colorBgContainer,
-    borderStyle: "dashed",
-  };
+
 
   return (
     <div className="w-full flex flex-col gap-4 mt-4">
@@ -92,7 +46,7 @@ const BasicInfoForm = ({
 
 
  
-      <div className="grid grid-cols-2 gap-x-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
 
      
 

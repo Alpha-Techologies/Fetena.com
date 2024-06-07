@@ -3,11 +3,6 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
-import Certification from "./Certification";
-import fetena_logoo from "../assets/fetena_logoo.svg";
-import signature from "../assets/sign.png";
-import fetena_icon from "../assets/fetena_icon.png";
-
 
 const { Search } = Input;
 const { Meta } = Card;
@@ -50,27 +45,27 @@ const CertificationsPage = () => {
 
   const ExamCard = () => {
     return (
-       <Link to="/dashboard/certifications/hjh">
+      <Link to="/dashboard/certifications/hjh">
         <Card
-    style={{
-      width: 300,
-    }}
-    className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200"
+          style={{
+            width: 300,
+          }}
+          className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200"
+        >
+          <div className="flex-col flex items-start gap-2">
+            <h3 className="font-bold text-md">English exam certificate</h3>
 
-    // cover={
-    //     <Image
-    //     width={300}
-    //     src="https://sertifier.com/blog/wp-content/uploads/2023/03/certificate-content-sample.jpg"
-    //   />
-    // }
-   
-  >
-      <div className="flex-col flex items-start gap-2">
-               <h3 className="font-bold text-md">English exam certificate</h3>
-             
-               <p className="font-semibold flex gap-2 items-center justify-center">AASTU <span><Icon icon="gravity-ui:seal-check" className="text-lg text-blue-800" /></span></p>
-              </div> 
-  </Card>
+            <p className="font-semibold flex gap-2 items-center justify-center">
+              AASTU{" "}
+              <span>
+                <Icon
+                  icon="gravity-ui:seal-check"
+                  className="text-lg text-blue-800"
+                />
+              </span>
+            </p>
+          </div>
+        </Card>
       </Link>
     );
   };
@@ -78,18 +73,9 @@ const CertificationsPage = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between gap-4 items-center">
-       <h1 className='text-2xl font-bold text-blue-900 text-left'>Certifications</h1>
-       <Button
-          //  onClick={showModall}
-           className="flex items-center gap-1 bg-primary-500 hover:bg-primary-700 text-white font-bold py-[0.5rem] px-4 rounded group">
-            <Icon
-              className="text-white w-4 h-4 group-hover:text-primary-500"
-              icon="mdi:certificate-outline"
-            />{" "}
-            <span className="group-hover:text-primary-500">
-              Create a Certificate
-            </span>
-          </Button>
+        <h1 className="text-2xl font-bold text-blue-900 text-left">
+          Certifications
+        </h1>
       </div>
       <div>
         <Card
@@ -101,13 +87,13 @@ const CertificationsPage = () => {
         >
           {activeTabKey === "All" && (
             <>
-              <div className="grid grid-cols-4 gap-4">
-              <ExamCard />
-              <ExamCard />
-              <ExamCard />
-              <ExamCard />
-              <ExamCard />
-              <ExamCard />
+              <div className="flex flex-wrap gap-4">
+                <ExamCard />
+                <ExamCard />
+                <ExamCard />
+                <ExamCard />
+                <ExamCard />
+                <ExamCard />
               </div>
               <Pagination current="1" total="5" className="mt-8" />
             </>
@@ -116,7 +102,6 @@ const CertificationsPage = () => {
           {activeTabKey === "Your Certifications" && <p>Your Certifications</p>}
         </Card>
       </div>
-
     </div>
   );
 };

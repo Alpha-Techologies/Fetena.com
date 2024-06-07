@@ -40,9 +40,8 @@ import Preview from "../Pages/Preview";
 import QuestionBank from "../Pages/QuestionBank";
 import UserExamsPage from "../Pages/UserExamsPage";
 import EditExam from './../Pages/EditExamPages/EditExam';
-import CertificationPage from "../Pages/Certification";
 import Certification from "../Pages/Certification";
-import MonitoringPage from "../Pages/MonitoringPage/MonitoringPage";
+import MonitoringPage from './../Pages/MonitoringPage/MonitoringPage';
 
 const AllRoutes = () => {
   const dispatch = useDispatch();

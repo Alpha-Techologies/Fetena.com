@@ -88,9 +88,10 @@ const Preview = ({
       basicInfoValues.examStartDate = new Date(
         basicInfoValues.examDate + " " + basicInfoValues.examTime
       );
+      console.log(basicInfoValues.examStartDate,"aheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     }
 
-    console.log(basicInfoValues.examStartDate);
+    console.log(basicInfoValues.examStartDate,"aheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 
     // if (!basicInfoValues.material || !basicInfoValues.material.name) {
     //   toast.error("Please upload the material");
@@ -105,8 +106,10 @@ const Preview = ({
       toast.error("Please add questions to submit the exam.");
       return;
     }
-
+console.log("one add questions start-------------------------------------------------------------------------------------------")
     try {
+      console.log("one add questions startrrrrrrrrrrrrr-------------------------------------------------------------------------------------------")
+
       // Make the Axios POST request to save questions
       const response = await axios.post("/api/questions", questionsCollection);
 
@@ -144,7 +147,6 @@ const Preview = ({
             updatedBasicInfoValues.formulasCollection && "formulasCollection",
             updatedBasicInfoValues.uploadMaterials && "uploadMaterials",
           ].filter(Boolean), // Filters out any falsy values
-          tags: updatedBasicInfoValues.tags,
           points: updatedBasicInfoValues.points,
           examFile: updatedBasicInfoValues.examFile,
           questions: response.data.data.data, // Ensure the questions are from the response
@@ -172,11 +174,12 @@ const Preview = ({
       console.error("Error submitting exam:", error);
       toast.error("Error submitting exam. Please try again later.");
     }
+    console.log("one add questions end-------------------------------------------------------------------------------------------")
 
     setBasicInfoValues({
       examName: "",
       duration: 1,
-      examStartDate: Date.now(),
+      examStartDate: null,
       organization: "663e889c6470d66fcf38a4d4",
       privateAnswer: false,
       privateScore: false,
@@ -267,7 +270,7 @@ const Preview = ({
 
       <div>
         <Card style={{ width: "100%" }} tabProps={{ size: "middle" }}>
-          <div className="w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border ">
+          <div className="w-full  flex flex-wrap justify-between py-2 px-2 lg:px-8 rounded-sm border ">
             <p className="font-semibold">
               <span className="font-bold text-blue-700">Exam Name : </span>
               {basicInfoValues.examName}
@@ -276,9 +279,14 @@ const Preview = ({
               <span className="font-bold text-blue-700">
                 Starting date & time :{" "}
               </span>
-              {basicInfoValues.examStartDate
+              {/* {basicInfoValues.examStartDate
                 ? new Date(basicInfoValues.examStartDate).toLocaleString()
-                : ""}
+                : ""} */}
+                {
+                  new Date(
+                    basicInfoValues.examDate + " " + basicInfoValues.examTime
+                  ).toLocaleString()
+                }
             </p>
             <p className="font-semibold">
               <span className="font-bold text-blue-700">Points : </span>
@@ -465,7 +473,7 @@ const Preview = ({
                   }
                 />
                 {editingQuestion.questionChoice.map((choice, choiceIndex) => (
-                  <div key={choiceIndex} className="flex items-center gap-2">
+                  <div key={choiceIndex} className="flex  items-center gap-2 ">
                     <Input
                       placeholder="Choice"
                       value={choice}
@@ -496,6 +504,7 @@ const Preview = ({
               <div className="flex flex-col gap-2 mt-6">
                 {/* Form fields for True/False question */}
                 <Input
+                   
                   placeholder="Question text"
                   value={editingQuestion.questionText}
                   onChange={(e) =>
@@ -554,8 +563,8 @@ const Preview = ({
           {questionsCollection.map((question, index) => (
             <div key={index} className="mb-4">
               {question.questionType === "True/False" ? (
-                <Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
-                  <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+   <Card className="bg-gray-50 w-full my-0">
+                  <div className="flex gap-8 items-center justify-between border-b pb-2">
                     <h3 className="text-blue-900 font-semibold text-lg">
                       Question {index + 1}
                     </h3>
@@ -563,12 +572,12 @@ const Preview = ({
                       Points {question.points}
                     </p>
                   </div>
-                  <div className="mt-4 mx-4 flex items-start border-b pb-4">
+                  <div className="mt-4 flex items-start border-b pb-4">
                     <h3 className="font-semibold text-[1rem]">
                       {question.questionText}
                     </h3>
                   </div>
-                  <div className="mt-8 flex items-start mx-4 ">
+                  <div className="mt-8 flex items-start">
                     <Form.Item label="Your Answer" className="w-48">
                       <Select>
                         <Select.Option value="true">True</Select.Option>
@@ -578,7 +587,7 @@ const Preview = ({
                   </div>
                   {/* Example for the 'True/False' question type */}
 
-                  <div className="flex justify-end items-center mx-4">
+                  <div className="flex justify-end items-center">
                     <Button
                       type="link"
                       onClick={() => handleEditQuestion(index)}
@@ -598,8 +607,8 @@ const Preview = ({
                   </div>
                 </Card>
               ) : question.questionType === "choose" ? (
-                <Card className="bg-gray-50 w-11/12 mx-auto">
-                  <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                <Card className="bg-gray-50 w-full my-0">
+                  <div className="flex gap-8 items-center justify-between border-b pb-2">
                     <h3 className="text-blue-900 font-semibold text-lg">
                       Question {index + 1}
                     </h3>
@@ -607,12 +616,12 @@ const Preview = ({
                       Points {question.points}
                     </p>
                   </div>
-                  <div className="mt-4 mx-4 flex items-start border-b pb-4">
+                  <div className="mt-4 flex items-start border-b pb-4">
                     <h3 className="font-semibold text-[1rem]">
                       {question.questionText}
                     </h3>
                   </div>
-                  <div className="mt-4 w-full flex items-start mx-4 gap-4">
+                  <div className="mt-4 w-full flex items-start gap-4">
                     <Radio.Group value={question.correctAnswer}>
                       {question.questionChoice.map((choice, choiceIndex) => (
                         <Form.Item
@@ -630,7 +639,7 @@ const Preview = ({
                       ))}
                     </Radio.Group>
                   </div>
-                  <div className="flex justify-end items-center mx-4">
+                  <div className="flex justify-end items-center">
                     <Button
                       type="link"
                       onClick={() => handleEditQuestion(index)}
@@ -649,8 +658,8 @@ const Preview = ({
                   </div>
                 </Card>
               ) : question.questionType === "shortAnswer" ? (
-                <Card className="bg-gray-50 w-11/12 mx-auto my-2">
-                  <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                <Card className="bg-gray-50 w-full">
+                  <div className="flex gap-8 items-center justify-between  border-b pb-2">
                     <h3 className="text-blue-900 font-semibold text-lg">
                       Question {index + 1}
                     </h3>
@@ -659,16 +668,16 @@ const Preview = ({
                     </p>
                   </div>
 
-                  <div className="mt-4 mx-4 flex items-start border-b pb-4">
+                  <div className="mt-4flex items-start border-b pb-4">
                     <h3 className="font-semibold text-[1rem]">
                       {question.questionText}
                     </h3>
                   </div>
 
-                  <div className="mt-4 flex items-start mx-4 mb-4">
+                  <div className="mt-4 flex items-start mb-4">
                     <TextArea rows={4} placeholder="Enter your question here" />
                   </div>
-                  <div className="flex justify-end items-center mx-4">
+                  <div className="flex justify-end items-center ">
                     <Button
                       type="link"
                       onClick={() => handleEditQuestion(index)}
@@ -688,8 +697,8 @@ const Preview = ({
                   </div>
                 </Card>
               ) : question.questionType === "essay" ? (
-                <Card className="bg-gray-50 w-11/12 mx-auto my-8">
-                  <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                <Card className="bg-gray-50 w-full">
+                  <div className="flex gap-8 items-center justify-between border-b pb-2">
                     <h3 className="text-blue-900 font-semibold text-lg">
                       Question {index + 1}
                     </h3>
@@ -704,10 +713,10 @@ const Preview = ({
                     </h3>
                   </div>
 
-                  <div className="mt-4 flex items-start mx-4 mb-4">
+                  <div className="mt-4 flex items-start mb-4">
                     <TextArea rows={4} placeholder="Enter your question here" />
                   </div>
-                  <div className="flex justify-end items-center mx-4">
+                  <div className="flex justify-end items-center ">
                     <Button
                       type="link"
                       onClick={() => handleEditQuestion(index)}
@@ -764,7 +773,7 @@ const Preview = ({
           </Button>
           
       <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
-        <div className="flex gap-8 items-center justify-center">
+        <div className="flex flex-wrap gap-8 items-center justify-center">
           <h3 className=" font-semibold text-[1rem] flex gap-1 justify-center items-center">
           <Icon icon="pepicons-pop:question" className="text-blue-900" />
             Total Questions :{" "}

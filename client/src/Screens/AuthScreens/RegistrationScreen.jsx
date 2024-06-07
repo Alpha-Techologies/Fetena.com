@@ -300,7 +300,7 @@ const RegistrationScreen = () => {
 
         <div className='flex flex-col gap-4 shadow-md px-16 py-8 rounded-lg bg-white '>
           {step !== 5 && (
-            <nav className='flex gap-2 px-2 text-base justify-center items-center font-medium leading-5 text-white whitespace-nowrap max-md:flex-wrap'>
+            <nav className='flex gap-2 py-2 text-base justify-center items-center font-medium leading-5 text-white whitespace-nowrap max-md:flex-wrap'>
               <React.Fragment>
                 <div
                   className={`${
@@ -313,7 +313,7 @@ const RegistrationScreen = () => {
                 <div
                   className={`${
                     step > 1 ? "bg-blue-900" : "bg-blue-100"
-                  } shrink-0 my-auto h-1.5  rounded-[40px] w-[64px]`}
+                  } shrink-0 my-auto h-1.5  rounded-[40px] w-[32px] lg:w-[32px] lg:w-[64px]`}
                 />
               </React.Fragment>
               <React.Fragment>
@@ -328,7 +328,7 @@ const RegistrationScreen = () => {
                 <div
                   className={`${
                     step > 2 ? "bg-blue-900" : "bg-blue-100"
-                  } shrink-0 my-auto h-1.5  rounded-[40px] w-[64px]`}
+                  } shrink-0 my-auto h-1.5  rounded-[40px] w-[32px] lg:w-[64px]`}
                 />
               </React.Fragment>
               <React.Fragment>
@@ -343,7 +343,7 @@ const RegistrationScreen = () => {
                 <div
                   className={`${
                     step > 3 ? "bg-blue-900" : "bg-blue-100"
-                  } shrink-0 my-auto h-1.5  rounded-[40px] w-[64px]`}
+                  } shrink-0 my-auto h-1.5  rounded-[40px] w-[32px] lg:w-[64px]`}
                 />
               </React.Fragment>
               <React.Fragment>
