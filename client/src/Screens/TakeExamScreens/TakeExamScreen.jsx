@@ -59,16 +59,16 @@ const TakeExamScreen = () => {
       dispatch(takeExam(id))
         .then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
-            console.log(res.payload);
+            // console.log(res.payload);
             const temp = res.payload.data._id;
             setTakeExamId(temp);
             setUserAnswersId(res.payload.data.userAnswers);
-            console.log(
-              temp,
-              "takeExamId",
-              res.payload.data.userAnswers,
-              "userAnswersId"
-            );
+            // console.log(
+            //   temp,
+            //   "takeExamId",
+            //   res.payload.data.userAnswers,
+            //   "userAnswersId"
+            // );
 
             socket.emit("joinExam", id, res.payload.data._id);
           } else {
@@ -210,6 +210,11 @@ const TakeExamScreen = () => {
     requestFullscreen();
   };
 
+  const handleCancelFinishExam = () => {
+    toast.success("Exited the Exam!");
+    setStartExam(false);
+  };
+
   const handleFinishExam = async () => {
     const finishExam = async () => {
       try {
@@ -307,31 +312,37 @@ const TakeExamScreen = () => {
     };
 
     return (
-      <Layout className="h-screen">
+      <Layout className='h-screen'>
         <FloatButton
           onClick={() => setShowChat(!showChat)}
-          shape="circle"
-          icon={<Icon icon="grommet-icons:chat" />}
+          shape='circle'
+          icon={<Icon icon='grommet-icons:chat' />}
           tooltip={<div>Exam Chat</div>}
           badge={{
             dot: true,
           }}
         />
-        {<ChatComponent exam={exam} socket={socket} examinee={examinee} />}
+        {
+          <ChatComponent
+            exam={exam}
+            socket={socket}
+            examinee={examinee}
+          />
+        }
         <Sider
           style={{
             width: 600,
           }}
-          className="flex flex-col gap-4 text-white h-screen"
+          className='flex flex-col gap-4 text-white h-screen'
           // collapsible
-          theme="light"
+          theme='light'
           // collapsed={collapsed}
           // onCollapse={(value) => setCollapsed(value)}
         >
           <img
             src={fetena_logo}
-            alt="Fetena.com Logo"
-            className="w-24 my-4 mx-auto"
+            alt='Fetena.com Logo'
+            className='w-24 my-4 mx-auto'
           />
           <ExamTools
             exam={exam}
@@ -347,8 +358,7 @@ const TakeExamScreen = () => {
             style={{
               padding: 0,
               backgroundColor: "#fff",
-            }}
-          >
+            }}>
             Exam Session
           </Header>
           <Content
@@ -357,74 +367,74 @@ const TakeExamScreen = () => {
               padding: 24,
               minHeight: 280,
             }}
-            className="overflow-auto"
-          >
-            <div className="flex flex-col gap-4 my-4 mt-8 ">
+            className='overflow-auto'>
+            <div className='flex flex-col gap-4 my-4 mt-8 '>
               {exam.questions.map((question, index) => (
-                <div key={index} className="mb-4">
+                <div
+                  key={index}
+                  className='mb-4'>
                   {question.questionType === "True/False" ? (
-                    <Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
-                      <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-                        <h3 className="text-blue-900 font-semibold text-lg">
+                    <Card className=' w-11/12 mx-auto bg-gray-50 rounded-none'>
+                      <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                        <h3 className='text-blue-900 font-semibold text-lg'>
                           Question {index + 1}
                         </h3>
-                        <p className="font-semibold text-blue-900">
+                        <p className='font-semibold text-blue-900'>
                           Points {question.points}
                         </p>
                       </div>
-                      <div className="mt-4 mx-4 flex items-start">
-                        <h3 className="font-semibold text-[1rem]">
+                      <div className='mt-4 mx-4 flex items-start'>
+                        <h3 className='font-semibold text-[1rem]'>
                           {question.questionText}
                         </h3>
                       </div>
-                      <div className="mt-8 flex items-start mx-4 ">
-                        <Form.Item label="Your Answer" className="w-48">
+                      <div className='mt-8 flex items-start mx-4 '>
+                        <Form.Item
+                          label='Your Answer'
+                          className='w-48'>
                           <Select
                             onChange={(value) =>
                               handleAnswer(question._id, value)
-                            }
-                          >
-                            <Select.Option value="true">True</Select.Option>
-                            <Select.Option value="false">False</Select.Option>
+                            }>
+                            <Select.Option value='true'>True</Select.Option>
+                            <Select.Option value='false'>False</Select.Option>
                           </Select>
                         </Form.Item>
                       </div>
                     </Card>
                   ) : question.questionType === "choose" ? (
-                    <Card className="bg-gray-50 w-11/12 mx-auto">
-                      <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-                        <h3 className="text-blue-900 font-semibold text-lg">
+                    <Card className='bg-gray-50 w-11/12 mx-auto'>
+                      <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                        <h3 className='text-blue-900 font-semibold text-lg'>
                           Question {index + 1}
                         </h3>
-                        <p className="font-semibold text-blue-900">
+                        <p className='font-semibold text-blue-900'>
                           Points {question.points}
                         </p>
                       </div>
-                      <div className="mt-4 mx-4 flex items-start border-b pb-4">
-                        <h3 className="font-semibold text-[1rem]">
+                      <div className='mt-4 mx-4 flex items-start border-b pb-4'>
+                        <h3 className='font-semibold text-[1rem]'>
                           {question.questionText}
                         </h3>
                       </div>
-                      <div className="mt-4 w-full flex items-start mx-4 gap-4">
-                        <div className="flex flex-col">
+                      <div className='mt-4 w-full flex items-start mx-4 gap-4'>
+                        <div className='flex flex-col'>
                           <Radio.Group
                             onChange={(e) =>
                               handleAnswer(question._id, e.target.value)
-                            }
-                          >
+                            }>
                             {question.questionChoice.map(
                               (choice, choiceIndex) => (
                                 <Form.Item
                                   key={choiceIndex}
                                   label={`${String.fromCharCode(
                                     65 + choiceIndex
-                                  )}`}
-                                >
-                                  <div className="flex gap-4 justify-center">
-                                    <p className="font-semibold">{choice}</p>
-                                    <div className="flex gap-2 items-center">
+                                  )}`}>
+                                  <div className='flex gap-4 justify-center'>
+                                    <p className='font-semibold'>{choice}</p>
+                                    <div className='flex gap-2 items-center'>
                                       <Radio value={choice}></Radio>
-                                      <span className="text-blue-700"></span>
+                                      <span className='text-blue-700'></span>
                                     </div>
                                   </div>
                                 </Form.Item>
@@ -435,56 +445,56 @@ const TakeExamScreen = () => {
                       </div>
                     </Card>
                   ) : question.questionType === "shortAnswer" ? (
-                    <Card className="bg-gray-50 w-11/12 mx-auto my-2">
-                      <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-                        <h3 className="text-blue-900 font-semibold text-lg">
+                    <Card className='bg-gray-50 w-11/12 mx-auto my-2'>
+                      <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                        <h3 className='text-blue-900 font-semibold text-lg'>
                           Question {index + 1}
                         </h3>
-                        <p className="font-semibold text-blue-900">
+                        <p className='font-semibold text-blue-900'>
                           Points {question.points}
                         </p>
                       </div>
 
-                      <div className="mt-4 mx-4 flex items-start ">
-                        <h3 className="font-semibold text-[1rem]">
+                      <div className='mt-4 mx-4 flex items-start '>
+                        <h3 className='font-semibold text-[1rem]'>
                           {question.questionText}
                         </h3>
                       </div>
 
-                      <div className="mt-4 flex items-start mx-4 mb-4">
+                      <div className='mt-4 flex items-start mx-4 mb-4'>
                         <TextArea
                           rows={4}
                           onChange={(e) =>
                             handleAnswer(question._id, e.target.value)
                           }
-                          placeholder="Enter your question here"
+                          placeholder='Enter your question here'
                         />
                       </div>
                     </Card>
                   ) : question.questionType === "essay" ? (
-                    <Card className="bg-gray-50 w-11/12 mx-auto my-8">
-                      <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-                        <h3 className="text-blue-900 font-semibold text-lg">
+                    <Card className='bg-gray-50 w-11/12 mx-auto my-8'>
+                      <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                        <h3 className='text-blue-900 font-semibold text-lg'>
                           Question {index + 1}
                         </h3>
-                        <p className="font-semibold text-blue-900">
+                        <p className='font-semibold text-blue-900'>
                           Points {question.points}
                         </p>
                       </div>
 
-                      <div className="mt-4 mx-4 flex items-start">
-                        <h3 className="font-semibold text-[1rem]">
+                      <div className='mt-4 mx-4 flex items-start'>
+                        <h3 className='font-semibold text-[1rem]'>
                           {question.questionText}
                         </h3>
                       </div>
 
-                      <div className="mt-4 flex items-start mx-4 mb-4">
+                      <div className='mt-4 flex items-start mx-4 mb-4'>
                         <TextArea
                           rows={4}
                           onChange={(e) =>
                             handleAnswer(question._id, e.target.value)
                           }
-                          placeholder="Enter your question here"
+                          placeholder='Enter your question here'
                         />
                       </div>
                     </Card>
@@ -492,12 +502,18 @@ const TakeExamScreen = () => {
                 </div>
               ))}
             </div>
-            <button
-              onClick={handleFinishExam}
-              className="bg-primary-500 text-white cursor-pointer rounded px-4 py-2"
-            >
-              Finish
-            </button>
+
+            <Popconfirm
+              title='Confirmation'
+              description='Are you sure to submit exam?'
+              onConfirm={handleFinishExam}
+              onCancel={handleCancelFinishExam}
+              okText='Yes'
+              cancelText='No'>
+              <button className='bg-primary-500 text-white cursor-pointer rounded px-4 py-2'>
+                Finish
+              </button>
+            </Popconfirm>
           </Content>
         </Layout>
       </Layout>

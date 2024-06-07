@@ -92,7 +92,7 @@ const ChatWindow = ({ currentUser, seeStatusOf, currentExam, socket }) => {
     if (chatMessage !== "") {
       socket.emit("sendMessage", currentExam._id, true, {
         sender: user._id,
-        receiver: currentUser.user._id,
+        receiver: currentUser?.user?._id,
         message: chatMessage,
       });
       setChatList((prev) => [
@@ -144,7 +144,7 @@ const ChatWindow = ({ currentUser, seeStatusOf, currentExam, socket }) => {
             placeholder={
               seeStatusOf === "all"
                 ? "Message All"
-                : "Message " + currentUser.user.fullName
+                : "Message " + currentUser?.user?.fullName
             }
           />
           <Icon
