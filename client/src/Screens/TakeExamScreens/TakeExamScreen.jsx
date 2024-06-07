@@ -56,16 +56,16 @@ const TakeExamScreen = () => {
       dispatch(takeExam(id))
         .then((res) => {
           if (res.meta.requestStatus === "fulfilled") {
-            console.log(res.payload);
+            // console.log(res.payload);
             const temp = res.payload.data._id;
             setTakeExamId(temp);
             setUserAnswersId(res.payload.data.userAnswers);
-            console.log(
-              temp,
-              "takeExamId",
-              res.payload.data.userAnswers,
-              "userAnswersId"
-            );
+            // console.log(
+            //   temp,
+            //   "takeExamId",
+            //   res.payload.data.userAnswers,
+            //   "userAnswersId"
+            // );
 
             socket.emit("joinExam", id, res.payload.data._id);
           } else {
@@ -235,6 +235,11 @@ const TakeExamScreen = () => {
   const handleStartExam = () => {
     setStartExam(true);
     requestFullscreen();
+  };
+
+  const handleCancelFinishExam = () => {
+    toast.success("Exited the Exam!");
+    setStartExam(false);
   };
 
   const handleFinishExam = async () => {
