@@ -93,7 +93,7 @@ const BasicInfoForm = ({
 
   return (
     <div className="w-full flex flex-col gap-4 mt-4">
-            <div className="grid grid-cols-2 gap-x-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
 
       <Form.Item label="Exam Name">
         <Input

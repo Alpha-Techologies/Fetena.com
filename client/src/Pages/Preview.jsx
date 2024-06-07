@@ -192,15 +192,15 @@ console.log(exam.examFile instanceof File, "let me see")
 
 
 
-<Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
-<div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+<Card className="mx-auto bg-gray-50 rounded-none">
+<div className="flex gap-8 items-center justify-between  border-b pb-2">
   <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
     <p className="font-semibold text-blue-900">Points {question.points}</p>
   </div>
-  <div className="mt-4 mx-4 flex items-start">
+  <div className="mt-4  flex items-start">
    <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
-  <div className="mt-8 flex items-start mx-4 ">
+  <div className="mt-8 flex items-start ">
     <Form.Item label="Your Answer" className="w-48">
       <Select >
         <Select.Option value="true">True</Select.Option>
@@ -226,23 +226,17 @@ console.log(exam.examFile instanceof File, "let me see")
 
 
 
-<Card className="bg-gray-50 w-11/12 mx-auto">
-  <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+<Card className="bg-gray-50 mx-auto">
+  <div className="flex gap-8 items-center justify-between border-b pb-2">
     <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
     <p className="font-semibold text-blue-900">Points {question.points}</p>
 
   </div>
-  <div className="mt-4 mx-4 flex items-start border-b pb-4">
+  <div className="mt-4 flex items-start border-b pb-4">
   <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
   </div>
-  <div className="mt-4 w-full flex items-start mx-4 gap-4">
-    {/* <Form.Item label="Choice Number" rules={[{ required: true, message: "Please select the choice number" }]} className="w-48">
-      <Select onChange={(value) => setChoiceCount(value)} defaultValue={2}>
-        {[2, 3, 4, 5].map((count) => (
-          <Select.Option key={count} value={count}>{count}</Select.Option>
-        ))}
-      </Select>
-    </Form.Item> */}
+  <div className="mt-4 w-full flex items-start  gap-4">
+
                     <div className='flex flex-col'>
                       <Radio.Group value={question.correctAnswer}>
                         {question.questionChoice.map((choice, choiceIndex) => (
@@ -263,8 +257,8 @@ console.log(exam.examFile instanceof File, "let me see")
                   </div>
                 </Card>
               ) : question.questionType === "shortAnswer" ? (
-                <Card className='bg-gray-50 w-11/12 mx-auto my-2'>
-                  <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                <Card className='bg-gray-50  mx-auto'>
+                  <div className='flex gap-8 items-center justify-between  border-b pb-2'>
                     <h3 className='text-blue-900 font-semibold text-lg'>
                       Question {index + 1}
                     </h3>
@@ -273,13 +267,13 @@ console.log(exam.examFile instanceof File, "let me see")
                     </p>
                   </div>
 
-                  <div className='mt-4 mx-4 flex items-start '>
+                  <div className='mt-4 flex items-start '>
                     <h3 className='font-semibold text-[1rem]'>
                       {question.questionText}
                     </h3>
                   </div>
 
-                  <div className='mt-4 flex items-start mx-4 mb-4'>
+                  <div className='mt-4 flex items-start mb-4'>
                     <TextArea
                       rows={4}
                       placeholder='Enter your question here'
@@ -287,8 +281,8 @@ console.log(exam.examFile instanceof File, "let me see")
                   </div>
                 </Card>
               ) : question.questionType === "essay" ? (
-                <Card className='bg-gray-50 w-11/12 mx-auto my-8'>
-                  <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
+                <Card className='bg-gray-50  mx-auto '>
+                  <div className='flex gap-8 items-center justify-between border-b pb-2'>
                     <h3 className='text-blue-900 font-semibold text-lg'>
                       Question {index + 1}
                     </h3>
@@ -297,13 +291,13 @@ console.log(exam.examFile instanceof File, "let me see")
                     </p>
                   </div>
 
-                  <div className='mt-4 mx-4 flex items-start'>
+                  <div className='mt-4  flex items-start'>
                     <h3 className='font-semibold text-[1rem]'>
                       {question.questionText}
                     </h3>
                   </div>
 
-     <div className="mt-4 flex items-start mx-4 mb-4">
+     <div className="mt-4 flex items-start mb-4">
        <TextArea
          rows={4}
          placeholder="Enter your question here"

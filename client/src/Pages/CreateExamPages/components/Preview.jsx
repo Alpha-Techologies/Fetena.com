@@ -279,9 +279,9 @@ console.log("one add questions start--------------------------------------------
               <span className="font-bold text-blue-700">
                 Starting date & time :{" "}
               </span>
-              {basicInfoValues.examStartDate
+              {/* {basicInfoValues.examStartDate
                 ? new Date(basicInfoValues.examStartDate).toLocaleString()
-                : ""}
+                : ""} */}
                 {
                   new Date(
                     basicInfoValues.examDate + " " + basicInfoValues.examTime

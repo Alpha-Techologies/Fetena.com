@@ -476,11 +476,11 @@ const ExamQuestionForm = ({
  
  
            {/* Render the question choices section */}
-           <Card className="bg-gray-50 w-5/6 mx-auto my-8">
-             <div className="flex gap-8 items-center justify-center">
-             <h3 className="text-blue-900 font-semibold text-lg">Question type</h3>
+           <Card className="bg-gray-50 mx-auto my-8">
+           <div className="flex flex-wrap gap-8 items-center justify-center">
+           <h3 className="text-blue-900 font-semibold text-lg">Question type</h3>
   {/* <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}> */}
-  <Radio.Group onChange={(e) => setQuestionType(e.target.value)}>
+  <Radio.Group onChange={(e) => setQuestionType(e.target.value)} className=" flex flex-col gap-2 lg:flex-row">
          <Radio.Button value="trueFalse" className="font-semibold">
           <div className="flex gap-2 items-center justify-center">
 
@@ -535,8 +535,8 @@ const ExamQuestionForm = ({
  
  
  <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
-             <div className="flex gap-8 items-center justify-center">
-             <h3 className=" font-semibold text-lg">Total Questions <span className="text-blue-900"> {questionsCollection.questions.length} </span> </h3>
+ <div className="flex flex-wrap gap-8 items-center justify-center">
+ <h3 className=" font-semibold text-lg">Total Questions <span className="text-blue-900"> {questionsCollection.questions.length} </span> </h3>
              {/* <h3 className=" font-semibold text-lg">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3> */}
              <Button type="primary" className="px-8 flex gap-2 items-center bg-primary-500" onClick={() => setActiveTabKey("Preview")}><Icon  icon="tabler:edit" className="text-xl text-white" />{" "}Preview & Edit</Button>
  

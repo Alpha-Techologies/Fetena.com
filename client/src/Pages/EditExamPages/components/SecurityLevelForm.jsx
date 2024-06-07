@@ -11,7 +11,7 @@ const SecurityLevelForm = ({setActiveTabKey,basicInfoValues }) => {
     <div>
       <div className="flex justify-center items-center gap-2 mb-8 mt-4">
 
-      <Icon icon="material-symbols:security"  className="text-2xl font-bold text-blue-800" />
+      <Icon icon="material-symbols:security"  className="text-2xl font-bold text-blue-800 lg:flex hidden" />
 <p className="font-semibold  text-blue-900 text-lg">Enter the Security level for the exam here</p>
   </div>
 

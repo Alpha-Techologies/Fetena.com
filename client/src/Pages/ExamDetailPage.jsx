@@ -39,7 +39,7 @@ const ExamDetailPage = () => {
 
   return (
     <div className='flex flex-col gap-4'>
-      <div className='flex justify-between gap-4 items-center'>
+      <div className='flex flex-wrap justify-between gap-4 items-center'>
         <div className='flex gap-4 items-center '>
           <Link to='/dashboard/exams'>
             <Icon
@@ -96,12 +96,7 @@ const ExamDetailPage = () => {
                 <Icon className='text-blue-500' icon='mdi:verified' />
               )}
             </p>
-            <div className='flex gap-2'>
-              <span className='font-bold text-blue-700'>Tags : </span>
-              {/* {exam.tags.map(tag => (
-                <Tag color={tag.color} key={tag.name}>{tag.name}</Tag>
-              ))} */}
-            </div>
+          
             <p className='font-semibold flex gap-2 items-center justify-center'>
               <span className='font-bold text-blue-700'>Created by : </span>
               {exam.createdBy.firstName}  {" "}  {exam.createdBy.lastName}
