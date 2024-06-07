@@ -27,6 +27,7 @@ const ExamScreen = ({
   examinee,
   requestFullscreen,
   userAnswersId,
+  takeExamId,
 }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [answers, setAnswer] = useState({});
@@ -78,6 +79,7 @@ const ExamScreen = ({
     // receive the answers from the server using axios
     const getAnswer = async () => {
       try {
+        console.log(userAnswersId, "user answer id");
         const response = await axios.get(`/api/useranswers/${userAnswersId}`);
         const answersResponse = response.data.data.data[0].questionAnswers;
         const temp = {};
@@ -95,7 +97,7 @@ const ExamScreen = ({
   }, [requestFullscreen]);
 
   const handleBlur = () => {
-    promptUserExplanation("User is switching away from the tab/window");
+    promptUserExplanation("User is out of Focus of the Exam Window");
   };
 
   const handleFullscreenChange = () => {
@@ -111,7 +113,7 @@ const ExamScreen = ({
       setIsFullscreen(false);
       console.log("not in fullscreen mode");
       // alert("You are not in fullscreen mode")
-      promptUserExplanation("You are not in fullscreen mode");
+      promptUserExplanation("Examinee is not in fullscreen mode");
       // requestFullscreen(); // Re-request fullscreen to prevent exit
     }
   };
@@ -120,7 +122,7 @@ const ExamScreen = ({
     if (document.visibilityState === "hidden") {
       setIsUserSwitchingAway(true);
       // alert("User is switching away from the fullscreen tab/window");
-      promptUserExplanation("User is switching away from the tab/window");
+      promptUserExplanation("Examinee is switching away from the tab/window");
     } else {
       setIsUserSwitchingAway(false);
       // console.log("User is back to the fullscreen tab/window");
@@ -131,6 +133,15 @@ const ExamScreen = ({
     // warn the user to return to the exam with the message and give the user 30 seconds
     setShowUserActivityModal(false);
     console.log("User activity message:", userActivityMessage);
+
+    const userActivity = {
+      action: userActivityMessage,
+      reason: userExplanation,
+    };
+
+    console.log(userActivity, takeExamId, takeExamId, "user activity");
+    socket.emit("userActivityLog", takeExamId, exam._id, userActivity);
+    setUserExplanation("");
     await requestFullscreen();
     // try {
     //   // send the user activity to the server using socket
@@ -186,8 +197,7 @@ const ExamScreen = ({
   };
 
   // send the answer to the server using axios
-  const postAnswer = (answers) => {
-    console.log(answers);
+  const postAnswer = (answers, userAnswersId) => {
     try {
       if (Object.keys(answers).length === 0) return;
       const answerResponse = [];
@@ -197,7 +207,6 @@ const ExamScreen = ({
           answerText: answers[key],
         });
       }
-      console.log(answerResponse, "answer response");
 
       axios.post(`/api/useranswers/${userAnswersId}`, {
         questionAnswers: answerResponse,
@@ -215,12 +224,7 @@ const ExamScreen = ({
       ...answers,
       [questionId]: answer,
     });
-    console.log(answers);
-    debounceHandleAnswer(answers);
-  };
-
-  const onChangeTabs = (key) => {
-    console.log(key);
+    debounceHandleAnswer(answers, userAnswersId);
   };
 
   return (

@@ -597,6 +597,7 @@ const TakeExamScreen = () => {
         requestFullscreen={requestFullscreen}
         userAnswersId={userAnswersId}
         startExam={startExam}
+        takeExamId={takeExamId}
       />{" "}
     </div>
   );
