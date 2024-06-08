@@ -51,7 +51,7 @@ const monitorExamSocket = (io, socket) => {
   });
 
   // if Exam get closed Terminate all the Examinee that are currently taking the exam.
-  socket.on("closeExam", async (examId) => {
+  socket.on("closeExam",async (examId) => {
     console.log(`Terminating all examinee for exam ${examId}`);
     // get the exam
     const exam = await Exam.findOne({ _id: examId });
@@ -63,6 +63,8 @@ const monitorExamSocket = (io, socket) => {
 
     // get all the take exam that are currently taking the exam
     const takeExams = await TakeExam.find({ examId: examId });
+
+    console.log(takeExams, "takeExams")
 
     // iterate over the take exam and create emit a socket event to terminate the examinee
     takeExams.forEach((takeExam) => {

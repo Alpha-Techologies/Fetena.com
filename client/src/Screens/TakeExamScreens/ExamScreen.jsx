@@ -21,6 +21,7 @@ import ExamTools from "./ExamTools";
 import ChatComponent from "./ChatComponent";
 import debounce from "lodash/debounce";
 import { useNavigate } from "react-router-dom";
+import VideoComponent from "./VideoComponent";
 
 const ExamScreen = ({
   socket,
@@ -81,33 +82,36 @@ const ExamScreen = ({
 
   //socket related events listening
   useEffect(() => {
-    socket.on("examTerminated", (takeExamId, message) => {
-      const terminateExam = async () => {
-        try {
-          await axios.patch(`/api/exams/take-exam/${takeExamId}`, {
-            status: "terminated",
-            examEndTime: Date.now(),
-          });
+    if (socket) {
+      socket.on("examTerminated", async (takeExamId, message) => {
+        console.log("terminating exam", takeExamId, message);
+        const terminateExam = async () => {
+          try {
+            await axios.patch(`/api/exams/take-exam/${takeExamId}`, {
+              status: "terminated",
+              examEndTime: Date.now(),
+            });
 
-          // also put the user activity log
-          socket.emit("userActivityLog", takeExamId, exam._id, {
-            action: "Exam Terminated",
-            reason: "-",
-            actionType: "warning",
-          });
-        } catch (error) {
-          console.error("Error fetching exam details:", error);
-          // toast.error("Failed to terminate exam");
-        }
-      };
+            // also put the user activity log
+            socket.emit("userActivityLog", takeExamId, exam._id, {
+              action: "Exam Terminated",
+              reason: "-",
+              actionType: "warning",
+            });
+          } catch (error) {
+            console.error("Error fetching exam details:", error);
+            // toast.error("Failed to terminate exam");
+          }
+        };
 
-      terminateExam();
-      // terminate the exam
-      toast.error(message);
-      setStartExam(false);
-      navigate(-1);
-      exitFullscreen();
-    });
+        await terminateExam();
+        // terminate the exam
+        toast.error(message);
+        setStartExam(false);
+        navigate(-1);
+        exitFullscreen();
+      });
+    }
   }, [socket]);
 
   useEffect(() => {
@@ -375,7 +379,7 @@ const ExamScreen = ({
           batteryLevel={batteryLevel}
           examinee={examinee}
         />
-        {/* <VideoComponent /> */}
+        <VideoComponent socket={socket} />
         {"VideoComponent"}
       </Sider>
       <Layout>
