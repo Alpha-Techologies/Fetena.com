@@ -142,6 +142,18 @@ const BasicInfoForm = ({
             <Select.Option value={false}>No</Select.Option>
           </Select>
         </Form.Item>
+
+
+        <Form.Item
+          label="Add Certification?"
+          name="hasCertificate"
+          
+        >
+          <Select>
+            <Select.Option value={true}>Yes</Select.Option>
+            <Select.Option value={false}>No</Select.Option>
+          </Select>
+        </Form.Item>
         </div>
      
 <div className="flex justify-end">
