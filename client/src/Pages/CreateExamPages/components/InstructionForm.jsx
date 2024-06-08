@@ -33,11 +33,11 @@ const InstructionForm = ({basicInfoValues, setBasicInfoValues,setActiveTabKey}) 
     <div className="flex justify-center items-center gap-2 mb-8 mt-4">
 
       
-    <Icon icon="icon-park-outline:instruction" className="text-2xl font-bold text-blue-800" />
+    <Icon icon="icon-park-outline:instruction" className="text-2xl font-bold text-blue-800 lg:flex hidden" />
       <p className="font-semibold  text-blue-900 text-lg">Enter the Instructions for the exam here</p>
       </div>
       <ReactQuill 
-      className="mx-32 my-8 h-96"
+      className="mx-auto my-8 h-96"
       value={basicInfoValues.instruction} 
       onChange={(value) => setBasicInfoValues({...basicInfoValues, instruction: value})} 
      
@@ -48,7 +48,7 @@ const InstructionForm = ({basicInfoValues, setBasicInfoValues,setActiveTabKey}) 
       
     </Form.Item>
     <div className="flex justify-end mt-8">
-<Button className="px-16" type="primary" onClick={() => setActiveTabKey("Security")}>Next</Button>
+<Button className="px-16 bg-primary-500 mt-4" type="primary" onClick={() => setActiveTabKey("Security")}>Next</Button>
 
 </div>
       </>

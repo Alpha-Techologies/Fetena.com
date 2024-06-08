@@ -11,7 +11,7 @@ const { TextArea } = Input;
 
 const ExamQuestionForm = ({
   questionType,
-  questionsCollection ,
+  questionsCollection,
   handleQuestionsSave,
   trueFalse,
   trueFalseOnChange,
@@ -29,7 +29,9 @@ const ExamQuestionForm = ({
   setActiveTabKey,
   tags,
   setTags,
-  setShortAnswer
+  setShortAnswer,
+  setBasicInfoValues
+
   
 
 
@@ -41,7 +43,7 @@ const ExamQuestionForm = ({
 
   const totalPoints = questionsCollection.reduce((total, question) => total + (question.points || 0), 0);
 
-  
+
 
 
   const [inputVisible, setInputVisible] = useState(false);
@@ -158,8 +160,8 @@ const ExamQuestionForm = ({
     <div>
       <div className="flex justify-center items-center gap-2 mb-8 mt-4">
 
-<Icon icon="ph:question-bold"  className="text-2xl font-bold text-blue-800" />
-<p className="font-semibold  text-blue-900 text-lg">Enter exam questions</p>
+<Icon icon="ph:question-bold"  className="text-2xl font-bold text-blue-900" />
+<p className="font-semibold  text-blue-900 text-[1.4rem]">Enter exam questions</p>
 </div>
     
     <div>
@@ -169,19 +171,19 @@ const ExamQuestionForm = ({
  
  
            {questionType === "trueFalse" && (
-   <Card className="bg-gray-50 w-5/6 mx-auto my-8">
-     <div className="flex gap-8 items-center justify-between mx-4 border-b">
+   <Card className="bg-gray-50 w-full my-8">
+     <div className="flex  gap-4 lg:gap-8 items-center justify-between border-b  mb-4 w-full">
        <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
        <Form.Item label="points" rules={[{ required: true, type: "number", message: "Please input the points!" }]}>
-         <InputNumber min={1} value={trueFalse.points} onChange={(value) => trueFalseOnChange('points', value)} />
+         <InputNumber min={1} value={trueFalse.points} className="w-full" onChange={(value) => trueFalseOnChange('points', value)} />
        </Form.Item>
      </div>
-     <div className="mt-4 mx-4">
+     <div>
        <Form.Item label="Question"  rules={[{ required: true, message: "Please enter the exam question!" }]}>
-         <Input value={trueFalse.questionText} onChange={(e) => trueFalseOnChange('questionText', e.target.value)} />
+         <Input value={trueFalse.questionText} className="w-full" onChange={(e) => trueFalseOnChange('questionText', e.target.value)} />
        </Form.Item>
      </div>
-     <div className="mt-4 flex items-start mx-4">
+     <div className="flex items-start">
        <Form.Item label="Correct Answer"  rules={[{ required: true, message: "Please select the correct answer" }]}>
          <Select value={trueFalse.correctAnswer} onChange={(value) => trueFalseOnChange('correctAnswer', value)}>
            <Select.Option value="true">True</Select.Option>
@@ -190,11 +192,12 @@ const ExamQuestionForm = ({
        </Form.Item>
      </div>
 
-     <div className="mt-4 flex items-start mx-4">
+     <div className="flex items-start">
 
 
 
-   
+     <div className="flex items-start">
+
         <>
           <div style={{ marginBottom: 16 }}>
             <TweenOneGroup
@@ -229,32 +232,33 @@ const ExamQuestionForm = ({
             </Button>
           )}
         </>
+        </div>
      
 
 
       
 </div>
 
-     <div className="flex justify-end">
+     <div className="flex justify-end mt-4 lg:mt-0">
        <Button className="px-16" onClick={() => handleQuestionsSave("trueFalse")}>Save</Button>
      </div>
    </Card>
  )}
  
  {questionType === "choose" && (
-   <Card className="bg-gray-50 w-5/6 mx-auto my-8">
-     <div className="flex gap-8 items-center justify-between mx-4 border-b">
+   <Card className="bg-gray-50 w-full my-8">
+     <div className="flex  gap-4 lg:gap-8 items-center justify-between border-b  mb-4 w-full">
      <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
      <Form.Item label="points" rules={[{ required: true, type: "number", message: "Please input the points!" }]}>
-         <InputNumber min={1} value={choose.points} onChange={(value) => chooseOnChange('points', value)} />
+         <InputNumber min={1} value={choose.points} className="w-full" onChange={(value) => chooseOnChange('points', value)} />
        </Form.Item>
      </div>
-     <div className="mt-4 mx-4">
+     <div className="mt-4">
        <Form.Item label="Question" rules={[{ required: true, message: "Please enter the exam question!" }]}>
          <Input value={choose.questionText} onChange={(e) => chooseOnChange('questionText', e.target.value)} />
        </Form.Item>
      </div>
-     <div className="mt-4 w-full flex items-start mx-4 gap-4">
+     <div className="mt-4 w-full flex flex-wrap items-start gap-4">
        <Form.Item label="Choice Number" rules={[{ required: true, message: "Please select the choice number" }]} className="w-48">
          <Select onChange={(value) => setChoiceCount(value)} defaultValue={2}>
            {[2, 3, 4, 5].map((count) => (
@@ -286,7 +290,7 @@ const ExamQuestionForm = ({
        
      </div>
      <>
-          <div style={{ marginBottom: 16 }}>
+          <div style={{ marginBottom: 16 }} className="flex items-start">
             <TweenOneGroup
               appear={false}
               enter={{ scale: 0.8, opacity: 0, type: 'from', duration: 100 }}
@@ -319,8 +323,8 @@ const ExamQuestionForm = ({
             </Button>
           )}
         </>
-     <div className="flex justify-end">
-       <Button className="px-16" onClick={() => handleQuestionsSave("choose")}>Save</Button>
+        <div className="flex justify-end mt-4 lg:mt-0">
+        <Button className="px-16" onClick={() => handleQuestionsSave("choose")}>Save</Button>
      </div>
    </Card>
  )}
@@ -329,18 +333,18 @@ const ExamQuestionForm = ({
  
  
  {questionType === "shortAnswer" && (
-   <Card className="bg-gray-50 w-5/6 mx-auto my-8">
-     <div className="flex gap-8 items-center justify-between mx-4 border-b">
+   <Card className="bg-gray-50 w-full my-8">
+     <div className="flex gap-8 items-center justify-between border-b">
      <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
        {/* <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}> */}
        <Form.Item label="points" rules={[{ required: true, type: "number", message: "Please input the points!" }]}>
-         <InputNumber min={1} value={shortAnswer.points} onChange={(value) => shortAnswerOnChange('points', value)} />
+         <InputNumber min={1} value={shortAnswer.points} className="w-full" onChange={(value) => shortAnswerOnChange('points', value)} />
        </Form.Item>
      </div>
  
      
  
-     <div className="mt-4 flex items-start mx-4 mb-4">
+     <div className="mt-4 flex items-start  mb-4">
        <TextArea
          rows={4}
          placeholder="Enter your question here"
@@ -385,25 +389,25 @@ const ExamQuestionForm = ({
           )}
         </>
  
-     <div className="flex justify-end">
+        <div className="flex justify-end mt-4 lg:mt-0">
        <Button className="px-16 mx-4" onClick={() => handleQuestionsSave("shortAnswer")}>Save</Button>
      </div>
    </Card>
  )}
  
  { questionType === "essay" && (
-            <Card className="bg-gray-50 w-5/6 mx-auto my-8">
-            <div className="flex gap-8 items-center justify-between mx-4 border-b">
+   <Card className="bg-gray-50 w-full my-8">
+            <div className="flex gap-8 items-center justify-between border-b">
             <h3 className="text-blue-900 font-semibold text-lg">Question {questionsCollection.length + 1}</h3>
               {/* <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}> */}
               <Form.Item label="points" rules={[{ required: true, type: "number", message: "Please input the points!" }]}>
-         <InputNumber min={1} value={essay.points} onChange={(value) => essayOnChange('points', value)} />
+         <InputNumber min={1} value={essay.points} onChange={(value) => essayOnChange('points', value)} className="w-full" />
        </Form.Item>
             </div>
         
             
         
-            <div className="mt-4 flex items-start mx-4 mb-4">
+            <div className="mt-4 flex items-start mb-4">
               <TextArea
                 rows={4}
                 placeholder="Enter your question here"
@@ -448,7 +452,7 @@ const ExamQuestionForm = ({
           )}
         </>
         
-            <div className="flex justify-end">
+        <div className="flex justify-end mt-4 lg:mt-0">
               <Button className="px-16 mx-4" onClick={() => handleQuestionsSave("essay")}>Save</Button>
             </div>
           </Card>
@@ -456,26 +460,75 @@ const ExamQuestionForm = ({
  
  
            {/* Render the question choices section */}
-           <Card className="bg-gray-50 w-5/6 mx-auto my-8">
-             <div className="flex gap-8 items-center justify-center">
+           <Card className="bg-gray-50 mx-auto my-8">
+             <div className="flex flex-wrap gap-8 items-center justify-center">
              <h3 className="text-blue-900 font-semibold text-lg">Question type</h3>
-  {/* <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}> */}
-  <Radio.Group onChange={(e) => setQuestionType(e.target.value)}>
-         <Radio.Button value="trueFalse">True / False</Radio.Button>
-         <Radio.Button value="choose">Multiple Choose</Radio.Button>
-         <Radio.Button value="shortAnswer">Short Answer</Radio.Button>
-         <Radio.Button value="essay">Essay</Radio.Button>
+  <Radio.Group onChange={(e) => setQuestionType(e.target.value)} className=" flex flex-col gap-2 lg:flex-row">
+        
+        
+         <Radio.Button value="trueFalse" className="font-semibold ">
+          <div className="flex gap-2 items-center justify-center ">
+
+          
+                <Icon
+                  icon="material-symbols:fact-check-outline"
+                  className="text-xl text-primary-500"
+                />
+                <span>
+                True / False
+                </span>
+                </div>
+                </Radio.Button>
+
+
+
+         <Radio.Button value="choose" className="font-semibold">
+         <div className="flex gap-2 items-center justify-center ">
+
+
+         <Icon
+                  icon="mingcute:choice-line"
+                  className="text-xl text-primary-500"
+                />
+                 <span>
+
+          Multiple Choose
+                 </span>
+                 </div>
+          </Radio.Button>
+
+
+         <Radio.Button value="shortAnswer" className="font-semibold">
+         <div className="flex gap-2 items-center justify-center">
+
+         <Icon
+                  icon="ic:outline-question-answer"
+                  className="text-xl text-primary-500"
+                />
+          <span>
+          Short Answer
+            </span>
+            </div>
+            </Radio.Button>
+         <Radio.Button value="essay" className="font-semibold">
+         <div className="flex gap-2 items-center justify-center">
+         <Icon
+                  icon="uis:paragraph"
+                  className="text-xl text-primary-500"
+                />
+          <span>Essay</span>
+          </div>
+          </Radio.Button>
        </Radio.Group>
        </div>
  </Card>
  
  
  <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
-             <div className="flex gap-8 items-center justify-center">
-             <h3 className=" font-semibold text-lg">Total Questions <span className="text-blue-900"> {questionsCollection.length} </span> </h3>
-             <h3 className=" font-semibold text-lg">Total Points <span className="text-blue-900"> {totalPoints} </span> </h3>
-             <Button type="primary" className="px-16" onClick={() => setActiveTabKey("Preview")}>Preview</Button>
- 
+             <div className="flex flex-wrap gap-8 items-center justify-center">
+             <h3 className=" font-semibold text-[1.1rem] flex gap-1 justify-center items-center"><Icon icon="pepicons-pop:question" />Total Questions : <span className="text-blue-900 font-bold"> {questionsCollection.length} </span> </h3>
+             <h3 className=" font-semibold text-[1.1rem] flex gap-1 justify-center items-center"><Icon icon="material-symbols:credit-score-outline" />Total Points : <span className="text-blue-900 font-bold"> {totalPoints} </span> </h3>
+             <Button type="primary" className="px-8 flex gap-2 items-center bg-primary-500" onClick={() => setActiveTabKey("Preview")}><Icon  icon="tabler:edit" className="text-xl text-white" />{" "}Preview & Edit</Button>
        </div>
  </Card>
  

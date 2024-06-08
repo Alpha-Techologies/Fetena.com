@@ -289,9 +289,10 @@ export const updateNotification = createAsyncThunk(
 
 export const takeExam = createAsyncThunk(
   "data/takeExam",
-  async (id, { rejectWithValue }) => {
+  async ({id, now}, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(`${url}/exams/start-exam/${id}`);
+      const { data } = await axios.post(`${url}/exams/start-exam/${id}`, { startTime: now });
+      console.log(now, "now");
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);

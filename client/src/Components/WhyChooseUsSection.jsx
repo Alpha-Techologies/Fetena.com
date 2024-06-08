@@ -44,7 +44,7 @@ function WhyChooseUsSection() {
               Why fetena.com
             </h2>
 
-            <p className="my-8 text-gray-600 pr-64 text-left">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta facilis atque quaerat odit nemo magni! Totam eveniet ducimus dignissimos eius quaerat voluptates vel minus esse dolores, ipsum quisquam placeat!</p>
+            <p className="my-8 text-gray-600 text-left">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, dicta facilis atque quaerat odit nemo magni! Totam eveniet ducimus dignissimos eius quaerat voluptates vel minus esse dolores, ipsum quisquam placeat!</p>
 
       <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
 

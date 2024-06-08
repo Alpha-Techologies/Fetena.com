@@ -1,5 +1,6 @@
 const chatSocket = require("./chatSocket");
 const faceTrack = require("./faceTrack");
+const monitorExamSocket = require("./monitorExamSocket");
 const notificationSocket = require("./notificationSocket");
 
 const initSocket = (io) => {
@@ -7,6 +8,7 @@ const initSocket = (io) => {
     console.log("⚡ Socket: Connected", socket.id);
 
     // Register notification and chat handlers
+    monitorExamSocket(io, socket);
     notificationSocket(io, socket);
     chatSocket(io, socket);
     faceTrack(io, socket);

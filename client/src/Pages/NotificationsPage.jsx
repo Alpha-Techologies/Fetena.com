@@ -9,6 +9,7 @@ import {
 import { toast } from "react-toastify";
 import moment from "moment";
 import { Icon } from "@iconify/react";
+import { Link } from "react-router-dom";
 
 const NotificationsPage = () => {
   const [loading, setLoading] = useState(false);
@@ -80,16 +81,25 @@ const NotificationsPage = () => {
 
   return (
     <>
-      <div className="flex justify-between gap-4 items-center">
-        <h1 className="text-3xl font-bold my-4">Notifications</h1>
-      </div>
+     <div className='flex gap-4 items-center '>
+          <Link to='/dashboard/'>
+            <Icon
+              icon='fluent-emoji-high-contrast:left-arrow'
+              className='text-2xl text-primary-500'
+            />
+          </Link>
+          <h1 className="text-2xl font-bold text-blue-900 text-left">Notifications</h1>
+          </div>
+
+   
       <Card
         id="scrollableDiv"
         style={{
           overflow: "auto",
-          padding: "0 16px",
+          padding: "8px 16px",
           // border: "1px solid rgba(140, 140, 140, 0.35)",
         }}
+        className="mt-4"
       >
         <InfiniteScroll
           dataLength={data.length}

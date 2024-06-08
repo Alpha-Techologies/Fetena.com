@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getOneOrganization } from "../Redux/features/dataActions";
+import {
+  followOrganization,
+  unfollowOrganization,
+  getOneOrganization,
+  organizationStaff,
+} from "../Redux/features/dataActions";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { Card, Divider } from "antd";
+import { Card, Avatar } from "antd";
 import { Icon } from "@iconify/react";
 import Button from "../Components/Button";
 import { Link } from "react-router-dom";
 import ExamCard from "../Components/ExamCard";
+import { getMe } from "../Redux/features/authActions";
+import axios from "axios";
+
+const {Meta} = Card
 
 const OrganizationsDetails = () => {
   const { "*": id } = useParams();
@@ -15,6 +24,12 @@ const OrganizationsDetails = () => {
   const [organizationDetail, setOrganizationDetail] = useState({});
   const { user } = useSelector((state) => state.auth);
   const [activeTabKey, setActiveTabKey] = useState("exams");
+  const [followedOrganizations, setFollowedOrganizations] = useState([]);
+  const [personnels, setPersonnels] = useState([]);
+  const [exams, setExams] = useState([])
+  const serverURL = "http://localhost:3000";
+
+  console.log(user.organizationsFollowed, id, "user at first");
 
   useEffect(() => {
     dispatch(getOneOrganization({ id, field: "" }))
@@ -28,34 +43,171 @@ const OrganizationsDetails = () => {
         console.log(error);
         toast.error("Something is wrong while fetching organization!");
       });
+    
+    for (let org of user.organizationsFollowed) {
+      setFollowedOrganizations((prevItems) => [...prevItems, org._id]);
+    }
+    console.log(followedOrganizations, "followedOrganizations");
+    // fetchOrganizationStaffs();
+    
   }, []);
+
+  
+
+  const fetchOrganizationStaffs = () => {
+    setPersonnels([]);
+    dispatch(organizationStaff(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          console.log(res.payload.data.data);
+          const data = res.payload.data.data;
+          const updatedStaffs = data.map((item) => ({
+            id: item.user._id,
+            profilePhoto: item.user.profilePhoto,
+            fullName: item.user.fullName,
+            email: item.user.email,
+            userType: item.user.userType,
+          }));
+          setPersonnels(updatedStaffs);
+        } else {
+          toast.error(res.payload.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("There is some error in the server!");
+      });
+  };
+
+  const fetchExams = async (page = 1, active = true, access = "open") => {
+   
+      try {
+        const response = await axios.get(
+          `/api/exams/my-exam/${id}?active=${active}&access=${access}`
+        );
+
+        console.log(response, "bitch");
+        setExams(response.data.data.data);
+        console.log(exams, "exams");
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+  };
+
+  // Function to handle organization follow action
+  const handleFollowOrganization = (id) => {
+    // Dispatch action to follow organization
+    dispatch(followOrganization(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success("Organization followed successfully"); // Notify user of success
+          setFollowedOrganizations((prevItems) => [...prevItems, id]);
+          dispatch(getMe()).catch((error) => {
+            console.log(error);
+            toast.error("Something is wrong updating the user!"); // Notify user of error
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Something is wrong following organizations!"); // Notify user of error
+      });
+  };
+
+  // Function to handle organization unfollow action
+  const handleUnfollowOrganization = (id) => {
+    // Dispatch action to unfollow organization
+    dispatch(unfollowOrganization(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success("Organization unfollowed successfully"); // Notify user of success
+          const newArray = followedOrganizations.filter(
+            (orgId) => orgId !== id
+          );
+          setFollowedOrganizations(newArray);
+          dispatch(getMe()).catch((error) => {
+            console.log(error);
+            toast.error("Something is wrong updating the user!"); // Notify user of error
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Something is wrong unfollowing organizations!"); // Notify user of error
+      });
+  };
+
+  const handleJoinOrganization = () => {
+    console.log(selectedValue);
+    dispatch(joinOrganization(selectedValue))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success(res.payload.message);
+          dispatch(getMe());
+        } else {
+          toast.error(res.payload.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("There is some error in the server! ");
+      });
+  };
 
   const onTabChange = (key) => {
     setActiveTabKey(key);
   };
 
-  const ExamPageView = () => {
+  useEffect(() => {
+    if (activeTabKey === "personnel") {
+      fetchOrganizationStaffs();
+    } else if (activeTabKey === "exams") {
+      fetchExams();
+    }
+  }, [activeTabKey]);
+
+  const ExamPageView = ({ exams }) => {
     return (
-      <div className='flex flex-wrap gap-4'>
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
+      <div>
+        {exams.length === 0 ? (
+          <h1>No Exams</h1>
+        ) : (
+          <div className='flex flex-wrap gap-4'>
+            {exams.map((exam, index) => (
+              <ExamCard key={index} exam={exam} />
+            ))}
+          </div>
+        )}
       </div>
     );
   };
 
+  const PersonnelPageView = ({personnels}) => {
+    return (
+      <div>
+        {personnels.map((personnel) => (
+          <Card
+            key={personnel.id}
+            style={{
+              width: 300,
+              marginTop: 16,
+            }}>
+            <Meta
+              avatar={
+                <Avatar src={serverURL + personnel.profilePhoto} />
+              }
+              title={personnel.fullName}
+              description={personnel.userType}
+            />
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
   const contentList = {
-    exams: <ExamPageView />,
-    personnel: "as",
+    exams: <ExamPageView exams={exams} />,
+    personnel: <PersonnelPageView personnels={personnels} />,
   };
 
   const tabList = [
@@ -84,11 +236,11 @@ const OrganizationsDetails = () => {
           Organization Details
         </h1>
       </div>
-      <div className='my-4 bg-white rounded h-[10%] flex'>
-        <div className='flex gap-2 items-center w-[70%] my-0'>
+      <div className='my-4 bg-white rounded h-[10%] flex py-8 items-center justify-center'>
+        <div className='flex gap-2 items-center justify-center w-[70%] my-0'>
           <img
-            className='w-1/2 rounded-full cursor-pointer'
-            src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
+            className='w-[100px] rounded-full cursor-pointer'
+            src={serverURL + organizationDetail.logo}
             alt=''
           />
           <div className='flex flex-col items-start gap-2'>
@@ -107,28 +259,26 @@ const OrganizationsDetails = () => {
             <div className='flex gap-4'>
               <Button
                 text={"Join"}
+                onClick={handleJoinOrganization}
                 color={"primary-500"}
                 textColor={"white"}
                 px={4}
                 py={2}
               />
-              <Button
-                text={
-                  user.organizationsFollowed.includes(id)
-                    ? "Following"
-                    : "Follow"
-                }
-                color={
-                  user.organizationsFollowed.includes(id)
-                    ? "gray-500"
-                    : "primary-500"
-                }
-                textColor={
-                  user.organizationsFollowed.includes(id) ? "black" : "white"
-                }
-                px={4}
-                py={2}
-              />
+              {followedOrganizations.includes(id) ? (
+                <div
+                  onClick={() => handleUnfollowOrganization(id)}
+                  className='flex justify-end items-center cursor-pointer gap-1 text-gray-500'>
+                  <Icon icon='mdi:tick' /> Following
+                </div>
+              ) : (
+                <div
+                  onClick={() => handleFollowOrganization(id)}
+                  className='flex justify-end items-center cursor-pointer gap-1 text-blue-600 font-semibold'>
+                  <Icon icon='material-symbols:add' />
+                  Follow
+                </div>
+              )}
             </div>
           </div>
         </div>

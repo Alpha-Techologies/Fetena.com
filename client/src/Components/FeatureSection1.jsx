@@ -24,8 +24,8 @@ const FeatureSection1 = ({ featuresData }) => {
             <h2 className="text-3xl font-bold text-blue-900 md:text-4xl">{title}</h2>
             <p className="my-8 text-gray-600">{description}</p>
             <Link
-              to={btnLink}
-              className="self-center w-auto px-8 mr-4 border-0 text-white text-lg hover:bg-secondary bg-primary hover:text-white rounded-md py-2 px-4"
+                  to='/sign-in'              
+                  className='flex items-center justify-center'
             >
               
               

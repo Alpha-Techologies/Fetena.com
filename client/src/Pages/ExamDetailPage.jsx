@@ -39,32 +39,33 @@ const ExamDetailPage = () => {
 
   return (
     <div className='flex flex-col gap-4'>
-      <div className='flex justify-between gap-4 items-center'>
+      <div className='flex flex-wrap justify-between gap-4 items-center'>
         <div className='flex gap-4 items-center '>
-          <Link to='/dashboard/exams'>
-            <Icon
+          <Icon
+            onClick={() => window.history.back()}
               icon='fluent-emoji-high-contrast:left-arrow'
-              className='text-2xl text-primary-500'
+              className='text-2xl text-primary-500 cursor-pointer'
             />
-          </Link>
            <h1 className='text-2xl font-bold text-blue-900 text-left'>Exam Details</h1>
         </div>
 
-        <div className='flex flex-col justify-start w-96'></div>
         <div className='flex gap-4'>
 
        { workspace &&
+       <>
         <Link
           to={`/dashboard/exams/editexam/${id}`}
           className='flex items-center gap-2 bg-blue-50 hover:bg-primary-600 hover:text-white text-primary-800 border  border-primary-200 font-bold py-2 px-4 rounded '>
         
           <Icon icon="line-md:pencil-twotone" /> Edit
-        </Link>}
-        <Link
-          to='/take-exam'
-          className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded'>
-          <Icon className='w-5 h-5' icon='system-uicons:write' /> Take Exam
         </Link>
+        <Link
+         
+          className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded'>
+          <Icon className='w-5 h-5'  icon="mdi:certificate-outline" /> Add Certification
+        </Link>
+        </>
+        }
         </div>
       </div>
       <div>
@@ -94,12 +95,7 @@ const ExamDetailPage = () => {
                 <Icon className='text-blue-500' icon='mdi:verified' />
               )}
             </p>
-            <div className='flex gap-2'>
-              <span className='font-bold text-blue-700'>Tags : </span>
-              {/* {exam.tags.map(tag => (
-                <Tag color={tag.color} key={tag.name}>{tag.name}</Tag>
-              ))} */}
-            </div>
+          
             <p className='font-semibold flex gap-2 items-center justify-center'>
               <span className='font-bold text-blue-700'>Created by : </span>
               {exam.createdBy.firstName}  {" "}  {exam.createdBy.lastName}
@@ -132,7 +128,7 @@ const ExamDetailPage = () => {
           </div>
           <div className='flex justify-center items-center my-4'>
             <Link
-              to='/take-exam'
+              to={'/take-exam/' + id}
               className='flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded text-center w-36'>
               <Icon className='w-5 h-5' icon='system-uicons:write' /> Take Exam
             </Link>

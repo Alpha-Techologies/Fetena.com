@@ -2,6 +2,7 @@ import { useState } from "react";
 import testimonals from "../SampleData/testimonals";
 import { Icon } from "@iconify/react";
 import Button from "./Button";
+import { Link } from "react-router-dom";
 // console.log(testimonals);
 
 
@@ -12,7 +13,7 @@ const TestimonySection = () => {
 
   const handleClickAnimation = () => {
     setAnimate(true);
-    setTimeout(() => setAnimate(false), 500);
+    setTimeout(() => setAnimate(false), 100);
   };
 
   return (
@@ -38,8 +39,8 @@ const TestimonySection = () => {
       </div>
 
       <div className='flex flex-col gap-4'>
-        <div className={` ${animate ? "animate-fade-in-up" : ""} flex lg:gap-4 lg:flex-row flex-col gap-4 items-center justify-center my-4`}>
-          <div className='bg-primary-500 sm-w-full lg:w-1/2 text-white p-8 px-8 flex flex-col gap-2'>
+      <div className={`transition-opacity ease-in-out  ${animate ? "opacity-70" : "opacity-100"} flex lg:gap-4 lg:flex-row flex-col gap-4 items-center justify-center my-4`}>         
+         <div className='bg-primary-500 sm-w-full lg:w-1/2 text-white p-8 px-8 flex flex-col gap-2'>
             <div>
               <h3 className='text-xl font-bold italic'>
                 {testimonals[subject].teacher[0]}
@@ -72,8 +73,8 @@ const TestimonySection = () => {
           </div>
         </div>
         <div className={` flex gap-4 items-center justify-center`}>
-          <Button text={"Try It Now"} />
-          <Button text={"How It Works"} />
+         <Link to='/sign-in'><Button text={"Try It Now"} /></Link>
+          <a href="#how-it-works"><Button text={"How It Works"} /></a>
         </div>
       </div>
     </div>

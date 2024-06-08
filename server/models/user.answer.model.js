@@ -7,14 +7,21 @@ const AnswerSchema = new mongoose.Schema({
     required: true,
   },
   answerText: String,
+  reason: {
+    type: String,
+    default: "Based on the criteria",
+  },
+  point: {
+    type: Number,
+    default: 0,
+  },
+  manuallyMarked: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const UserAnswerSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
   examId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Exam",
