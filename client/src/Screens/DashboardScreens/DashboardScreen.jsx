@@ -31,6 +31,7 @@ import {
 import { current } from "@reduxjs/toolkit";
 const { Header, Content, Footer, Sider } = Layout;
 
+const apiUrl = import.meta.env.VITE_API_URL;
 const DashboardScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -575,7 +576,7 @@ const DashboardScreen = () => {
             width: "100%",
           }}>
           <h1 className='hidden lg:flex  text-xl font-semibold text-primary-500 '>
-            {"Hello there, " + user.firstName + " " + user.lastName + "!"}
+            {"Hello there, " + user.firstName + " " + user.lastName + "!" + apiUrl}
           </h1>
           <div className='inline-flex items-center justify-center gap-4'>
             <Dropdown
@@ -615,7 +616,7 @@ const DashboardScreen = () => {
                 size='large'
                 icon={
                   <img
-                    src={`http://localhost:8080/${user.profilePhoto}`}
+                    src={`${user.profilePhoto}`}
                     alt='avatar'
                   />
                 }

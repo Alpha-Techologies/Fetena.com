@@ -60,7 +60,7 @@ const OrganizationsPage = () => {
   const user = useSelector((state) => state.auth.user); // User information from Redux
   const [activeTabKey, setActiveTabKey] = useState("All"); // Active tab key
   const [followedOrganizations, setFollowedOrganizations] = useState([]);
-  const url = 'http://localhost:8080'
+  const url = import.meta.env.VITE_API_URL
 
   // Function to handle tab changes
   const onTabChange = (key) => {

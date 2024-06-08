@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { List, Card, Avatar, Badge } from "antd";
 
-  const serverURL = "http://localhost:8080";
+  const serverURL = import.meta.env.VITE_API_URL;
 
 
 

@@ -330,7 +330,7 @@ console.log(exam.examFile instanceof File, "let me see")
       </div>
       {exam.examFile && (
         <iframe
-        src={`http://localhost:8080${exam.examFile}`}
+        src={`${import.meta.env.VITE_API_URL}/${exam.examFile}`}
         title={exam.examFile}
         className="w-[1000px] h-[600px]"
       />

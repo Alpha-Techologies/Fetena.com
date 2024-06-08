@@ -8,7 +8,7 @@ import { Icon } from "@iconify/react";
 
 const OrganizationSettingsPage = () => {
   const { workspace } = useSelector((state) => state.data);
-  const url = 'http://localhost:8080'
+  const url = import.meta.env.VITE_API_URL
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
