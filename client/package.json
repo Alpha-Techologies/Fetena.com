@@ -19,6 +19,7 @@
     "antd-img-crop": "^4.22.0",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
+    "eventsource-parser": "^1.1.2",
     "face-api.js": "^0.22.2",
     "hamburger-react": "^2.5.0",
     "html2canvas": "^1.4.1",
@@ -42,7 +43,8 @@
     "react-toastify": "^10.0.5",
     "react-youtube": "^10.1.0",
     "redux-persist": "^6.0.0",
-    "socket.io-client": "^4.7.5"
+    "socket.io-client": "^4.7.5",
+    "together-ai": "^0.5.2"
   },
   "devDependencies": {
     "@iconify/react": "^4.1.1",
