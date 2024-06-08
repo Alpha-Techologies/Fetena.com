@@ -1,7 +1,6 @@
 const Exam = require("../models/exam.model");
 const TakeExam = require("../models/take.exam.model");
 
-
 const chatSocket = (io, socket) => {
   // Join a room
   socket.on("joinExam", async (examId, takeExamId) => {
