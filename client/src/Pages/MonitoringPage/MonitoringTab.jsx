@@ -266,7 +266,7 @@ const MonitoringTab = ({
         </div>
 
         <p className="font-bold ">Examinee History</p>
-        <Timeline>
+        <Timeline reverse>
           {currentUser?.userActivityLogs.map((item, index) => (
             <Timeline.Item
               key={index}

@@ -6,31 +6,40 @@ const VideoComponent = ({ socket }) => {
   const peerClientRef = useRef(null);
 
   useEffect(() => {
+    let stream;
+
     const setupVideoStream = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: true,
-        });
+        if (navigator) {
+          console.log(navigator, "here is the navigator");
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true,
+          });
 
-        if (videoRef.current) {
-          addVideoStream(videoRef.current, stream);
+          if (videoRef.current) {
+            addVideoStream(videoRef.current, stream);
+          }
+
+          peerClientRef.current = new Peer();
+
+          peerClientRef.current.on("open", (streamerId) => {
+            socket.emit("join-as-streamer", streamerId);
+          });
+
+          peerClientRef.current.on("close", () => {
+            socket.emit("disconnect-as-streamer");
+          });
+
+          socket.on("viewer-connected", (viewerId) => {
+            console.log("viewer connected");
+            connectToNewViewer(viewerId, stream);
+          });
+
+          peerClientRef.current.on("error", (err) => {
+            console.error("PeerJS error:", err);
+          });
         }
-
-        peerClientRef.current = new Peer();
-
-        peerClientRef.current.on("open", (streamerId) => {
-          socket.emit("join-as-streamer", streamerId);
-        });
-
-        peerClientRef.current.on("close", (streamerId) => {
-          socket.emit("disconnect-as-streamer", streamerId);
-        });
-
-        socket.on("viewer-connected", (viewerId) => {
-          console.log("viewer connected");
-          connectToNewViewer(viewerId, stream);
-        });
       } catch (error) {
         console.error("Error accessing media devices:", error);
       }
@@ -42,22 +51,32 @@ const VideoComponent = ({ socket }) => {
       if (peerClientRef.current) {
         peerClientRef.current.destroy();
       }
+
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+
+      socket.off("viewer-connected");
     };
-  }, []);
+  }, [socket, navigator]);
 
   const addVideoStream = (videoElement, stream) => {
     videoElement.srcObject = stream;
     videoElement.muted = true;
-
-    const videoOnPlay = () => {
+    videoElement.onloadedmetadata = () => {
       videoElement.play();
     };
-
-    videoElement.onloadedmetadata = videoOnPlay;
   };
 
   const connectToNewViewer = (viewerId, stream) => {
-    peerClientRef.current.call(viewerId, stream);
+    const call = peerClientRef.current.call(viewerId, stream);
+    call.on("error", (err) => {
+      console.error("Call error:", err);
+    });
   };
 
   return (

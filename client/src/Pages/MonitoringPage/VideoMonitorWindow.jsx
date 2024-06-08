@@ -9,7 +9,7 @@ const VideoMonitorWindow = ({ socket }) => {
   const [myPeer, setMyPeer] = useState(null);
   const [videoOnPlay, setVideoOnPlay] = useState(false);
   useEffect(() => {
-    const modelUrl = "http://localhost:4000/models";
+    const modelUrl = `${import.meta.env.VITE_CLIENT_URL}models`;
     Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri(modelUrl),
       faceapi.nets.faceLandmark68Net.loadFromUri(modelUrl),
@@ -32,8 +32,17 @@ const VideoMonitorWindow = ({ socket }) => {
         faceapi.matchDimensions(canvasElement, displaySize);
         setInterval(async () => {
           const detections = await faceapi
-            .detectAllFaces(videoElement, new faceapi.TinyFaceDetectorOptions())
+            .detectAllFaces(
+              videoElement,
+              new faceapi.TinyFaceDetectorOptions({ scoreThreshold: 0.1 })
+            )
             .withFaceLandmarks();
+
+          if (detections.length > 1) {
+            prompt(
+              "Multiple faces detected. Please ensure only one face is visible in the camera."
+            );
+          }
 
           const resizedDetections = faceapi.resizeResults(
             detections,
