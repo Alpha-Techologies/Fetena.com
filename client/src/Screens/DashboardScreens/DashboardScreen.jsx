@@ -31,8 +31,7 @@ import {
 import { current } from "@reduxjs/toolkit";
 const { Header, Content, Footer, Sider } = Layout;
 
-const apiUrl = import.meta.env.VITE_API_URL;
-const DashboardScreen = () => {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(true);
@@ -45,7 +44,6 @@ const DashboardScreen = () => {
   const [userRole, setUserRole] = useState("examinee");
   const [organization, setOrganization] = useState({});
   const [userOrganizations, setUserOrganizations] = useState([]);
-  const url = false ? "http://localhost:8080" : "http://13.49.21.227:8080";
 
   const fetchUserOrganizations = () => {
     dispatch(getUserOrganizations())
@@ -534,7 +532,7 @@ const DashboardScreen = () => {
               <Avatar
                 className="cursor-pointer w-16 h-10 items-center justify-center"
                 size="large"
-                icon={<img src={`${url}${user.profilePhoto}`} alt="avatar" />}
+                icon={<img src={`${import.meta.env.VITE_API_URL}/${user.profilePhoto}`} alt="avatar" />}
               />
             </Dropdown>
           </div>
