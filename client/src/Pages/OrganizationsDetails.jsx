@@ -21,7 +21,8 @@ const OrganizationsDetails = () => {
   const { user } = useSelector((state) => state.auth);
   const [activeTabKey, setActiveTabKey] = useState("exams");
   const [followedOrganizations, setFollowedOrganizations] = useState([]);
-  const serverURL = "http://localhost:3000";
+  // const serverURL = "http://localhost:3000";
+  const serverURL = "http://192.168.43.158:3000";
 
   console.log(user.organizationsFollowed, id, "user at first");
 

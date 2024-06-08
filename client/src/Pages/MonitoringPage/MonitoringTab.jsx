@@ -16,7 +16,8 @@ const MonitoringTab = ({
   socket,
   fetchExamineeList,
 }) => {
-  const serverURL = "http://localhost:3000";
+  // const serverURL = "http://localhost:3000";
+  const serverURL = "http://192.168.43.158:3000";
   const currentTime = moment();
 
   const handleEndExam = async (status, userId) => {
