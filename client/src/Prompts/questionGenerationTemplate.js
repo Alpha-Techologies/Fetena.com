@@ -9,7 +9,9 @@ function questionGenerationTemplate(
 The difficulty level of the questions should be  ${difficulty}. 
 You should also be able to provide the correct answer to the question. 
 The questions should be in the ${questionType} format. 
-Please generate a question and answer based on the following information`
+Please also a question and answer based on the following information.
+you should not generate any other text.
+`
 
 }
 export default questionGenerationTemplate;

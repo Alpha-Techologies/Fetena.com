@@ -36,9 +36,12 @@ const NavBar = ({displayPage, setDisplayPage}) => {
         : ""
     }`}>
       <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
+
         <img
+                        onClick={() => setDisplayPage('home')}
+
           src={fetena_logo}
-          className='h-8'
+          className='h-8 cursor-pointer'
           alt='Fetena.com Logo'
         />
         <div className='flex items-center md:order-2 space-x-3 md:space-x-0 '>

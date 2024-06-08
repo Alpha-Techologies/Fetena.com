@@ -71,6 +71,7 @@ const AiQuestionGenerator = ({
       visible={isModalOpenn}
       onOk={handleOkk}
       onCancel={handleCancell}
+      className="-mt-16"
     >
       <div className="flex flex-col py-4">
         <Form.Item label="Exam Type">
@@ -113,17 +114,17 @@ const AiQuestionGenerator = ({
               !generateRequest.prompt
             }
           >
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center px-8">
               <Icon
                 icon="streamline:ai-generate-variation-spark"
-                className="text-xl text-blue-500 group-hover:text-white"
+                className="text-lg text-white "
               />{" "}
               Generate
             </div>
           </Button>
         </div>
 
-        {isLoading ? <div>Loading...</div> : <p>{promptResponse}</p>}
+        {isLoading ? <div>Loading...</div> : <pre className="h-80 overflow-auto font-semibold text-blue-900 text-md -mt-4 border border-gray-300 rounded-lg p-2" >{promptResponse}</pre>}
       </div>
     </Modal>
   );
