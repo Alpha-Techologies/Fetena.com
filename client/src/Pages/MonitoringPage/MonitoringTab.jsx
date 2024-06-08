@@ -1,8 +1,10 @@
 import { Icon } from "@iconify/react";
-import { Tag, Table, Card, Avatar, Timeline,Divider } from "antd";
+import { Tag, Table, Card, Avatar, Timeline,Divider, Button } from "antd";
+import axios from "axios";
 import _ from "lodash";
 import moment from "moment";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const MonitoringTab = ({
   examineeStatusStats,
@@ -16,6 +18,32 @@ const MonitoringTab = ({
 }) => {
   const serverURL = "http://localhost:3000";
   const currentTime = moment();
+
+  const handleEndExam = async (status, userId) => {
+    const tempCurrentUser = _.find(
+      examineeList,
+      (item) => item.user && item.user._id === userId
+    );
+
+    if (status === "inprogress") {
+      socket.emit("terminateExaminee", tempCurrentUser._id);
+      fetchExamineeList(tempCurrentUser.exam);
+    } else {
+      const letUserIn = async (id) => {
+        // updat the take exam of the user to inprogress
+        try {
+          const response = await axios.patch(`/api/exams/take-exam/${id}`, {
+            status: "inprogress",
+          });
+        } catch (error) {
+          toast.error("Failed to let user in: " + error.message);
+        }
+      };
+      await letUserIn(tempCurrentUser._id);
+
+      fetchExamineeList(tempCurrentUser.exam);
+    }
+  };
 
   const overviewTableColumns = [
     {
@@ -47,7 +75,7 @@ const MonitoringTab = ({
         <>
           {status === "inprogress" ? (
             <Tag color={"green"}>In Progress</Tag>
-          ) : status === "Terminated" ? (
+          ) : status === "terminated" ? (
             <Tag color={"red"}>Terminated</Tag>
           ) : status === "interrupted" ? (
             <Tag color={"blue"}>Interrupted</Tag>
@@ -60,7 +88,16 @@ const MonitoringTab = ({
     {
       title: "Action",
       key: "action",
-      render: (_, record) => <a>End Exam</a>,
+      render: (_, record) => (
+        <Button
+          className={`font-bold uppercase ${
+            record.status === "inprogress" ? "red" : "blue"
+          } `}
+          onClick={() => handleEndExam(record.status, record.userId)}
+        >
+          {record.status === "inprogress" ? "End Exam" : "Let In"}
+        </Button>
+      ),
     },
   ];
 
@@ -125,7 +162,13 @@ const MonitoringTab = ({
             </div>
           </Card>
         </div>
-        <Table columns={overviewTableColumns} dataSource={overviewTableData} />
+        <Table
+          onRow={(record, rowIndex) => {
+            return { onDoubleClick: (e) => setSeeStatusOf(record.userId) };
+          }}
+          columns={overviewTableColumns}
+          dataSource={overviewTableData}
+        />
       </div>
     );
   };
@@ -136,6 +179,7 @@ const MonitoringTab = ({
     currentUser,
     socket,
     fetchExamineeList,
+    handleEndExam,
   }) => {
     useEffect(() => {
       if (socket) {
@@ -169,12 +213,22 @@ const MonitoringTab = ({
               Has submitted Exam
             </div>
           ) : currentUser?.status === "inprogress" ? (
-            <div className="bg-red-500 text-white flex items-center gap-2 py-2 px-4 rounded cursor-pointer">
+            <div
+              onClick={() =>
+                handleEndExam(currentUser?.status, currentUser?.user?._id)
+              }
+              className="bg-red-500 text-white flex items-center gap-2 py-2 px-4 rounded cursor-pointer"
+            >
               <Icon icon="material-symbols:tab-close" />
               End Exam for Student
             </div>
           ) : (
-            <div className="bg-blue-500 text-white flex items-center gap-2 py-2 px-4 rounded cursor-pointer">
+            <div
+              onClick={() =>
+                handleEndExam(currentUser?.status, currentUser?.user?._id)
+              }
+              className="bg-blue-500 text-white flex items-center gap-2 py-2 px-4 rounded cursor-pointer"
+            >
               <Icon icon="mdi:restart" />
               Resume Exam for Student
             </div>
@@ -327,6 +381,7 @@ const MonitoringTab = ({
           examineeList={examineeList}
           socket={socket}
           fetchExamineeList={fetchExamineeList}
+          handleEndExam={handleEndExam}
         />
       )}
     </>

@@ -1,9 +1,7 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Peer from "peerjs";
 
-
-
-const VideoComponent = ({socket}) => {
+const VideoComponent = ({ socket }) => {
   const videoRef = useRef(null);
   const peerClientRef = useRef(null);
 
@@ -21,21 +19,20 @@ const VideoComponent = ({socket}) => {
 
         peerClientRef.current = new Peer();
 
-        peerClientRef.current.on('open', (streamerId) => {
-          socket.emit('join-as-streamer', streamerId);
+        peerClientRef.current.on("open", (streamerId) => {
+          socket.emit("join-as-streamer", streamerId);
         });
 
-        peerClientRef.current.on('close', (streamerId) => {
-          socket.emit('disconnect-as-streamer', streamerId);
+        peerClientRef.current.on("close", (streamerId) => {
+          socket.emit("disconnect-as-streamer", streamerId);
         });
 
-        socket.on('viewer-connected', (viewerId) => {
-          console.log('viewer connected');
+        socket.on("viewer-connected", (viewerId) => {
+          console.log("viewer connected");
           connectToNewViewer(viewerId, stream);
         });
-
       } catch (error) {
-        console.error('Error accessing media devices:', error);
+        console.error("Error accessing media devices:", error);
       }
     };
 
@@ -45,7 +42,6 @@ const VideoComponent = ({socket}) => {
       if (peerClientRef.current) {
         peerClientRef.current.destroy();
       }
-
     };
   }, []);
 
@@ -78,5 +74,4 @@ const VideoComponent = ({socket}) => {
   );
 };
 
-
-export default VideoComponent
+export default VideoComponent;

@@ -10,6 +10,7 @@ import axios from "axios";
 
 import ExamStartConfirmationModal from "./ExamStartConfirmationModal";
 import ExamScreen from "./ExamScreen";
+import moment from "moment";
 
 const TakeExamScreen = () => {
   const { user } = useSelector((state) => state.auth);
@@ -31,10 +32,11 @@ const TakeExamScreen = () => {
   useEffect(() => {
     // console.log("this is runnning and start is changing");
     if (startExam) {
-      dispatch(takeExam(id))
+      const now = moment().format("YYYY-MM-DD HH:mm:ss");
+      dispatch(takeExam({id, now}))
         .then((res) => {
+          console.log(res.payload);
           if (res.meta.requestStatus === "fulfilled") {
-            // console.log(res.payload);
             const temp = res.payload.data._id;
             setTakeExamId(temp);
             setUserAnswersId(res.payload.data.userAnswers);
@@ -48,7 +50,7 @@ const TakeExamScreen = () => {
             socket.emit("joinExam", id, res.payload.data._id);
           } else {
             toast.error(res.payload.message);
-            console.log("go back");
+            exitFullscreen();
             navigate(-1);
             return;
           }
@@ -59,6 +61,8 @@ const TakeExamScreen = () => {
         });
     }
   }, [startExam]);
+
+
 
   useEffect(() => {
     const getTakeExamId = async (takeExamId) => {
@@ -557,6 +561,7 @@ const TakeExamScreen = () => {
         startExam={startExam}
         takeExamId={takeExamId}
         setStartExam={setStartExam}
+        exitFullscreen={exitFullscreen}
       />{" "}
     </div>
   );
