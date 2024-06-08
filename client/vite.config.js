@@ -9,7 +9,7 @@ export default defineConfig({
     port: 4000,
     proxy: {
     '/api': {
-      target: (process.env.VITE_API_URL),
+      target: process.env.VITE_API_URL,
       secure: false,
       changeOrigin: true,
       ws: true,
