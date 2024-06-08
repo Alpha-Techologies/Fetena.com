@@ -14,7 +14,7 @@ const monitorExamSocket = (io, socket) => {
       return;
     }
 
-    takeExam.status = "Terminated";
+    takeExam.status = "terminated";
     await takeExam.save();
 
     io.to(takeExam.socketId).emit("examTerminated", takeExamId);
@@ -44,6 +44,30 @@ const monitorExamSocket = (io, socket) => {
 
     //send to invigilator about the Examinee Activity
     io.to(exam.socketId).emit("userActivityLog", takeExamId, activityLog);
+  });
+
+  // if Exam get closed Terminate all the Examinee that are currently taking the exam.
+  socket.on("closeExam", async (examId) => {
+    console.log(`Terminating all examinee for exam ${examId}`);
+    // get the exam
+    const exam = await Exam.findOne({ _id: examId });
+
+    if (!exam) {
+      console.log(`Exam ${examId} not found`);
+      return;
+    }
+
+    // get all the take exam that are currently taking the exam
+    const takeExams = await TakeExam.find({ examId: examId });
+
+    // iterate over the take exam and create emit a socket event to terminate the examinee
+    takeExams.forEach((takeExam) => {
+      if (takeExam.status === "inprogress") {
+        takeExam.status = "terminated";
+        takeExam.save();
+        io.to(takeExam.socketId).emit("examTerminated", takeExam._id);
+      }
+    });
   });
 };
 
