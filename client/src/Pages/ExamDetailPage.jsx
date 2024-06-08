@@ -41,12 +41,11 @@ const ExamDetailPage = () => {
     <div className='flex flex-col gap-4'>
       <div className='flex flex-wrap justify-between gap-4 items-center'>
         <div className='flex gap-4 items-center '>
-          <Link to='/dashboard/exams'>
-            <Icon
+          <Icon
+            onClick={() => window.history.back()}
               icon='fluent-emoji-high-contrast:left-arrow'
-              className='text-2xl text-primary-500'
+              className='text-2xl text-primary-500 cursor-pointer'
             />
-          </Link>
            <h1 className='text-2xl font-bold text-blue-900 text-left'>Exam Details</h1>
         </div>
 
