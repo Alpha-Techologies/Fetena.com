@@ -7,6 +7,7 @@ const UserAnswer = require("../../models/user.answer.model");
 
 const startExam = catchAsync(async (req, res, next) => {
   const examId = req.params.id;
+  const {startTime} = req.body
 
   const exam = await Exam.findById(examId);
 
@@ -63,6 +64,7 @@ const startExam = catchAsync(async (req, res, next) => {
     user: req.user.id,
     status: "inprogress",
     userAnswers: userAnswer._id,
+    startTime
   });
 
   res.status(200).json({

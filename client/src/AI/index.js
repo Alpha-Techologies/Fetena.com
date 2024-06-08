@@ -1,9 +1,14 @@
-import  Together from "together-ai";
+import Together from "together-ai";
 import { createParser } from "eventsource-parser";
 import APIError from "./../utils/apiError";
 
 class TogetherManager {
-  constructor(apiKey, maxTokens = 100, streamTokens = false) {
+  constructor(
+    apiKey,
+    setPromptResponse,
+    maxTokens = 1000,
+    streamTokens = true
+  ) {
     this.together = new Together({
       auth: apiKey,
     });
@@ -14,10 +19,10 @@ class TogetherManager {
       (this.top_k = 5),
       (this.top_p = 0.7),
       (this.repetition_penalty = 1);
-    this.response = "";
+    this.response = setPromptResponse;
   }
 
-  async performInference(prompt) {
+  async performInference(prompt, setPromptResponse) {
     try {
       if (!this.model) {
         console.error("Model not specified.");
@@ -35,6 +40,7 @@ class TogetherManager {
       });
 
       if (this.streamTokens) {
+        this.response("");
 
         const reader = result.getReader();
         const parser = createParser(this.onParse);
@@ -47,14 +53,14 @@ class TogetherManager {
           parser.feed(new TextDecoder().decode(value));
         }
 
-        return this.response;
+        // return this.response;
       } else {
-        return new APIError("No response found from the AI", 500)
+        return new APIError("No response found from the AI", 500);
         // return "No response found from the AI";
       }
     } catch (error) {
       console.error("Error occurred during inference:", error);
-      new APIError("An Error occurred during inference", 500)
+      new APIError("An Error occurred during inference", 500);
       return null;
     }
   }
@@ -67,8 +73,9 @@ class TogetherManager {
       }
       try {
         const text = JSON.parse(data).choices[0].text ?? "";
-        console.log({ text });
-        this.response += text;
+        // this.response += text;
+        this.response((prev) => prev + text);
+        // setPromptResponse((prev) => prev + text);
       } catch (e) {
         console.error(e);
       }
@@ -89,4 +96,3 @@ class TogetherManager {
 }
 
 export default TogetherManager;
-

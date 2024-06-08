@@ -2,6 +2,7 @@ import { useState } from "react";
 import testimonals from "../SampleData/testimonals";
 import { Icon } from "@iconify/react";
 import Button from "./Button";
+import { Link } from "react-router-dom";
 // console.log(testimonals);
 
 
@@ -72,8 +73,8 @@ const TestimonySection = () => {
           </div>
         </div>
         <div className={` flex gap-4 items-center justify-center`}>
-          <Button text={"Try It Now"} />
-          <Button text={"How It Works"} />
+         <Link to='/sign-in'><Button text={"Try It Now"} /></Link>
+          <a href="#how-it-works"><Button text={"How It Works"} /></a>
         </div>
       </div>
     </div>

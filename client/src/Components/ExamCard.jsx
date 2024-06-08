@@ -3,9 +3,9 @@ import { Card, Tag } from "antd";
 import { Link } from "react-router-dom";
 
 Icon
-const ExamCard = () => {
+const ExamCard = ({exam, key}) => {
   return (
-    <Link to='/dashboard/exams/dfghkfdghkd'>
+    <Link to={'/dashboard/exams/' + exam._id}>
       <Card
         className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
         style={{
@@ -21,20 +21,15 @@ const ExamCard = () => {
             className='text-4xl text-blue-700'
           />
           <div className='flex-col flex items-start gap-2'>
-            <h3 className='font-bold text-md'>English exam</h3>
-            <div className='flex gap-1'>
-              <Tag color={"yellow"}>English</Tag>
-              <Tag color={"red"}>Maths</Tag>
-              <Tag color={"blue"}>Physics</Tag>
-            </div>
+            <h3 className='font-bold text-md'>{ exam.examName }</h3>
             <p className='font-semibold flex gap-2 items-center justify-center'>
-              AASTU{" "}
-              <span>
+              {exam.organization?.name}
+              { exam.organization?.isVerified && <span>
                 <Icon
                   className='text-blue-500'
                   icon='mdi:verified'
                 />
-              </span>
+              </span>}
             </p>
           </div>
         </div>

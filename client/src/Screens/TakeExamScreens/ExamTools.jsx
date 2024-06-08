@@ -4,29 +4,39 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { useEffect, useState } from "react";
 import moment from "moment";
 
-const CountDown = ({ startTime, duration }) => {
+const CountDown = ({ startTime, duration, onCountdownEnd }) => {
   // console.log(startTime, duration, "start time and duration");
   const [timeRemaining, setTimeRemaining] = useState(duration);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      const now = moment();
-      const countdownEnd = moment("2024-06-06T00:55:40.921+00:00").add(
+      const now = moment().format("YYYY-MM-DD HH:mm:ss");
+      const countdownEnd = moment(startTime).add(
         duration * 60,
         "seconds"
       );
       const remaining = countdownEnd.diff(now, "seconds");
-      setTimeRemaining(remaining);
+      
+      if (remaining <= 0) {
+        clearInterval(interval);
+        onCountdownEnd(); // Call the onCountdownEnd function
+      } else {
+        setTimeRemaining(remaining);
+      }
+
       // console.log(timeRemaining, "time remaining");
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [startTime, duration]);
+  }, [startTime, duration, onCountdownEnd]);
 
-  const minutes = Math.floor(timeRemaining / 60);
+  const hours = Math.floor(timeRemaining / 3600);
+  const minutes = Math.floor((timeRemaining % 3600) / 60);
   const seconds = timeRemaining % 60;
-  const formattedTimeRemaining = `${minutes
+  const formattedTimeRemaining = `${hours.toString().padStart(2, "0")}:${minutes
     .toString()
     .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+;
   return (
     <div>
       <h2>Countdown</h2>
@@ -59,7 +69,7 @@ const ExamTools = ({ exam, isCharging, batteryLevel, examinee }) => {
       console.log(examinee, "examinee");
       setStartTime(examinee.startTime);
       console.log(startTime, "start time");
-      countdownStart = moment(examinee.startTime);
+      countdownStart = moment(new Date(examinee.startTime));
     }
   }, [examinee]);
 
@@ -71,20 +81,20 @@ const ExamTools = ({ exam, isCharging, batteryLevel, examinee }) => {
     }
   }, [exam, examinee]);
 
-  //   useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const now = moment();
-  //     const diff = countdownEnd.diff(now, "seconds");
-  //     setCountdown(diff);
-  //   }, 1000);
-
-  //   return () => clearInterval(interval);
-  // }, [countdownEnd])
+  // useEffect(() => {
+  //   setStartTime(moment());
+  //   console.log(startTime);
+  // }, [])
 
   const onChangeSwitch = (checked) => {
     console.log(`switch to ${checked}`);
     setShowCalculator(checked);
   };
+
+  const onCountdownEnd = () => {
+    console.log("countdown ended");
+  };
+
   return (
     <div className="flex flex-col flex-grow gap-12 h-auto justify-between">
       <Menu
@@ -146,7 +156,7 @@ const ExamTools = ({ exam, isCharging, batteryLevel, examinee }) => {
           <p>Time: {currentTime.format("hh:mm")}</p>
         </div>
         <div>
-          <CountDown startTime={startTime} duration={duration} />
+          <CountDown startTime={startTime} duration={duration} onCountdownEnd={onCountdownEnd} />
         </div>
       </div>
     </div>

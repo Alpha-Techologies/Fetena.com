@@ -4,7 +4,7 @@ const catchAsync = require("./../../utils/catchAsync");
 
 const fs = require("fs");
 const { StatusCodes } = require("http-status-codes");
-const APIError = require("../../utils/APIError");
+const APIError = require("../../utils/apiError");
 const { CLIENT_RENEG_LIMIT } = require("tls");
 
 const fileUpload =
@@ -50,6 +50,7 @@ const fileUpload =
 
     return `/uploads/` + `${filePath}/` + `${newFileName}`;
   };
+  
 // const uploadProductImage = async (req, res) => {
 //   const result = await cloudinary.uploader.upload(
 //     req.files.image.tempFilePath,
@@ -85,6 +86,6 @@ const fileUpload =
 // //   return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
 // // };
 
-// module.exports = {
-//   fileUpload,
-// };
+module.exports = {
+  fileUpload,
+};

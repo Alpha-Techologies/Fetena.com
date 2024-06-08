@@ -14,9 +14,14 @@ export default {
             transform: "translateY(0)",
           },
         },
+        bounceUpDown: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
+        }
       },
       animation: {
         "fade-in-up": "fade-in-up 0.5s ease-out",
+         'bounce-up-down': 'bounceUpDown 4s infinite'
       },
       colors: {
         primary: {

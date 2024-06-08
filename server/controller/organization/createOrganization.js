@@ -6,6 +6,7 @@ const factory = require("../handlerFactory");
 const APIError = require("../../utils/apiError");
 const { fileUpload } = require("../profile/fileUpload");
 const OrganizationExaminer = require("../../models/organization.examiner.model");
+const { logActivity } = require("../../utils/logActivity");
 
 exports.createOrganization = catchAsync(async (req, res, next) => {
   if (!req.files) {
@@ -51,6 +52,7 @@ exports.createOrganization = catchAsync(async (req, res, next) => {
     status: "activated",
   });
 
+  await logActivity(req,0,{name:'Organization',id:newOrganization.id} )
 
   res.status(StatusCodes.CREATED).json({
     sucess: true,

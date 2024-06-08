@@ -64,6 +64,8 @@ exports.updateExamResource = catchAsync(async (req, res, next) => {
 
   await exam.save();
 
+  await logActivity(req,1,{name:'exam',id:exam.id} )
+
   res.status(StatusCodes.OK).json({
     status: "success",
     data: {
