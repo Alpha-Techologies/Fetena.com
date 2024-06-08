@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Input,
-  Modal,
-  Collapse,
-  Form,
-  Select,
-  InputNumber,
-} from "antd";
-import { Card, Radio } from "antd";
+import { Button, Input, Modal, Collapse, Form, Select, InputNumber, Card, Radio } from 'antd';
 import { Icon } from "@iconify/react";
 
 import TogetherManager from "../../../AI";
@@ -38,26 +29,26 @@ const AiQuestionGenerator = ({
 
   const handleChange = (e) => {
     setGenerateRequest((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
+        ...prevState,
+        [e.target.name]: e.target.value,
     }));
-    console.log(generateRequest);
-  };
+    console.log(generateRequest); // This will log the old state, not the updated one
+};
 
   const generate = async () => {
     setIsLoading(true); // Show loading indicator
-    const prompt = questionGenerationTemplate(
-      "easy",
-      "Geography",
-      "true false",
-      ""
-    );
-    const res = await togetherManager.performInference(prompt);
+    const prompt = questionGenerationTemplate({
+      difficulty: "hard",
+      subject: generateRequest.subject,
+      questionType: generateRequest.examtype,
+      customPrompt: generateRequest.prompt
+  });
     try {
       // Assuming res.trim() returns a JSON string
+      await togetherManager.performInference(prompt);
 
-      // setPromptResponse(res); // Update state with parsed JSON
-      // console.log(promptResponse);
+      console.log(promptResponse);
+  
       // const regex = /\[\s*{[^{}]*}(?:\s*,\s*{[^{}]*})*\s*\]/;
       // const match = promptResponse.match(regex);
       // if (match) {
@@ -67,16 +58,13 @@ const AiQuestionGenerator = ({
       // } else {
       //   console.log("No JSON array found.");
       // }
-
-      // console.log(res.trim());
     } catch (error) {
       console.error("Error parsing JSON response:", error);
-      // setPromptResponse({ error: "Failed to parse response" }); // Or show an error message
-    } finally {
+    } 
       setIsLoading(false); // Hide loading indicator
-    }
-  };
-
+    
+  }
+  
   return (
     <Modal
       title="AI Question Generator"
