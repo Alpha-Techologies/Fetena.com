@@ -68,7 +68,11 @@ const DashboardScreen = () => {
     if (workspace === null) {
       setUserRole("examinee");
       setCurrentWorkspace("peronal");
-    } else if (workspace.adminUser._id === user._id) {
+    } else if (workspace === "sysAdmin") {
+      setUserRole("sysAdmin")
+      setCurrentWorkspace("sysAdmin")
+    }
+    else if (workspace.adminUser._id === user._id) {
       setUserRole("admin");
       setCurrentWorkspace(workspace._id);
     } else {

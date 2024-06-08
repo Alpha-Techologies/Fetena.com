@@ -299,3 +299,33 @@ export const takeExam = createAsyncThunk(
     }
   }
 )
+
+export const paymentIntent = createAsyncThunk(
+  "data/paymentIntent",
+  async ({ id, paymentData }, { rejectWithValue }) => {
+    // console.log(id, paymentData, 'id, payment data')
+    try {
+      const { data } = await axios.post(`${url}/payment/initialize?organizationId=${id}`, paymentData);
+      // console.log(now, "now");
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const paymentVerify = createAsyncThunk(
+  "data/paymentVerify",
+  async ({ tx_ref }, { rejectWithValue }) => {
+    // console.log(id, paymentData, "id, payment data");
+    try {
+      const { data } = await axios.post(
+        `${url}/payment/verify?tx_ref=${tx_ref}`
+      );
+      // console.log(now, "now");
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);

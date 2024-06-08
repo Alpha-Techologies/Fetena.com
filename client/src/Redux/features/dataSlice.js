@@ -18,6 +18,8 @@ import {
   getNotifications,
   updateNotification,
   takeExam,
+  paymentIntent,
+  paymentVerify,
 } from "./dataActions";
 
 const initialState = {
@@ -234,6 +236,30 @@ const dataSlice = createSlice({
         state.currentTakeExamSession = action.payload.data;
       })
       .addCase(takeExam.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(paymentIntent.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(paymentIntent.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(paymentIntent.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(paymentVerify.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(paymentVerify.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(paymentVerify.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

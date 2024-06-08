@@ -42,6 +42,7 @@ import UserExamsPage from "../Pages/UserExamsPage";
 import EditExam from './../Pages/EditExamPages/EditExam';
 import Certification from "../Pages/Certification";
 import MonitoringPage from './../Pages/MonitoringPage/MonitoringPage';
+import PaymentVerify from "../Pages/PaymentVerify";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -56,45 +57,98 @@ const AllRoutes = () => {
   return (
     <>
       <Routes>
-        <Route index path="/" element={<Home />} />
-        <Route path="sign-in" element={<LoginScreen />} />
-        <Route path="forgot-password" element={<ForgotPasswordScreen />} />
-        <Route path="verify-otp" element={<OTPScreen />} />
-        <Route path="reset-password/*" element={<ResetPasswordScreen />} />
-        <Route path="register" element={<RegistrationScreen />} />
-        <Route path="activate" element={<VerifyEmail />} />
         <Route
-          path="/take-exam/:id"
+          index
+          path='/'
+          element={<Home />}
+        />
+        <Route
+          path='sign-in'
+          element={<LoginScreen />}
+        />
+        <Route
+          path='forgot-password'
+          element={<ForgotPasswordScreen />}
+        />
+        <Route
+          path='verify-otp'
+          element={<OTPScreen />}
+        />
+        <Route
+          path='reset-password/*'
+          element={<ResetPasswordScreen />}
+        />
+        <Route
+          path='register'
+          element={<RegistrationScreen />}
+        />
+        <Route
+          path='activate'
+          element={<VerifyEmail />}
+        />
+        <Route
+          path='/take-exam/:id'
           element={
             <TakeExamRoute isAuthenticated={isAuthenticated}>
               <TakeExamScreen />
             </TakeExamRoute>
-          }
-        ></Route>{" "}
+          }></Route>{" "}
         <Route
-          path="/dashboard"
+          path='/dashboard'
           element={
             <ProtectedRoutes isAuthenticated={isAuthenticated}>
               <DashboardScreen />
-          </ProtectedRoutes>
-          }
-        >
-          <Route path="" element={<DashboardPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="notifications" element={<NotificationPage />} />
-          <Route path="exams" element={<ExamsPage />} />
+            </ProtectedRoutes>
+          }>
+          <Route
+            path=''
+            element={<DashboardPage />}
+          />
+          <Route
+            path='profile'
+            element={<ProfilePage />}
+          />
+          <Route
+            path='notifications'
+            element={<NotificationPage />}
+          />
+          <Route
+            path='exams'
+            element={<ExamsPage />}
+          />
 
-          <Route path="exams/userexams" element={<UserExamsPage />} />
+          <Route
+            path='exams/userexams'
+            element={<UserExamsPage />}
+          />
 
-          <Route path="questionbank" element={<QuestionBank />} />
+          <Route
+            path='questionbank'
+            element={<QuestionBank />}
+          />
 
-          <Route path="exams/:id" element={<ExamDetailPage />} />
+          <Route
+            path='exams/:id'
+            element={<ExamDetailPage />}
+          />
 
-          <Route path="exams/editexam/:id" element={<EditExam />} />
+          <Route
+            path='exams/editexam/:id'
+            element={<EditExam />}
+          />
 
-          <Route path="exams/preview/:id" element={<Preview />} />
-          <Route path="create-exam" element={<CreateExam />} />
-          <Route path="organizations" element={<OrganizationsPage />} />
+          <Route
+            path='exams/preview/:id'
+            element={<Preview />}
+          />
+          <Route
+            path='create-exam'
+            element={<CreateExam />}
+          />
+          <Route
+            path='organizations'
+            element={<OrganizationsPage />}
+          />
 
           <Route
             path='organizations/*'
@@ -110,14 +164,18 @@ const AllRoutes = () => {
           />
           <Route
             path='exam-monitor'
-            element={<MonitoringPage/>}
+            element={<MonitoringPage />}
           />
           <Route
             path='certifications'
             element={<CertificationsPage />}
           />
+          <Route
+            path='verify-payment'
+            element={<PaymentVerify />}
+          />
 
-<Route
+          <Route
             path='certifications/:id'
             element={<Certification />}
           />
@@ -138,15 +196,22 @@ const AllRoutes = () => {
             element={<TrainingVideosPage />}
           />
 
-
-
-          <Route path="support" element={<SupportPage />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route
+            path='support'
+            element={<SupportPage />}
+          />
+          <Route
+            path='*'
+            element={<NotFoundPage />}
+          />
         </Route>
-        <Route path="*" element={<NotFoundPage />} />
+        <Route
+          path='*'
+          element={<NotFoundPage />}
+        />
       </Routes>
 
-      <ToastContainer position="top-right" />
+      <ToastContainer position='top-right' />
     </>
   );
 };
