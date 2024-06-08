@@ -2,16 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import Peer from "peerjs";
 import * as faceapi from "face-api.js";
 
-
 const VideoMonitorWindow = ({ socket }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   // const [socket, setSocket] = useState(null);
   const [myPeer, setMyPeer] = useState(null);
   const [videoOnPlay, setVideoOnPlay] = useState(false);
-console.log(socket, "the socket");
   useEffect(() => {
-    const modelUrl = "http://localhost:4000/models";
+    const modelUrl = `${import.meta.env.VITE_CLIENT_URL}models`;
     Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri(modelUrl),
       faceapi.nets.faceLandmark68Net.loadFromUri(modelUrl),
@@ -30,12 +28,21 @@ console.log(socket, "the socket");
 
           .getContext("2d")
           .clearRect(0, 0, canvasElement.width, canvasElement.height);
-        console.log("adding the vancaf");
+
         faceapi.matchDimensions(canvasElement, displaySize);
         setInterval(async () => {
           const detections = await faceapi
-            .detectAllFaces(videoElement, new faceapi.TinyFaceDetectorOptions())
+            .detectAllFaces(
+              videoElement,
+              new faceapi.TinyFaceDetectorOptions({ scoreThreshold: 0.1 })
+            )
             .withFaceLandmarks();
+
+          if (detections.length > 1) {
+            prompt(
+              "Multiple faces detected. Please ensure only one face is visible in the camera."
+            );
+          }
 
           const resizedDetections = faceapi.resizeResults(
             detections,
@@ -57,11 +64,11 @@ console.log(socket, "the socket");
       // newSocket.on("connect", () => {
       //   console.log("Connected as viewer");
       // });
-      console.log(socket, "the socket");
 
       if (socket) {
         newPeer.on("open", (viewerId) => {
           socket.emit("join-as-viewer", viewerId);
+          console.log("Connected as viewer");
         });
 
         newPeer.on("call", (call) => {

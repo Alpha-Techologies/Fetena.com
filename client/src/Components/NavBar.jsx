@@ -10,7 +10,6 @@ import { Icon } from "@iconify/react";
 import fetena_logo from "../assets/fetena_logo.png"
 import Hamburger from "hamburger-react"
 
-
 const NavBar = ({displayPage, setDisplayPage}) => {
 
   const [isOpen, setOpen] = useState(false)

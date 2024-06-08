@@ -104,7 +104,8 @@ const chatSocket = (io, socket) => {
       console.log(
         "message sent successfully by examinee",
         message,
-        invigilatorSocketId
+        invigilatorSocketId,
+        exam
       );
 
       // send the message to the invigilator

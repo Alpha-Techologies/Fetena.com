@@ -1,7 +1,12 @@
 import { Icon } from "@iconify/react";
 import { List, Card, Avatar, Tag, Divider } from "antd";
 
-const serverURL = "http://localhost:3000";
+// const serverURL = "http://localhost:3000";
+
+
+  const serverURL = import.meta.env.VITE_API_URL;
+
+
 
 const ExamineeListWindow = ({ examineeList, setSeeStatusOf }) => {
   return (
@@ -25,6 +30,7 @@ const ExamineeListWindow = ({ examineeList, setSeeStatusOf }) => {
           <List.Item>
             <List.Item.Meta
               avatar={
+                
                 <Avatar
                   src={
                     <Icon icon="material-symbols:overview-outline-rounded" />

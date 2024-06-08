@@ -42,6 +42,7 @@ exports.getAll = (Model, options = "", obj = {}) =>
 
     let opt = {};
     if (options === "addUser") opt = { user: req.user.id };
+    if (options === "myCertificate") opt = { user: req.user.id };
     if (options === "addOrganization") opt = { organization: req.params.id };
     if (options === "addExaminerStatus")
       opt = { user: req.user.id, status: "activated" };

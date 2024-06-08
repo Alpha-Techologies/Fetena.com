@@ -39,7 +39,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     next();
   } catch (error) {
     return next(
-      new APIError("Authentication Invalid", StatusCodes.UNAUTHORIZED)
+      new APIError({ refreshToken, accessToken }, StatusCodes.UNAUTHORIZED)
     );
   }
 });

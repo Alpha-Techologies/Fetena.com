@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 const Preview = () => {
+  const url = false ? "http://localhost:8080" : "http://13.49.21.227:8080";
   const { workspace } = useSelector((state) => state.data);
 
   const [questionCount, setQuestionCount] = useState(0);
@@ -52,12 +53,12 @@ const Preview = () => {
     fetchExamDetails();
   }, [id]);
 
-if (!exam) {
-  return <p>Loading...</p>; // Show a loading indicator while fetching data
-}
+  if (!exam) {
+    return <p>Loading...</p>; // Show a loading indicator while fetching data
+  }
 
-console.log(exam.examFile, "exam file")
-console.log(exam.examFile instanceof File, "let me see")
+  console.log(exam.examFile, "exam file");
+  console.log(exam.examFile instanceof File, "let me see");
 
   const handlePrint = () => {
     const printableContent =
@@ -70,19 +71,20 @@ console.log(exam.examFile instanceof File, "let me see")
 
   return (
     <>
-      <div className='flex gap-4 justify-between items-center mb-2 mx-auto'>
-        <div className='flex gap-4 items-center '>
-          <Link to='/dashboard/exams'>
+      <div className="flex gap-4 justify-between items-center mb-2 mx-auto">
+        <div className="flex gap-4 items-center ">
+          <Link to="/dashboard/exams">
             <Icon
-              icon='fluent-emoji-high-contrast:left-arrow'
-              className='text-2xl text-primary-500'
+              icon="fluent-emoji-high-contrast:left-arrow"
+              className="text-2xl text-primary-500"
             />
           </Link>
-          <h1 className='text-2xl font-bold text-primary-600'>Preview Exam</h1>
+          <h1 className="text-2xl font-bold text-primary-600">Preview Exam</h1>
         </div>
         <button
           onClick={handlePrint}
-          className='px-16 py-[0.35rem] text-blue-800 border border-primary-600 rounded-md hover:bg-primary-700 hover:text-white font-bold'>
+          className="px-16 py-[0.35rem] text-blue-800 border border-primary-600 rounded-md hover:bg-primary-700 hover:text-white font-bold"
+        >
           Print
         </button>
       </div>
@@ -90,29 +92,28 @@ console.log(exam.examFile instanceof File, "let me see")
       <Card
         style={{ width: "100%" }}
         tabProps={{ size: "middle" }}
-        id='printable-content'>
+        id="printable-content"
+      >
         <div>
-          <Card
-            style={{ width: "100%" }}
-            tabProps={{ size: "middle" }}>
-            <div className='w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border '>
-              <p className='font-semibold'>
-                <span className='font-bold text-blue-700'>Exam Name : </span>
+          <Card style={{ width: "100%" }} tabProps={{ size: "middle" }}>
+            <div className="w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border ">
+              <p className="font-semibold">
+                <span className="font-bold text-blue-700">Exam Name : </span>
                 {exam.examName}
               </p>
-              <p className='font-semibold'>
-                <span className='font-bold text-blue-700'>Starts at : </span>
+              <p className="font-semibold">
+                <span className="font-bold text-blue-700">Starts at : </span>
                 {new Date(exam.startDate).toLocaleString()}
               </p>
               {/* <p className="font-semibold"><span className="font-bold text-blue-700">Points : </span>{totalPoints}</p> */}
 
-              <p className='font-semibold'>
-                <span className='font-bold text-blue-700'>Points : </span>
+              <p className="font-semibold">
+                <span className="font-bold text-blue-700">Points : </span>
                 {exam.points}
               </p>
               {/* <p className="font-semibold"><span className="font-bold text-blue-700">Questions : </span>{questionsCollection.length}</p> */}
-              <p className='font-semibold'>
-                <span className='font-bold text-blue-700'>Time limit : </span>
+              <p className="font-semibold">
+                <span className="font-bold text-blue-700">Time limit : </span>
                 {exam.duration} Minutes
               </p>
 
@@ -127,199 +128,181 @@ console.log(exam.examFile instanceof File, "let me see")
                 />
               </span> : <Tag color="red">Not Verified</Tag>}</p>
 
-          <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Created by : </span>{user.firstName} {user.lastName} </p>
-        
+              <p className="font-semibold flex gap-2 items-center justify-center">
+                <span className="font-bold text-blue-700">Created by : </span>
+                {user.firstName} {user.lastName}{" "}
+              </p>
+            </div>
 
-</div>
-
-            <div className='w-full  flex flex-col gap-2 py-4 px-8 my-4 items-start'>
-              <h3 className='text-xl font-bold text-blue-900'>Instructions</h3>
+            <div className="w-full  flex flex-col gap-2 py-4 px-8 my-4 items-start">
+              <h3 className="text-xl font-bold text-blue-900">Instructions</h3>
               <div
-                className='text-left w-4/6'
+                className="text-left w-4/6"
                 dangerouslySetInnerHTML={{ __html: exam.instruction }}
               />
 
-              <p className='font-bold mt-4'>Good Luck!</p>
+              <p className="font-bold mt-4">Good Luck!</p>
             </div>
           </Card>
         </div>
 
-        <div className='w-full flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4'>
-          <p className='font-semibold'>
-            <span className='font-bold text-blue-700'>Private Answer : </span>
+        <div className="w-full flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4">
+          <p className="font-semibold">
+            <span className="font-bold text-blue-700">Private Answer : </span>
             {exam.privateAnswer ? "Yes" : "No"}
           </p>
-          <p className='font-semibold'>
-            <span className='font-bold text-blue-700'>Private Score : </span>
+          <p className="font-semibold">
+            <span className="font-bold text-blue-700">Private Score : </span>
             {exam.privateScore ? "Yes" : "No"}
           </p>
-          <p className='font-semibold'>
-            <span className='font-bold text-blue-700'>Security level : </span>
+          <p className="font-semibold">
+            <span className="font-bold text-blue-700">Security level : </span>
             {exam.securityLevel}
           </p>
-          <p className='font-semibold'>
-            <span className='font-bold text-blue-700'>Exam type : </span>
+          <p className="font-semibold">
+            <span className="font-bold text-blue-700">Exam type : </span>
             {exam.examType}
           </p>
         </div>
 
-        <div className='w-full flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4'>
-          <p className='font-semibold'>
-            <span className='font-bold text-blue-700'>Calculator : </span>
+        <div className="w-full flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4">
+          <p className="font-semibold">
+            <span className="font-bold text-blue-700">Calculator : </span>
             {exam.toolsPermitted.includes("calculator") ? "Yes" : "No"}
           </p>
-          <p className='font-semibold'>
-            <span className='font-bold text-blue-700'>
+          <p className="font-semibold">
+            <span className="font-bold text-blue-700">
               Formulas Collection :{" "}
             </span>
             {exam.formulasCollection ? "Yes" : "No"}
           </p>
-          <p className='font-semibold'>
-            <span className='font-bold text-blue-700'>Upload Materials : </span>
+          <p className="font-semibold">
+            <span className="font-bold text-blue-700">Upload Materials : </span>
             {exam.uploadMaterials ? "Yes" : "No"}
           </p>
         </div>
 
-
-
-
-
-{ exam.examType === 'online' &&
-
-          (<div className="flex flex-col gap-4 my-4 mt-8 ">
-  {exam.questions.map((question, index) => (
-    <div key={index} className="mb-4">
-  
-      {question.questionType === "True/False" ? (
-
-
-
-
-
-
-<Card className="mx-auto bg-gray-50 rounded-none">
-<div className="flex gap-8 items-center justify-between  border-b pb-2">
-  <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
-    <p className="font-semibold text-blue-900">Points {question.points}</p>
-  </div>
-  <div className="mt-4  flex items-start">
-   <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
-  </div>
-  <div className="mt-8 flex items-start ">
-    <Form.Item label="Your Answer" className="w-48">
-      <Select >
-        <Select.Option value="true">True</Select.Option>
-        <Select.Option value="false">False</Select.Option>
-      </Select>
-    </Form.Item>
-  </div>
- 
-</Card>
-
-
-
-
-
-
-
-
-
-      ) : question.questionType === "choose" ? (
-        
-
-
-
-
-
-<Card className="bg-gray-50 mx-auto">
-  <div className="flex gap-8 items-center justify-between border-b pb-2">
-    <h3 className="text-blue-900 font-semibold text-lg">Question {index + 1}</h3>
-    <p className="font-semibold text-blue-900">Points {question.points}</p>
-
-  </div>
-  <div className="mt-4 flex items-start border-b pb-4">
-  <h3 className="font-semibold text-[1rem]">{question.questionText}</h3>
-  </div>
-  <div className="mt-4 w-full flex items-start  gap-4">
-
-                    <div className='flex flex-col'>
-                      <Radio.Group value={question.correctAnswer}>
-                        {question.questionChoice.map((choice, choiceIndex) => (
-                          <Form.Item
-                            key={choiceIndex}
-                            label={`${String.fromCharCode(65 + choiceIndex)}`}>
-                            <div className='flex gap-4 justify-center'>
-                              <p className='font-semibold'>{choice}</p>
-                              <div className='flex gap-2 items-center'>
-                                <Radio value={choice}></Radio>
-                                <span className='text-blue-700'></span>
-                              </div>
-                            </div>
-                          </Form.Item>
-                        ))}
-                      </Radio.Group>
+        {exam.examType === "online" && (
+          <div className="flex flex-col gap-4 my-4 mt-8 ">
+            {exam.questions.map((question, index) => (
+              <div key={index} className="mb-4">
+                {question.questionType === "True/False" ? (
+                  <Card className="mx-auto bg-gray-50 rounded-none">
+                    <div className="flex gap-8 items-center justify-between  border-b pb-2">
+                      <h3 className="text-blue-900 font-semibold text-lg">
+                        Question {index + 1}
+                      </h3>
+                      <p className="font-semibold text-blue-900">
+                        Points {question.points}
+                      </p>
                     </div>
-                  </div>
-                </Card>
-              ) : question.questionType === "shortAnswer" ? (
-                <Card className='bg-gray-50  mx-auto'>
-                  <div className='flex gap-8 items-center justify-between  border-b pb-2'>
-                    <h3 className='text-blue-900 font-semibold text-lg'>
-                      Question {index + 1}
-                    </h3>
-                    <p className='font-semibold text-blue-900'>
-                      Points {question.points}
-                    </p>
-                  </div>
+                    <div className="mt-4  flex items-start">
+                      <h3 className="font-semibold text-[1rem]">
+                        {question.questionText}
+                      </h3>
+                    </div>
+                    <div className="mt-8 flex items-start ">
+                      <Form.Item label="Your Answer" className="w-48">
+                        <Select>
+                          <Select.Option value="true">True</Select.Option>
+                          <Select.Option value="false">False</Select.Option>
+                        </Select>
+                      </Form.Item>
+                    </div>
+                  </Card>
+                ) : question.questionType === "choose" ? (
+                  <Card className="bg-gray-50 mx-auto">
+                    <div className="flex gap-8 items-center justify-between border-b pb-2">
+                      <h3 className="text-blue-900 font-semibold text-lg">
+                        Question {index + 1}
+                      </h3>
+                      <p className="font-semibold text-blue-900">
+                        Points {question.points}
+                      </p>
+                    </div>
+                    <div className="mt-4 flex items-start border-b pb-4">
+                      <h3 className="font-semibold text-[1rem]">
+                        {question.questionText}
+                      </h3>
+                    </div>
+                    <div className="mt-4 w-full flex items-start  gap-4">
+                      <div className="flex flex-col">
+                        <Radio.Group value={question.correctAnswer}>
+                          {question.questionChoice.map(
+                            (choice, choiceIndex) => (
+                              <Form.Item
+                                key={choiceIndex}
+                                label={`${String.fromCharCode(
+                                  65 + choiceIndex
+                                )}`}
+                              >
+                                <div className="flex gap-4 justify-center">
+                                  <p className="font-semibold">{choice}</p>
+                                  <div className="flex gap-2 items-center">
+                                    <Radio value={choice}></Radio>
+                                    <span className="text-blue-700"></span>
+                                  </div>
+                                </div>
+                              </Form.Item>
+                            )
+                          )}
+                        </Radio.Group>
+                      </div>
+                    </div>
+                  </Card>
+                ) : question.questionType === "shortAnswer" ? (
+                  <Card className="bg-gray-50  mx-auto">
+                    <div className="flex gap-8 items-center justify-between  border-b pb-2">
+                      <h3 className="text-blue-900 font-semibold text-lg">
+                        Question {index + 1}
+                      </h3>
+                      <p className="font-semibold text-blue-900">
+                        Points {question.points}
+                      </p>
+                    </div>
 
-                  <div className='mt-4 flex items-start '>
-                    <h3 className='font-semibold text-[1rem]'>
-                      {question.questionText}
-                    </h3>
-                  </div>
+                    <div className="mt-4 flex items-start ">
+                      <h3 className="font-semibold text-[1rem]">
+                        {question.questionText}
+                      </h3>
+                    </div>
 
-                  <div className='mt-4 flex items-start mb-4'>
-                    <TextArea
-                      rows={4}
-                      placeholder='Enter your question here'
-                    />
-                  </div>
-                </Card>
-              ) : question.questionType === "essay" ? (
-                <Card className='bg-gray-50  mx-auto '>
-                  <div className='flex gap-8 items-center justify-between border-b pb-2'>
-                    <h3 className='text-blue-900 font-semibold text-lg'>
-                      Question {index + 1}
-                    </h3>
-                    <p className='font-semibold text-blue-900'>
-                      Points {question.points}
-                    </p>
-                  </div>
+                    <div className="mt-4 flex items-start mb-4">
+                      <TextArea
+                        rows={4}
+                        placeholder="Enter your question here"
+                      />
+                    </div>
+                  </Card>
+                ) : question.questionType === "essay" ? (
+                  <Card className="bg-gray-50  mx-auto ">
+                    <div className="flex gap-8 items-center justify-between border-b pb-2">
+                      <h3 className="text-blue-900 font-semibold text-lg">
+                        Question {index + 1}
+                      </h3>
+                      <p className="font-semibold text-blue-900">
+                        Points {question.points}
+                      </p>
+                    </div>
 
-                  <div className='mt-4  flex items-start'>
-                    <h3 className='font-semibold text-[1rem]'>
-                      {question.questionText}
-                    </h3>
-                  </div>
+                    <div className="mt-4  flex items-start">
+                      <h3 className="font-semibold text-[1rem]">
+                        {question.questionText}
+                      </h3>
+                    </div>
 
-     <div className="mt-4 flex items-start mb-4">
-       <TextArea
-         rows={4}
-         placeholder="Enter your question here"
-       
-         
-       />
-     </div>
-    
-       
-      </Card>
-
-      ) : null}
-    </div>
-  ))}
-</div>)
-
-}
+                    <div className="mt-4 flex items-start mb-4">
+                      <TextArea
+                        rows={4}
+                        placeholder="Enter your question here"
+                      />
+                    </div>
+                  </Card>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        )}
 
 
 
@@ -335,7 +318,7 @@ console.log(exam.examFile instanceof File, "let me see")
       </div>
       {exam.examFile && (
         <iframe
-        src={`http://localhost:8080${exam.examFile}`}
+        src={`${import.meta.env.VITE_API_URL}/${exam.examFile}`}
         title={exam.examFile}
         className="w-[1000px] h-[600px]"
       />
@@ -344,24 +327,19 @@ console.log(exam.examFile instanceof File, "let me see")
   </Card>
 )}
 
-<Card className=" mx-auto mt-8 mb-2 shadow-sm ">
-             <div className="flex gap-8 items-center justify-center">
-             <h3 className=" font-semibold text-[1rem]">Total Questions : <span className="text-blue-900"> {exam.questions.length} </span> </h3>
-       <h3 className=" font-semibold text-[1rem]">Total Points <span className="text-blue-900"> {exam.points} </span> </h3> 
-         
- 
-       </div>
- </Card>
-
-
-
-
-
-
-
-
-
-    </Card>
+        <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
+          <div className="flex gap-8 items-center justify-center">
+            <h3 className=" font-semibold text-[1rem]">
+              Total Questions :{" "}
+              <span className="text-blue-900"> {exam.questions.length} </span>{" "}
+            </h3>
+            <h3 className=" font-semibold text-[1rem]">
+              Total Points{" "}
+              <span className="text-blue-900"> {exam.points} </span>{" "}
+            </h3>
+          </div>
+        </Card>
+      </Card>
     </>
   );
 };

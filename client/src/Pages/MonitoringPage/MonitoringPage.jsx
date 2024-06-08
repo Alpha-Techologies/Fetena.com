@@ -31,7 +31,8 @@ const MonitoringPage = () => {
   const [examineeStatusStats, setExamineeStatusStats] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const navigate = useNavigate();
-  const serverURL = "http://localhost:3000";
+  // const serverURL = "http://localhost:3000";
+  const serverURL = import.meta.env.VITE_SOCKET_URL;
   let tempExam = {};
 
   const fetchData = async (page = 1, active = true, access = "") => {
@@ -194,30 +195,18 @@ const MonitoringPage = () => {
   };
 
   const handleExamStatusChange = async (value) => {
-    console.log(examStatus, currentExam.access, "examStatus");
-    const changeExamStatus = async (status) => {
-      try {
-        const response = await axios.patch(`/api/exams/${currentExam._id}`, {
-          access: status,
-        });
-        // console.log(response, "response from fetch single exam");
+    console.log(value, currentExam.access, "examStatus");
+    // if (value === "close") socket.emit("closeExam", currentExam._id);
+    try {
+      const response = await axios.patch(`/api/exams/${currentExam._id}`, {
+        access: value,
+      });
 
-        socket.emit("closeExam", currentExam._id);
-        return response.status;
-      } catch (error) {
-        console.error("Error fetching exam details:", error);
+      if (response.status === 200) {
+        fetchExamDetails(currentExam._id);
       }
-    };
-    if (examStatus === "closed") {
-      const resp = await changeExamStatus("open");
-      if (resp === 200) {
-        setExamStatus(value);
-      }
-    } else {
-      const resp = await changeExamStatus("closed");
-      if (resp === 200) {
-        setExamStatus(value);
-      }
+    } catch (error) {
+      console.error("Error fetching exam details:", error);
     }
   };
 

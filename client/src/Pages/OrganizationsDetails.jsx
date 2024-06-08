@@ -27,7 +27,9 @@ const OrganizationsDetails = () => {
   const [followedOrganizations, setFollowedOrganizations] = useState([]);
   const [personnels, setPersonnels] = useState([]);
   const [exams, setExams] = useState([])
-  const serverURL = "http://localhost:3000";
+  // const serverURL = "http://localhost:3000";
+  // const serverURL = "http://localhost:3000";
+  const serverURL = import.meta.env.VITE_SOCKET_URL;
 
   console.log(user.organizationsFollowed, id, "user at first");
 
