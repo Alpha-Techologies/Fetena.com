@@ -22,23 +22,22 @@ const chatMessageSchema = new mongoose.Schema({
 });
 
 const userActivityLogSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
   action: {
     type: String,
     required: true,
+  },
+  reason: {
+    type: String,
+  },
+  actionType: {
+    type: String,
+    required: true,
+    enum: ["info", "warning"]
   },
   // actionType tells the severity of the action taken by the examinee
   // actionType: 'low' -> low severity
   // actionType: 'medium' -> medium severity
   // actionType: 'high' -> high severity
-  actionType: {
-    type: String,
-    enum: ["low", "medium", "high"],
-  },
 
   timestamp: {
     type: Date,

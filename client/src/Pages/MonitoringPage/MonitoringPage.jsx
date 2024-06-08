@@ -13,6 +13,7 @@ import ChatWindow from "./ChatWindow";
 import ExamineeListWindow from "./ExamineeListWindow";
 import MonitoringTab from "./MonitoringTab";
 import ResultsTab from "./ResultsTab";
+import VideoMonitorWindow from "./VideoMonitorWindow";
 import { current } from "@reduxjs/toolkit";
 
 const MonitoringPage = () => {
@@ -30,7 +31,8 @@ const MonitoringPage = () => {
   const [examineeStatusStats, setExamineeStatusStats] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const navigate = useNavigate();
-  const serverURL = "http://localhost:3000";
+  // const serverURL = "http://localhost:3000";
+  const serverURL = import.meta.env.VITE_SOCKET_URL;
   let tempExam = {};
 
   const fetchData = async (page = 1, active = true, access = "") => {
@@ -109,7 +111,8 @@ const MonitoringPage = () => {
   useEffect(() => {
     if (!workspace) {
       // Handle the case where workspace is null, for example, redirect the user or show an error message
-      navigate("userexams");
+      // navigate to the /dashboard/exams/userexams page
+      navigate("/dashboard/exams/userexams");
     } else {
       fetchData(1, true);
       if (examsList) {
@@ -142,7 +145,6 @@ const MonitoringPage = () => {
   useEffect(() => {
     if (examStatus === "open") {
       // Emit an event to the server
-      console.log(currentExam._id, "invig id");
       socket.emit("joinInvigilator", currentExam._id);
     }
   }, [examStatus]);
@@ -167,6 +169,8 @@ const MonitoringPage = () => {
         setCurrentUser={setCurrentUser}
         seeStatusOf={seeStatusOf}
         setSeeStatusOf={setSeeStatusOf}
+        socket={socket}
+        fetchExamineeList={fetchExamineeList}
       />
     ),
     tab2: (
@@ -191,28 +195,18 @@ const MonitoringPage = () => {
   };
 
   const handleExamStatusChange = async (value) => {
-    console.log(examStatus,currentExam.access, 'examStatus')
-    const changeExamStatus = async (status) => {
-      try {
-        const response = await axios.patch(`/api/exams/${currentExam._id}`, {
-          access: status,
-        });
-        // console.log(response, "response from fetch single exam");
-        return response.status;
-      } catch (error) {
-        console.error("Error fetching exam details:", error);
+    console.log(value, currentExam.access, "examStatus");
+    // if (value === "close") socket.emit("closeExam", currentExam._id);
+    try {
+      const response = await axios.patch(`/api/exams/${currentExam._id}`, {
+        access: value,
+      });
+
+      if (response.status === 200) {
+        fetchExamDetails(currentExam._id);
       }
-    };
-    if (examStatus === "closed") {
-      const resp = await changeExamStatus("open");
-      if (resp === 200) {
-        setExamStatus(value);
-      }
-    } else {
-      const resp = await changeExamStatus("closed");
-      if (resp === 200) {
-        setExamStatus(value);
-      }
+    } catch (error) {
+      console.error("Error fetching exam details:", error);
     }
   };
 
@@ -278,7 +272,7 @@ const MonitoringPage = () => {
                 <p className="font-semibold">
                   <span className="font-bold text-blue-700">Access : </span>
                   <Select
-                    defaultValue={currentExam.access === "open" ? "open" : "closed"}
+                    value={currentExam.access}
                     onChange={handleExamStatusChange}
                     style={{
                       width: 80,
@@ -319,7 +313,9 @@ const MonitoringPage = () => {
                   currentExam={currentExam}
                   socket={socket}
                 />
-                {seeStatusOf !== "all" && "videoMonitorWindow"}
+                {seeStatusOf !== "all" && (
+                  <VideoMonitorWindow socket={socket} />
+                )}
               </div>
             </div>
           </div>

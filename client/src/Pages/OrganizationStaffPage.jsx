@@ -9,7 +9,7 @@ const OrganizationStaffPage = () => {
   const { workspace } = useSelector(state => state.data)
   const [staffs, setStaffs] = useState([])
   const dispatch = useDispatch()
-  const url = 'http://localhost:8080'
+  const url = import.meta.env.VITE_API_URL
 
   const [open, setOpen] = useState(false);
   const [openRowId, setOpenRowId] = useState(null);

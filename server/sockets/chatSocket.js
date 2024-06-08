@@ -1,7 +1,6 @@
 const Exam = require("../models/exam.model");
 const TakeExam = require("../models/take.exam.model");
 
-
 const chatSocket = (io, socket) => {
   // Join a room
   socket.on("joinExam", async (examId, takeExamId) => {
@@ -102,7 +101,12 @@ const chatSocket = (io, socket) => {
       await takeExam.save();
 
       const invigilatorSocketId = exam.socketId;
-      console.log("message sent successfully by examinee", message, invigilatorSocketId);
+      console.log(
+        "message sent successfully by examinee",
+        message,
+        invigilatorSocketId,
+        exam
+      );
 
       // send the message to the invigilator
       io.to(invigilatorSocketId).emit("receiveMessage", message);

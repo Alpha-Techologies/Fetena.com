@@ -76,7 +76,7 @@ const AllRoutes = () => {
           element={
             <ProtectedRoutes isAuthenticated={isAuthenticated}>
               <DashboardScreen />
-            </ProtectedRoutes>
+          </ProtectedRoutes>
           }
         >
           <Route path="" element={<DashboardPage />} />
