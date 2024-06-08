@@ -6,7 +6,16 @@ const catchAsync = require("../../utils/catchAsync");
 const updateNotification = factory.updateOne(Notification);
 
 const authorizeNotificationUpdate = catchAsync(async (req, res, next) => {
-  if (req.body.user !== req.user.id) {
+  const notification = await Notification.findById(req.params.id);
+
+  if (!notification) {
+    return res.status(StatusCodes.NOT_FOUND).json({
+      status: "fail",
+      message: "Notification not found",
+    });
+  }
+
+  if (notification.user.toString() !== req.user.id) {
     return res.status(StatusCodes.FORBIDDEN).json({
       status: "fail",
       message: "You are not authorized to update this notification",

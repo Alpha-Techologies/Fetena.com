@@ -1,17 +1,20 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 // import '../controller/Question'
-const {createQuestion, deleteQuestion, getOneQuestion, getAllQuestion, updateQuestion} = require('../controller/question')
+const {
+  createQuestion,
+  deleteQuestion,
+  getOneQuestion,
+  getAllQuestion,
+  updateQuestion,
+} = require("../controller/question");
+
+router.route("/").get(getAllQuestion).post(createQuestion);
 
 router
-    .route("/")
-        .get(getAllQuestion)
-        .post(createQuestion)
-        
-router
-    .route("/:id")
-        .get(getOneQuestion)
-        .put(updateQuestion)
-        .delete(deleteQuestion);
+  .route("/:id")
+  .get(getOneQuestion)
+  .patch(updateQuestion)
+  .delete(deleteQuestion);
 
 module.exports = router;

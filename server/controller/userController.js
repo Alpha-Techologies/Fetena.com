@@ -4,9 +4,10 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/user.model");
 const APIFeatures = require("./../utils/apiFeatures");
 const factory = require("../controller/handlerFactory");
-const { fileUpload } = require("./profile/fileUpload");
+const { fileUpload } = require("./../utils/fileUpload");
 const { StatusCodes } = require("http-status-codes");
 const Organization = require("../models/organization.model");
+const OrganizationExaminer = require("../models/organization.examiner.model");
 
 // const RockTemp = require("../models/rockTempModel");
 
@@ -74,7 +75,7 @@ exports.updateIdPhoto = catchAsync(async (req, res, next) => {
     return next(new APIError("There is no ID Type", StatusCodes.BAD_REQUEST));
   }
   const parsedBody = JSON.parse(req.body.data);
-  const { idPhotoType } = parsedBody;
+  // const { idPhotoType } = parsedBody;
 
   const idPhoto = req.files.idPhoto;
 
@@ -102,7 +103,7 @@ exports.updateIdPhoto = catchAsync(async (req, res, next) => {
   });
 
   // update the type of id
-  user.idPhotoType = idPhotoType;
+  // user.idPhotoType = idPhotoType;
 
   await user.save();
 
@@ -138,7 +139,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 });
 
 exports.followOrganization = catchAsync(async (req, res, next) => {
-  const  organizationId  = req.params.id;
+  const organizationId = req.params.id;
   const user = await User.findOne({
     //kkk replace with req.user.id
     _id: req.user.id,
@@ -161,7 +162,7 @@ exports.followOrganization = catchAsync(async (req, res, next) => {
 });
 
 exports.unfollowOrganization = catchAsync(async (req, res, next) => {
-  const  organizationId  = req.params.id;
+  const organizationId = req.params.id;
   const user = await User.findOne({
     //kkk replace with req.user.id
     _id: req.user.id,
@@ -195,3 +196,5 @@ exports.addAsAdmin = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+
+exports.getUserOrganization = factory.getAll(OrganizationExaminer, "addExaminerStatus");

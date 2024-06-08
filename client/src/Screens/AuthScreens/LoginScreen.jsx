@@ -81,7 +81,7 @@ const LoginScreen = () => {
             </Link>
           </p>
         </div>
-        <div className='flex flex-col justify-center gap-4 shadow-md px-16 py-8 w-2/5 rounded-lg bg-white'>
+        <div className='flex flex-col justify-center gap-4 shadow-md px-16 py-8 rounded-lg bg-white'>
           <h2 className='text-md font-semibold'>
             Log In with your Credentials
           </h2>

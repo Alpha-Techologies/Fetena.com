@@ -22,23 +22,22 @@ const chatMessageSchema = new mongoose.Schema({
 });
 
 const userActivityLogSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
   action: {
     type: String,
     required: true,
+  },
+  reason: {
+    type: String,
+  },
+  actionType: {
+    type: String,
+    required: true,
+    enum: ["info", "warning"]
   },
   // actionType tells the severity of the action taken by the examinee
   // actionType: 'low' -> low severity
   // actionType: 'medium' -> medium severity
   // actionType: 'high' -> high severity
-  actionType: {
-    type: Enum,
-    values: ["low", "medium", "high"],
-  },
 
   timestamp: {
     type: Date,
@@ -47,12 +46,12 @@ const userActivityLogSchema = new mongoose.Schema({
 });
 
 const takeExamSchema = new mongoose.Schema({
-  examId: {
+  exam: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Exam",
     required: true,
   },
-  userId: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -61,8 +60,16 @@ const takeExamSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: {
-      values: ["pending", "inprogress", "submitted", "terminated", "interrupted"],
-      message: "examStatus can be either pending, inprogress or completed",
+      values: [
+        "pending",
+        "inprogress",
+        "submitted",
+        "terminated",
+        "interrupted",
+        "completed",
+      ],
+      message:
+        "examStatus can be either pending, inprogress, submitted, terminated, interrupted or completed",
     },
   },
   startTime: {
@@ -72,16 +79,50 @@ const takeExamSchema = new mongoose.Schema({
   endTime: {
     type: Date,
   },
-  userAnswers: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "UserAnswer",
-    },
-  ],
+  userAnswers: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "UserAnswer",
+  },
+
   chatMessages: [chatMessageSchema],
   userActivityLogs: [userActivityLogSchema],
+  socketId: {
+    type: String,
+  },
+  examEndTime: {
+    type: Date,
+  },
+  active: {
+    type: Boolean,
+    default: true,
+  },
 });
 
+takeExamSchema.methods.sendChat = async function (chatMessage) {
+  // if already followed return
+  // if (this.organizationsFollowed.includes(id)) return this;
+
+  this.chatMessages.push(chatMessage);
+
+  // const organizationFollowed = await OrganizationFollower.findOne({
+  //   organization: id,
+  // });
+
+  // if (organizationFollowed) {
+  //   organizationFollowed.follower.push(this._id);
+  //   await organizationFollowed.save();
+  // } else {
+  //   const newOrganizationFollower = new OrganizationFollower({
+  //     organization: id,
+  //     follower: [this._id],
+  //   });
+  //   await newOrganizationFollower.save();
+  // }
+
+  this.save();
+  return this;
+};
 
 const TakeExam = mongoose.model("TakeExam", takeExamSchema);
 
+module.exports = TakeExam;

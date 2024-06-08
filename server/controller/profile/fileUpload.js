@@ -1,9 +1,10 @@
+
 const path = require("path");
 const catchAsync = require("./../../utils/catchAsync");
 
-// const fs = require('fs');
+const fs = require("fs");
 const { StatusCodes } = require("http-status-codes");
-const APIError = require("../../utils/apiError");
+const APIError = require("../../utils/APIError");
 const { CLIENT_RENEG_LIMIT } = require("tls");
 
 const fileUpload =
@@ -33,6 +34,18 @@ const fileUpload =
       __dirname,
       `../../public/uploads/` + `${filePath}/` + `${newFileName}`
     );
+
+    // if directory does not exist create it
+    if (
+      !fs.existsSync(
+        path.join(__dirname, `../../public/uploads/` + `${filePath}/`)
+      )
+    ) {
+      fs.mkdirSync(
+        path.join(__dirname, `../../public/uploads/` + `${filePath}/`)
+      );
+    }
+
     await file.mv(imagePath);
 
     return `/uploads/` + `${filePath}/` + `${newFileName}`;
@@ -43,12 +56,35 @@ const fileUpload =
 //     {
 //       use_filename: true,
 //       folder: 'file-upload',
-//     }
-//   );
-//   fs.unlinkSync(req.files.image.tempFilePath);
-//   return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
-// };
 
-module.exports = {
-  fileUpload,
-};
+//     }
+//     console.log("upp")
+//     const newFileName = name + path.extname(file.name); // You can generate a new name however you like
+
+//     const imagePath = path.join(
+//       __dirname,
+//       `../../public/uploads/` + `${filePath}/` + `${newFileName}`
+//     );
+//     await file.mv(imagePath);
+    
+//     return `/uploads/` + `${filePath}/` + `${newFileName}`;
+//   };
+
+
+
+
+// // const uploadProductImage = async (req, res) => {
+// //   const result = await cloudinary.uploader.upload(
+// //     req.files.image.tempFilePath,
+// //     {
+// //       use_filename: true,
+// //       folder: 'file-upload',
+// //     }
+// //   );
+// //   fs.unlinkSync(req.files.image.tempFilePath);
+// //   return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
+// // };
+
+// module.exports = {
+//   fileUpload,
+// };

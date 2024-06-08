@@ -1,4 +1,8 @@
 node_modules
 profiles
 organizationsLogo
+examFiles
+examMaterials
 .env
+*.log
+app.log

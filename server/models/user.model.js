@@ -76,15 +76,30 @@ const user = new mongoose.Schema(
       default: null,
       trim: true,
     },
-    idPhotoType: {
+    passportPhoto: {
       type: String,
-      required: true,
-      default: "National",
-      enum: {
-        values: ["National", "Kebele", "Passport", "License", "SchoolId"],
-        message: "Id Type must be of the Provided Types.",
-      },
+      default: null,
+      trim: true,
     },
+    licensePhoto: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    schoolIdPhoto: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    // idPhotoType: {
+    //   type: String,
+    //   required: true,
+    //   default: "National",
+    //   enum: {
+    //     values: ["National", "Kebele", "Passport", "License", "SchoolId"],
+    //     message: "Id Type must be of the Provided Types.",
+    //   },
+    // },
     createdAt: {
       type: Date,
       default: Date.now(),
@@ -144,12 +159,12 @@ const user = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    adminOf: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Organization",
-      },
-    ],
+    // adminOf: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Organization",
+    //   },
+    // ],
     organizationsFollowed: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -272,7 +287,6 @@ user.methods.followOrganization = async function (id) {
     organization: id,
   });
 
-
   if (organizationFollowed) {
     organizationFollowed.follower.push(this._id);
     await organizationFollowed.save();
@@ -288,11 +302,11 @@ user.methods.followOrganization = async function (id) {
   return this;
 };
 
-user.methods.addAsAdmin = function (id) {
-  this.adminOf.push(id);
-  this.save();
-  return this;
-};
+// user.methods.addAsAdmin = function (id) {
+//   this.adminOf.push(id);
+//   this.save();
+//   return this;
+// };
 
 user.virtual("fullName").get(function () {
   return this.firstName + " " + this.lastName;

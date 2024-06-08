@@ -9,13 +9,13 @@ const { signUp } = require("./signup");
 const { updatePassword } = require("./updatePassword");
 
 module.exports = {
-    forgotPassword,
-    resetPassword,
-    updatePassword,
-    login,
-    protect,
-    logout,
-    restrictTo,
-    signUp,
-    activateAccount
+  forgotPassword,
+  resetPassword,
+  updatePassword,
+  login,
+  protect,
+  logout,
+  restrictTo,
+  signUp,
+  activateAccount
 }

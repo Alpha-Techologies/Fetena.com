@@ -60,6 +60,7 @@ const OrganizationsPage = () => {
   const user = useSelector((state) => state.auth.user); // User information from Redux
   const [activeTabKey, setActiveTabKey] = useState("All"); // Active tab key
   const [followedOrganizations, setFollowedOrganizations] = useState([]);
+  const url = 'http://localhost:8080'
 
   // Function to handle tab changes
   const onTabChange = (key) => {
@@ -119,6 +120,8 @@ const OrganizationsPage = () => {
       });
   };
 
+
+
   // Function to handle sorting option change
   const onSortOptionChange = (value) => {
     setSortOption(value); // Update sorting option
@@ -137,6 +140,7 @@ const OrganizationsPage = () => {
         toast.error("There is some error while fetching organizations!"); // Notify user of error
       });
   };
+
 
   // Function to handle sorting order change
   const onSortOrderChange = (value) => {
@@ -249,11 +253,15 @@ const OrganizationsPage = () => {
       });
   }
 
+
+
   // JSX to render the Organizations page
   return (
-    <div className='flex flex-col gap-4 items-start my-4'>
+    <div className='flex flex-col gap-4 items-start'>
       {/* Title */}
-      <h1 className='text-3xl font-bold justify-self-start'>Organizations</h1>
+      <div className="flex justify-between items-center w-full">
+
+       <h1 className='text-2xl font-bold text-blue-900 text-left'>Organizations</h1>
       {/* Search input and sorting options */}
       <div className='flex justify-start w-3/5 gap-4 '>
         <Search
@@ -264,11 +272,11 @@ const OrganizationsPage = () => {
           onSearch={onSearch}
         />
         {/* Filtering options */}
-        <span className='flex  items-center'>
+        <span className='flex items-center'>
           <span className='w-full font-semibold text-blue-800'>Filter:</span>
 
           <Select
-            defaultValue=''
+            defaultValue='verified'
             className='h-full'
             style={{
               width: 120,
@@ -318,9 +326,12 @@ const OrganizationsPage = () => {
           />
         </span>
       </div>
+
+      </div>
+
       {/* Rendering organizations based on the active tab */}
       {activeTabKey === "All" && (
-        <div className='flex flex-wrap gap-8'>
+        <div className='flex flex-wrap gap-2 w-full'>
           {isLoading ? (
             <Loading />
           ) : (
@@ -332,7 +343,7 @@ const OrganizationsPage = () => {
               onTabChange={onTabChange}
               tabProps={{ size: "middle" }}>
               {organizations.length > 0 ? (
-                <div className='grid grid-cols-4 gap-4 '>
+                <div className='flex flex-wrap gap-2 w-full'>
                   {organizations.map((organization, index) => (
                     <Card
                       style={{ width: 300 }}
@@ -344,7 +355,7 @@ const OrganizationsPage = () => {
                         <Link to={`${organization._id}`}>
                           <img
                             className='w-12 h-12 rounded-full cursor-pointer'
-                            src='https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg'
+                            src={url + organization.logo}
                             alt=''
                           />
                         </Link>

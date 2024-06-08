@@ -2,6 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const Organization = require("../../models/organization.model");
 const catchAsync = require("../../utils/catchAsync");
 const OrganizationExaminer = require("../../models/organization.examiner.model");
+const APIError = require("../../utils/apiError");
 
 exports.deactivateExaminer = catchAsync(async (req, res, next) => {
   const { userId } = req.body;
