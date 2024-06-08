@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Tag, Table, Card, Avatar, Timeline } from "antd";
+import { Tag, Table, Card, Avatar, Timeline,Divider } from "antd";
 import _ from "lodash";
 import moment from "moment";
 import { useEffect } from "react";
@@ -158,7 +158,7 @@ const MonitoringTab = ({
         <div className="flex justify-between w-full">
           <div
             onClick={() => setSeeStatusOf("all")}
-            className="flex items-center gap-2 text-primary-500 cursor-pointer"
+            className="flex items-center gap-2 text-primary-500 cursor-pointer "
           >
             <Icon icon="lets-icons:back" />
             Back to Overview
@@ -209,11 +209,12 @@ const MonitoringTab = ({
             {currentUser?.user?.email}
           </p>
         </div>
-
-        <p className="font-bold ">Examinee History</p>
-        <Timeline>
+        <Divider orientation="center">        <p className="font-semibold text-md ">Examinee History</p>
+        </Divider>
+        <Timeline >
           {currentUser?.userActivityLogs.slice().map((item, index) => (
             <Timeline.Item
+            
               key={index}
               dot={
                 <Icon
@@ -225,12 +226,12 @@ const MonitoringTab = ({
                   }
                 />
               }
-              color={item.actionType === "warning" ? "red" : "blue"}
+              color={item.actionType === "warning" ? "red" : "green"}
             >
-              <span>
-                <span className="text-red-500 italic"></span> {item.action}{" "}
+              <span >
+                <span className={` ${item.actionType === "warning" ? "text-red-500" : "text-green-500"} font-semibold  italic`}> {item.action} </span>{" "}
                 <br />
-                <span className="text-black-500">Reason </span> {item.reason}{" "}
+                <span className="text-blue-800 font-semibold">Reason - </span> <span className="font-semibold">{item.reason}</span> {" "}
                 <br />
                 <span className="italic text-gray-500">
                   {new Date(item.timestamp).toLocaleString()}

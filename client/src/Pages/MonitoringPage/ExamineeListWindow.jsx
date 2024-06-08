@@ -1,15 +1,15 @@
 import { Icon } from "@iconify/react";
-import { List, Card, Avatar } from "antd";
+import { List, Card, Avatar, Tag, Divider } from "antd";
 
-  const serverURL = "http://localhost:3000";
+const serverURL = "http://localhost:3000";
 
-
-
-const ExamineeListWindow = ({examineeList, setSeeStatusOf}) => {
+const ExamineeListWindow = ({ examineeList, setSeeStatusOf }) => {
   return (
-    <Card className='w-2/6 h-fit'>
-      <div className='flex flex-col gap-4'>
-        <p className='font-semibold'>Examinees</p>
+    <Card className="w-2/6 h-fit">
+      <div className="flex flex-col gap-4">
+        <Tag color="blue">
+          <p className="font-semibold text-lg text-center">Examinees</p>
+        </Tag>
 
         {/* <Search
             placeholder='Search Examinee'
@@ -19,7 +19,7 @@ const ExamineeListWindow = ({examineeList, setSeeStatusOf}) => {
         {/* <span className='font-semibold italic'>Submitted (4)</span> */}
       </div>
       <List
-        itemLayout='horizontal'
+        itemLayout="horizontal"
         dataSource={[{ title: "Overview" }]}
         renderItem={(item, index) => (
           <List.Item>
@@ -27,26 +27,46 @@ const ExamineeListWindow = ({examineeList, setSeeStatusOf}) => {
               avatar={
                 <Avatar
                   src={
-                    <Icon icon='material-symbols:overview-outline-rounded' />
+                    <Icon icon="material-symbols:overview-outline-rounded" />
                   }
                 />
               }
-              title={<a onClick={() => setSeeStatusOf("all")}>{item.title}</a>}
+              title={
+                <Divider orientation="left">
+                  <a
+                    className=" flex gap-2 items-center justify-center font-semibold  text-blue-800 text-[1rem]"
+                    onClick={() => setSeeStatusOf("all")}
+                  >
+                    {item.title}
+                  </a>
+                </Divider>
+              }
             />
           </List.Item>
         )}
       />
       <List
-        itemLayout='horizontal'
+        className="-mt-2 border  px-2 border-gray-200 rounded-md hover:bg-gray-100 cursor-pointer transition-all duration-300 ease-in-out"
+        itemLayout="horizontal"
         dataSource={examineeList}
         renderItem={(item, index) => (
-          <List.Item>
+          <List.Item onClick={() => setSeeStatusOf(item.user._id)}>
             <List.Item.Meta
-              avatar={<Avatar src={`${serverURL + item.user.profilePhoto}`} />}
+              avatar={
+                <Avatar
+                  src={`${serverURL + item.user.profilePhoto}`}
+                  className="flex items-center justify-center"
+                />
+              }
               title={
-                <a onClick={() => setSeeStatusOf(item.user._id)}>
-                  {item.user.fullName}
-                </a>
+                <div className="flex items-center justify-center gap-4">
+                  <a
+                    onClick={() => setSeeStatusOf(item.user._id)}
+                    className=" font-semibold text-[1rem]"
+                  >
+                    {item.user.fullName}
+                  </a>
+                </div>
               }
             />
           </List.Item>
@@ -56,4 +76,4 @@ const ExamineeListWindow = ({examineeList, setSeeStatusOf}) => {
   );
 };
 
-export default ExamineeListWindow
+export default ExamineeListWindow;

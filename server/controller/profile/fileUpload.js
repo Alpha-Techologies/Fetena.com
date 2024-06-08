@@ -50,6 +50,7 @@ const fileUpload =
 
     return `/uploads/` + `${filePath}/` + `${newFileName}`;
   };
+  
 // const uploadProductImage = async (req, res) => {
 //   const result = await cloudinary.uploader.upload(
 //     req.files.image.tempFilePath,
@@ -85,6 +86,6 @@ const fileUpload =
 // //   return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
 // // };
 
-// module.exports = {
-//   fileUpload,
-// };
+module.exports = {
+  fileUpload,
+};
