@@ -30,6 +30,10 @@ const {
   // getProfile,
 } = require("../controller/userController");
 
+const {
+  getMyCerts
+} = require("../controller/certificate")
+
 const { fileUpload } = require("../utils/fileUpload");
 
 const { zip } = require("../utils/zip");
@@ -51,8 +55,15 @@ router.param("filename", checkId);
 
 router.route("/backup").get(zip);
 
+router
+    .route("/me")
+      .get(protect, getMe, getUser);
+
+router
+    .route("/me/cert")
+      .get(protect, getMe, getMyCerts)
+
 router.get("/", protect, getAllUsers);
-router.get("/me", protect, getMe, getUser);
 router.get("/logout", protect, logout);
 router.get("/myEdits", protect); //getMyEdits
 
