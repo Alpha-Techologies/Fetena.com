@@ -22,4 +22,6 @@ router.use("/useranswers", userAnswerRouter);
 router.use("/cert",certificateRouter)
 router.use("/stats", statsRouter)
 
+router.use("/log", logRouter);
+
 module.exports = router;
