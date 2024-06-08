@@ -142,10 +142,10 @@ const MonitoringPage = () => {
 
   // useEffect to join socket of the invigilator
   useEffect(() => {
-    // if (examStatus === "open") {
+    if (examStatus === "open") {
       // Emit an event to the server
       socket.emit("joinInvigilator", currentExam._id);
-    // }
+    }
   }, []);
 
   const tabList = [

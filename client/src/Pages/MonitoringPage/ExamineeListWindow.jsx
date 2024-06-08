@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
-import { List, Card, Avatar } from "antd";
+import { List, Card, Avatar, Badge } from "antd";
 
-  const serverURL = "http://localhost:3000";
+  const serverURL = "http://localhost:8080";
 
 
 
@@ -25,6 +25,7 @@ const ExamineeListWindow = ({examineeList, setSeeStatusOf}) => {
           <List.Item>
             <List.Item.Meta
               avatar={
+                
                 <Avatar
                   src={
                     <Icon icon='material-symbols:overview-outline-rounded' />
@@ -42,7 +43,9 @@ const ExamineeListWindow = ({examineeList, setSeeStatusOf}) => {
         renderItem={(item, index) => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar src={`${serverURL + item.user.profilePhoto}`} />}
+              avatar={<Badge dot={true} size="large">
+          <Avatar src={`${serverURL + item.user.profilePhoto}`} shape="square" size="large" />
+        </Badge>}
               title={
                 <a onClick={() => setSeeStatusOf(item.user._id)}>
                   {item.user.fullName}
