@@ -1,54 +1,67 @@
-import HeroSection from "../../Components/HeroSection";
-import WhyChooseUsSection from "../../Components/WhyChooseUsSection";
-
-import HowItWorks from "../../Components/HowItWorks";
-import Cta from "../../Components/Cta";
-import FeatureSection1 from "../../Components/FeatureSection1";
-import FeatureSection2 from "../../Components/FeatureSection2";
-import NavBar from "../../Components/NavBar";
-import Footer from "../../Components/Footer";
-import TestimonySection from "../../Components/TestimonySection";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import React from "react";
+import { Card, Form, Button, Input, Avatar, Pagination, Badge } from "antd";
+import { Icon } from "@iconify/react";
+import { Link } from "react-router-dom";
 
 const Customers = () => {
+  const SupportCard = () => {
+    return (
+      <Card
+        className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200 "
+        style={{
+          width: 380,
+          // marginTop: 16,
+        }}
+        // key={index}
+        // loading={loading}
+      >
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-2 items-center">
+            <Icon
+              icon="healthicons:i-exam-multiple-choice-outline"
+              className="text-4xl text-blue-700"
+            />
+            <h3 className="font-bold text-lg">English exam</h3>
+          </div>
+          <ul className="flex-col flex items-start gap-2">
+            <li className="border-b py-2">
+              Lorem, ipsum dolor sit amet consectetur adipisicing
+            </li>
+            <li className="border-b py-2">
+              Lorem, ipsum dolor sit amet consectetur adipisicing
+            </li>
 
-  const navigate = useNavigate()
+            <li className="border-b py-2">
+              Lorem, ipsum dolor sit amet consectetur adipisicing
+            </li>
 
-  const { isAuthenticated } = useSelector((state) => state.auth)
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/dashboard");
-    }
-  });
-
-  const featuresData = {
-    title: "For Examiners or Examinees",
-    description:
-      "Our company is dedicated to helping landlords and property developers to rent and sell out their properties. If you want to save time and money, while expanding, you might want to be interested in our professional services Our company could be your ideal partner for renting or selling your property. We are committed to our customers and promoters and our main objective is to be transparent while achieving results",
-    btnLink: "/search",
-    btnLabel: "Get started",
-    imgSrc:
-      "https://cdn.builder.io/api/v1/image/assets/TEMP/c896fd2f9a710e96a67f61747bd44eabe79c29f09d865cab24fd45c535cbefc8?apiKey=da0e5699a0964f23ab3a2091e7f935a3&",
+            <li className="border-b py-2">
+              Lorem, ipsum dolor sit amet consectetur adipisicing
+            </li>
+          </ul>
+        </div>
+      </Card>
+    );
   };
 
   return (
-    <>
-      <h1 className="text-4xl font-bold">Customers</h1>
-      <HeroSection />
-      <WhyChooseUsSection />
-      <FeatureSection1 featuresData={featuresData} />
-      <FeatureSection2 featuresData={featuresData} />
-      <FeatureSection1 featuresData={featuresData} />
-      <FeatureSection2 featuresData={featuresData} />
+    <div className="flex flex-col gap-4 mt-24 mx-auto">
+      <div className="flex flex-col items-center justify-center px-auto mb-16">
+        <h1 className="text-3xl font-bold text-blue-900 mb-8 text-left">
+          How to use Fetena
+        </h1>
 
-      <TestimonySection />
-      <HowItWorks />
-
-      <Cta />
-    </>
+        <div className="flex flex-wrap gap-4 items-center justify-center px-autol">
+          <SupportCard />
+          <SupportCard />
+          <SupportCard />
+          <SupportCard />
+          <SupportCard />
+          <SupportCard />
+        </div>
+      </div>
+    </div>
   );
 };
+
 export default Customers;
