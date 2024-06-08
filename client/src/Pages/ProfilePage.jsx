@@ -201,7 +201,7 @@ const ProfilePage = () => {
         <div className="flex flex-col gap-4 p-4 bg-white rounded-br-md rounded-bl-md items-center">
           <img
             className="block mx-auto my-2 w-32 h-32 object-cover rounded-full border-4 border-blue-200"
-            src={`${url}${user.profilePhoto}`}
+            src={`${import.meta.env.VITE_API_URL}/${user.profilePhoto}`}
             alt="profile"
           />
 

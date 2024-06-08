@@ -1,5 +1,6 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+const apiUrl = import.meta.env.VITE_API_URL;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -7,12 +8,11 @@ export default defineConfig({
   server: {
     port: 4000,
     proxy: {
-      "/api": {
-        target: "http://13.49.21.227:8080",
-        secure: false,
-        changeOrigin: true,
-        ws: true,
-      },
-    },
-  },
-});
+    '/api': {
+      target: apiUrl,
+      secure: false,
+      changeOrigin: true,
+      ws: true,
+      }
+  }}
+})

@@ -31,6 +31,7 @@ import {
 import { current } from "@reduxjs/toolkit";
 const { Header, Content, Footer, Sider } = Layout;
 
+const apiUrl = import.meta.env.VITE_API_URL;
 const DashboardScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

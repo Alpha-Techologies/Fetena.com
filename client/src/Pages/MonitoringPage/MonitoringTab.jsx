@@ -17,9 +17,7 @@ const MonitoringTab = ({
   fetchExamineeList,
 }) => {
   // const serverURL = "http://localhost:3000";
-  const serverURL = false
-    ? "http://localhost:8080"
-    : "http://13.49.21.227:8080";
+  const serverURL = import.meta.env.VITE_SOCKET_URL;
   const currentTime = moment();
 
   const handleEndExam = async (status, userId) => {

@@ -22,8 +22,7 @@ const OrganizationsDetails = () => {
   const [activeTabKey, setActiveTabKey] = useState("exams");
   const [followedOrganizations, setFollowedOrganizations] = useState([]);
   // const serverURL = "http://localhost:3000";
-  
-  const serverURL = false ? "http://localhost:8080" : "http://13.49.21.227:8080";
+  const serverURL = import.meta.env.VITE_SOCKET_URL;
 
   console.log(user.organizationsFollowed, id, "user at first");
 
