@@ -25,6 +25,7 @@ import {
 import { toast } from "react-toastify";
 import {
   switchToPersonalWorkspace,
+  switchToSysAdminWorkspace,
   switchSidebar,
   currentUserOrganizationsIdAndRole,
 } from "../../Redux/features/dataSlice";
@@ -358,6 +359,33 @@ const DashboardScreen = () => {
     ),
   ];
 
+  const systemAdminSidebarItems = [
+    getItem(
+      <Link
+        to=''
+        onClick={() => dispatch(switchSidebar("1"))}>
+        Dashboard
+      </Link>,
+      "1",
+      <Icon
+        className='w-5 h-5'
+        icon='akar-icons:dashboard'
+      />
+    ),
+    getItem(
+      <Link
+        to='exams'
+        onClick={() => dispatch(switchSidebar("2"))}>
+        Organizations
+      </Link>,
+      "2",
+      <Icon
+        className='w-5 h-5'
+        icon='healthicons:i-exam-multiple-choice-outline'
+      />
+    ),
+  ];
+
   const changeWorkspace = (workspace, userRole) => {
 
     if (workspace === "personal") {
@@ -369,14 +397,24 @@ const DashboardScreen = () => {
       });
       navigate("/dashboard");
       return;
+    } else if (workspace === "systemAdmin") {
+      console.log(workspace, userRole, 'workspace')
+      setUserRole(userRole);
+      setCurrentWorkspace(workspace);
+      dispatch(switchToSysAdminWorkspace());
+      toast.success("Workspace switched successfully!", {
+        position: "bottom-right",
+      });
+      navigate("/dashboard");
+      return;
     }
 
     setCurrentWorkspace(workspace);
-    console.log(currentWorkspace);
+    // console.log(currentWorkspace);
     dispatch(switchWorkspace({ id: workspace, field: "" }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          console.log(res);
+          // console.log(res);
           setOrganization(res.payload.data.data[0]);
           toast.success("Workspace switched successfully!", {
             position: "bottom-right",
@@ -469,7 +507,28 @@ const DashboardScreen = () => {
       ),
     };
 
+    const systemAdminItem = {
+      label: (
+        <span
+          className='cursor-pointer'
+          onClick={() => {
+            changeWorkspace("systemAdmin", "sysAdmin");
+            dispatch(switchSidebar("1"));
+          }}>
+          System Overview
+        </span>
+      ),
+      key: ++itemsSoFar,
+      icon: <Icon icon='eos-icons:system-group' />,
+    };
+
     setWorkspaceDropdownItems((prevItems) => [...prevItems, joinOrgItem]);
+    if (user.isSystemAdmin) {
+      setWorkspaceDropdownItems((prevItems) => [...prevItems, {
+        type: "divider",
+      }])
+      setWorkspaceDropdownItems((prevItems) => [...prevItems, systemAdminItem]);
+    }
     dispatch(currentUserOrganizationsIdAndRole(org));
   };
 
@@ -556,6 +615,8 @@ const DashboardScreen = () => {
               ? examineeSidebarItems
               : userRole === "admin"
               ? orgAdminSidebarItems
+              : userRole === "sysAdmin" 
+              ? systemAdminSidebarItems
               : examinerSidebarItems
           }
         />
@@ -591,7 +652,7 @@ const DashboardScreen = () => {
               <div className='text-primary-500 border w-full border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md inline-flex items-center cursor-pointer gap-2'>
                 <div className='inline-flex items-center justify-center gap-2 h-fit'>
                   <Icon icon='octicon:organization-24' />
-                  {workspace === null ? "Personal Workspace" : workspace.name}
+                  {workspace === null ? "Personal Workspace" : workspace === "sysAdmin" ? "System Overview" : workspace.name}
                 </div>
                 <Icon icon='gridicons:dropdown' />
               </div>

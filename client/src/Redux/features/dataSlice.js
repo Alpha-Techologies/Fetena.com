@@ -37,6 +37,9 @@ const dataSlice = createSlice({
     switchToPersonalWorkspace(state) {
       state.workspace = null;
     },
+    switchToSysAdminWorkspace(state) {
+      state.workspace = 'sysAdmin';
+    },
     switchSidebar(state, action) {
       console.log(action, "action");
       state.currentSidebar = action.payload;
@@ -239,6 +242,7 @@ const dataSlice = createSlice({
 
 export const {
   switchToPersonalWorkspace,
+  switchToSysAdminWorkspace,
   switchSidebar,
   currentUserOrganizationsIdAndRole,
 } = dataSlice.actions;
