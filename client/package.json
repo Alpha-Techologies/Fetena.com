@@ -19,6 +19,7 @@
     "antd-img-crop": "^4.22.0",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
+    "dotenv": "^16.4.5",
     "face-api.js": "^0.22.2",
     "hamburger-react": "^2.5.0",
     "html2canvas": "^1.4.1",

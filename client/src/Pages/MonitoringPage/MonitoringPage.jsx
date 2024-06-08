@@ -31,7 +31,10 @@ const MonitoringPage = () => {
   const [examineeStatusStats, setExamineeStatusStats] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const navigate = useNavigate();
-  const serverURL = "http://localhost:3000";
+  // const serverURL = "http://localhost:3000";
+  const serverURL = false
+    ? "http://localhost:8080"
+    : "http://13.49.21.227:8080";
   let tempExam = {};
 
   const fetchData = async (page = 1, active = true, access = "") => {
@@ -143,8 +146,8 @@ const MonitoringPage = () => {
   // useEffect to join socket of the invigilator
   useEffect(() => {
     // if (examStatus === "open") {
-      // Emit an event to the server
-      socket.emit("joinInvigilator", currentExam._id);
+    // Emit an event to the server
+    socket.emit("joinInvigilator", currentExam._id);
     // }
   }, []);
 
