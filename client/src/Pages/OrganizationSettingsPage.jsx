@@ -1,14 +1,19 @@
 import { Button, Form, Input, Radio, Tag, Card } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateOrganization, updateOrganizationLogo, switchWorkspace } from "../Redux/features/dataActions";
+import {
+  updateOrganization,
+  updateOrganizationLogo,
+  switchWorkspace,
+} from "../Redux/features/dataActions";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
+import Pricing from "../Components/Pricing";
 
-const OrganizationSettingsPage = () => {
+const OrganizationInfo = () => {
   const { workspace } = useSelector((state) => state.data);
-  const url = 'http://localhost:8080'
+  const url = "http://localhost:8080";
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,15 +28,15 @@ const OrganizationSettingsPage = () => {
   };
 
   const [pictureData, setPictureData] = useState({
-    logo: null
+    logo: null,
   });
 
   useEffect(() => {
     if (workspace === null) {
-      navigate('dashboard')
-      return
+      navigate("dashboard");
+      return;
     }
-    dispatch(switchWorkspace({ id: workspace._id, field: "" }))
+    dispatch(switchWorkspace({ id: workspace._id, field: "" }));
   }, []);
 
   const handleFileChange = (e) => {
@@ -50,41 +55,41 @@ const OrganizationSettingsPage = () => {
     // console.log(pictureData.logo);
   };
 
-
   const handleSubmit = async (values) => {
     console.log(values, workspace);
     const formDataToSend = new FormData();
 
     // Append form fields to formDataToSend
-    formDataToSend.append(
-      "data",
-      JSON.stringify({
-        
-      })
-    );
+    formDataToSend.append("data", JSON.stringify({}));
 
     if (pictureData.logo) {
       formDataToSend.append("logo", pictureData.logo);
-      console.log('is it going here');
-      dispatch(updateOrganizationLogo({organizationLogo: formDataToSend, id: workspace._id}))
-      .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          setPictureData({ logo: null });
-          fileInputRef.current.value = null;
-          console.log(pictureData);
-          toast.success("Logo uploaded successfully");
-        }
-        else {
-          toast.error(res.payload.message);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("There is some error in the server when uploading picture!");
-      });
+      console.log("is it going here");
+      dispatch(
+        updateOrganizationLogo({
+          organizationLogo: formDataToSend,
+          id: workspace._id,
+        })
+      )
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            setPictureData({ logo: null });
+            fileInputRef.current.value = null;
+            console.log(pictureData);
+            toast.success("Logo uploaded successfully");
+          } else {
+            toast.error(res.payload.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error(
+            "There is some error in the server when uploading picture!"
+          );
+        });
     }
 
-    dispatch(updateOrganization({organization: values, id: workspace._id}))
+    dispatch(updateOrganization({ organization: values, id: workspace._id }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
           initialValues = {
@@ -105,16 +110,17 @@ const OrganizationSettingsPage = () => {
         console.log(error);
         toast.error("Something is wrong");
       });
-    
-    dispatch(switchWorkspace({id: workspace._id, field: ""}))
+
+    dispatch(switchWorkspace({ id: workspace._id, field: "" }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
         } else {
           toast.error("There is an error while switching workspace!", {
-            position: 'bottom-right'
+            position: "bottom-right",
           });
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
         toast.error("There is some error in the server! " + error);
       });
@@ -125,108 +131,147 @@ const OrganizationSettingsPage = () => {
   };
 
   return (
+    <Card
+      style={{ width: "100%" }}
+      className='px-4'>
+      <Form
+        className='w-full'
+        form={form}
+        onFinish={onFinish}
+        initialValues={initialValues}
+        layout='vertical'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-x-8 '>
+          <div>
+            <Form.Item
+              label='Organization Name'
+              required
+              name={"name"}
+              tooltip='This is a required field'>
+              <Input placeholder='Enter your organization name' />
+            </Form.Item>
+            <Form.Item
+              label='Description'
+              required
+              name={"description"}
+              tooltip={{
+                title: "Write a description about your organization",
+              }}>
+              <Input placeholder='Enter Descirption' />
+            </Form.Item>
+            <Form.Item
+              label='Address'
+              name={"address"}
+              required>
+              <Input placeholder='Enter your address' />
+            </Form.Item>
+            <div>
+              <Form.Item
+                label='Organization Photo'
+                required>
+                <input
+                  type='file'
+                  accept='image/*'
+                  ref={fileInputRef}
+                  onChange={handleFileChange} // Update this line
+                />
+              </Form.Item>
+              <div className='flex items-center gap-2 my-4'>
+                <img
+                  src={
+                    pictureData.logo
+                      ? URL.createObjectURL(pictureData.logo)
+                      : url + workspace.logo
+                  }
+                  alt='Uploaded Photo'
+                  className='uploaded-photo w-48 h-56'
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <Form.Item
+              label='Email'
+              name={"email"}>
+              <Input placeholder='Enter your organziation email' />
+            </Form.Item>
+
+            <Form.Item
+              label='Phone Number'
+              name={"phone"}>
+              <Input placeholder='Enter your orgnaization phone number' />
+            </Form.Item>
+
+            <Form.Item
+              label='Website'
+              name={"website"}>
+              <Input placeholder='Enter your organization website' />
+            </Form.Item>
+          </div>
+        </div>
+
+        {/* <Button type="primary" className="px-8 flex gap-2 items-center font-semibold bg-primary-500" onClick={submitExam}><Icon  icon="lucide:save"  className="text-xl text-white" />{" "} Save & Submit</Button> */}
+        <div className='w-full flex gap-2 items-center justify-center'>
+          <Form.Item>
+            <Button
+              className='px-8 flex gap-2 items-center font-semibold bg-primary-500 w-full'
+              type='primary'
+              htmlType='submit'>
+              <Icon
+                icon='lucide:save'
+                className='text-xl text-white'
+              />{" "}
+              Update Organization
+            </Button>
+          </Form.Item>
+        </div>
+      </Form>
+    </Card>
+  );
+};
+
+
+const OrganizationSettingsPage = () => {
+
+  const tabList = [
+    {
+      key: "tab1",
+      tab: "Info",
+    },
+    {
+      key: "tab2",
+      tab: "Subscription",
+    },
+  ];
+  const contentList = {
+    tab1: <OrganizationInfo />,
+    tab2: <Pricing />,
+  };
+
+  const [activeTabKey1, setActiveTabKey1] = useState("tab1");
+
+  const onTab1Change = (key) => {
+    setActiveTabKey1(key);
+  };
+  
+
+  
+
+  return (
     <div className='flex flex-col gap-4 items-start'>
-       <h1 className='text-2xl font-bold text-blue-900 text-left'>
+      <h1 className='text-2xl font-bold text-blue-900 text-left'>
         Organizations Settings
       </h1>
 
       <Card
-        style={{ width: "100%" }}
-        className='px-4'>
-        <Form
-          className="w-full"
-          form={form}
-          onFinish={onFinish}
-          initialValues={initialValues}
-          layout='vertical'>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 ">
-
-           
-            <div>
-            <Form.Item
-            label='Organization Name'
-            required
-            name={"name"}
-            tooltip='This is a required field'>
-            <Input placeholder='Enter your organization name' />
-          </Form.Item>
-          <Form.Item
-            label='Description'
-            required
-            name={"description"}
-            tooltip={{
-              title: "Write a description about your organization",
-            }}>
-            <Input placeholder='Enter Descirption' />
-          </Form.Item>
-          <Form.Item
-            label='Address'
-            name={"address"}
-            required>
-            <Input placeholder='Enter your address' />
-          </Form.Item>
-          <div>
-
-          <Form.Item
-            label='Organization Photo'
-
-            required>      
-<input
-  type='file'
-  accept='image/*'
-  ref={fileInputRef}
-  onChange={handleFileChange} // Update this line
-/>
-</Form.Item>
-  <div className='flex items-center gap-2 my-4'>
-    <img
-      src={pictureData.logo ? URL.createObjectURL(pictureData.logo) : url + workspace.logo}
-      alt='Uploaded Photo'
-      className='uploaded-photo w-48 h-56'
-    />
-  </div>
-  </div>
-
-            </div>
-            <div>
-            <Form.Item
-            label='Email'
-            name={"email"}>
-            <Input placeholder='Enter your organziation email' />
-          </Form.Item>
-         
-         
-          <Form.Item
-            label='Phone Number'
-            name={"phone"}>
-            <Input placeholder='Enter your orgnaization phone number' />
-          </Form.Item>
-         
-          <Form.Item
-            label='Website'
-            name={"website"}>
-            <Input placeholder='Enter your organization website' />
-          </Form.Item>
-            </div>
-            </div>
-          
-            {/* <Button type="primary" className="px-8 flex gap-2 items-center font-semibold bg-primary-500" onClick={submitExam}><Icon  icon="lucide:save"  className="text-xl text-white" />{" "} Save & Submit</Button> */}
-<div className="w-full flex gap-2 items-center justify-center">
-
-
-          <Form.Item>
-            <Button
-              className="px-8 flex gap-2 items-center font-semibold bg-primary-500 w-full"
-              type='primary'
-              htmlType='submit'>
-              <Icon  icon="lucide:save"  className="text-xl text-white" />{" "}Update Organization
-            </Button>
-          </Form.Item>
-          </div>
-        </Form>
-        
+        style={{
+          width: "100%",
+        }}
+        tabList={tabList}
+        activeTabKey={activeTabKey1}
+        onTabChange={onTab1Change}>
+        {contentList[activeTabKey1]}
       </Card>
     </div>
   );
-}
-export default OrganizationSettingsPage
+};
+export default OrganizationSettingsPage;

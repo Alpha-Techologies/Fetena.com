@@ -30,8 +30,6 @@ const featuresData = {
     "https://cdn.builder.io/api/v1/image/assets/TEMP/c896fd2f9a710e96a67f61747bd44eabe79c29f09d865cab24fd45c535cbefc8?apiKey=da0e5699a0964f23ab3a2091e7f935a3&",
 };
 
-
-const About = () => {
   
   return (
     <>
