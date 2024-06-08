@@ -124,7 +124,7 @@ const AiQuestionGenerator = ({
           </Button>
         </div>
 
-        {isLoading ? <div>Loading...</div> : <pre className="h-80 overflow-auto font-semibold text-blue-900 text-md -mt-4 border border-gray-300 rounded-lg p-2" >{promptResponse}</pre>}
+        {isLoading ? <div className="text-center font-semibold text-gray-500">Loading...</div> : <pre className="h-80 overflow-auto font-semibold text-blue-900 text-md -mt-4 border border-gray-300 rounded-lg p-2" >{promptResponse}</pre>}
       </div>
     </Modal>
   );
