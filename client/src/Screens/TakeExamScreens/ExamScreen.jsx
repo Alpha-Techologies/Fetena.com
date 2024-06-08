@@ -30,6 +30,7 @@ const ExamScreen = ({
   userAnswersId,
   takeExamId,
   setStartExam,
+  exitFullscreen,
 }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [answers, setAnswer] = useState({});
@@ -78,9 +79,38 @@ const ExamScreen = ({
     };
   }, []);
 
+  //socket related events listening
   useEffect(() => {
-    console.log("examinee", examinee);
+    socket.on("examTerminated", (takeExamId, message) => {
+      const terminateExam = async () => {
+        try {
+          await axios.patch(`/api/exams/take-exam/${takeExamId}`, {
+            status: "terminated",
+            examEndTime: Date.now(),
+          });
 
+          // also put the user activity log
+          socket.emit("userActivityLog", takeExamId, exam._id, {
+            action: "Exam Terminated",
+            reason: "-",
+            actionType: "warning",
+          });
+        } catch (error) {
+          console.error("Error fetching exam details:", error);
+          // toast.error("Failed to terminate exam");
+        }
+      };
+
+      terminateExam();
+      // terminate the exam
+      toast.error(message);
+      setStartExam(false);
+      navigate(-1);
+      exitFullscreen();
+    });
+  }, [socket]);
+
+  useEffect(() => {
     if (Object.keys(examinee).length !== 0) {
       // the examinee has no information recorded in hte server
       if (examinee.userActivityLogs.length === 0) {
@@ -205,10 +235,9 @@ const ExamScreen = ({
     if (resp === 200) {
       setStartExam(false);
       navigate(-1);
-      // document.exitFullscreen();
       exitFullscreen();
       toast.success("Exam submitted successfully!");
-    } 
+    }
   };
   //   const handleFinishExam = async () => {
   //     try {

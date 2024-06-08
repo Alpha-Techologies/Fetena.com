@@ -17,7 +17,11 @@ const monitorExamSocket = (io, socket) => {
     takeExam.status = "terminated";
     await takeExam.save();
 
-    io.to(takeExam.socketId).emit("examTerminated", takeExamId);
+    io.to(takeExam.socketId).emit(
+      "examTerminated",
+      takeExamId,
+      "Exam terminated by invigilator"
+    );
   });
 
   // Activity log for the user
@@ -65,7 +69,11 @@ const monitorExamSocket = (io, socket) => {
       if (takeExam.status === "inprogress") {
         takeExam.status = "terminated";
         takeExam.save();
-        io.to(takeExam.socketId).emit("examTerminated", takeExam._id);
+        io.to(takeExam.socketId).emit(
+          "examTerminated",
+          takeExam._id,
+          "Exam closed by invigilator"
+        );
       }
     });
   });

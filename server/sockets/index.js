@@ -8,10 +8,10 @@ const initSocket = (io) => {
     console.log("⚡ Socket: Connected", socket.id);
 
     // Register notification and chat handlers
+    monitorExamSocket(io, socket);
     notificationSocket(io, socket);
     chatSocket(io, socket);
     faceTrack(io, socket);
-    monitorExamSocket(io, socket);
 
     socket.on("disconnect", () => {
       console.log("Client disconnected", socket.id);
