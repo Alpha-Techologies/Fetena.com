@@ -576,7 +576,7 @@ const DashboardScreen = () => {
             width: "100%",
           }}>
           <h1 className='hidden lg:flex  text-xl font-semibold text-primary-500 '>
-            {"Hello there, " + user.firstName + " " + user.lastName + "!" + apiUrl}
+            {"Hello there, " + user.firstName + " " + user.lastName + "!" }
           </h1>
           <div className='inline-flex items-center justify-center gap-4'>
             <Dropdown

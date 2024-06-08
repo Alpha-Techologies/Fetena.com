@@ -314,7 +314,10 @@ const MonitoringPage = () => {
                   socket={socket}
                 />
                 {seeStatusOf !== "all" && (
-                  <VideoMonitorWindow socket={socket} />
+                  <VideoMonitorWindow
+                    socket={socket}
+                    currentUser={currentUser}
+                  />
                 )}
               </div>
             </div>
