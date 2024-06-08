@@ -10,6 +10,9 @@ const userAnswerRouter = require("./userAnswerRoutes");
 const sseRouter = require("./sseRouters");
 const chatRouter = require("./chatRoutes");
 
+const logRouter = require("./logRoutes");
+
+
 router.use("/users", userRouter);
 router.use("/exams", examRouter);
 router.use("/questions", questionRouter);
@@ -18,5 +21,7 @@ router.use("/notifications", notificationRouter);
 router.use("/useranswers", userAnswerRouter);
 router.use("/sse",sseRouter)
 router.use("/chat",chatRouter)
+
+router.use("/log", logRouter);
 
 module.exports = router;
