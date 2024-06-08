@@ -31,7 +31,7 @@ import {
 import { current } from "@reduxjs/toolkit";
 const { Header, Content, Footer, Sider } = Layout;
 
-
+const DashboardScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(true);
