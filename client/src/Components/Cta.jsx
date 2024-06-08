@@ -14,11 +14,11 @@ const Cta = () => {
               Find exceptional talent for your business at TalentHub Ethiopia and unlock new opportunities for growth.
             </p>
             <Link
-              to='/'
+              to='/sign-in'
               className='flex items-center justify-center gap-2'
             >
               
-              <Button text="button" />
+              <Button text="Get Started" />
            
             </Link>
           </div>
