@@ -1,6 +1,7 @@
+import Stats from "../Screens/DashboardScreens/components/Stats"
 const DashboardPage = () => {
   return (
-    <div>DashboardPage</div>
+    <Stats />
   )
 }
 export default DashboardPage

@@ -298,7 +298,7 @@ const DashboardScreen = () => {
     getItem(
       <Link
         to='activities'
-        onClick={() => dispatch(switchSidebar("5ki"))}>
+        onClick={() => dispatch(switchSidebar("5"))}>
         Activity Log
       </Link>,
       "5",
