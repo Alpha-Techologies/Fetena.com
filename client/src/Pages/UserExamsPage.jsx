@@ -63,24 +63,7 @@ const UserExamsPage = () => {
   }, [searchText]);
 
 
-  const onTabChange = (key) => {
-    if (activeTabKey === "All" && key !== "All") {
-      basicInfoForm
-        .validateFields()
-        .then(() => {
-          setActiveTabKey(key);
-        })
-        .catch(() => {
-          toast.error("Please complete all required fields in Basic Info");
-        });
-    } else if (activeTabKey === "Featured" && key !== "Featured") {
-      // Add validation or other functionality specific to Exam Questions tab
-      setActiveTabKey(key);
-    } else {
-      setActiveTabKey(key);
-    }
-  };
-
+  
 
 
   const onPaginationChange = (page) => {
@@ -146,10 +129,7 @@ const UserExamsPage = () => {
       <div>
         <Card
           style={{ width: "100%" }}
-          // tabList={tabListNoTitle}
-          activeTabKey={activeTabKey}
-          onTabChange={onTabChange}
-          // tabProps={{ size: "middle" }}
+   
           >
           {activeTabKey === "All" && (
             <>
@@ -166,8 +146,7 @@ const UserExamsPage = () => {
 />
             </>
           )}
-          {activeTabKey === "Featured" && <p>Featured</p>}
-          {activeTabKey === "Taken" && <p>Taken</p>}
+         
         </Card>
       </div>
     </div>

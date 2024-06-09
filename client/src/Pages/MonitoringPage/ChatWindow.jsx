@@ -29,7 +29,7 @@ const ChatWindow = ({ currentUser, seeStatusOf, currentExam, socket }) => {
   }, [currentExam]);
 
   useEffect(() => {
-    console.log(currentUser, 'curUser in chat')
+    // console.log(currentUser, 'curUser in chat')
     setChatList([])
     if (Object.keys(currentUser).length !== 0) {
       for (const chat of currentUser?.chatMessages) {
@@ -45,7 +45,7 @@ const ChatWindow = ({ currentUser, seeStatusOf, currentExam, socket }) => {
     }
    }, [currentUser])
 
-  console.log(currentUser, currentExam, seeStatusOf, "currentUser in chat");
+  // console.log(currentUser, currentExam, seeStatusOf, "currentUser in chat");
 
   useEffect(() => {
     if (socket) {

@@ -81,6 +81,8 @@ const ProfilePage = () => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [isInputDisabled, setIsInputDisabled] = useState(true);
 
+  const url = false ? "http://localhost:8080" : "http://13.49.21.227:8080";
+
   const regEx = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,}$/;
 
   const onClick = (e) => {
@@ -199,7 +201,7 @@ const ProfilePage = () => {
         <div className="flex flex-col gap-4 p-4 bg-white rounded-br-md rounded-bl-md items-center">
           <img
             className="block mx-auto my-2 w-32 h-32 object-cover rounded-full border-4 border-blue-200"
-            src={`http://localhost:8080/${user.profilePhoto}`}
+            src={`${import.meta.env.VITE_API_URL}/${user.profilePhoto}`}
             alt="profile"
           />
 
@@ -274,11 +276,10 @@ const ProfilePage = () => {
                   setIsInputDisabled(false);
                 }}
               >
-                <Icon icon="tabler:edit" className="text-xl text-white" />{" "}
-                Edit Profile
+                <Icon icon="tabler:edit" className="text-xl text-white" /> Edit
+                Profile
               </Button>
 
-            
               <Button
                 type="default"
                 htmlType="submit"
@@ -306,52 +307,50 @@ const ProfilePage = () => {
             className="w-full"
             onFinish={onFinishPassword}
           >
-                        <div className="grid grid-cols-2 gap-x-8">
+            <div className="grid grid-cols-2 gap-x-8">
+              <Form.Item
+                label="Current Password"
+                name="passwordCurrent"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your current password!",
+                  },
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
 
-            <Form.Item
-              label="Current Password"
-              name="passwordCurrent"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your current password!",
-                },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
+              <Form.Item
+                label="Confirm New Password"
+                name="confirmPassword"
+                dependencies={["newPassword"]}
+                hasFeedback
+                rules={[
+                  {
+                    required: true,
+                    message: "Please confirm your password!",
+                  },
+                  { validator: handleConfirmPassword },
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
 
-            <Form.Item
-              label="Confirm New Password"
-              name="confirmPassword"
-              dependencies={["newPassword"]}
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: "Please confirm your password!",
-                },
-                { validator: handleConfirmPassword },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
-
-            <Form.Item
-              label="New Password"
-              name="password"
-              hasFeedback
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your New Password!",
-                },
-                { validator: handleStrongPassword },
-              ]}
-            >
-              <Input.Password />
-            </Form.Item>
-           
+              <Form.Item
+                label="New Password"
+                name="password"
+                hasFeedback
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your New Password!",
+                  },
+                  { validator: handleStrongPassword },
+                ]}
+              >
+                <Input.Password />
+              </Form.Item>
             </div>
 
             <Form.Item label=" ">
@@ -359,7 +358,6 @@ const ProfilePage = () => {
                 type="default"
                 htmlType="submit"
                 disabled={isDisabled}
-
                 className="bg-primary-500 text-white hover:text-blue-500 hover:bg-white"
               >
                 {isLoading ? "Loading..." : "Change Password"}

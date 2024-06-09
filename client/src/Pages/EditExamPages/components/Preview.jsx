@@ -14,31 +14,16 @@ import axios from "axios";
 
 const Preview = ({setActiveTabKey,basicInfoValues, setBasicInfoValues, questionsCollection , setQuestionsCollection , choiceCount,  chooseOnChange, setExamKey,examType}) => {
 
-  // console.log(basicInfoValues.id,"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiidddddddddddddddddddddddddddddddddddd")
-  // console.log(questionsCollection.questions,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
-  // console.log(basicInfoValues,"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+
   const totalPoints = questionsCollection.questions.reduce((total, question) => total + (question.points || 0), 0);  const { workspace } = useSelector((state) => state.data);
 
   const [questionCount,setQuestionCount] = useState(0);
 
-  // setquestionsCollection.questions (basicInfoValues.questions)
-  console.log(basicInfoValues.questions,"olaaaaaaaaaaaaaa222222222222222222");
 
 
   const updateQuestionCount = () => { setQuestionCount(questionCount + 1) }
 
   const {user} = useSelector((state) => state.auth);
-  // console.log(basicInfoValues.examFile)
-
-  // useEffect(() => {
-  //   if (basicInfoValues && basicInfoValues.questions && Array.isArray(basicInfoValues.questions)) {
-  //     if (questionsCollection.questions .length === 0) {
-  //       setQuestionsCollection (basicInfoValues.questions);
-  //     }
-  //   }
-  // }, [basicInfoValues, questionsCollection.questions ]);
-
-// console.log(basicInfoValues.examStartDate,"useeffcet examstart dateeeeeeeeeeeeeee")
 
 
 const submitExam = async () => {
@@ -96,12 +81,8 @@ const submitExam = async () => {
       "questions" : questionsCollection.questions 
     }
     const response = await axios.patch(`/api/exams/questions/${basicInfoValues.id}`, obj);
-    // Handle success
     console.log('Questions submitted successfully:', response.data.data.data);
-    // setquestionsCollection ([]);
-    // localStorage.removeItem('questionsCollection.questions ');
 
-    // setExamKey(response.data.data.exam.examKey);
     const examDataToSend =   {
       examName: basicInfoValues.examName,
       duration: basicInfoValues.duration,
@@ -236,7 +217,7 @@ const confirmDeleteQuestion = () => {
 
 
 
-
+console.log(basicInfoValues,"edit an exammmmmmmmmmm")
 
 
 
@@ -273,10 +254,24 @@ const confirmDeleteQuestion = () => {
           </div>
 
           <div className="w-full  flex flex-wrap gap-16 py-2 px-8 my-4">
-          <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Organization : </span>AASTU <span><Icon icon="gravity-ui:seal-check" className="text-lg text-blue-800" /></span></p>
+          <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Organization : </span>{basicInfoValues.organization.name} 
+          {basicInfoValues.organization.isVerified ?  <span>
+                <Icon
+                  icon="gravity-ui:seal-check"
+                  className="text-lg text-blue-800"
+                />
+              </span> : <Tag color="red">Not Verified</Tag>}
+          </p>
+
+          <p className="font-semibold flex gap-2 items-center justify-center">
+              <span className="font-bold text-blue-700">Created by : </span>
+              {user.firstName} {user.lastName}{" "}
+            </p>
    
-          <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Created by : </span>{user.firstName} {user.lastName} </p>
-        
+          <p className="font-semibold flex gap-2 items-center justify-center">
+              <span className="font-bold text-blue-700">Certification : </span>
+               
+              {basicInfoValues.hasCertificate ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}            </p>        
 
 </div>
 
@@ -299,10 +294,10 @@ const confirmDeleteQuestion = () => {
 
       <div className="w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4">
 <p className="font-semibold">
-  <span className="font-bold text-blue-700">Private Answer : </span>{basicInfoValues.privateAnswer ? "Yes" : "No"}
+  <span className="font-bold text-blue-700">Private Answer : </span>{basicInfoValues.privateAnswer ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
 </p>
 <p className="font-semibold">
-  <span className="font-bold text-blue-700">Private Score : </span>{basicInfoValues.privateScore ? "Yes" : "No"}
+  <span className="font-bold text-blue-700">Private Score : </span>{basicInfoValues.privateScore ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
 </p>
 
 <p className="font-semibold">
@@ -324,17 +319,17 @@ const confirmDeleteQuestion = () => {
           <div className="w-full flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4">
   <p className="font-semibold">
     <span className="font-bold text-blue-700">Calculator : </span>
-    {basicInfoValues.calculator ? "Yes" : "No"}
+    {basicInfoValues.calculator ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
   </p>
 
   <p className="font-semibold">
     <span className="font-bold text-blue-700">Formulas Collection : </span>
-    {basicInfoValues.formulasCollection ? "Yes" : "No"}
+    {basicInfoValues.formulasCollection ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
   </p>
 
   <p className="font-semibold">
     <span className="font-bold text-blue-700">Upload Materials : </span>
-    {basicInfoValues.uploadMaterials ? "Yes" : "No"}
+    {basicInfoValues.uploadMaterials ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
   </p>
 </div>
 

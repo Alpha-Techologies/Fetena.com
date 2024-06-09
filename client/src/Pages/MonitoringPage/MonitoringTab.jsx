@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Tag, Table, Card, Avatar, Timeline,Divider, Button } from "antd";
+import { Tag, Table, Card, Avatar, Timeline, Divider, Button } from "antd";
 import axios from "axios";
 import _ from "lodash";
 import moment from "moment";
@@ -16,7 +16,8 @@ const MonitoringTab = ({
   socket,
   fetchExamineeList,
 }) => {
-  const serverURL = "http://localhost:3000";
+  // const serverURL = "http://localhost:3000";
+  const serverURL = import.meta.env.VITE_SOCKET_URL;
   const currentTime = moment();
 
   const handleEndExam = async (status, userId) => {
@@ -263,12 +264,13 @@ const MonitoringTab = ({
             {currentUser?.user?.email}
           </p>
         </div>
-        <Divider orientation="center">        <p className="font-semibold text-md ">Examinee History</p>
+        <Divider orientation="center">
+          {" "}
+          <p className="font-semibold text-md ">Examinee History</p>
         </Divider>
-        <Timeline >
-          {currentUser?.userActivityLogs.slice().map((item, index) => (
+        <Timeline reverse>
+          {currentUser?.userActivityLogs?.map((item, index) => (
             <Timeline.Item
-            
               key={index}
               dot={
                 <Icon
@@ -282,11 +284,22 @@ const MonitoringTab = ({
               }
               color={item.actionType === "warning" ? "red" : "green"}
             >
-              <span >
-                <span className={` ${item.actionType === "warning" ? "text-red-500" : "text-green-500"} font-semibold  italic`}> {item.action} </span>{" "}
+              <span>
+                <span
+                  className={` ${
+                    item.actionType === "warning"
+                      ? "text-red-500"
+                      : "text-green-500"
+                  } font-semibold  italic`}
+                >
+                  {" "}
+                  {item.action}{" "}
+                </span>{" "}
                 <br />
-                <span className="text-blue-800 font-semibold">Reason - </span> <span className="font-semibold">{item.reason}</span> {" "}
-                <br />
+                <span className="text-blue-800 font-semibold">
+                  Reason -{" "}
+                </span>{" "}
+                <span className="font-semibold">{item.reason}</span> <br />
                 <span className="italic text-gray-500">
                   {new Date(item.timestamp).toLocaleString()}
                 </span>

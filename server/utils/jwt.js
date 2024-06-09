@@ -21,9 +21,7 @@ const attachCookiesToResponse = ({ res, user, refreshToken }) => {
     sameSite: "lax",
   });
   res.cookie("accessToken", accessTokenJWT, {
-
     httpOnly: false,
-    // httpOnly: true, merge conflict
     secure: false,
     signed: true,
     sameSite: "lax",

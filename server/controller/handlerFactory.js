@@ -3,8 +3,9 @@ const APIError = require("../utils/apiError");
 const catchAsync = require("../utils/catchAsync");
 const { logActivity } = require("../utils/logActivity");
 const APIFeatures = require("../utils/apiFeatures");
-const dbConn = require("../config/db_Connection");
-// const OrganizationExaminer = require("../models/organization.examiner.model");
+const { dbConn } = require("../config/db_Connection");
+const OrganizationExaminer = require("../models/organization.examiner.model");
+
 const { StatusCodes } = require("http-status-codes");
 require("events").EventEmitter.prototype._maxListeners = 70;
 require("events").defaultMaxListeners = 70;
@@ -39,6 +40,7 @@ exports.getAll = (Model, options = "", obj = {}) =>
 
     let opt = {};
     if (options === "addUser") opt = { user: req.user.id };
+    if (options === "myCertificate") opt = { user: req.user.id };
     if (options === "addOrganization") opt = { organization: req.params.id };
     if (options === "addExaminerStatus")
       opt = { user: req.user.id, status: "activated" };

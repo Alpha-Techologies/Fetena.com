@@ -13,7 +13,7 @@ import Pricing from "../Components/Pricing";
 
 const OrganizationInfo = () => {
   const { workspace } = useSelector((state) => state.data);
-  const url = "http://localhost:8080";
+  const url = import.meta.env.VITE_API_URL
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -275,3 +275,5 @@ const OrganizationSettingsPage = () => {
   );
 };
 export default OrganizationSettingsPage;
+
+

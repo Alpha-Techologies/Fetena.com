@@ -47,6 +47,7 @@ import OrgListSysAdmin from "../Pages/OrgListSysAdmin";
 import SubscriptionSysAdmin from "../Pages/SubscriptionSysAdmin";
 import UsersSysAdmin from "../Pages/UsersSysAdmin";
 import ActivitiesSysAdmin from "../Pages/ActivitiesSysAdmin";
+import UserCertificationsPage from "../Pages/UserCertificationsPage";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -192,7 +193,10 @@ const AllRoutes = () => {
           />
           <Route
             path='verify-payment'
-            element={<PaymentVerify />}
+            element={<PaymentVerify />} />
+           <Route
+            path='usercertifications'
+            element={<UserCertificationsPage />}
           />
 
           <Route
