@@ -37,6 +37,9 @@ const { fileUpload } = require("../utils/fileUpload");
 
 const { zip } = require("../utils/zip");
 const { validationRules, checkId } = require("../lib/validation");
+const {
+  getOrganizationId,
+} = require("../controller/organization/getOrganizationId");
 
 // const {
 //   getUserProfile,
@@ -87,7 +90,9 @@ router.post("/unfollow/:id", protect, unfollowOrganization);
 router.post("/addAdmin", addAsAdmin);
 
 router.get("/organizations", protect, getUserOrganization);
-router.route("/:id").patch(protect, restrictTo, updateUser);
+router
+  .route("/:id")
+  .patch(protect, restrictTo(false), getOrganizationId, updateUser);
 // router.patch("/activate/:token", activateAccount);
 // verify-email
 

@@ -401,3 +401,17 @@ export const getAllActivities = createAsyncThunk(
     }
   }
 );
+
+export const toggleUserActivation = createAsyncThunk(
+  "data/toggleUserActivation",
+  async ({activation, id}, { rejectWithValue }) => {
+    // console.log(id, paymentData, "id, payment data");
+    try {
+      const { data } = await axios.patch(`${url}/users/${id}`, activation);
+      // console.log(now, "now");
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);

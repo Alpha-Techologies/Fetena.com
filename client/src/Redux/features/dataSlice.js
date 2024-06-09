@@ -24,7 +24,8 @@ import {
   getOrganizationTransactions,
   getAllTransactions,
   getAllUsers,
-  getAllActivities
+  getAllActivities,
+  toggleUserActivation
 } from "./dataActions";
 
 const initialState = {
@@ -325,6 +326,18 @@ const dataSlice = createSlice({
         console.log(action, "dataslice data");
       })
       .addCase(getAllActivities.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(toggleUserActivation.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(toggleUserActivation.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(toggleUserActivation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });
