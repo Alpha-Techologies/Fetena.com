@@ -41,7 +41,7 @@ function HowItWorks() {
     <section id="how-it-works" className="px-4 py-8 bg-blue-900 md:py-20 md:px-10 lg:px-16 xl:px-24">
       <div className="max-w-6xl mx-auto">
         <h2 className="mb-16  text-3xl font-bold text-center text-white md:text-4xl">
-          How TalentHub Ethiopia works?
+          How Fetena works?
         </h2>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (

@@ -40,8 +40,8 @@ function WhyChooseUsSection() {
 
    
     <section className="py-16 px-16 md:px-32 ">
-    <h2 className="text-4xl font-bold leading-9 text-black max-md:max-w-full text-left">
-    Simplify Exam Management and Enhance Accessibility
+    <h2 className="text-3xl font-bold leading-9 text-blue-900 max-md:max-w-full text-left">
+    Simplify Exam Management, Enhance Accessibility
             </h2>
 
             <p className="my-8 text-gray-600 text-left">
