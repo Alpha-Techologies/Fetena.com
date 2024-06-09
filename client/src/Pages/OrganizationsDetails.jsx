@@ -62,6 +62,7 @@ const OrganizationsDetails = () => {
           console.log(res.payload.data.data);
           const data = res.payload.data.data;
           const updatedStaffs = data.map((item) => ({
+            key: item.user._id,
             id: item.user._id,
             profilePhoto: item.user.profilePhoto,
             fullName: item.user.fullName,
@@ -86,7 +87,7 @@ const OrganizationsDetails = () => {
           `/api/exams/my-exam/${id}?active=${active}&access=${access}`
         );
 
-        console.log(response, "bitch");
+        console.log(response);
         setExams(response.data.data.data);
         console.log(exams, "exams");
       } catch (error) {
@@ -174,7 +175,7 @@ const OrganizationsDetails = () => {
         ) : (
           <div className='flex flex-wrap gap-4'>
             {exams.map((exam, index) => (
-              <ExamCard key={index} exam={exam} />
+              <ExamCard exam={exam} />
             ))}
           </div>
         )}
