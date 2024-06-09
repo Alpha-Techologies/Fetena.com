@@ -8,11 +8,12 @@ exports.restrictTo = (isOrgOperation) => {
   return async (req, res, next) => {
     const user = await User.findOne({ _id: req.user.id });
 
-    if (user.isSystemAdmin) next();
+    if (user.isSystemAdmin) return next();
 
     if (isOrgOperation) {
       // use the find function to create req.params.id and admin.toString()
       const org = await Organization.findOne({ _id: req.params.id });
+
       if (!org) {
         return next(
           new APIError("Organization Does not Exist", StatusCodes.BAD_REQUEST)

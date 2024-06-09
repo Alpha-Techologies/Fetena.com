@@ -19,7 +19,6 @@ exports.getOne = (Model) =>
       .populate();
 
     const doc = await query.query;
-
     if (!doc) {
       return next(new APIError(`No document found with ${req.params.id}`, 404));
     }
@@ -51,7 +50,7 @@ exports.getAll = (Model, options = "", obj = {}) =>
 
     const page = req.query.page * 1 || 1;
 
-    console.log(opt, options)
+    console.log(opt, options);
     const limit = req.query.limit * 1 || 10;
 
     let count = new APIFeatures(Model.find(opt), req.query).filter().count();

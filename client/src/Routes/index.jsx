@@ -43,6 +43,10 @@ import EditExam from './../Pages/EditExamPages/EditExam';
 import Certification from "../Pages/Certification";
 import MonitoringPage from './../Pages/MonitoringPage/MonitoringPage';
 import PaymentVerify from "../Pages/PaymentVerify";
+import OrgListSysAdmin from "../Pages/OrgListSysAdmin";
+import SubscriptionSysAdmin from "../Pages/SubscriptionSysAdmin";
+import UsersSysAdmin from "../Pages/UsersSysAdmin";
+import ActivitiesSysAdmin from "../Pages/ActivitiesSysAdmin";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -157,6 +161,22 @@ const AllRoutes = () => {
           <Route
             path='create-organization'
             element={<CreateOrganization />}
+          />
+          <Route
+            path='organization-list-sysAdmin'
+            element={<OrgListSysAdmin />}
+          />
+          <Route
+            path='subscription-list-sysAdmin'
+            element={<SubscriptionSysAdmin />}
+          />
+          <Route
+            path='users-list-sysAdmin'
+            element={<UsersSysAdmin />}
+          />
+          <Route
+            path='activites-list-sysAdmin'
+            element={<ActivitiesSysAdmin />}
           />
           <Route
             path='results'

@@ -378,14 +378,50 @@ const DashboardScreen = () => {
     ),
     getItem(
       <Link
-        to='exams'
+        to='organization-list-sysAdmin'
         onClick={() => dispatch(switchSidebar("2"))}>
         Organizations
       </Link>,
       "2",
       <Icon
-        className='w-5 h-5'
-        icon='healthicons:i-exam-multiple-choice-outline'
+        className='w-4 h-4'
+        icon='grommet-icons:organization'
+      />
+    ),
+    getItem(
+      <Link
+        to='activites-list-sysAdmin'
+        onClick={() => dispatch(switchSidebar("3"))}>
+        Activity Log
+      </Link>,
+      "3",
+      <Icon
+        className='w-4 h-4'
+        icon='octicon:log-24'
+      />
+    ),
+    getItem(
+      <Link
+        to='users-list-sysAdmin'
+        onClick={() => dispatch(switchSidebar("4"))}>
+        Users
+      </Link>,
+      "4",
+      <Icon
+        className='w-4 h-4'
+        icon='ph:users'
+      />
+    ),
+    getItem(
+      <Link
+        to='subscription-list-sysAdmin'
+        onClick={() => dispatch(switchSidebar("5"))}>
+        Subscriptions
+      </Link>,
+      "5",
+      <Icon
+        className='w-4 h-4'
+        icon='streamline:subscription-cashflow'
       />
     ),
   ];
