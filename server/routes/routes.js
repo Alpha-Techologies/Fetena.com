@@ -7,6 +7,7 @@ const questionRouter = require("./questionRoutes");
 const organizationRouter = require("./organizationRoutes");
 const notificationRouter = require("./notificationRoutes");
 const userAnswerRouter = require("./userAnswerRoutes");
+const logRouter = require("./logRoutes");
 // const sseRouter = require("./sseRouters");
 // const chatRouter = require("./chatRoutes");
 const certificateRouter = require("./certificateRoutes");

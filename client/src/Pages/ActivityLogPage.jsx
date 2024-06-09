@@ -78,6 +78,8 @@ const ActivityLogPage = () => {
 
       </div>
     </div>
+    </div>
+    </div>
   );
 };
 

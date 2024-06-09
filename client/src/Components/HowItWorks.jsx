@@ -17,23 +17,23 @@ function HowItWorks() {
   const steps = [
     {
       imageSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/d3cf5d5b6dab9b73a3ec6bf6b14499dce22bca21e3d993d90a6b661382912d4e?apiKey=da0e5699a0964f23ab3a2091e7f935a3&",
-      title: "Create account.",
-      description: `To create an account on TalentHub Ethiopia, please visit the following website: https://talenthub.et/auth/sign_up`,
+      title: "Create an Account.",
+      description: `Sign up on Fetena.com to get started.`,
     },
     {
       imageSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/d3cf5d5b6dab9b73a3ec6bf6b14499dce22bca21e3d993d90a6b661382912d4e?apiKey=da0e5699a0964f23ab3a2091e7f935a3&",
-      title: "Create account.",
-      description: `To create an account on TalentHub Ethiopia, please visit the following website: https://talenthub.et/auth/sign_up`,
+      title: "Set Up Exams.",
+      description: ` Use our simple interface to create and schedule exams.`,
     },
     {
       imageSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/eb04b6656f6b54cba0fcb45c425592d879ae5d9dc4171b5a3a3f05c01132ab1e?apiKey=da0e5699a0964f23ab3a2091e7f935a3&",
-      title: "Find suitable job.",
-      description: `To create an account on TalentHub Ethiopia, please visit the following website: https://talenthub.et/auth/sign_up`,
+      title: "Conduct Exams.",
+      description: ` Monitor examinees in real-time and ensure a secure testing environment.`,
     },
     {
       imageSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/c4ad37664ba2340bbb40318958787bfe3846cac994cf5e614929bba728aafc10?apiKey=da0e5699a0964f23ab3a2091e7f935a3&",
-      title: "Apply job.",
-      description: `To create an account on TalentHub Ethiopia, please visit the following website: https://talenthub.et/auth/sign_up`,
+      title: "Grade Exams.",
+      description: ` Grade exams effortlessly and provide instant results to examinees.`,
     },
   ];
 

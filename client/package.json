@@ -19,8 +19,8 @@
     "antd-img-crop": "^4.22.0",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
-    "eventsource-parser": "^1.1.2",
     "dotenv": "^16.4.5",
+    "eventsource-parser": "^1.1.2",
     "face-api.js": "^0.22.2",
     "hamburger-react": "^2.5.0",
     "html2canvas": "^1.4.1",
@@ -43,8 +43,10 @@
     "react-router-dom": "^6.23.1",
     "react-toastify": "^10.0.5",
     "react-youtube": "^10.1.0",
+    "recharts": "^2.12.7",
     "redux-persist": "^6.0.0",
     "socket.io-client": "^4.7.5",
+    "swiper": "^11.1.4",
     "together-ai": "^0.5.2"
   },
   "devDependencies": {
