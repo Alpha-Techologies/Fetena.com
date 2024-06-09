@@ -44,6 +44,10 @@ const userActivityLogSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  imageUrl: {
+    type: String,
+  },
+
 });
 
 const takeExamSchema = new mongoose.Schema({

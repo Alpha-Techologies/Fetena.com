@@ -32,6 +32,7 @@ const ExamScreen = ({
   takeExamId,
   setStartExam,
   exitFullscreen,
+  startExam,
 }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [answers, setAnswer] = useState({});
@@ -419,7 +420,9 @@ const ExamScreen = ({
           batteryLevel={batteryLevel}
           examinee={examinee}
         />
-        <VideoComponent socket={socket} />
+        {takeExamId ? (
+          <VideoComponent socket={socket} takeExamId={takeExamId} />
+        ) : null}
         {"VideoComponent"}
       </Sider>
       <Layout>

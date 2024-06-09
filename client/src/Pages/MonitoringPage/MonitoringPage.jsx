@@ -315,12 +315,38 @@ const MonitoringPage = () => {
                   currentExam={currentExam}
                   socket={socket}
                 />
-                {seeStatusOf !== "all" && (
-                  <VideoMonitorWindow
-                    socket={socket}
-                    currentUser={currentUser}
-                  />
-                )}
+                {seeStatusOf !== "all" &&
+                  (currentUser.status !== "inprogress" ? (
+                    <>
+                      {/* <Carousel fade>
+                        {currentUser?.userActivityLogs
+                          ?.filter((item) => !!item.imageUrl)
+                          ?.map((log, index) => {
+                            if (log.imageUrl) console.log(log, "log the image");
+                            return (
+                              <div key={index} className="carousel-slide">
+                                <img
+                                  src={`${import.meta.env.VITE_API_URL}${
+                                    log.imageUrl
+                                  }`}
+                                  alt="faceaiDetection"
+                                  className="w-128 h-128"
+                                />
+                              </div>
+                            );
+                          })}
+                      </Carousel> */}
+                      <img
+                        src="http://localhost:8080/uploads/faceaiDetections/faceaiDetection_66644bb81dcbc090c199e4b7_1717899895553.png"
+                        alt="faceapi"
+                      />
+                    </>
+                  ) : (
+                    <VideoMonitorWindow
+                      socket={socket}
+                      currentUser={currentUser}
+                    />
+                  ))}
               </div>
             </div>
           </div>
