@@ -1,5 +1,4 @@
 const { StatusCodes } = require("http-status-codes");
-const catchAsync = require("../../utils/catchAsync");
 const { attachCookiesToResponse, isTokenValid } = require("../../utils/jwt");
 const APIError = require("../../utils/apiError");
 const { TokenModel } = require("../../models/Token.model");
