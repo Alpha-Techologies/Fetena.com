@@ -3,6 +3,7 @@ const Organization = require("../../models/organization.model");
 const catchAsync = require("../../utils/catchAsync");
 const OrganizationExaminer = require("../../models/organization.examiner.model");
 const APIError = require("../../utils/apiError");
+const { logActivity } = require("../../utils/logActivity");
 
 exports.deactivateExaminer = catchAsync(async (req, res, next) => {
   const { userId } = req.body;
@@ -41,6 +42,8 @@ exports.deactivateExaminer = catchAsync(async (req, res, next) => {
   organizationExaminer.status = "deactivated";
   // save the organization
   await organizationExaminer.save();
+
+  await logActivity(req,4,{name:'organization Examiner',id:userId} )
 
   res.status(StatusCodes.OK).json({
     status: "success",

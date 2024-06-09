@@ -4,15 +4,19 @@ import {
   followOrganization,
   unfollowOrganization,
   getOneOrganization,
+  organizationStaff,
 } from "../Redux/features/dataActions";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { Card, Divider } from "antd";
+import { Card, Avatar } from "antd";
 import { Icon } from "@iconify/react";
 import Button from "../Components/Button";
 import { Link } from "react-router-dom";
 import ExamCard from "../Components/ExamCard";
 import { getMe } from "../Redux/features/authActions";
+import axios from "axios";
+
+const {Meta} = Card
 
 const OrganizationsDetails = () => {
   const { "*": id } = useParams();
@@ -21,6 +25,9 @@ const OrganizationsDetails = () => {
   const { user } = useSelector((state) => state.auth);
   const [activeTabKey, setActiveTabKey] = useState("exams");
   const [followedOrganizations, setFollowedOrganizations] = useState([]);
+  const [personnels, setPersonnels] = useState([]);
+  const [exams, setExams] = useState([])
+  // const serverURL = "http://localhost:3000";
   // const serverURL = "http://localhost:3000";
   const serverURL = import.meta.env.VITE_SOCKET_URL;
 
@@ -43,8 +50,51 @@ const OrganizationsDetails = () => {
       setFollowedOrganizations((prevItems) => [...prevItems, org._id]);
     }
     console.log(followedOrganizations, "followedOrganizations");
+    // fetchOrganizationStaffs();
     
   }, []);
+
+  
+
+  const fetchOrganizationStaffs = () => {
+    setPersonnels([]);
+    dispatch(organizationStaff(id))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          console.log(res.payload.data.data);
+          const data = res.payload.data.data;
+          const updatedStaffs = data.map((item) => ({
+            id: item.user._id,
+            profilePhoto: item.user.profilePhoto,
+            fullName: item.user.fullName,
+            email: item.user.email,
+            userType: item.user.userType,
+          }));
+          setPersonnels(updatedStaffs);
+        } else {
+          toast.error(res.payload.message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("There is some error in the server!");
+      });
+  };
+
+  const fetchExams = async (page = 1, active = true, access = "open") => {
+   
+      try {
+        const response = await axios.get(
+          `/api/exams/my-exam/${id}?active=${active}&access=${access}`
+        );
+
+        console.log(response, "bitch");
+        setExams(response.data.data.data);
+        console.log(exams, "exams");
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+  };
 
   // Function to handle organization follow action
   const handleFollowOrganization = (id) => {
@@ -110,28 +160,56 @@ const OrganizationsDetails = () => {
     setActiveTabKey(key);
   };
 
-  const ExamPageView = () => {
+  useEffect(() => {
+    if (activeTabKey === "personnel") {
+      fetchOrganizationStaffs();
+    } else if (activeTabKey === "exams") {
+      fetchExams();
+    }
+  }, [activeTabKey]);
+
+  const ExamPageView = ({ exams }) => {
     return (
-      <div className='flex flex-wrap gap-4'>
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
-        <ExamCard />
+      <div>
+        {exams.length === 0 ? (
+          <h1>No Exams</h1>
+        ) : (
+          <div className='flex flex-wrap gap-4'>
+            {exams.map((exam, index) => (
+              <ExamCard key={index} exam={exam} />
+            ))}
+          </div>
+        )}
       </div>
     );
   };
 
+  const PersonnelPageView = ({personnels}) => {
+    return (
+      <div>
+        {personnels.map((personnel) => (
+          <Card
+            key={personnel.id}
+            style={{
+              width: 300,
+              marginTop: 16,
+            }}>
+            <Meta
+              avatar={
+                <Avatar src={serverURL + personnel.profilePhoto} />
+              }
+              title={personnel.fullName}
+              description={personnel.userType}
+            />
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
   const contentList = {
-    exams: <ExamPageView />,
-    personnel: "as",
+    exams: <ExamPageView exams={exams} />,
+    personnel: <PersonnelPageView personnels={personnels} />,
   };
 
   const tabList = [

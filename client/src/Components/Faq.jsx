@@ -7,7 +7,7 @@ const Faq = () => {
       <summary
         className="flex cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-gray-50 p-4 text-gray-900"
       >
-        <h2 className="font-medium text-blue-800">Lorem ipsum dolor sit amet consectetur adipisicing?</h2>
+        <h2 className="font-medium text-blue-800">What makes Fetena.com user-friendly for exam creation?</h2>
   
         <svg
           className="size-5 shrink-0 transition duration-300 group-open:-rotate-180"
@@ -21,9 +21,7 @@ const Faq = () => {
       </summary>
   
       <p className="mt-4 px-4 leading-relaxed text-gray-700">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic veritatis molestias culpa in,
-        recusandae laboriosam neque aliquid libero nesciunt voluptate dicta quo officiis explicabo
-        consequuntur distinctio corporis earum similique!
+      Fetena.com offers an intuitive interface that simplifies the exam creation process. Educators can easily set up exams with various question types, including multiple-choice and essays, making the process quick and efficient.
       </p>
     </details>
   
@@ -31,7 +29,7 @@ const Faq = () => {
       <summary
         className="flex cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-gray-50 p-4 text-gray-900"
       >
-        <h2 className="font-medium text-blue-800">Lorem ipsum dolor sit amet consectetur adipisicing?</h2>
+        <h2 className="font-medium text-blue-800">How does Fetena.com ensure a secure exam environment?</h2>
   
         <svg
           className="size-5 shrink-0 transition duration-300 group-open:-rotate-180"
@@ -45,9 +43,7 @@ const Faq = () => {
       </summary>
   
       <p className="mt-4 px-4 leading-relaxed text-gray-700">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic veritatis molestias culpa in,
-        recusandae laboriosam neque aliquid libero nesciunt voluptate dicta quo officiis explicabo
-        consequuntur distinctio corporis earum similique!
+      Fetena.com employs robust security measures to prevent cheating and ensure exam integrity. Features such as real-time monitoring and secure browser settings help maintain a fair testing environment.
       </p>
     </details>
 
@@ -55,7 +51,7 @@ const Faq = () => {
       <summary
         className="flex cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-gray-50 p-4 text-gray-900"
       >
-        <h2 className="font-medium text-blue-800">Lorem ipsum dolor sit amet consectetur adipisicing?</h2>
+        <h2 className="font-medium text-blue-800">Can Fetena.com handle automated grading?</h2>
   
         <svg
           className="size-5 shrink-0 transition duration-300 group-open:-rotate-180"
@@ -69,9 +65,7 @@ const Faq = () => {
       </summary>
   
       <p className="mt-4 px-4 leading-relaxed text-gray-700">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic veritatis molestias culpa in,
-        recusandae laboriosam neque aliquid libero nesciunt voluptate dicta quo officiis explicabo
-        consequuntur distinctio corporis earum similique!
+      Yes, Fetena.com provides automated grading tools that enable quick and accurate assessment of exams. This feature delivers instant results to students, saving time and reducing manual grading efforts for educators.
       </p>
     </details>
   
@@ -79,7 +73,7 @@ const Faq = () => {
       <summary
         className="flex cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-gray-50 p-4 text-gray-900"
       >
-        <h2 className="font-medium text-blue-800">Lorem ipsum dolor sit amet consectetur adipisicing?</h2>
+        <h2 className="font-medium text-blue-800">What real-time monitoring capabilities does Fetena.com offer?</h2>
   
         <svg
           className="size-5 shrink-0 transition duration-300 group-open:-rotate-180"
@@ -93,9 +87,7 @@ const Faq = () => {
       </summary>
   
       <p className="mt-4 px-4 leading-relaxed text-gray-700">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic veritatis molestias culpa in,
-        recusandae laboriosam neque aliquid libero nesciunt voluptate dicta quo officiis explicabo
-        consequuntur distinctio corporis earum similique!
+      Fetena.com includes real-time monitoring features that allow examiners to oversee the exam process as it happens. This helps ensure that all examinees follow the rules and maintains the integrity of the exam.
       </p>
     </details>
   </div>

@@ -45,6 +45,8 @@ const Preview = ({
   );
   const { workspace } = useSelector((state) => state.data);
   console.log(workspace._id, "points");
+  console.log(workspace,"workspace search")
+
 
   const [questionCount, setQuestionCount] = useState(0);
 
@@ -142,6 +144,7 @@ console.log("one add questions start--------------------------------------------
           securityLevel: updatedBasicInfoValues.securityLevel,
           examType: updatedBasicInfoValues.examType,
           access: updatedBasicInfoValues.access,
+          hasCertificate: updatedBasicInfoValues.hasCertificate,
           toolsPermitted: [
             updatedBasicInfoValues.calculator && "calculator",
             updatedBasicInfoValues.formulasCollection && "formulasCollection",
@@ -194,6 +197,7 @@ console.log("one add questions start--------------------------------------------
       access: "closed",
       points: 0,
       examFile: null,
+      hasCertificate: false
     });
     localStorage.removeItem("basicInfoValues");
   };
@@ -309,18 +313,26 @@ console.log("one add questions start--------------------------------------------
             <p className="font-semibold flex gap-2 items-center justify-center">
               <span className="font-bold text-blue-700">Organization : </span>
               AASTU{" "}
-              <span>
+              {workspace.isVerified ?  <span>
                 <Icon
                   icon="gravity-ui:seal-check"
                   className="text-lg text-blue-800"
                 />
-              </span>
+              </span> : <Tag color="red">Not Verified</Tag>}
+             
             </p>
            
             <p className="font-semibold flex gap-2 items-center justify-center">
               <span className="font-bold text-blue-700">Created by : </span>
               {user.firstName} {user.lastName}{" "}
             </p>
+
+           
+
+            <p className="font-semibold flex gap-2 items-center justify-center">
+              <span className="font-bold text-blue-700">Certification : </span>
+               
+              {basicInfoValues.hasCertificate ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}            </p>
           </div>
 
           <div className="w-full  flex flex-col gap-2 py-4 px-8 my-4 items-start">
@@ -338,11 +350,11 @@ console.log("one add questions start--------------------------------------------
       <div className="w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4">
         <p className="font-semibold">
           <span className="font-bold text-blue-700">Private Answer : </span>
-          {basicInfoValues.privateAnswer ? "Yes" : "No"}
+          {basicInfoValues.privateAnswer ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
         </p>
         <p className="font-semibold">
           <span className="font-bold text-blue-700">Private Score : </span>
-          {basicInfoValues.privateScore ? "Yes" : "No"}
+          {basicInfoValues.privateScore ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
         </p>
 
         <p className="font-semibold">
@@ -360,19 +372,19 @@ console.log("one add questions start--------------------------------------------
       <div className="w-full flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4">
         <p className="font-semibold">
           <span className="font-bold text-blue-700">Calculator : </span>
-          {basicInfoValues.calculator ? "Yes" : "No"}
+          {basicInfoValues.calculator ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
         </p>
 
         <p className="font-semibold">
           <span className="font-bold text-blue-700">
             Formulas Collection :{" "}
           </span>
-          {basicInfoValues.formulasCollection ? "Yes" : "No"}
+          {basicInfoValues.formulasCollection ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
         </p>
 
         <p className="font-semibold">
           <span className="font-bold text-blue-700">Upload Materials : </span>
-          {basicInfoValues.uploadMaterials ? "Yes" : "No"}
+          {basicInfoValues.uploadMaterials ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
         </p>
       </div>
 

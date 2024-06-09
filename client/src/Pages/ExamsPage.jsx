@@ -1,4 +1,4 @@
-import { Card, Form, Input, Space, Table, Popover, Modal, Select, Button, Dropdown } from "antd";
+import { Card, Form, Input, Space, Table, Popover, Modal, Select, Tag , Dropdown } from "antd";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
@@ -17,6 +17,7 @@ const ExamsPage = () => {
   const [current, setCurrent] = useState(1); // Current page number
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState(""); // Search text
+
 
   const onSearch = (value) => {
     setSearchText(value); // Update search text
@@ -165,17 +166,20 @@ const ExamsPage = () => {
     examKey: <span className="font-bold text-blue-900">{exam.examKey}</span>,
     createdBy: `${exam.createdBy.firstName} ${exam.createdBy.lastName}`,
     createdAt: new Date(exam.createdAt).toLocaleString(),
-    securityLevel: exam.securityLevel,
+    securityLevel: (
+     <span> {exam.securityLevel === "low" ? <Tag color="green" className="px-4">low</Tag> : <Tag color="red" className="px-4">high</Tag>}</span>
+    ),
     access: (
       <span
         onClick={() => handleAccess(exam._id, exam.access)}
-        className="font-semibold cursor-pointer border rounded-xl flex items-center justify-center"
-        style={{
-          color: exam.access === "open" ? "green" : "red",
-          borderColor: exam.access === "open" ? "green" : "red",
-        }}
+        className="cursor-pointer"
+        // style={{
+        //   color: exam.access === "open" ? "green" : "red",
+        //   borderColor: exam.access === "open" ? "green" : "red",
+        // }}
       >
-        {exam.access}
+        {exam.access === "open" ? <Tag color="green" className="px-4">open</Tag> : <Tag color="red" className="px-4">closed</Tag>}
+        {/* <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag> */}
       </span>
     ),
     active: exam.active,

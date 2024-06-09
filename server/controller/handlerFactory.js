@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
-// const Grid = require("gridfs-stream");
 const APIError = require("../utils/apiError");
 const catchAsync = require("../utils/catchAsync");
-// const transaction = require("../utils/transaction");
+const {logActivity} = require("../utils/logActivity");
 const APIFeatures = require("../utils/apiFeatures");
 const { dbConn } = require("../config/db_Connection");
 const OrganizationExaminer = require("../models/organization.examiner.model");
+
 const { StatusCodes } = require("http-status-codes");
-// const dbAuth = require("../config/db_Authentication");
 require("events").EventEmitter.prototype._maxListeners = 70;
 require("events").defaultMaxListeners = 70;
 
@@ -36,7 +35,7 @@ exports.getOne = (Model) =>
 exports.getAll = (Model, options = "", obj = {}) =>
   catchAsync(async (req, res, next) => {
     // currentTime, pathname, method
-    // const {currentTime,_parsedOriginalUrl} = req
+    // const {currentTime,_parsedOriginalUrl} = req 
     // console.log(currentTime)
     // console.log(_parsedOriginalUrl.pathname)
 
@@ -106,6 +105,9 @@ exports.updateOne = (Model) =>
         new APIError(`No document found with id = ${req.params.id}`, 404)
       );
     }
+
+    await logActivity(req,1,{name:Model?.modelName,id:req.params.id})
+    
     res.status(200).json({
       status: "success",
       data: {
@@ -129,6 +131,7 @@ exports.deleteOne = (Model) =>
     console.log(model);
     await model.save();
 
+    await logActivity(req,5,{name:Model?.modelName,id:req.params.id} )
     res.status(StatusCodes.OK).json({
       status: "success",
       data: null,
@@ -162,6 +165,9 @@ exports.createOne = (Model) =>
         new APIError(`An error occured while creating the document`, 500)
       );
     }
+
+    await logActivity(req,0,{name:Model?.modelName,id:doc.id})
+
     res.status(201).json({
       status: "success",
       data: {
@@ -181,6 +187,7 @@ exports.createMany = (Model, returnOnlyId = false) =>
 
     if (returnOnlyId) {
       let id = doc.map((item) => item._id);
+      // await logActivity(req,0,{name:Model?.modelName,id:req.params.id} )
       res.status(201).json({
         status: "success",
         data: {
@@ -188,6 +195,9 @@ exports.createMany = (Model, returnOnlyId = false) =>
         },
       });
     } else {
+
+      // await logActivity(req,0,{name:Model?.modelName,id:req.params.id} )
+
       res.status(201).json({
         status: "success",
         data: {
@@ -196,68 +206,3 @@ exports.createMany = (Model, returnOnlyId = false) =>
       });
     }
   });
-
-// exports.getOneMedia = (collectionName) =>
-//   catchAsync(async (req, res, next) => {
-//     console.log(req.params.filename);
-//     if (collectionName == "userProfile") gridfs = gridfsProfile;
-//     else if (collectionName == "media") gridfs = gridfsMedia;
-
-//     const result = await gridfs.find({
-//       filename: req.params.filename,
-//     });
-//     var filename = "";
-//     await result.forEach((doc) => {
-//       filename = doc.filename;
-//       return;
-//     });
-//     const readstream = await gridfs.openDownloadStreamByName(filename);
-
-//     readstream
-//       .on("data", async (chunk) => {
-//         string = await chunk.toString("base64");
-
-//         return res.status(200).json({
-//           status: "success",
-//           data: string,
-//         });
-//       })
-//       .on("end", function () {
-//         console.log("end");
-//       })
-//       .on("error", (err) => {
-//         console.log(err, "the error");
-//       });
-//   });
-
-// exports.updateOneMedia = (collectionName) =>
-//   catchAsync(async (req, res, next) => {
-//     gfs.collection(collectionName);
-//     // gfs.remove({_id:})
-//   });
-
-// exports.deleteOneMedia = (collectionName) =>
-//   catchAsync(async (req, res, next) => {
-//     if (collectionName == "userProfile") gridfs = gridfsProfile;
-//     else if (collectionName == "media") gridfs = gridfsMedia;
-
-//     await gridfs.delete(new mongoose.Types.ObjectId(req.params.id));
-//     res.status(204).json({
-//       status: "success",
-//     });
-//   });
-
-// exports.deleteManyMedia = (collectionName) =>
-//   catchAsync(async (req, res, next) => {
-//     if (collectionName == "userProfile") gridfs = gridfsProfile;
-//     else if (collectionName == "media") gridfs = gridfsMedia;
-
-//     // gfs.collection(collectionName + '.chunks');
-//     console.log(req.body.delete);
-//     // gridfs.delete(`ObjectId("${req.body.delete[0]}")`)
-//     await gridfs.delete(new mongoose.Types.ObjectId(req.body.delete[0]));
-
-//     res.status(200).json({
-//       status: "success",
-//     });
-//   });

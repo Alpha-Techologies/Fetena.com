@@ -1,7 +1,7 @@
 import { createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const url = import.meta.env.VITE_API_URL+'/api/users';
+const url = '/api/users';
 
 export const registerUser = createAsyncThunk(
     "auth/registerUser",

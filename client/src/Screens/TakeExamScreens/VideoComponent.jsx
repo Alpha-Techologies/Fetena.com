@@ -23,18 +23,28 @@ const VideoComponent = ({ socket }) => {
 
           peerClientRef.current = new Peer();
 
-          peerClientRef.current.on("open", (streamerId) => {
-            socket.emit("join-as-streamer", streamerId);
-          });
+          if (socket) {
+            peerClientRef.current.on("open", (streamerId) => {
+              socket.emit("join-as-streamer", streamerId);
+            });
 
-          peerClientRef.current.on("close", () => {
-            socket.emit("disconnect-as-streamer");
-          });
+            peerClientRef.current.on("close", () => {
+              socket.emit("disconnect-as-streamer");
+            });
 
-          socket.on("viewer-connected", (viewerId) => {
-            console.log("viewer connected");
-            connectToNewViewer(viewerId, stream);
-          });
+            socket.on("viewer-connected", (viewerId) => {
+              console.log("viewer connected");
+              connectToNewViewer(viewerId, stream);
+            });
+
+            socket.on("viewer-disconnected", () => {
+              // console.log("streamer disconnected");
+              // streamer is disconnected stop streaming
+             // disconnect from the existing stream
+
+
+            });
+          }
 
           peerClientRef.current.on("error", (err) => {
             console.error("PeerJS error:", err);

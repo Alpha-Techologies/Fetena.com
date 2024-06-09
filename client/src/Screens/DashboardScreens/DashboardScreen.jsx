@@ -29,6 +29,7 @@ import {
   currentUserOrganizationsIdAndRole,
 } from "../../Redux/features/dataSlice";
 import { current } from "@reduxjs/toolkit";
+import GoogleTranslate from "../../Components/GoogleTranslate";
 const { Header, Content, Footer, Sider } = Layout;
 
 const DashboardScreen = () => {
@@ -245,7 +246,9 @@ const DashboardScreen = () => {
       <Icon className="w-5 h-5" icon="ic:outline-monitor-heart" />
     ),
     getItem(
-      <Link to="activities" onClick={() => dispatch(switchSidebar("5ki"))}>
+      <Link
+        to='activities'
+        onClick={() => dispatch(switchSidebar("5"))}>
         Activity Log
       </Link>,
       "5",
@@ -494,6 +497,12 @@ const DashboardScreen = () => {
             {"Hello there, " + user.firstName + " " + user.lastName + "!"}
           </h1>
           <div className="inline-flex items-center justify-center gap-4">
+<div className="mb-8 mx-8">
+
+          <GoogleTranslate />
+</div>
+          
+
             <Dropdown
               onClick={() => {
                 fetchUserOrganizations();
@@ -513,6 +522,7 @@ const DashboardScreen = () => {
                 <Icon icon="gridicons:dropdown" />
               </div>
             </Dropdown>
+            
             <Link
               onClick={() => dispatch(switchSidebar(""))}
               to="notifications"
@@ -532,7 +542,9 @@ const DashboardScreen = () => {
               <Avatar
                 className="cursor-pointer w-16 h-10 items-center justify-center"
                 size="large"
+
                 icon={<img src={`${import.meta.env.VITE_API_URL}/${user.profilePhoto}`} alt="avatar" />}
+
               />
             </Dropdown>
           </div>
