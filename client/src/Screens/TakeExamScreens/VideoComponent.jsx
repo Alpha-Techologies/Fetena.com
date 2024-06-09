@@ -43,7 +43,7 @@ const VideoComponent = ({ socket, takeExamId }) => {
             )
             .withFaceLandmarks();
 
-          if (detections.length > 1) {
+          if (detections.length > 1 || detections.length === 0) {
             captureCanvaImage();
           }
 
@@ -62,7 +62,7 @@ const VideoComponent = ({ socket, takeExamId }) => {
 
     // capture the canvas image
     const captureCanvaImage = async () => {
-      if (!imageLastTaken) imageLastTaken = Date.now();
+      if (!imageLastTaken) setImageLastTaken(Date.now());
       else {
         if (Date.now() - imageLastTaken < 10000) return;
       }

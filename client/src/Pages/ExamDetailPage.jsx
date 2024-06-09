@@ -109,7 +109,10 @@ const ExamDetailPage = () => {
 
           <div className="w-full  flex flex-col gap-2 py-4 px-8 my-4 items-start">
             <h3 className="text-xl font-bold text-blue-900">Instructions</h3>
-            <p className="w-full text-justify ">{exam.instruction}</p>
+            <div
+              className="text-left w-4/6"
+              dangerouslySetInnerHTML={{ __html: exam.instruction }}
+            />
 
             <p className="font-bold mt-4">Good Luck!</p>
           </div>
