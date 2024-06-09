@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { current } from "@reduxjs/toolkit";
-import { Card, Input } from "antd";
+import { Card, Input,Tag } from "antd";
 import { useEffect, useState } from "react";
 import { MessageList } from "react-chat-elements";
 import { useSelector } from "react-redux";
@@ -109,8 +109,26 @@ const ChatWindow = ({ currentUser, seeStatusOf, currentExam, socket }) => {
   };
 
   return (
-    <Card className='h-fit overflow-auto max-h-72'>
-      <div className='flex items-center justify-center text-primary-500 gap-4 '>
+    <Card className='h-fit w-80  max-h-[60vh] overflow-auto'>
+       <Tag color="magenta" className="w-full flex items-center justify-center gap-4 font-semibold text-lg text-center">
+       {seeStatusOf === "all" ? (
+          <Icon
+            className='w-5 h-5'
+            icon='mingcute:announcement-line'
+          />
+        ) : (
+          <Icon
+            className='w-5 h-5'
+            icon='fluent:chat-12-filled'
+          />
+        )}
+        <p className='text-md'>
+          {seeStatusOf === "all"
+            ? "Announce"
+            : "Message " + currentUser?.user?.fullName}
+        </p>
+       </Tag>
+      {/* <div className='flex items-center justify-center text-primary-500 gap-4  bg-red-500'>
         {seeStatusOf === "all" ? (
           <Icon
             className='w-5 h-5'
@@ -127,7 +145,7 @@ const ChatWindow = ({ currentUser, seeStatusOf, currentExam, socket }) => {
             ? "Announce"
             : "Message " + currentUser?.user?.fullName}
         </p>
-      </div>
+      </div> */}
       <div className='h-full flex flex-col justify-between'>
         <MessageList
           key={1}

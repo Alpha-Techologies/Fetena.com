@@ -1,6 +1,20 @@
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
+import axios from "axios";
+
+const fetchLogs = async () => {
+  try {
+    const response = await axios.get(`/api/log`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching logs:", error);
+    return [];
+  }
+};
 
 const ActivityLogPage = () => {
+  const [logs, setLogs] = useState([]);
+
   const columns = [
     {
       title: "Date",
@@ -24,37 +38,27 @@ const ActivityLogPage = () => {
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      date: "2022-01-01",
-      user: "John Doe",
-      action: "Created",
-      details: "Exam with ID 12345",
-    },
-    {
-      key: "2",
-      date: "2022-01-02",
-      user: "Jane Smith",
-      action: "Updated",
-      details: "Exam with ID 67890",
-    },
-    {
-      key: "3",
-      date: "2022-01-03",
-      user: "Bob Johnson",
-      action: "Deleted",
-      details: "Exam with ID 24680",
-    },
-    {
-      key: "4",
-      date: "2022-01-03",
-      user: "Bob Johnson",
-      action: "Gave Exam",
-      details: "Exam with ID 24680",
-    },
-  ];
+  const formatLogsData = (logs) => {
+    return logs.map((log, index) => ({
+      key: index,
+      date: new Date(log.createdAt).toLocaleString(),
+      user: log.user ? log.user.name || log.user._id : "Unknown",
+      action: log.action,
+      details: `${log.entity.name} with ID ${log.entity.id}`,
+    }));
+  };
+
+  useEffect(() => {
+    const getLogs = async () => {
+      const data = await fetchLogs();
+      setLogs(formatLogsData(data));
+    };
+
+    getLogs();
+  }, []);
+
   return (
+
     <div className='flex flex-col gap-4 items-start'>
        <h1 className='text-2xl font-bold text-blue-900 text-left'>Activity Logs</h1>
       <div className='flex flex-col gap-4 items-start  w-full'>
@@ -66,8 +70,17 @@ const ActivityLogPage = () => {
           scroll={{ x: 900 }}
         />
         ;
+
+    <div className="flex flex-col gap-4 items-start my-4">
+      <h1 className="text-2xl font-bold text-blue-900 text-left">Activity Logs</h1>
+      <div className="flex flex-col gap-4 items-start my-4">
+        <Table className="w-full" columns={columns} dataSource={logs} rowKey={"key"} />
+
       </div>
+    </div>
+    </div>
     </div>
   );
 };
+
 export default ActivityLogPage;

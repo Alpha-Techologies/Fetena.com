@@ -7,6 +7,7 @@ const questionRouter = require("./questionRoutes");
 const organizationRouter = require("./organizationRoutes");
 const notificationRouter = require("./notificationRoutes");
 const userAnswerRouter = require("./userAnswerRoutes");
+const logRouter = require("./logRoutes");
 // const sseRouter = require("./sseRouters");
 // const chatRouter = require("./chatRoutes");
 const certificateRouter = require("./certificateRoutes");
@@ -21,5 +22,7 @@ router.use("/useranswers", userAnswerRouter);
 // router.use("/chat",chatRouter)
 router.use("/cert",certificateRouter)
 router.use("/stats", statsRouter)
+
+router.use("/log", logRouter);
 
 module.exports = router;

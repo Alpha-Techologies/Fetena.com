@@ -246,7 +246,9 @@ const DashboardScreen = () => {
       <Icon className="w-5 h-5" icon="ic:outline-monitor-heart" />
     ),
     getItem(
-      <Link to="activities" onClick={() => dispatch(switchSidebar("5ki"))}>
+      <Link
+        to='activities'
+        onClick={() => dispatch(switchSidebar("5"))}>
         Activity Log
       </Link>,
       "5",

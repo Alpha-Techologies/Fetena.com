@@ -32,6 +32,8 @@
     "jsonwebtoken": "^8.5.1",
     "method-override": "^2.3.10",
     "minizip-asm.js": "^1.0.10",
+    "moment": "^2.30.1",
+    "momentjs": "^2.0.0",
     "mongoose": "^8.2.3",
     "morgan": "^1.10.0",
     "multer": "^1.3.0",
