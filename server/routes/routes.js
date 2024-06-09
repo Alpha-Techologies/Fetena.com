@@ -12,7 +12,7 @@ const chatRouter = require("./chatRoutes");
 
 const logRouter = require("./logRoutes");
 const logCsvRouter = require("./logCsvRoutes");
-
+const attCsvRouter = require("./attCsvRoutes");
 
 router.use("/users", userRouter);
 router.use("/exams", examRouter);
@@ -25,5 +25,6 @@ router.use("/chat",chatRouter)
 router.use("/log", logRouter);
 
 router.use("/export", logCsvRouter);
+router.use("/attendance", attCsvRouter);
 
 module.exports = router;
