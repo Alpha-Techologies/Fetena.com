@@ -20,6 +20,10 @@ import {
   takeExam,
   paymentIntent,
   paymentVerify,
+  getOneTransaction,
+  getOrganizationTransactions,
+  getAllTransactions,
+  getAllUsers
 } from "./dataActions";
 
 const initialState = {
@@ -260,6 +264,54 @@ const dataSlice = createSlice({
         console.log(action, "dataslice data");
       })
       .addCase(paymentVerify.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getOneTransaction.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOneTransaction.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(getOneTransaction.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getOrganizationTransactions.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOrganizationTransactions.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(getOrganizationTransactions.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getAllTransactions.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllTransactions.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(getAllTransactions.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getAllUsers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

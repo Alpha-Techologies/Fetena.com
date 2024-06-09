@@ -329,3 +329,61 @@ export const paymentVerify = createAsyncThunk(
     }
   }
 );
+
+export const getOneTransaction = createAsyncThunk(
+  "data/getOneTransaction",
+  async (tx_ref , { rejectWithValue }) => {
+    // console.log(id, paymentData, "id, payment data");
+    try {
+      const { data } = await axios.get(
+        `${url}/transactions/${tx_ref}`
+      );
+      // console.log(now, "now");
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getOrganizationTransactions = createAsyncThunk(
+  "data/getOrganizationTransactions",
+  async (organizationId, { rejectWithValue }) => {
+    // console.log(id, paymentData, "id, payment data");
+    try {
+      const { data } = await axios.get(`${url}/transactions/organizations/${organizationId}`);
+      // console.log(now, "now");
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getAllTransactions = createAsyncThunk(
+  "data/getAllTransactions",
+  async (_, { rejectWithValue }) => {
+    // console.log(id, paymentData, "id, payment data");
+    try {
+      const { data } = await axios.get(`${url}/transactions`);
+      // console.log(now, "now");
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getAllUsers = createAsyncThunk(
+  "data/getAllUsers",
+  async (_, { rejectWithValue }) => {
+    // console.log(id, paymentData, "id, payment data");
+    try {
+      const { data } = await axios.get(`${url}/users/?isSystemAdmin=false`);
+      // console.log(now, "now");
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
