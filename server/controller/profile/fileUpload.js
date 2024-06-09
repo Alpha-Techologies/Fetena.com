@@ -4,7 +4,6 @@ const catchAsync = require("./../../utils/catchAsync");
 const fs = require("fs");
 const { StatusCodes } = require("http-status-codes");
 const APIError = require("../../utils/APIError");
-const { CLIENT_RENEG_LIMIT } = require("tls");
 
 const fileUpload =
   // new args
