@@ -117,32 +117,42 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to="results" onClick={() => dispatch(switchSidebar("4"))}>
-        Results
+      <Link to="exams" onClick={() => dispatch(switchSidebar("4"))}>
+        Certifications
       </Link>,
       "4",
+      <Icon
+        className="w-5 h-5"
+        icon="healthicons:i-exam-multiple-choice-outline"
+      />
+    ),
+    getItem(
+      <Link to="results" onClick={() => dispatch(switchSidebar("5"))}>
+        Results
+      </Link>,
+      "5",
       <Icon className="w-5 h-5" icon="ph:exam" />
     ),
     getItem(
-      <Link to="certifications" onClick={() => dispatch(switchSidebar("5"))}>
+      <Link to="usercertifications" onClick={() => dispatch(switchSidebar("6"))}>
         Certifications
       </Link>,
-      "5",
+      "6",
       <Icon className="w-5 h-5" icon="la:award" />
     ),
     { type: "divider" },
     getItem(
-      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("6"))}>
+      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("7"))}>
         Training Videos
       </Link>,
-      "6",
+      "7",
       <Icon className="w-5 h-5" icon="healthicons:i-training-class-outline" />
     ),
     getItem(
-      <Link to="support" onClick={() => dispatch(switchSidebar("7"))}>
+      <Link to="support" onClick={() => dispatch(switchSidebar("8"))}>
         Support
       </Link>,
-      "7",
+      "8",
       <Icon
         className="w-5 h-5"
         icon="material-symbols:contact-support-outline"
@@ -497,7 +507,7 @@ const DashboardScreen = () => {
             {"Hello there, " + user.firstName + " " + user.lastName + "!"}
           </h1>
           <div className="inline-flex items-center justify-center gap-4">
-<div className="mb-8 mx-8">
+<div className="mb-8 mx-8 hidden lg:flex">
 
           <GoogleTranslate />
 </div>
@@ -514,7 +524,7 @@ const DashboardScreen = () => {
               }}
               trigger={["click"]}
             >
-              <div className="text-primary-500 border w-full border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md inline-flex items-center cursor-pointer gap-2">
+              <div className="text-primary-500 border w-auto border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md inline-flex items-center cursor-pointer gap-2">
                 <div className="inline-flex items-center justify-center gap-2 h-fit">
                   <Icon icon="octicon:organization-24" />
                   {workspace === null ? "Personal Workspace" : workspace.name}
@@ -540,7 +550,7 @@ const DashboardScreen = () => {
               trigger={["click"]}
             >
               <Avatar
-                className="cursor-pointer w-16 h-10 items-center justify-center"
+                className="cursor-pointer w-10 h-10 items-center justify-center"
                 size="large"
 
                 icon={<img src={`${import.meta.env.VITE_API_URL}/${user.profilePhoto}`} alt="avatar" />}
