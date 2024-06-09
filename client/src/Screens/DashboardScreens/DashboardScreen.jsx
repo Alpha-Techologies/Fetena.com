@@ -497,6 +497,11 @@ const DashboardScreen = () => {
             {"Hello there, " + user.firstName + " " + user.lastName + "!"}
           </h1>
           <div className="inline-flex items-center justify-center gap-4">
+<div className="mb-8 mx-8">
+
+          <GoogleTranslate />
+</div>
+          
 
             <Dropdown
               onClick={() => {
@@ -517,6 +522,7 @@ const DashboardScreen = () => {
                 <Icon icon="gridicons:dropdown" />
               </div>
             </Dropdown>
+            
             <Link
               onClick={() => dispatch(switchSidebar(""))}
               to="notifications"

@@ -1,6 +1,7 @@
 // React Related Imports
 import { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
+import GoogleTranslate from "./GoogleTranslate";
 
 // Components Imports
 import Button from './Button'
@@ -47,6 +48,7 @@ const NavBar = ({displayPage, setDisplayPage}) => {
           <Link to='/sign-in'>
             <Button text='Get started' />
           </Link>
+          <GoogleTranslate />
           <div className='md:hidden'>
             <Hamburger
               toggled={isOpen}

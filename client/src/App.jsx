@@ -5,7 +5,7 @@ import GoogleTranslate from "./Components/GoogleTranslate";
 function App() {
   return (
     <>
-      <GoogleTranslate />
+      {/* <GoogleTranslate /> */}
       <AllRoutes />
     </>
   );
