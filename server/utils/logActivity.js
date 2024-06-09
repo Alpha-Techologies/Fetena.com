@@ -14,7 +14,7 @@ const actionTypes = [
 
 const logActivity = async (req, actionIndex, { name, id }) => {
   await Log.create({
-    user: req.user.id ? req.user.id : "Unknown",
+    user: req.user.id ? req.user.id : "Unknown" ,
     organization: req.organization
       ? new mongoose.Types.ObjectId(req.organization)
       : undefined,
