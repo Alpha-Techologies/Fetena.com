@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Select, Card } from "antd";
+import { Select, Card,Tag  } from "antd";
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import useSocketIO from "../../utils/socket/useSocketIO";
@@ -215,16 +215,16 @@ const MonitoringPage = () => {
       {!examsList.length ? (
         <div>
           <div className="flex justify-between gap-4 items-center">
-            <h1 className="text-3xl font-bold my-2">Exam Monitoring</h1>
+          <h1 className='text-2xl font-bold text-blue-900 text-left mb-2'>Exam Monitoring</h1>
           </div>
           <p>You currently have no exams created.</p>
         </div>
       ) : (
         <div>
-          <div className="flex justify-between gap-4 items-center">
-            <h1 className="text-3xl font-bold my-2">Exam Monitoring</h1>
+          <div className="flex justify-between gap-4 items-center  mb-2">
+          <h1 className='text-2xl font-bold text-blue-900 text-left'>Exam Monitoring</h1>
             <div className="flex items-center justify-center gap-4">
-              <span>Exam: </span>
+              <span className="font-bold text-blue-900 text-[1rem]">Exam : </span>
               <Select
                 defaultValue={examsList[0].value}
                 style={{
@@ -238,22 +238,24 @@ const MonitoringPage = () => {
           <div className="flex flex-col gap-4">
             <Card>
               <div className="flex justify-between my-4">
-                <p className="font-bold text-lg">
-                  Exam: {currentExam.examName}
+                <p className="text-lg">
+                  <span className="font-semibold">Exam :</span> <span className="font-bold text-blue-900"> {currentExam.examName}</span>
                 </p>
                 {examStatus === "open" ? (
-                  <span className="text-success-500 flex gap-2 items-center">
+                  <span className="text-success-500 font-semibold flex gap-2 items-center">
                     <Icon icon="heroicons-outline:status-online" />
-                    Online
+                    <Tag color="green">Online</Tag>
+                  
+                    
                   </span>
                 ) : (
-                  <span className="text-error-500 flex gap-2 items-center">
-                    <Icon icon="codicon:eye-closed" /> Closed{" "}
+                  <span className="text-error-500 font-semibold flex gap-2 items-center">
+                    <Icon icon="codicon:eye-closed" />   <Tag color="red">Closed</Tag>{" "}
                   </span>
                 )}
               </div>
 
-              <div className="w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border ">
+              <div className="w-full  flex flex-wrap items-center justify-between py-2 px-8 rounded-sm border ">
                 <p className="font-semibold">
                   <span className="font-bold text-blue-700">Starts at : </span>
                   {new Date(currentExam.startDate).toLocaleString()}
@@ -313,9 +315,38 @@ const MonitoringPage = () => {
                   currentExam={currentExam}
                   socket={socket}
                 />
-                {seeStatusOf !== "all" && (
-                  <VideoMonitorWindow socket={socket} />
-                )}
+                {seeStatusOf !== "all" &&
+                  (currentUser.status !== "inprogress" ? (
+                    <>
+                      {/* <Carousel fade>
+                        {currentUser?.userActivityLogs
+                          ?.filter((item) => !!item.imageUrl)
+                          ?.map((log, index) => {
+                            if (log.imageUrl) console.log(log, "log the image");
+                            return (
+                              <div key={index} className="carousel-slide">
+                                <img
+                                  src={`${import.meta.env.VITE_API_URL}${
+                                    log.imageUrl
+                                  }`}
+                                  alt="faceaiDetection"
+                                  className="w-128 h-128"
+                                />
+                              </div>
+                            );
+                          })}
+                      </Carousel> */}
+                      <img
+                        src="http://localhost:8080/uploads/faceaiDetections/faceaiDetection_66644bb81dcbc090c199e4b7_1717899895553.png"
+                        alt="faceapi"
+                      />
+                    </>
+                  ) : (
+                    <VideoMonitorWindow
+                      socket={socket}
+                      currentUser={currentUser}
+                    />
+                  ))}
               </div>
             </div>
           </div>

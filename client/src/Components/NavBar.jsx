@@ -1,6 +1,7 @@
 // React Related Imports
 import { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
+import GoogleTranslate from "./GoogleTranslate";
 
 // Components Imports
 import Button from './Button'
@@ -35,15 +36,19 @@ const NavBar = ({displayPage, setDisplayPage}) => {
         : ""
     }`}>
       <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
+
         <img
+                        onClick={() => setDisplayPage('home')}
+
           src={fetena_logo}
-          className='h-8'
+          className='h-8 cursor-pointer'
           alt='Fetena.com Logo'
         />
         <div className='flex items-center md:order-2 space-x-3 md:space-x-0 '>
           <Link to='/sign-in'>
             <Button text='Get started' />
           </Link>
+          <GoogleTranslate />
           <div className='md:hidden'>
             <Hamburger
               toggled={isOpen}

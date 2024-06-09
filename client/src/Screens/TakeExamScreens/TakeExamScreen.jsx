@@ -10,6 +10,7 @@ import axios from "axios";
 
 import ExamStartConfirmationModal from "./ExamStartConfirmationModal";
 import ExamScreen from "./ExamScreen";
+import moment from "moment";
 
 const TakeExamScreen = () => {
   const { user } = useSelector((state) => state.auth);
@@ -31,7 +32,8 @@ const TakeExamScreen = () => {
   useEffect(() => {
     // console.log("this is runnning and start is changing");
     if (startExam) {
-      dispatch(takeExam(id))
+      const now = moment().format("YYYY-MM-DD HH:mm:ss");
+      dispatch(takeExam({id, now}))
         .then((res) => {
           console.log(res.payload);
           if (res.meta.requestStatus === "fulfilled") {
@@ -59,8 +61,6 @@ const TakeExamScreen = () => {
         });
     }
   }, [startExam]);
-
-
 
   useEffect(() => {
     const getTakeExamId = async (takeExamId) => {

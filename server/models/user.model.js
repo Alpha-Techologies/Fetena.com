@@ -108,15 +108,15 @@ const user = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    role: {
-      type: String,
-      required: false,
-      default: "user",
-      enum: {
-        values: ["manager", "receptionist", "user"],
-        message: "role can be either reception, manager or user",
-      },
-    },
+    // role: {
+    //   type: String,
+    //   required: false,
+    //   default: "user",
+    //   enum: {
+    //     values: ["manager", "receptionist", "user"],
+    //     message: "role can be either reception, manager or user",
+    //   },
+    // },
     // notificationCount: {
     //   type: Number,
     //   default: 0,

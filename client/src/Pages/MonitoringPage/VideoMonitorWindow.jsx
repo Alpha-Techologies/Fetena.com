@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import Peer from "peerjs";
 import * as faceapi from "face-api.js";
 
-const VideoMonitorWindow = ({ socket }) => {
+const VideoMonitorWindow = ({ socket, currentUser }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   // const [socket, setSocket] = useState(null);
+  const [stream, setStream] = useState(null);
   const [myPeer, setMyPeer] = useState(null);
   const [videoOnPlay, setVideoOnPlay] = useState(false);
   useEffect(() => {
@@ -39,9 +40,9 @@ const VideoMonitorWindow = ({ socket }) => {
             .withFaceLandmarks();
 
           if (detections.length > 1) {
-            prompt(
-              "Multiple faces detected. Please ensure only one face is visible in the camera."
-            );
+            // prompt(
+            //   "Multiple faces detected. Please ensure only one face is visible in the camera."
+            // );
           }
 
           const resizedDetections = faceapi.resizeResults(
@@ -57,43 +58,51 @@ const VideoMonitorWindow = ({ socket }) => {
       });
     });
 
+    const newPeer = new Peer();
+    setMyPeer(newPeer);
+
+    // newSocket.on("connect", () => {
+    //   console.log("Connected as viewer");
+    // });
+
     if (socket) {
-      const newPeer = new Peer();
-      setMyPeer(newPeer);
+      newPeer.on("open", (viewerId) => {
+        // disconnect the current stream
 
-      // newSocket.on("connect", () => {
-      //   console.log("Connected as viewer");
-      // });
-
-      if (socket) {
-        newPeer.on("open", (viewerId) => {
-          socket.emit("join-as-viewer", viewerId);
-          console.log("Connected as viewer");
-        });
-
-        newPeer.on("call", (call) => {
-          call.answer();
-          call.on("stream", (stream) => {
-            addVideoStream(videoRef.current, stream);
+        if (stream) {
+          stream.getTracks().forEach((track) => {
+            track.stop();
           });
-        });
+          setStream(null);
+        }
+        socket.emit("join-as-viewer", currentUser._id, viewerId);
+        console.log("Connected as viewer", currentUser);
+      });
 
-        newPeer.on("connection", (conn) => {
-          conn.on("close", () => {
-            setTimeout(reload, 1000);
-          });
+      newPeer.on("call", (call) => {
+        call.answer();
+        call.on("stream", (stream) => {
+          addVideoStream(videoRef.current, stream);
+          setStream(stream);
         });
+      });
 
-        socket.on("disconnect", () => {
-          console.log("disconnected viewer");
+      newPeer.on("connection", (conn) => {
+        conn.on("close", () => {
+          setTimeout(reload, 1000);
         });
-      }
+      });
 
-      return () => {
-        newPeer.disconnect();
-      };
+      socket.on("disconnect", () => {
+        console.log("disconnected viewer");
+      });
     }
-  }, [socket]);
+
+    return () => {
+      newPeer.disconnect();
+      // socket.emit("disconnect-as-viewer");
+    };
+  }, [socket, currentUser]);
 
   const addVideoStream = (video, stream) => {
     video.srcObject = stream;

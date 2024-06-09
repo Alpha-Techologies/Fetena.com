@@ -123,13 +123,10 @@ const Preview = () => {
             <div className="w-full  flex flex-wrap gap-16 py-2 px-8 my-4">
               <p className="font-semibold flex gap-2 items-center justify-center">
                 <span className="font-bold text-blue-700">Organization : </span>
-                AASTU{" "}
-                <span>
-                  <Icon
-                    icon="gravity-ui:seal-check"
-                    className="text-lg text-blue-800"
-                  />
-                </span>
+                {exam.organization?.name}{" "}
+                {exam.organization?.isVerified && (
+                  <Icon className="text-blue-500" icon="mdi:verified" />
+                )}
               </p>
 
               <p className="font-semibold flex gap-2 items-center justify-center">
@@ -308,28 +305,20 @@ const Preview = () => {
           </div>
         )}
 
-
-
-{exam.examType !== 'online' && exam.examFile && (
-  <Card
-    className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200 mx-auto mt-8 mb-2'
-  >
-    <div className='flex flex-col gap-4 justify-center items-center'>
-      <div className='flex gap-4 justify-center items-center'>
-       
-
-
-      </div>
-      {exam.examFile && (
-        <iframe
-        src={`${import.meta.env.VITE_API_URL}/${exam.examFile}`}
-        title={exam.examFile}
-        className="w-[1000px] h-[600px]"
-      />
-      )}
-    </div>
-  </Card>
-)}
+        {exam.examType !== "online" && exam.examFile && (
+          <Card className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200 mx-auto mt-8 mb-2">
+            <div className="flex flex-col gap-4 justify-center items-center">
+              <div className="flex gap-4 justify-center items-center"></div>
+              {exam.examFile && (
+                <iframe
+                  src={`${import.meta.env.VITE_API_URL}/${exam.examFile}`}
+                  title={exam.examFile}
+                  className="w-[1000px] h-[600px]"
+                />
+              )}
+            </div>
+          </Card>
+        )}
 
         <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
           <div className="flex gap-8 items-center justify-center">

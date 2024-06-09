@@ -102,6 +102,7 @@ const CreateExam = () => {
           questions: [],
           access: "closed",
           tags: [],
+          hasCertificate: false
         };
   });
 
