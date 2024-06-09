@@ -7,6 +7,7 @@ const { resetPassword } = require("./resetPassword");
 const { restrictTo } = require("./restrictTo");
 const { signUp } = require("./signup");
 const { updatePassword } = require("./updatePassword");
+const { updateUser } = require("./updateuser");
 
 module.exports = {
   forgotPassword,
@@ -17,5 +18,6 @@ module.exports = {
   logout,
   restrictTo,
   signUp,
-  activateAccount
+  activateAccount,
+  updateUser
 }

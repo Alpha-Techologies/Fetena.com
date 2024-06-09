@@ -122,14 +122,11 @@ const DashboardScreen = () => {
       />
     ),
     getItem(
-      <Link to="exams" onClick={() => dispatch(switchSidebar("4"))}>
+      <Link to="usercertifications" onClick={() => dispatch(switchSidebar("4"))}>
         Certifications
       </Link>,
       "4",
-      <Icon
-        className="w-5 h-5"
-        icon="healthicons:i-exam-multiple-choice-outline"
-      />
+      <Icon className="w-5 h-5" icon="la:award" />
     ),
     getItem(
       <Link to="results" onClick={() => dispatch(switchSidebar("5"))}>
@@ -138,26 +135,20 @@ const DashboardScreen = () => {
       "5",
       <Icon className="w-5 h-5" icon="ph:exam" />
     ),
-    getItem(
-      <Link to="usercertifications" onClick={() => dispatch(switchSidebar("6"))}>
-        Certifications
-      </Link>,
-      "6",
-      <Icon className="w-5 h-5" icon="la:award" />
-    ),
+    
     { type: "divider" },
     getItem(
-      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("7"))}>
+      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("6"))}>
         Training Videos
       </Link>,
-      "7",
+      "6",
       <Icon className="w-5 h-5" icon="healthicons:i-training-class-outline" />
     ),
     getItem(
-      <Link to="support" onClick={() => dispatch(switchSidebar("8"))}>
+      <Link to="support" onClick={() => dispatch(switchSidebar("7"))}>
         Support
       </Link>,
-      "8",
+      "7",
       <Icon
         className="w-5 h-5"
         icon="material-symbols:contact-support-outline"
@@ -272,9 +263,6 @@ const DashboardScreen = () => {
         icon='octicon:log-24'
       />
     ),
-  ];
-
-  const systemAdminSidebarItems = [
     getItem(
       <Link
         to='staffs'

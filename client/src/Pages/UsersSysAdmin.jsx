@@ -1,7 +1,8 @@
 import { Button, Popconfirm, Table } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getAllUsers } from "../Redux/features/dataActions";
+import { getAllUsers, toggleUserActivation } from "../Redux/features/dataActions";
+import { toast } from "react-toastify";
 
 const UsersSysAdmin = () => {
     const [users, setUsers] = useState([]);
@@ -23,11 +24,45 @@ const UsersSysAdmin = () => {
     };
 
     const handleActivate = (userId) => {
-        console.log(userId, "handleActivate")
+      console.log(userId, "handleActivate")
+      dispatch(
+        toggleUserActivation({ id: userId, activation: { active: true } })
+      )
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            toast.success("User activated successfully");
+            setOpenRowId(null);
+            fetchUsers();
+          } else {
+            toast.error(res.payload.message);
+            setOpenRowId(null);
+            // fetchUsers();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error("There is some error in the server!");
+        });
     }
     
     const handleDeactivate = (userId) => {
-        console.log(userId, "handleDeactivate")
+      console.log(userId, "handleDeactivate")
+      dispatch(toggleUserActivation({id: userId, activation: {active: false}}))
+      .then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast.success("User deactivated successfully");
+          setOpenRowId(null);
+          fetchUsers();
+        } else {
+          toast.error(res.payload.message);
+          setOpenRowId(null);
+          // fetchUsers();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("There is some error in the server!");
+      });
     }
 
     const columns = [
@@ -109,6 +144,7 @@ const UsersSysAdmin = () => {
               active: item.active,
             }));
             setUsers(updatedUsers);
+            console.log("fetced users", updatedUsers);
           } else {
             toast.error(res.payload.message);
           }

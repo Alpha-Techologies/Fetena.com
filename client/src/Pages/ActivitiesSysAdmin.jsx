@@ -130,16 +130,16 @@ const ActivitiesSysAdmin = () => {
             setActivitesList((prev) => [
               ...prev,
               {
-                key: data._id,
-                entity: data.entity.name,
-                user: data.user.fullName,
-                userProfile: data.user.profilePhoto,
-                userEmail: data.user.email,
-                organization: data.organization.name,
-                organizationLogo: data.organization.logo,
-                ipAddress: data.ipAddress,
-                action: data.action,
-                time: data.createdAt,
+                key: data?._id,
+                entity: data?.entity?.name,
+                user: data?.user?.fullName,
+                userProfile: data?.user?.profilePhoto,
+                userEmail: data?.user?.email,
+                organization: data?.organization?.name,
+                organizationLogo: data?.organization?.logo,
+                ipAddress: data?.ipAddress,
+                action: data?.action,
+                time: data?.createdAt,
               },
             ]);
           }
