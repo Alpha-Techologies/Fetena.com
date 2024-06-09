@@ -2,6 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const { attachCookiesToResponse, isTokenValid } = require("../../utils/jwt");
 const APIError = require("../../utils/apiError");
 const { TokenModel } = require("../../models/Token.model");
+const catchAsync = require("../../utils/catchAsync");
 
 exports.protect = catchAsync(async (req, res, next) => {
   const { refreshToken, accessToken } = req.signedCookies;
