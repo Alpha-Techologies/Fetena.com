@@ -10,17 +10,20 @@ const APIError = require("../../utils/apiError");
 const countVerifiedOrganizations = async () => {
     const verifiedOrganizations = await Organization.countDocuments({ isVerified: true });
     console.log(`Verified Organizations: ${verifiedOrganizations}`);
+
+    return verifiedOrganizations
   };
 
 const countOrganizationFollowers = async (organizationId) => {
-const followers = await OrganizationFollower.aggregate([
-    { $match: { organization: new mongoose.Types.ObjectId(organizationId) } },
-    { $unwind: "$follower" },
-    { $count: "totalFollowers" }
-]);
+  const followers = await OrganizationFollower.aggregate([
+      { $match: { organization: new mongoose.Types.ObjectId(organizationId) } },
+      { $unwind: "$follower" },
+      { $count: "totalFollowers" }
+  ]);
 
-const totalFollowers = followers.length > 0 ? followers[0].totalFollowers : 0;
-console.log(`Total Followers for Organization ${organizationId}: ${totalFollowers}`);
+  const totalFollowers = followers.length > 0 ? followers[0].totalFollowers : 0;
+  console.log(`Total Followers for Organization ${organizationId}: ${totalFollowers}`);
+  return totalFollowers
 };
 
 const countExaminersByOrganization = async (organizationId) => {
@@ -33,6 +36,8 @@ const countExaminersByOrganization = async (organizationId) => {
     ]);
   
     console.log('Examiners count by organization:', examinersCount);
+
+    return examinersCount.length
   };
 
 const getActiveExaminers = async (organizationId) => {
@@ -43,6 +48,8 @@ const activeExaminers = await OrganizationExaminer.find({
 }).populate('user', 'firstName lastName email');
 
 console.log(`Active Examiners for Organization ${organizationId}:`, activeExaminers);
+
+return activeExaminers.length
 };
 
 
@@ -56,11 +63,10 @@ exports.getOrgStats = catchAsync(async (req, res, next) => {
         next(new APIError("Organization not found", StatusCodes.BAD_REQUEST));
     }
 
-    // countVerifiedOrganizations()
-    const orgs = countVerifiedOrganizations()
-    const followers = countOrganizationFollowers(organization.id)
-    const examiners = countExaminersByOrganization(organizationId)
-    const activeExaminers = getActiveExaminers(organizationId)
+    const followers = await countOrganizationFollowers(organization.id)
+    const examiners = await countExaminersByOrganization(organizationId)
+    const activeExaminers = await getActiveExaminers(organizationId)
+    const orgs = await countVerifiedOrganizations()
 
     res.status(StatusCodes.ACCEPTED).send({
         orgs,
@@ -68,5 +74,5 @@ exports.getOrgStats = catchAsync(async (req, res, next) => {
         examiners,
         activeExaminers
     })
-    
+
 })

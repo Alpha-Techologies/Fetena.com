@@ -12,6 +12,8 @@ const countTotalExams = async (organizationId) => {
     { organization: new mongoose.Types.ObjectId(organizationId) }
   );
   console.log(`Total Exams: ${totalExams}`);
+
+  return totalExams
 };
 
 const countExamsBySecurityLevel = async (organizationId) => {
@@ -21,6 +23,7 @@ const countExamsBySecurityLevel = async (organizationId) => {
   ]);
 
   console.log('Exams by Security Level:', examsBySecurityLevel);
+  return examsBySecurityLevel
 };
 
 const countActiveExams = async (organizationId) => {
@@ -29,6 +32,7 @@ const countActiveExams = async (organizationId) => {
      organization: new mongoose.Types.ObjectId(organizationId) 
     });
   console.log(`Active Exams: ${activeExams}`);
+  return activeExams
 };
 
 const countExamsByType = async (organizationId) => {
@@ -38,6 +42,8 @@ const countExamsByType = async (organizationId) => {
   ]);
 
   console.log('Exams by Type:', examsByType);
+
+  return examsByType
 };
 
 const countExamsWithCertificates = async (organizationId) => {
@@ -45,6 +51,8 @@ const countExamsWithCertificates = async (organizationId) => {
     organization: new mongoose.Types.ObjectId(organizationId),
     hasCertificate: true });
   console.log(`Exams with Certificates: ${examsWithCertificates}`);
+
+  return examsWithCertificates
 };
 
 const countExamsByVisibility = async (organizationId) => {
@@ -54,6 +62,8 @@ const countExamsByVisibility = async (organizationId) => {
   ]);
 
   console.log('Exams by Visibility:', examsByVisibility);
+
+  return examsByVisibility
 };
 
 const findExamsByUser = async (userId, organizationId) => {
@@ -62,6 +72,8 @@ const findExamsByUser = async (userId, organizationId) => {
   createdBy: mongoose.Types.ObjectId(userId) 
 });
   console.log(`Exams created by User ${userId}:`, exams);
+
+  return exams
 };
 
 
@@ -77,14 +89,14 @@ exports.getExamStats = catchAsync(async (req, res, next) => {
 
     // countVerifiedOrganizations()
 
-    const totalExams = countTotalExams(organization.id)
-    const examsBySecurity = countExamsBySecurityLevel(organizationId)
-    const activeExams = countActiveExams(organizationId)
+    const totalExams = await countTotalExams(organization.id)
+    const examsBySecurity = await countExamsBySecurityLevel(organizationId)
+    const activeExams = await countActiveExams(organizationId)
 
-    const examsByType = countExamsByType(organizationId)
-    const examsWithCert = countExamsWithCertificates(organizationId)
-    const examsByVisibility = countExamsByVisibility(organizationId)
-    const examsByCreator = findExamsByUser(req.user._id,organizationId)
+    const examsByType = await countExamsByType(organizationId)
+    const examsWithCert = await countExamsWithCertificates(organizationId)
+    const examsByVisibility = await countExamsByVisibility(organizationId)
+    // const examsByCreator = await findExamsByUser(req.user._id,organizationId)
 
     res.status(StatusCodes.ACCEPTED).send({
       totalExams,
@@ -93,7 +105,7 @@ exports.getExamStats = catchAsync(async (req, res, next) => {
       examsByType,
       examsWithCert,
       examsByVisibility,
-      examsByCreator
+      // examsByCreator
     })
     
 })
