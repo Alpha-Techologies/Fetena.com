@@ -60,8 +60,6 @@ const TakeExamScreen = () => {
     }
   }, [startExam]);
 
-
-
   useEffect(() => {
     const getTakeExamId = async (takeExamId) => {
       try {

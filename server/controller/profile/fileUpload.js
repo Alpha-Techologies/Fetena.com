@@ -1,4 +1,3 @@
-
 const path = require("path");
 const catchAsync = require("./../../utils/catchAsync");
 
@@ -66,12 +65,9 @@ const fileUpload =
 //       `../../public/uploads/` + `${filePath}/` + `${newFileName}`
 //     );
 //     await file.mv(imagePath);
-    
+
 //     return `/uploads/` + `${filePath}/` + `${newFileName}`;
 //   };
-
-
-
 
 // // const uploadProductImage = async (req, res) => {
 // //   const result = await cloudinary.uploader.upload(
@@ -85,6 +81,6 @@ const fileUpload =
 // //   return res.status(StatusCodes.OK).json({ image: { src: result.secure_url } });
 // // };
 
-// module.exports = {
-//   fileUpload,
-// };
+module.exports = {
+  fileUpload,
+};
