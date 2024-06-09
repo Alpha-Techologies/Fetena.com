@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 4000,
+    origin: process.env.VITE_TARGET_URL,
     proxy: {
     '/api': {
       target: process.env.VITE_TARGET_URL,
