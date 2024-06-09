@@ -42,6 +42,7 @@ import UserExamsPage from "../Pages/UserExamsPage";
 import EditExam from './../Pages/EditExamPages/EditExam';
 import Certification from "../Pages/Certification";
 import MonitoringPage from './../Pages/MonitoringPage/MonitoringPage';
+import UserCertificationsPage from "../Pages/UserCertificationsPage";
 
 const AllRoutes = () => {
   const dispatch = useDispatch();
@@ -115,6 +116,10 @@ const AllRoutes = () => {
           <Route
             path='certifications'
             element={<CertificationsPage />}
+          />
+           <Route
+            path='usercertifications'
+            element={<UserCertificationsPage />}
           />
 
 <Route

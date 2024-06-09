@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Peer from "peerjs";
 import * as faceapi from "face-api.js";
 import axios from "axios";
 import { toast } from "react-toastify";
+import debounce from "lodash/debounce";
 
 const VideoComponent = ({ socket, takeExamId }) => {
   const videoRef = useRef(null);
@@ -10,7 +11,57 @@ const VideoComponent = ({ socket, takeExamId }) => {
   const [stream, setStream] = useState(null);
   const canvasRef = useRef(null);
   const [videoOnPlay, setVideoOnPlay] = useState(false);
-  const [imageLastTaken, setImageLastTaken] = useState(null);
+
+  // capture the canvas image
+  const captureCanvaImage = async () => {
+    console.log("chap", canvasRef.current, videoRef.current);
+    // get the canvas from canvasRef
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+
+    // draw the video element to the canvas
+    context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+
+    // get the image data from the canvas
+    const imageData = canvas.toDataURL("image/png");
+
+    //download the image to check
+    // const a = document.createElement("a");
+    // a.href = imageData;
+    // a.download = "image.png";
+    // a.click();
+
+    // convert the data URL to a Blob
+    const response = await fetch(imageData);
+    const blob = await response.blob();
+
+    // create an image file from the Blob
+    const imageFile = new File([blob], "image.png", {
+      type: "image/png",
+    });
+
+    // send the image to the server
+    try {
+      const formData = new FormData();
+      formData.append("image", imageFile);
+      // add the take exam id to the form data
+      formData.append("takeExamId", takeExamId);
+
+      // send the image to the server using axios
+      const response = await axios.post("/api/exams/take-exam/ai", formData);
+    } catch (error) {}
+  };
+
+  const debounceHandleImageCapture = useCallback(
+    debounce(captureCanvaImage, 10000),
+    []
+  );
+
+  const handleCapture = () => {
+    console.log("capturing image debounce");
+    // debounce the image capture
+    debounceHandleImageCapture();
+  };
 
   // Setup video stream
   useEffect(() => {
@@ -44,6 +95,7 @@ const VideoComponent = ({ socket, takeExamId }) => {
             .withFaceLandmarks();
 
           if (detections.length > 1 || detections.length === 0) {
+            // handleCapture();
             captureCanvaImage();
           }
 
@@ -56,46 +108,9 @@ const VideoComponent = ({ socket, takeExamId }) => {
             .clearRect(0, 0, canvasElement.width, canvasElement.height);
           faceapi.draw.drawDetections(canvasElement, resizedDetections);
           faceapi.draw.drawFaceLandmarks(canvasElement, resizedDetections);
-        }, 100);
+        }, 10000);
       });
     });
-
-    // capture the canvas image
-    const captureCanvaImage = async () => {
-      if (!imageLastTaken) setImageLastTaken(Date.now());
-      else {
-        if (Date.now() - imageLastTaken < 10000) return;
-      }
-      // get the canvas from canvasRef
-      const canvas = canvasRef.current;
-      const context = canvas.getContext("2d");
-
-      // draw the video element to the canvas
-      context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-
-      // get the image data from the canvas
-      const imageData = canvas.toDataURL("image/png");
-
-      //download the image
-      // const link = document.createElement("a");
-      // link.href = imageData;
-      // link.download = "image.png";
-      // link.click();
-
-      //send the image to the server
-      try {
-        const formData = new FormData();
-        formData.append("image", imageData);
-        // add the take exam id to the form data
-        formData.append("takeExamId", takeExamId);
-
-        // send the image to the server using axois
-        const response = await axios.post("/api/take-exam/ai", formData);
-      } catch (error) {}
-
-      // send the image data to the server
-      // socket.emit("image-data", imageData);
-    };
 
     const setupVideoStream = async () => {
       try {
@@ -118,6 +133,7 @@ const VideoComponent = ({ socket, takeExamId }) => {
     return () => {
       // Stop video stream tracks
       // reload the page
+      window.location.reload();
 
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());

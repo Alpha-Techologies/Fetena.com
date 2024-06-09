@@ -45,10 +45,14 @@ const NavBar = ({displayPage, setDisplayPage}) => {
           alt='Fetena.com Logo'
         />
         <div className='flex items-center md:order-2 space-x-3 md:space-x-0 '>
+          <div className="-mr-4 hidden lg:flex">
+
+        <GoogleTranslate />
+          </div>
           <Link to='/sign-in'>
             <Button text='Get started' />
           </Link>
-          <GoogleTranslate />
+          
           <div className='md:hidden'>
             <Hamburger
               toggled={isOpen}

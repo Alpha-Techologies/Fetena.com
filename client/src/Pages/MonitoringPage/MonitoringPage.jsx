@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Select, Card, Tag } from "antd";
+import { Select, Card, Tag, Carousel } from "antd";
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import useSocketIO from "../../utils/socket/useSocketIO";
@@ -196,6 +196,7 @@ const MonitoringPage = () => {
   };
 
   const handleExamChange = (value) => {
+    setSeeStatusOf("all");  
     fetchExamDetails(value);
   };
 
@@ -307,14 +308,6 @@ const MonitoringPage = () => {
                 </p>
               </div>
             </Card>
-            {seeStatusOf !== "all" &&
-              (currentUser.status !== "inprogress" ? (
-                <>
-                  <CarouselComponent />
-                </>
-              ) : (
-                <VideoMonitorWindow socket={socket} currentUser={currentUser} />
-              ))}
             <div className="flex gap-2 min-h-screen max-h-fit">
               <ExamineeListWindow
                 examineeList={examineeList}
@@ -337,6 +330,39 @@ const MonitoringPage = () => {
                   currentExam={currentExam}
                   socket={socket}
                 />
+                {seeStatusOf !== "all" &&
+                  (currentUser?.status !== "inprogress" ? (
+                    <div className="flex justify-center items-center">
+                      <Carousel fade autoplay className="w-full max-w-2xl">
+                        {currentUser?.userActivityLogs
+                          ?.filter((item) => !!item.imageUrl)
+                          ?.map((log, index) => {
+                            if (log.imageUrl) console.log(log, "log the image");
+                            return (
+                              <div
+                                key={index}
+                                className="flex justify-center items-center"
+                              >
+                                <img
+                                  src={`${import.meta.env.VITE_TARGET_URL}${
+                                    log.imageUrl
+                                  }`}
+                                  alt="faceaiDetection"
+                                  className="w-full h-auto object-cover rounded-md"
+                                />
+                              </div>
+                            );
+                          })}
+                      </Carousel>
+                    </div>
+                  ) : (
+                    <div className="flex justify-center items-center">
+                      <VideoMonitorWindow
+                        socket={socket}
+                        currentUser={currentUser}
+                      />
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
