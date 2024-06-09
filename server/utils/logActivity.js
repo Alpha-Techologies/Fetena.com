@@ -17,7 +17,7 @@ const logActivity = async (req, actionIndex, { name, id }) => {
     user: req.user.id ? req.user.id : "Unknown",
     organization: req.organization
       ? new mongoose.Types.ObjectId(req.organization)
-      : "",
+      : undefined,
     ipAddress: req.ip ? req.ip : "Unknown",
     action: `${actionTypes[actionIndex]}`,
     entity: {
