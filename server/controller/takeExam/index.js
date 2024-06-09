@@ -1,3 +1,4 @@
+const { faceaiDetection } = require("./faceaiDetection.js");
 const startExam = require("./startExam");
 const { updateTakeExam, getOneExamTaker, getAllExamTaker } = require("./takeExam.js");
 
@@ -6,4 +7,5 @@ module.exports = {
   updateTakeExam,
   getOneExamTaker,
   getAllExamTaker,
+  faceaiDetection
 };
