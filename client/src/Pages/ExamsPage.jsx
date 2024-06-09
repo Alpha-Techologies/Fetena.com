@@ -44,11 +44,7 @@ const ExamsPage = () => {
   };
 
   useEffect(() => {
-    if (!workspace) {
-      navigate("userexams");
-    } else {
       fetchData(1, true);
-    }
   }, [searchText]);
 
   const onPaginationChange = (page) => {

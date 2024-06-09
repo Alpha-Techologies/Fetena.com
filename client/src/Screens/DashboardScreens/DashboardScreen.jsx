@@ -107,7 +107,7 @@ const DashboardScreen = () => {
       <Icon className="w-4 h-4" icon="grommet-icons:organization" />
     ),
     getItem(
-      <Link to="exams" onClick={() => dispatch(switchSidebar("3"))}>
+      <Link to="exams/userexams" onClick={() => dispatch(switchSidebar("3"))}>
         Exams
       </Link>,
       "3",
