@@ -11,6 +11,7 @@ const sseRouter = require("./sseRouters");
 const chatRouter = require("./chatRoutes");
 
 const logRouter = require("./logRoutes");
+const logCsvRouter = require("./logCsvRoutes");
 
 
 router.use("/users", userRouter);
@@ -21,7 +22,8 @@ router.use("/notifications", notificationRouter);
 router.use("/useranswers", userAnswerRouter);
 router.use("/sse",sseRouter)
 router.use("/chat",chatRouter)
-
 router.use("/log", logRouter);
+
+router.use("/export", logCsvRouter);
 
 module.exports = router;
