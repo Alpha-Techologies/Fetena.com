@@ -3,6 +3,6 @@ profiles
 organizationsLogo
 examFiles
 examMaterials
-.env
+# .env
 *.log
 app.log
