@@ -51,6 +51,9 @@ exports.joinOrganization = catchAsync(async (req, res, next) => {
     message: `User with id ${userId} has requested to join the organization `,
   });
 
+  req.organization = organizationId
+  await logActivity(req,7,{name:'Organization',id:organization.id} )
+
   res.status(StatusCodes.OK).json({
     status: "success",
     message:

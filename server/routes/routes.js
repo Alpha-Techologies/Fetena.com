@@ -8,6 +8,8 @@ const organizationRouter = require("./organizationRoutes");
 const notificationRouter = require("./notificationRoutes");
 const userAnswerRouter = require("./userAnswerRoutes");
 const transactionRouter = require("./transactionRoutes");
+const logRouter = require("./logRoutes");
+
 
 router.use("/users", userRouter);
 router.use("/exams", examRouter);
@@ -16,5 +18,6 @@ router.use("/organizations", organizationRouter);
 router.use("/notifications", notificationRouter);
 router.use("/useranswers", userAnswerRouter);
 router.use("/transactions",transactionRouter)
+router.use("/log", logRouter);
 
 module.exports = router;
