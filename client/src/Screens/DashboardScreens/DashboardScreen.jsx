@@ -32,7 +32,6 @@ import { current } from "@reduxjs/toolkit";
 import GoogleTranslate from "../../Components/GoogleTranslate";
 const { Header, Content, Footer, Sider } = Layout;
 
-const apiUrl = import.meta.env.VITE_API_URL;
 const DashboardScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -496,7 +495,7 @@ const DashboardScreen = () => {
             {"Hello there, " + user.firstName + " " + user.lastName + "!"}
           </h1>
           <div className="inline-flex items-center justify-center gap-4">
-            {/* <GoogleTranslate /> */}
+
             <Dropdown
               onClick={() => {
                 fetchUserOrganizations();
@@ -535,7 +534,9 @@ const DashboardScreen = () => {
               <Avatar
                 className="cursor-pointer w-16 h-10 items-center justify-center"
                 size="large"
-                icon={<img src={`${user.profilePhoto}`} alt="avatar" />}
+
+                icon={<img src={`${import.meta.env.VITE_API_URL}/${user.profilePhoto}`} alt="avatar" />}
+
               />
             </Dropdown>
           </div>

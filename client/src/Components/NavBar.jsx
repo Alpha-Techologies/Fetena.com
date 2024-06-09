@@ -10,7 +10,6 @@ import { Icon } from "@iconify/react";
 import fetena_logo from "../assets/fetena_logo.png"
 import Hamburger from "hamburger-react"
 
-const apiUrl = import.meta.env.VITE_API_URL;
 const NavBar = ({displayPage, setDisplayPage}) => {
 
   const [isOpen, setOpen] = useState(false)
@@ -70,7 +69,7 @@ const NavBar = ({displayPage, setDisplayPage}) => {
                 onClick={() => setDisplayPage('home')}
                 href='#how-it-works'
                 className='block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-primary-500 md:p-0 '>
-                How It Works lksdk{apiUrl}
+                How It Works
               </a>
             </li>
             <li>
