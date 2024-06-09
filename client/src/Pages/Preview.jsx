@@ -120,14 +120,14 @@ const Preview = () => {
               {/* <p className="font-semibold"><span className="font-bold text-blue-700">Allowed Attempts : </span>Unlimited</p> */}
             </div>
 
-          <div className="w-full  flex flex-wrap gap-16 py-2 px-8 my-4">
-          <p className='font-semibold flex gap-2 items-center justify-center'>
-              <span className='font-bold text-blue-700'>Organization : </span>
-              {exam.organization?.name}{" "}
-              {exam.organization?.isVerified && (
-                <Icon className='text-blue-500' icon='mdi:verified' />
-              )}
-            </p>
+            <div className="w-full  flex flex-wrap gap-16 py-2 px-8 my-4">
+              <p className="font-semibold flex gap-2 items-center justify-center">
+                <span className="font-bold text-blue-700">Organization : </span>
+                {exam.organization?.name}{" "}
+                {exam.organization?.isVerified && (
+                  <Icon className="text-blue-500" icon="mdi:verified" />
+                )}
+              </p>
 
               <p className="font-semibold flex gap-2 items-center justify-center">
                 <span className="font-bold text-blue-700">Created by : </span>
@@ -138,7 +138,6 @@ const Preview = () => {
             <div className="w-full  flex flex-col gap-2 py-4 px-8 my-4 items-start">
               <h3 className="text-xl font-bold text-blue-900">Instructions</h3>
               <div
-                className="text-left w-4/6"
                 className="text-left w-4/6"
                 dangerouslySetInnerHTML={{ __html: exam.instruction }}
               />
