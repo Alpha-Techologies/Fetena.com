@@ -99,7 +99,8 @@ const UsersSysAdmin = () => {
           if (res.meta.requestStatus === "fulfilled") {
             console.log(res.payload.data.data);
             const data = res.payload.data.data;
-            const updatedUsers = data.map((item) => ({
+              const updatedUsers = data.map((item) => ({
+                key: item._id,
               id: item._id,
               profilePhoto: item.profilePhoto,
               fullName: item.fullName,

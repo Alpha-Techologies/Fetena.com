@@ -387,3 +387,17 @@ export const getAllUsers = createAsyncThunk(
     }
   }
 );
+
+export const getAllActivities = createAsyncThunk(
+  "data/getAllActivities",
+  async (_, { rejectWithValue }) => {
+    // console.log(id, paymentData, "id, payment data");
+    try {
+      const { data } = await axios.get(`${url}/log`);
+      // console.log(now, "now");
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
