@@ -9,7 +9,7 @@ const catchAsync = require("../../utils/catchAsync.js");
 
 exports.createPaymentIntent = catchAsync(async (req, res, next) => {
   const { organizationId } = req.query;
-  //   console.log(organizationId, "query org id");
+    console.log(organizationId, "query org id");
   const organization = await Organization.findById(organizationId);
   //   console.log(organization);
   if (!organization) {

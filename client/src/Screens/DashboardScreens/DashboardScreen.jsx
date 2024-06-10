@@ -28,6 +28,7 @@ import {
   switchToSysAdminWorkspace,
   switchSidebar,
   currentUserOrganizationsIdAndRole,
+  destroyData
 } from "../../Redux/features/dataSlice";
 import { current } from "@reduxjs/toolkit";
 import GoogleTranslate from "../../Components/GoogleTranslate";
@@ -317,7 +318,7 @@ const DashboardScreen = () => {
         onClick={() => dispatch(switchSidebar("9"))}>
         Support
       </Link>,
-      "5",
+      "9",
       <Icon
         className='w-5 h-5'
         icon='material-symbols:contact-support-outline'
@@ -556,6 +557,7 @@ const DashboardScreen = () => {
           onClick={() => {
             dispatch(logoutUser());
             dispatch(switchToPersonalWorkspace());
+            dispatch(destroyData())
           }}
         >
           Logout

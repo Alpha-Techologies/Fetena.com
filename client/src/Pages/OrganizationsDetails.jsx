@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import ExamCard from "../Components/ExamCard";
 import { getMe } from "../Redux/features/authActions";
 import axios from "axios";
+import _ from "lodash";
 
 const {Meta} = Card
 
@@ -86,8 +87,9 @@ const OrganizationsDetails = () => {
    
       try {
         const response = await axios.get(
-          `/api/exams/my-exam/${id}?active=${active}&access=${access}`
+          `/api/exams/get-public?fields=examName,organization&page=${page}&sort=-createdAt`
         );
+        // /api/exams/get-public?fields=examName,organization&page=${page}&sort=-createdAt&examName=${searchText}
 
         console.log(response);
         setExams(response.data.data.data);
@@ -260,14 +262,22 @@ const OrganizationsDetails = () => {
               {organizationDetail.description}
             </p>
             <div className='flex gap-4'>
-              <Button
-                text={"Join"}
-                onClick={handleJoinOrganization}
-                color={"primary-500"}
-                textColor={"white"}
-                px={4}
-                py={2}
-              />
+              {/* {_.find(personnels, (item) => item.user._id === user._id) ? (
+                <div
+                  // onClick={() => handleUnfollowOrganization(id)}
+                  className='flex justify-end items-center cursor-pointer gap-1 text-gray-500'>
+                  <Icon icon='mdi:tick' /> Joined
+                </div>
+              ) : (
+                <Button
+                  text={"Join"}
+                  onClick={handleJoinOrganization}
+                  color={"primary-500"}
+                  textColor={"white"}
+                  px={4}
+                  py={2}
+                />
+              )} */}
               {followedOrganizations.includes(id) ? (
                 <div
                   onClick={() => handleUnfollowOrganization(id)}
