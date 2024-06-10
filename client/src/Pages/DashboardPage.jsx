@@ -9,7 +9,7 @@ import Stats from '../Screens/DashboardScreens/components/Stats';
 const DashboardPage = () => {
   const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}];
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex flex-col gap-2'>
     
     <Stats />
   <div className='grid grid-cols-1 lg:grid-cols-2 gap-2 mx-2 lg:gap-2 '>
