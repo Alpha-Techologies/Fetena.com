@@ -26,7 +26,7 @@ const ResultsPage = () => {
           key: index,
           examName: result.exam.examName,
           score: result.userAnswers.score,
-          examDate: result.startTime.toLocaleString(),
+          examDate: new Date(result.startTime).toLocaleString(),
         };
       });
 
