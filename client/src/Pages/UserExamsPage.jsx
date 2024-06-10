@@ -34,9 +34,7 @@ const tabListNoTitle = [
   },
 ];
 
-const UserExamsPage = () => {
-  const [activeTabKey, setActiveTabKey] = useState("All");
-  const [basicInfoForm] = Form.useForm();
+const UserExamsPage = () => {;
   const { workspace } = useSelector((state) => state.data);
   const { userOrganizationsIdAndRole } = useSelector((state) => state.data);
   const [exams, setExams] = useState([]);
