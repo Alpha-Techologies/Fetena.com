@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Certification from './Certification';
 import { useEffect } from "react";
 import axios from "axios";
+import Loading from './../Components/Loading';
 
 const { Search } = Input;
 const { Meta } = Card;
@@ -26,8 +27,8 @@ const tabListNoTitle = [
 ];
 
 const UserCertificationsPage = () => {
-  const [activeTabKey, setActiveTabKey] = useState("All");
   const [certification,setCertification] = useState([]);
+  const [loading,setLoading] = useState(true);
 
   const fetchData = async () => {
     
@@ -39,6 +40,7 @@ const UserCertificationsPage = () => {
         console.log(response,"*****************************************************************************************")
 
         setCertification(response.data.data.data);
+        setLoading(false)
         
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -79,10 +81,6 @@ const UserCertificationsPage = () => {
     );
   };
 
-  if (!certification) {
-    return <p>Loading...</p>; // Show a loading indicator while fetching data
-  }
-
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between gap-4 items-center">
@@ -90,31 +88,36 @@ const UserCertificationsPage = () => {
           Your Certifications
         </h1>
       </div>
-      <div>
-        <Card
-          style={{ width: "100%" }}
-          tabProps={{ size: "middle" }}
-        >
-          {activeTabKey === "All" && (
-            <>
-              <div className="flex flex-wrap gap-2">
-                {/* {Certification.map(certification => (
-                  <ExamCard key={certification.id} certification={certification} />
-                ))} */}
 
-                <ExamCard />
-                <ExamCard />
-                <ExamCard />
-                <ExamCard />
-                <ExamCard />
-                <ExamCard />
-              </div>
-              <Pagination current="1" total="5" className="mt-8" />
-            </>
-          )}
-         
-        </Card>
-      </div>
+      {loading && !!certification && <p className="font-semibold text-blue-900">Loading...</p>  }
+      {!loading &&   (
+ <div>
+ <Card
+   style={{ width: "100%" }}
+   tabProps={{ size: "middle" }}
+ >
+     <>
+       <div className="flex flex-wrap gap-2">
+         {/* {Certification.map(certification => (
+           <ExamCard key={certification.id} certification={certification} />
+         ))} */}
+
+         <ExamCard />
+         <ExamCard />
+         <ExamCard />
+         <ExamCard />
+         <ExamCard />
+         <ExamCard />
+       </div>
+       <Pagination current="1" total="5" className="mt-8" />
+     </>
+
+  
+ </Card>
+</div>
+      ) }
+
+     
     </div>
   );
 };
