@@ -35,7 +35,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const DashboardScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   const [orgModal, setOrgModal] = useState(false);
   const [workspaceDropdownItems, setWorkspaceDropdownItems] = useState([]);
   const [currentWorkspace, setCurrentWorkspace] = useState("personal");
@@ -177,9 +177,15 @@ const DashboardScreen = () => {
       <Icon className="w-5 h-5" icon="la:award" />
     ),
     getItem(
-      <Link to="exam-monitor" onClick={() => dispatch(switchSidebar("4"))}>
-        Exam Monitoring
-      </Link>,
+      <Link
+      to="exam-monitor"
+      onClick={() => {
+        dispatch(switchSidebar("4"));
+        setCollapsed(true);
+      }}
+    >
+      Exam Monitoring
+    </Link>,
       "4",
       <Icon className="w-5 h-5" icon="ic:outline-monitor-heart" />
     ),
@@ -240,7 +246,13 @@ const DashboardScreen = () => {
     //   />
     // ),
     getItem(
-      <Link to="exam-monitor" onClick={() => dispatch(switchSidebar("4"))}>
+      <Link
+      to="exam-monitor"
+      onClick={() => {
+        dispatch(switchSidebar("4"));
+        setCollapsed(true);
+      }}
+    >
         Exam Monitoring
       </Link>,
       "4",
