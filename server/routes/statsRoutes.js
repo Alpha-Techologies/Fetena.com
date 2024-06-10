@@ -15,7 +15,7 @@ router.route("/org/:id").get(protect, restrictTo(true), getOrgStats);
 
 router.route("/exam/:id").get(protect, restrictTo(true), getExamStats);
 
-router.route("/user/").get(protect, getMe, getUserStats);
+router.route("/user").get(protect, getMe, getUserStats);
 
 router.route("/gen").post(protect, generateExam);
 
