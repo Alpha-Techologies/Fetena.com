@@ -37,7 +37,6 @@ const exportAttendanceToCSV = catchAsync(async (req, res, next) => {
 
     // Optionally, delete the file after download if not needed
     // fs.unlinkSync(filePath);
-    res.status(200).json({ success: true });
   });
 });
 

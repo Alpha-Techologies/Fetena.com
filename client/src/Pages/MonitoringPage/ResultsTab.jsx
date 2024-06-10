@@ -107,6 +107,26 @@ const ResultsTab = ({
     }
   }, [currentExam]);
 
+  const handleResultAttendance = async () => {
+    try {
+      const response = await axios.get(
+        "/api/exports/attendance/" + currentExam._id,
+        { responseType: "blob" }
+      );
+
+      const blob = new Blob([response.data], { type: "text/csv" });
+      // download the file without redirecting
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "attendance.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // const resultsTableData = [
   //   {
   //     key: "1",
@@ -134,6 +154,14 @@ const ResultsTab = ({
   const ResultsOverviewPage = () => {
     return (
       <div className="flex flex-col gap-2">
+        <div className="flex justify-end">
+          <div
+            onClick={handleResultAttendance}
+            className="px-4 py-1 rounded-full flex items-center gap-2 border border-primary-500 cursor-pointer"
+          >
+            <Icon icon="hugeicons:file-export" /> Export
+          </div>
+        </div>
         <div className="grid grid-cols-3 gap-4 w-full">
           <Card>
             <div>
@@ -203,14 +231,11 @@ const ResultsTab = ({
             <Icon icon="lets-icons:back" />
             Back to Overview
           </div>
-          <div className="flex items-center gap-4">
-            <div className="px-4 py-1 rounded-full flex items-center gap-2 border border-primary-500 cursor-pointer">
-              <Icon icon="hugeicons:file-export" /> Export
-            </div>
+          {/* <div className="flex items-center gap-4">
             <div className="px-4 py-1 rounded-full flex items-center gap-2 border border-primary-500 cursor-pointer">
               <Icon icon="mdi:email-send-outline" /> Send to Email
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="flex items-start flex-col gap-4">
           <div className="flex items-center justify-start">
