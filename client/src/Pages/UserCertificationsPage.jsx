@@ -16,9 +16,12 @@ const UserCertificationsPage = () => {
   const fetchData = async (page = 1) => {
     try {
       const response = await axios.get(`/api/users/me/cert/?page=${page}`);
-      console.log(response, "*****************************************************************************************");
+      console.log(
+        response,
+        "*****************************************************************************************"
+      );
       setCertifications(response.data.data.data);
-      setTotalItems(response.data.data.total); // Set the total number of items
+      setTotalItems(response.data.data.paginationData.total); // Set the total number of items
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -47,7 +50,7 @@ const UserCertificationsPage = () => {
           <div className="flex-col flex items-start gap-2">
             <h3 className="font-bold text-md">{certName}</h3>
             <p className="font-semibold flex gap-2 items-center justify-center">
-              {organization?.name}{" "}
+              {organization}{" "}
               <span>
                 <Icon
                   icon="gravity-ui:seal-check"
@@ -75,9 +78,17 @@ const UserCertificationsPage = () => {
           <Card style={{ width: "100%" }} tabProps={{ size: "middle" }}>
             <>
               <div className="flex flex-wrap gap-2">
-                {certifications && certifications.map((certification) => (
-                  <ExamCard key={certification._id} {...certification} />
-                ))}
+                {certifications &&
+                  certifications.map((certification) => (
+                    <ExamCard
+                      key={certification._id}
+                      {...{
+                        certName: certification.exam.examName,
+                        organization: certification.organizationName,
+                        _id: certification._id,
+                      }}
+                    />
+                  ))}
                 {/* <ExamCard />
          <ExamCard />
          <ExamCard />
@@ -85,7 +96,7 @@ const UserCertificationsPage = () => {
          <ExamCard />
          <ExamCard /> */}
               </div>
-              
+
               <Pagination
                 className="mt-8"
                 current={current}

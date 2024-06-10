@@ -1,25 +1,29 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const certificateSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: [true, 'User is required'],
+      ref: "User",
+      required: [true, "User is required"],
     },
     exam: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Exam',
-      required: [true, 'Exam is required'],
+      ref: "Exam",
+      required: [true, "Exam is required"],
+    },
+    organizationName: {
+      type: String,
+      required: [true, "Organization is required"],
     },
     issueDate: {
       type: Date,
       default: Date.now,
-      required: [true, 'Issue date is required'],
+      required: [true, "Issue date is required"],
     },
     score: {
       type: Number,
-      required: [true, 'Score is required'],
+      required: [true, "Score is required"],
     },
   },
   {
@@ -27,6 +31,6 @@ const certificateSchema = new mongoose.Schema(
   }
 );
 
-const Certificate = mongoose.model('Certificate', certificateSchema);
+const Certificate = mongoose.model("Certificate", certificateSchema);
 
 module.exports = Certificate;

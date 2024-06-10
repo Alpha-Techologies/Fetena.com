@@ -186,6 +186,23 @@ const ResultsTab = ({
     fetchExamDetails,
     setCurrentUser,
   }) => {
+    const handleGenerateCerteficate = async () => {
+      try {
+        const response = await axios.post(`/api/cert`, {
+          user: currentUser.user._id,
+          exam: currentExam._id,
+          issueDate: new Date(),
+          score:
+            currentUser.examType === "online"
+              ? currentUser.userAnswers.score
+              : currentUser.pdfScore,
+        });
+        toast.success("Certeficate Generated");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     const editQuestionPoint = async (question, answer) => {
       if (currentUser.exam.examType === "pdfUpload") {
         currentUser.pdfScore = answer;
@@ -504,6 +521,14 @@ const ResultsTab = ({
             </div>
           </Card>
         )}
+        <div>
+          <Button
+            onClick={handleGenerateCerteficate}
+            className="bg-[#1e3a8a] text-white"
+          >
+            Generate Certeficate
+          </Button>
+        </div>
 
         {/* True/False Question */}
 
