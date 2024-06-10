@@ -36,6 +36,9 @@ const DashboardPage = () => {
   };
 
 
+  const fetchData = async (req, res) => {}
+
+
 
 
  
