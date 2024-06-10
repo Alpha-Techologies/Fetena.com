@@ -57,7 +57,7 @@ const UserCertificationsPage = () => {
       <Link to="/dashboard/certifications/hjh">
         <Card
           style={{
-            width: 300,
+            width: 280,
           }}
           className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200"
         >
@@ -97,7 +97,7 @@ const UserCertificationsPage = () => {
         >
           {activeTabKey === "All" && (
             <>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-2">
                 {/* {Certification.map(certification => (
                   <ExamCard key={certification.id} certification={certification} />
                 ))} */}
