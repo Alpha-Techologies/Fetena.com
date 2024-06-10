@@ -520,8 +520,11 @@ const ExamScreen = ({
           className='overflow-auto'>
           {exam.examType === "online" ? (
             <div>
-              <div className="flex gap-2 w-full">
-                <div className={`flex flex-col gap-4 my-4 mt-8 ${exam.material && showMaterial ? 'w-1/2' : 'w-full '} ` }>
+              <div className='flex gap-2 w-full'>
+                <div
+                  className={`flex flex-col gap-4 my-4 mt-8 ${
+                    exam.material && showMaterial ? "w-1/2" : "w-full "
+                  } `}>
                   {exam.questions.map((question, index) => (
                     <div
                       key={index}
@@ -669,7 +672,7 @@ const ExamScreen = ({
                   ))}
                 </div>
                 {exam.material && showMaterial && (
-                  <div className="w-1/2">
+                  <div className='w-1/2'>
                     <iframe
                       src={`http://localhost:8080${exam.material}`}
                       title={exam.examFile}
@@ -686,19 +689,7 @@ const ExamScreen = ({
             </div>
           ) : exam.examType === "pdfUpload" ? (
             <div className='flex flex-col gap-4 justify-center h-full w-full'>
-              <div className='flex gap-2 h-full'>
-                <iframe
-                  src={`http://localhost:8080${exam.examFile}`}
-                  title={exam.examFile}
-                  className='w-1/2 h-full'
-                />
-                <ReactQuill
-                  className='w-1/2 h-full'
-                  value={userAnswer}
-                  onChange={setUserAnswer}
-                />
-              </div>
-              <div className='flex items-center justify-center'>
+              <div className='flex items-center justify-end'>
                 <button
                   onClick={() =>
                     handleFinishExam("Exam submitted successfully!")
@@ -707,16 +698,47 @@ const ExamScreen = ({
                   Finish
                 </button>
               </div>
+              <div className='flex gap-2 h-full'>
+                {(exam.material && showMaterial) ? (<iframe
+                  src={`http://localhost:8080${exam.examFile}`}
+                  title={exam.examFile}
+                  className='w-1/2 h-full'
+                />) : <div className='w-1/2'>
+                    <iframe
+                      src={`http://localhost:8080${exam.material}`}
+                      title={exam.examFile}
+                      className='w-full h-full'
+                    />
+                  </div>}
+                <ReactQuill
+                  className='w-1/2 h-full flex-1 bg-white'
+                  value={userAnswer}
+                  onChange={setUserAnswer}
+                />
+              </div>
+
+              
             </div>
           ) : (
-            <iframe
-              src={`http://localhost:8080${exam.examFile}`}
-              title={exam.examFile}
-              className='w-full h-full'
-            />
+            <div className={` flex gap-4 h-full w-full`}>
+              <iframe
+                src={`http://localhost:8080${exam.examFile}`}
+                title={exam.examFile}
+                className={`${
+                  exam.material && showMaterial ? "w-1/2" : "w-full "
+                }`}
+              />
+              {exam.material && showMaterial && (
+                <div className='w-1/2'>
+                  <iframe
+                    src={`http://localhost:8080${exam.material}`}
+                    title={exam.examFile}
+                    className='w-full h-full'
+                  />
+                </div>
+              )}
+            </div>
           )}
-
-          
         </Content>
       </Layout>
     </Layout>

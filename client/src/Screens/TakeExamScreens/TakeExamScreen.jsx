@@ -144,7 +144,7 @@ const TakeExamScreen = () => {
   return !startExam ? (
     <div>
       {" "}
-      <ExamStartConfirmationModal handleStartExam={handleStartExam} />{" "}
+      <ExamStartConfirmationModal exam={exam} handleStartExam={handleStartExam} />{" "}
     </div>
   ) : (
     <div>
