@@ -15,20 +15,22 @@ const MonitoringTab = ({
   setSeeStatusOf,
   socket,
   fetchExamineeList,
+  currentExam,
 }) => {
   // const serverURL = "http://localhost:3000";
   const serverURL = import.meta.env.VITE_SOCKET_URL;
   const currentTime = moment();
 
   const handleEndExam = async (status, userId) => {
-    const tempCurrentUser = _.find(
-      examineeList,
-      (item) => item.user && item.user._id === userId
-    );
+    console.log("Ending Exam", status, userId);
+    // const tempCurrentUser = _.find(
+    //   examineeList,
+    //   (item) => item.user && item.user._id === userId
+    // );
 
     if (status === "inprogress") {
-      socket.emit("terminateExaminee", tempCurrentUser._id);
-      fetchExamineeList(tempCurrentUser.exam._id);
+      socket.emit("terminateExaminee", currentUser._id);
+      fetchExamineeList(currentExam._id);
     } else {
       const letUserIn = async (id) => {
         // updat the take exam of the user to inprogress
@@ -40,9 +42,9 @@ const MonitoringTab = ({
           toast.error("Failed to let user in: " + error.message);
         }
       };
-      await letUserIn(tempCurrentUser._id);
+      await letUserIn(currentUser._id);
 
-      fetchExamineeList(tempCurrentUser.exam._id);
+      fetchExamineeList(currentExam._id);
     }
   };
 
@@ -115,6 +117,7 @@ const MonitoringTab = ({
     examineeStatusStats,
     overviewTableColumns,
     overviewTableData,
+    currentExam,
   }) => {
     return (
       <div className="flex flex-col gap-2">
@@ -181,11 +184,13 @@ const MonitoringTab = ({
     socket,
     fetchExamineeList,
     handleEndExam,
+    currentExam,
   }) => {
     useEffect(() => {
       if (socket) {
         socket.on("userActivityLog", (takeExamId, activityLog) => {
-          fetchExamineeList(currentUser.exam._id);
+          console.log(currentUser);
+          fetchExamineeList(currentExam._id);
         });
       }
     });
@@ -386,6 +391,7 @@ const MonitoringTab = ({
           overviewTableColumns={overviewTableColumns}
           overviewTableData={overviewTableData}
           examineeStatusStats={examineeStatusStats}
+          currentExam={currentExam}
         />
       ) : (
         <MonitoringIndividualPage
@@ -395,6 +401,7 @@ const MonitoringTab = ({
           socket={socket}
           fetchExamineeList={fetchExamineeList}
           handleEndExam={handleEndExam}
+          currentExam={currentExam}
         />
       )}
     </>

@@ -16,6 +16,7 @@ import ResultsTab from "./ResultsTab";
 import VideoMonitorWindow from "./VideoMonitorWindow";
 import { current } from "@reduxjs/toolkit";
 import CarouselComponent from "../../Components/CarouselComponent";
+import usePeer from "../../utils/socket/usePeer";
 
 const MonitoringPage = () => {
   const [activeTabKey1, setActiveTabKey1] = useState("tab1");
@@ -24,6 +25,7 @@ const MonitoringPage = () => {
   const [seeStatusOf, setSeeStatusOf] = useState("all");
   const { user } = useSelector((state) => state.auth);
   const [socket] = useSocketIO();
+  const [peer] = usePeer();
   const { workspace } = useSelector((state) => state.data);
   const { userOrganizationsIdAndRole } = useSelector((state) => state.data);
   const [examsList, setExamsList] = useState([]);
@@ -31,6 +33,7 @@ const MonitoringPage = () => {
   const [examineeList, setExamineeList] = useState([]);
   const [examineeStatusStats, setExamineeStatusStats] = useState({});
   const [currentUser, setCurrentUser] = useState({});
+
   const navigate = useNavigate();
   // const serverURL = "http://localhost:3000";
   const serverURL = import.meta.env.VITE_SOCKET_URL;
@@ -142,6 +145,8 @@ const MonitoringPage = () => {
     }
   }, [socket]);
 
+  // when seestatus changes
+
   // useEffect to join socket of the invigilator
   useEffect(() => {
     if (examStatus === "open") {
@@ -176,6 +181,7 @@ const MonitoringPage = () => {
         setSeeStatusOf={setSeeStatusOf}
         socket={socket}
         fetchExamineeList={fetchExamineeList}
+        currentExam={currentExam}
       />
     ),
     tab2: (
@@ -196,7 +202,9 @@ const MonitoringPage = () => {
   };
 
   const handleExamChange = (value) => {
-    setSeeStatusOf("all");  
+    // joinInvigilator
+    socket.emit("joinInvigilator", currentExam._id);
+    setSeeStatusOf("all");
     fetchExamDetails(value);
   };
 
@@ -360,6 +368,7 @@ const MonitoringPage = () => {
                       <VideoMonitorWindow
                         socket={socket}
                         currentUser={currentUser}
+                        newPeer={peer}
                       />
                     </div>
                   ))}
