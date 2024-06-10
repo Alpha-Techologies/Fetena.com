@@ -33,7 +33,7 @@ const userActivityLogSchema = new mongoose.Schema({
   actionType: {
     type: String,
     required: true,
-    enum: ["info", "warning"]
+    enum: ["info", "warning"],
   },
   // actionType tells the severity of the action taken by the examinee
   // actionType: 'low' -> low severity
@@ -47,7 +47,6 @@ const userActivityLogSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
   },
-
 });
 
 const takeExamSchema = new mongoose.Schema({
@@ -87,6 +86,9 @@ const takeExamSchema = new mongoose.Schema({
   userAnswers: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "UserAnswer",
+  },
+  pdfAnswer: {
+    type: String,
   },
 
   chatMessages: [chatMessageSchema],

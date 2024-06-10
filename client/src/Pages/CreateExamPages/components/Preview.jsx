@@ -37,7 +37,6 @@ const Preview = ({
   // }
   // setQuestionsCollection(arrQuestion);
 
-  
   console.log(questionsCollection);
   const totalPoints = questionsCollection.reduce(
     (total, question) => total + (question.points || 0),
@@ -45,8 +44,7 @@ const Preview = ({
   );
   const { workspace } = useSelector((state) => state.data);
   console.log(workspace._id, "points");
-  console.log(workspace,"workspace search")
-
+  console.log(workspace, "workspace search");
 
   const [questionCount, setQuestionCount] = useState(0);
 
@@ -90,10 +88,16 @@ const Preview = ({
       basicInfoValues.examStartDate = new Date(
         basicInfoValues.examDate + " " + basicInfoValues.examTime
       );
-      console.log(basicInfoValues.examStartDate,"aheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      console.log(
+        basicInfoValues.examStartDate,
+        "aheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      );
     }
 
-    console.log(basicInfoValues.examStartDate,"aheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+    console.log(
+      basicInfoValues.examStartDate,
+      "aheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+    );
 
     // if (!basicInfoValues.material || !basicInfoValues.material.name) {
     //   toast.error("Please upload the material");
@@ -108,9 +112,13 @@ const Preview = ({
       toast.error("Please add questions to submit the exam.");
       return;
     }
-console.log("one add questions start-------------------------------------------------------------------------------------------")
+    console.log(
+      "one add questions start-------------------------------------------------------------------------------------------"
+    );
     try {
-      console.log("one add questions startrrrrrrrrrrrrr-------------------------------------------------------------------------------------------")
+      console.log(
+        "one add questions startrrrrrrrrrrrrr-------------------------------------------------------------------------------------------"
+      );
 
       // Make the Axios POST request to save questions
       const response = await axios.post("/api/questions", questionsCollection);
@@ -151,7 +159,6 @@ console.log("one add questions start--------------------------------------------
             updatedBasicInfoValues.uploadMaterials && "uploadMaterials",
           ].filter(Boolean), // Filters out any falsy values
           points: updatedBasicInfoValues.points,
-          examFile: updatedBasicInfoValues.examFile,
           questions: response.data.data.data, // Ensure the questions are from the response
         })
       );
@@ -159,10 +166,13 @@ console.log("one add questions start--------------------------------------------
       if (updatedBasicInfoValues.material) {
         examDataToSend.append("material", updatedBasicInfoValues.material);
       }
+      if (updatedBasicInfoValues.examFile) {
+        examDataToSend.append("examFile", updatedBasicInfoValues.examFile);
+      }
 
-      console.log(examDataToSend);
+      console.log(examDataToSend, updatedBasicInfoValues);
 
-      // Send examData to the /api/exams endpoint with authentication header
+      // Send examData to the /api/exams end  point with authentication header
       const examResponse = await axios.post("/api/exams", examDataToSend);
 
       console.log("Exam data submitted successfully:", examResponse);
@@ -177,7 +187,9 @@ console.log("one add questions start--------------------------------------------
       console.error("Error submitting exam:", error);
       toast.error("Error submitting exam. Please try again later.");
     }
-    console.log("one add questions end-------------------------------------------------------------------------------------------")
+    console.log(
+      "one add questions end-------------------------------------------------------------------------------------------"
+    );
 
     setBasicInfoValues({
       examName: "",
@@ -197,7 +209,7 @@ console.log("one add questions start--------------------------------------------
       access: "closed",
       points: 0,
       examFile: null,
-      hasCertificate: false
+      hasCertificate: false,
     });
     localStorage.removeItem("basicInfoValues");
   };
@@ -269,7 +281,9 @@ console.log("one add questions start--------------------------------------------
           icon="material-symbols:preview"
           className="text-2xl font-bold text-blue-800"
         />
-        <p className="font-semibold  text-blue-900 text-lg">Exam Edit & Preview</p>
+        <p className="font-semibold  text-blue-900 text-lg">
+          Exam Edit & Preview
+        </p>
       </div>
 
       <div>
@@ -286,11 +300,9 @@ console.log("one add questions start--------------------------------------------
               {/* {basicInfoValues.examStartDate
                 ? new Date(basicInfoValues.examStartDate).toLocaleString()
                 : ""} */}
-                {
-                  new Date(
-                    basicInfoValues.examDate + " " + basicInfoValues.examTime
-                  ).toLocaleString()
-                }
+              {new Date(
+                basicInfoValues.examDate + " " + basicInfoValues.examTime
+              ).toLocaleString()}
             </p>
             <p className="font-semibold">
               <span className="font-bold text-blue-700">Points : </span>
@@ -310,27 +322,34 @@ console.log("one add questions start--------------------------------------------
           </div>
 
           <div className="w-full  flex flex-wrap gap-16 py-2 px-8 my-4">
-          <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Organization : </span>{basicInfoValues.organization.name} 
-          {workspace.isVerified ?  <span>
-                <Icon
-                  icon="gravity-ui:seal-check"
-                  className="text-lg text-blue-800"
-                />
-              </span> : <Tag color="red">Not Verified</Tag>}
-          </p>
+            <p className="font-semibold flex gap-2 items-center justify-center">
+              <span className="font-bold text-blue-700">Organization : </span>
+              {basicInfoValues.organization.name}
+              {workspace.isVerified ? (
+                <span>
+                  <Icon
+                    icon="gravity-ui:seal-check"
+                    className="text-lg text-blue-800"
+                  />
+                </span>
+              ) : (
+                <Tag color="red">Not Verified</Tag>
+              )}
+            </p>
 
-        
             <p className="font-semibold flex gap-2 items-center justify-center">
               <span className="font-bold text-blue-700">Created by : </span>
               {user.firstName} {user.lastName}{" "}
             </p>
 
-           
-
             <p className="font-semibold flex gap-2 items-center justify-center">
               <span className="font-bold text-blue-700">Certification : </span>
-               
-              {basicInfoValues.hasCertificate ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}            </p>
+              {basicInfoValues.hasCertificate ? (
+                <Tag color="green">Yes</Tag>
+              ) : (
+                <Tag color="red">No</Tag>
+              )}{" "}
+            </p>
           </div>
 
           <div className="w-full  flex flex-col gap-2 py-4 px-8 my-4 items-start">
@@ -348,11 +367,19 @@ console.log("one add questions start--------------------------------------------
       <div className="w-full  flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4">
         <p className="font-semibold">
           <span className="font-bold text-blue-700">Private Answer : </span>
-          {basicInfoValues.privateAnswer ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
+          {basicInfoValues.privateAnswer ? (
+            <Tag color="green">Yes</Tag>
+          ) : (
+            <Tag color="red">No</Tag>
+          )}
         </p>
         <p className="font-semibold">
           <span className="font-bold text-blue-700">Private Score : </span>
-          {basicInfoValues.privateScore ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
+          {basicInfoValues.privateScore ? (
+            <Tag color="green">Yes</Tag>
+          ) : (
+            <Tag color="red">No</Tag>
+          )}
         </p>
 
         <p className="font-semibold">
@@ -370,19 +397,31 @@ console.log("one add questions start--------------------------------------------
       <div className="w-full flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4">
         <p className="font-semibold">
           <span className="font-bold text-blue-700">Calculator : </span>
-          {basicInfoValues.calculator ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
+          {basicInfoValues.calculator ? (
+            <Tag color="green">Yes</Tag>
+          ) : (
+            <Tag color="red">No</Tag>
+          )}
         </p>
 
         <p className="font-semibold">
           <span className="font-bold text-blue-700">
             Formulas Collection :{" "}
           </span>
-          {basicInfoValues.formulasCollection ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
+          {basicInfoValues.formulasCollection ? (
+            <Tag color="green">Yes</Tag>
+          ) : (
+            <Tag color="red">No</Tag>
+          )}
         </p>
 
         <p className="font-semibold">
           <span className="font-bold text-blue-700">Upload Materials : </span>
-          {basicInfoValues.uploadMaterials ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
+          {basicInfoValues.uploadMaterials ? (
+            <Tag color="green">Yes</Tag>
+          ) : (
+            <Tag color="red">No</Tag>
+          )}
         </p>
       </div>
 
@@ -514,7 +553,6 @@ console.log("one add questions start--------------------------------------------
               <div className="flex flex-col gap-2 mt-6">
                 {/* Form fields for True/False question */}
                 <Input
-                   
                   placeholder="Question text"
                   value={editingQuestion.questionText}
                   onChange={(e) =>
@@ -573,7 +611,7 @@ console.log("one add questions start--------------------------------------------
           {questionsCollection.map((question, index) => (
             <div key={index} className="mb-4">
               {question.questionType === "True/False" ? (
-   <Card className="bg-gray-50 w-full my-0">
+                <Card className="bg-gray-50 w-full my-0">
                   <div className="flex gap-8 items-center justify-between border-b pb-2">
                     <h3 className="text-blue-900 font-semibold text-lg">
                       Question {index + 1}
@@ -770,22 +808,29 @@ console.log("one add questions start--------------------------------------------
                 className="w-[1000px] h-[600px]"
               />
             )}
-
-
           </div>
         </Card>
       )}
 
-<Button type="primary"
-  onClick={() => setActiveTabKey("Exam Questions")}
- className="px-8 font-semibold bg-white hover:bg-blue-700 text-blue-500 shadow-none border border-blue-500 hover:border-blue-700 font-boldpx-8   group">
-          <div className="flex gap-2 items-center"> <Icon  icon="tabler:edit" className="text-xl text-blue-500 group-hover:text-white" />{" "}Add More Questions</div>
-          </Button>
-          
+      <Button
+        type="primary"
+        onClick={() => setActiveTabKey("Exam Questions")}
+        className="px-8 font-semibold bg-white hover:bg-blue-700 text-blue-500 shadow-none border border-blue-500 hover:border-blue-700 font-boldpx-8   group"
+      >
+        <div className="flex gap-2 items-center">
+          {" "}
+          <Icon
+            icon="tabler:edit"
+            className="text-xl text-blue-500 group-hover:text-white"
+          />{" "}
+          Add More Questions
+        </div>
+      </Button>
+
       <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
         <div className="flex flex-wrap gap-8 items-center justify-center">
           <h3 className=" font-semibold text-[1rem] flex gap-1 justify-center items-center">
-          <Icon icon="pepicons-pop:question" className="text-blue-900" />
+            <Icon icon="pepicons-pop:question" className="text-blue-900" />
             Total Questions :{" "}
             <span className="text-blue-900">
               {" "}
@@ -793,12 +838,21 @@ console.log("one add questions start--------------------------------------------
             </span>{" "}
           </h3>
           <h3 className=" font-semibold text-[1rem] flex gap-1 justify-center items-center">
-          <Icon icon="material-symbols:credit-score-outline"  className="text-blue-900" />
+            <Icon
+              icon="material-symbols:credit-score-outline"
+              className="text-blue-900"
+            />
             Total Points :<span className="text-blue-900"> {totalPoints} </span>{" "}
           </h3>
-        
-   
-          <Button type="primary" className="px-8 flex gap-2 items-center font-semibold bg-primary-500" onClick={submitExam}><Icon  icon="lucide:save"  className="text-xl text-white" />{" "} Save & Submit</Button>
+
+          <Button
+            type="primary"
+            className="px-8 flex gap-2 items-center font-semibold bg-primary-500"
+            onClick={submitExam}
+          >
+            <Icon icon="lucide:save" className="text-xl text-white" /> Save &
+            Submit
+          </Button>
         </div>
       </Card>
     </div>

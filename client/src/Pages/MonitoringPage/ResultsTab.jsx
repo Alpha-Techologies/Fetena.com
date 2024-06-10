@@ -262,57 +262,59 @@ const ResultsTab = ({
           </p>
         </div>
 
-        {currentExam.questions.map((question, index) => {
-          console.log(
-            "the question",
-            question,
-            currentUser?.userAnswers?.questionAnswers[index]
-          );
-          const answer = currentUser?.userAnswers?.questionAnswers[index];
-          if (!answer) {
-            return;
-          }
-          if (
-            question.questionType === "True/False" ||
-            question.questionType === "choose"
-          ) {
-            return (
-              <Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
-                <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-                  <h3 className="text-blue-900 font-semibold text-lg">
-                    Question {index + 1}
-                  </h3>
-                  <p className="font-semibold text-blue-900">
-                    Points {question.points}
-                  </p>
-                </div>
-                <div className="mt-4 mx-4 flex items-start">
-                  <h3 className="font-semibold text-[1rem]">
-                    {question.questionText}
-                  </h3>
-                </div>
-                <div className="mt-8 flex items-center h-fit justify-start mx-4 w-72 ">
-                  <div className="flex flex-col w-full gap-2">
-                    {question.questionChoice.map((choice, index) => {
-                      console.log(choice, answer?.answerText, "the choice");
-                      if (choice === answer?.answerText) {
-                        return (
-                          <Alert
-                            showIcon
-                            message={choice}
-                            type={
-                              question.correctAnswer === answer?.answerText
-                                ? "success"
-                                : "error"
-                            }
-                          />
-                        );
-                      } else if (choice == question.correctAnswer)
-                        return <Alert message={choice} type="warning" />;
-                      return <Alert message={choice} type="info" />;
-                    })}
+        {/* if the Exam is PDF File */}
+        {currentExam.examType === "online" ? (
+          currentExam.questions.map((question, index) => {
+            console.log(
+              "the question",
+              question,
+              currentUser?.userAnswers?.questionAnswers[index]
+            );
+            const answer = currentUser?.userAnswers?.questionAnswers[index];
+            if (!answer) {
+              return;
+            }
+            if (
+              question.questionType === "True/False" ||
+              question.questionType === "choose"
+            ) {
+              return (
+                <Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
+                  <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                    <h3 className="text-blue-900 font-semibold text-lg">
+                      Question {index + 1}
+                    </h3>
+                    <p className="font-semibold text-blue-900">
+                      Points {question.points}
+                    </p>
                   </div>
-                  {/* <Form.Item label="Examinee Answer">
+                  <div className="mt-4 mx-4 flex items-start">
+                    <h3 className="font-semibold text-[1rem]">
+                      {question.questionText}
+                    </h3>
+                  </div>
+                  <div className="mt-8 flex items-center h-fit justify-start mx-4 w-72 ">
+                    <div className="flex flex-col w-full gap-2">
+                      {question.questionChoice.map((choice, index) => {
+                        console.log(choice, answer?.answerText, "the choice");
+                        if (choice === answer?.answerText) {
+                          return (
+                            <Alert
+                              showIcon
+                              message={choice}
+                              type={
+                                question.correctAnswer === answer?.answerText
+                                  ? "success"
+                                  : "error"
+                              }
+                            />
+                          );
+                        } else if (choice == question.correctAnswer)
+                          return <Alert message={choice} type="warning" />;
+                        return <Alert message={choice} type="info" />;
+                      })}
+                    </div>
+                    {/* <Form.Item label="Examinee Answer">
                     <Select defaultActiveFirstOption={answer.answerText}>
                       <Select.Option value="true">True</Select.Option>
                       <Select.Option value="false">False</Select.Option>
@@ -329,99 +331,10 @@ const ResultsTab = ({
                   icon='icomoon-free:cross'
                 />
               )} */}
-                </div>
-                <div className="flex flex-col gap-2 w-full">
-                  {answer.manuallyMarked ? (
-                    <div className="flex w-fit p-4">
-                      <Tag
-                        className="flex items-center w-fit gap-2"
-                        color="blue"
-                      >
-                        <Icon icon="mdi:checkbox-marked-outline" />
-                        Manually Marked
-                      </Tag>
-                      <div className="flex">Marked by the Examiner</div>
-                    </div>
-                  ) : (
-                    <div className="flex w-fit gap-2 p-4">
-                      <Tag
-                        className="flex items-center w-fit gap-2"
-                        color="green"
-                      >
-                        <Icon icon="lucide:bot" />
-                        Automatically Marked
-                      </Tag>
-                      <div className="flex">{answer?.reason}</div>
-                    </div>
-                  )}
-                  <div className="flex flex-col gap-2 w-full">
-                    {question.correctAnswer === answer.answerText ? (
-                      <Alert
-                        message="Answered Correctly"
-                        className="w-[90%]"
-                        type="success"
-                        showIcon
-                      />
-                    ) : (
-                      <Alert
-                        message="Incorrect Answer"
-                        className="w-[90%]"
-                        type="error"
-                        showIcon
-                      />
-                    )}
-
-                    <div className="flex gap-2 items-center justify-end">
-                      points:
-                      <InputNumber
-                        className="w-[20%]"
-                        min={0}
-                        max={100000}
-                        value={answer.point}
-                        onChange={(value) => {
-                          answer.point = value;
-                          answer.manuallyMarked = true;
-                        }}
-                      />
-                      <Button
-                        onClick={(e) => editQuestionPoint(question, answer)}
-                      >
-                        Save Points
-                      </Button>
-                    </div>
                   </div>
-                </div>
-              </Card>
-            );
-          } else {
-            return (
-              <Card className="bg-gray-50 w-11/12 mx-auto my-2">
-                <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
-                  <h3 className="text-blue-900 font-semibold text-lg">
-                    Question {index + 1}
-                  </h3>
-                  <p className="font-semibold text-blue-900">
-                    Points {question.points}
-                  </p>
-                </div>
-
-                <div className="mt-4 mx-4 flex items-start ">
-                  <h3 className="font-semibold text-[1rem]">
-                    {question.questionText}
-                  </h3>
-                </div>
-
-                <div className="mt-4 flex items-start mx-4 mb-4">
-                  <TextArea
-                    rows={4}
-                    value={answer.answerText}
-                    disabled={true}
-                  />
-                </div>
-                <div className="flex flex-col gap-2 w-full">
                   <div className="flex flex-col gap-2 w-full">
-                    <div className="flex gap-2 items-center justify-between w-full">
-                      {answer.manuallyMarked ? (
+                    {answer.manuallyMarked ? (
+                      <div className="flex w-fit p-4">
                         <Tag
                           className="flex items-center w-fit gap-2"
                           color="blue"
@@ -429,7 +342,10 @@ const ResultsTab = ({
                           <Icon icon="mdi:checkbox-marked-outline" />
                           Manually Marked
                         </Tag>
-                      ) : (
+                        <div className="flex">Marked by the Examiner</div>
+                      </div>
+                    ) : (
+                      <div className="flex w-fit gap-2 p-4">
                         <Tag
                           className="flex items-center w-fit gap-2"
                           color="green"
@@ -437,29 +353,142 @@ const ResultsTab = ({
                           <Icon icon="lucide:bot" />
                           Automatically Marked
                         </Tag>
+                        <div className="flex">{answer?.reason}</div>
+                      </div>
+                    )}
+                    <div className="flex flex-col gap-2 w-full">
+                      {question.correctAnswer === answer.answerText ? (
+                        <Alert
+                          message="Answered Correctly"
+                          className="w-[90%]"
+                          type="success"
+                          showIcon
+                        />
+                      ) : (
+                        <Alert
+                          message="Incorrect Answer"
+                          className="w-[90%]"
+                          type="error"
+                          showIcon
+                        />
                       )}
-                      <InputNumber
-                        className="w-[20%]"
-                        min={0}
-                        max={100000}
-                        value={answer.point}
-                        onChange={(value) => {
-                          answer.point = value;
-                          answer.manuallyMarked = true;
-                        }}
-                      />
-                      <Button
-                        onClick={() => editQuestionPoint(question, answer)}
-                      >
-                        Save Points
-                      </Button>
+
+                      <div className="flex gap-2 items-center justify-end">
+                        points:
+                        <InputNumber
+                          className="w-[20%]"
+                          min={0}
+                          max={100000}
+                          value={answer.point}
+                          onChange={(value) => {
+                            answer.point = value;
+                            answer.manuallyMarked = true;
+                          }}
+                        />
+                        <Button
+                          onClick={(e) => editQuestionPoint(question, answer)}
+                        >
+                          Save Points
+                        </Button>
+                      </div>
                     </div>
                   </div>
+                </Card>
+              );
+            } else {
+              return (
+                <Card className="bg-gray-50 w-11/12 mx-auto my-2">
+                  <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                    <h3 className="text-blue-900 font-semibold text-lg">
+                      Question {index + 1}
+                    </h3>
+                    <p className="font-semibold text-blue-900">
+                      Points {question.points}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 mx-4 flex items-start ">
+                    <h3 className="font-semibold text-[1rem]">
+                      {question.questionText}
+                    </h3>
+                  </div>
+
+                  <div className="mt-4 flex items-start mx-4 mb-4">
+                    <TextArea
+                      rows={4}
+                      value={answer.answerText}
+                      disabled={true}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2 w-full">
+                    <div className="flex flex-col gap-2 w-full">
+                      <div className="flex gap-2 items-center justify-between w-full">
+                        {answer.manuallyMarked ? (
+                          <Tag
+                            className="flex items-center w-fit gap-2"
+                            color="blue"
+                          >
+                            <Icon icon="mdi:checkbox-marked-outline" />
+                            Manually Marked
+                          </Tag>
+                        ) : (
+                          <Tag
+                            className="flex items-center w-fit gap-2"
+                            color="green"
+                          >
+                            <Icon icon="lucide:bot" />
+                            Automatically Marked
+                          </Tag>
+                        )}
+                        <InputNumber
+                          className="w-[20%]"
+                          min={0}
+                          max={100000}
+                          value={answer.point}
+                          onChange={(value) => {
+                            answer.point = value;
+                            answer.manuallyMarked = true;
+                          }}
+                        />
+                        <Button
+                          onClick={() => editQuestionPoint(question, answer)}
+                        >
+                          Save Points
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              );
+            }
+          })
+        ) : (
+          <Card className="bg-gray-50 w-11/12 mx-auto my-2">
+            <div
+              className="mt-4 flex items-start mx-4 mb-4"
+              dangerouslySetInnerHTML={{ __html: currentUser.pdfAnswer }}
+            />
+            <div className="flex flex-col gap-2 w-full">
+              <div className="flex flex-col gap-2 w-full">
+                <div className="flex gap-2 items-center justify-between w-full">
+                  <InputNumber
+                    className="w-[20%]"
+                    min={0}
+                    max={100000}
+                    // value={answer.point}
+                    onChange={(value) => {
+                      answer.point = value;
+                      answer.manuallyMarked = true;
+                    }}
+                  />
+                  <Button onClick={() => editQuestionPoint(question, answer)}>
+                    Save Points
+                  </Button>
                 </div>
-              </Card>
-            );
-          }
-        })}
+              </div>
+            </div>
+          </Card>
+        )}
 
         {/* True/False Question */}
 

@@ -46,14 +46,15 @@ const ExamScreen = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isCharging, setIsCharging] = useState(false);
   const [batteryLevel, setBatteryLevel] = useState(0);
-  const [showMaterial, setShowMaterial] = useState(false)
+  const [showMaterial, setShowMaterial] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isUserSwitchingAway, setIsUserSwitchingAway] = useState(false);
   const [countdown, setCountdown] = useState(30);
   const [userScore, setUserScore] = useState(null);
-  const [userAnswer, setUserAnswer] = useState("")
+  const [userAnswer, setUserAnswer] = useState("");
   const { TextArea } = Input;
   const navigate = useNavigate();
+  const serverURL = import.meta.env.VITE_TARGET_URL;
 
   // useEffect to handle battery dispaly and screen change
   useEffect(() => {
@@ -61,7 +62,6 @@ const ExamScreen = ({
       document.addEventListener("fullscreenchange", handleFullscreenChange);
       document.addEventListener("visibilitychange", handleVisibilityChange);
       window.addEventListener("blur", handleBlur);
-
     }
 
     const getBatteryInfo = async () => {
@@ -86,10 +86,15 @@ const ExamScreen = ({
 
     return () => {
       if (exam?.securityLevel === "high") {
-        document.removeEventListener("fullscreenchange", handleFullscreenChange);
-        document.removeEventListener("visibilitychange", handleVisibilityChange);
+        document.removeEventListener(
+          "fullscreenchange",
+          handleFullscreenChange
+        );
+        document.removeEventListener(
+          "visibilitychange",
+          handleVisibilityChange
+        );
         window.removeEventListener("blur", handleBlur);
-
       }
     };
   }, []);
@@ -140,14 +145,15 @@ const ExamScreen = ({
         });
       } else {
         // ask the user why re-entered the exam
-        promptUserExplanation("User has re-entered the exam");
+        if (exam.securityLevel === "high") {
+          promptUserExplanation("User has re-entered the exam");
+        }
       }
     }
 
     // receive the answers from the server using axios
     const getAnswer = async () => {
       try {
-        console.log(userAnswersId, "user answer id");
         const response = await axios.get(`/api/useranswers/${userAnswersId}`);
         const answersResponse = response.data.data.data[0].questionAnswers;
         const temp = {};
@@ -226,21 +232,26 @@ const ExamScreen = ({
   const handleFinishExam = async (message) => {
     const finishExam = async () => {
       try {
+        const answer =
+          exam.examType === "pdfUpload" ? { pdfAnswer: userAnswer } : {};
         const response = await axios.patch(
           `/api/exams/take-exam/${takeExamId}`,
           {
             status: "submitted",
+            ...answer,
           }
         );
 
         // submit the exam and get the evaluation from the backend
-        const answerResponse = await axios.post(
-          `/api/useranswers/eval/${userAnswersId}`
-        );
+        if (exam.examType === "online") {
+          const answerResponse = await axios.post(
+            `/api/useranswers/eval/${userAnswersId}`
+          );
+          setUserScore(answerResponse.data.response.score);
+        }
 
         // console.log(answerResponse.data.response.score, 'answerResponse')
 
-        setUserScore(answerResponse.data.response.score);
         // setShowResultModal(true)
 
         // socket give info about exam End
@@ -249,7 +260,6 @@ const ExamScreen = ({
           action: "Exam Submitted",
           reason: "-",
         });
-        console.log(response, "eserjio");
         return response.status;
       } catch (error) {
         console.error("Error fetching exam details:", error);
@@ -370,19 +380,21 @@ const ExamScreen = ({
 
     return (
       <Modal
-        title='Locked Out'
+        title="Locked Out"
         open={showUserActivityModal}
         onOk={handleUserActivity}
         // onCancel={handleFinishExam}
         footer={[
           <button
-            key='back'
+            key="back"
             onClick={handleUserActivity}
-            className='bg-primary-500 text-white cursor-pointer rounded px-4 py-2'>
+            className="bg-primary-500 text-white cursor-pointer rounded px-4 py-2"
+          >
             Submit
           </button>,
-        ]}>
-        <div className=''>
+        ]}
+      >
+        <div className="">
           You have been temporarly locked out from the exam.
         </div>
         <div>This is because: {userActivityMessage}</div>
@@ -400,7 +412,7 @@ const ExamScreen = ({
   };
 
   const handleFinishResultModal = () => {
-    setShowResultModal(false)
+    setShowResultModal(false);
     setStartExam(false);
     navigate(-1);
     exitFullscreen();
@@ -408,14 +420,19 @@ const ExamScreen = ({
   };
 
   return (
-    <Layout className='h-screen'>
+    <Layout className="h-screen">
       <Modal
         open={showResultModal}
-        title='Exam Submitted Successfully!'
-        onOk={handleFinishResultModal}>
+        title="Exam Submitted Successfully!"
+        onOk={handleFinishResultModal}
+      >
         <Result
-          status='success'
-          title={`You have scored ${userScore}`}
+          status="success"
+          title={
+            exam.examType === "online"
+              ? `You have scored ${userScore}`
+              : `Answer Submitted for Evaluation.`
+          }
         />
       </Modal>
 
@@ -429,19 +446,21 @@ const ExamScreen = ({
       /> */}
 
       <Modal
-        title='Locked Out'
+        title="Locked Out"
         open={showUserActivityModal}
         onOk={handleUserActivity}
         // onCancel={handleFinishExam}
         footer={[
           <button
-            key='back'
+            key="back"
             onClick={handleUserActivity}
-            className='bg-primary-500 text-white cursor-pointer rounded px-4 py-2'>
+            className="bg-primary-500 text-white cursor-pointer rounded px-4 py-2"
+          >
             Submit
           </button>,
-        ]}>
-        <div className=''>
+        ]}
+      >
+        <div className="">
           You have been temporarly locked out from the exam.
         </div>
         <div>This is because: {userActivityMessage}</div>
@@ -450,7 +469,7 @@ const ExamScreen = ({
         </div> */}
         <Input
           value={userExplanation}
-          placeholder='enter your explanation here'
+          placeholder="enter your explanation here"
           onChange={(e) => {
             setUserExplanation(e.target.value);
           }}
@@ -458,34 +477,30 @@ const ExamScreen = ({
       </Modal>
       <FloatButton
         onClick={() => setShowChat(!showChat)}
-        shape='circle'
-        icon={<Icon icon='grommet-icons:chat' />}
+        shape="circle"
+        icon={<Icon icon="grommet-icons:chat" />}
         tooltip={<div>Exam Chat</div>}
         badge={{
           dot: true,
         }}
       />
       {showChat && (
-        <ChatComponent
-          exam={exam}
-          socket={socket}
-          examinee={examinee}
-        />
+        <ChatComponent exam={exam} socket={socket} examinee={examinee} />
       )}
       <Sider
         style={{
           width: 600,
         }}
-        className='flex flex-col gap-4 text-white h-screen'
+        className="flex flex-col gap-4 text-white h-screen"
         // collapsible
-        theme='light'
+        theme="light"
         // collapsed={collapsed}
         // onCollapse={(value) => setCollapsed(value)}
       >
         <img
           src={fetena_logo}
-          alt='Fetena.com Logo'
-          className='w-24 my-4 mx-auto'
+          alt="Fetena.com Logo"
+          className="w-24 my-4 mx-auto"
         />
         <ExamTools
           exam={exam}
@@ -496,10 +511,7 @@ const ExamScreen = ({
           examinee={examinee}
         />
         {takeExamId && exam.securityLevel === "high" ? (
-          <VideoComponent
-            socket={socket}
-            takeExamId={takeExamId}
-          />
+          <VideoComponent socket={socket} takeExamId={takeExamId} />
         ) : null}
         {"VideoComponent"}
       </Sider>
@@ -508,7 +520,8 @@ const ExamScreen = ({
           style={{
             padding: 0,
             backgroundColor: "#fff",
-          }}>
+          }}
+        >
           Exam Session
         </Header>
         <Content
@@ -517,45 +530,44 @@ const ExamScreen = ({
             padding: 24,
             minHeight: 280,
           }}
-          className='overflow-auto'>
+          className="overflow-auto"
+        >
           {exam.examType === "online" ? (
             <div>
-              <div className='flex gap-2 w-full'>
+              <div className="flex gap-2 w-full">
                 <div
                   className={`flex flex-col gap-4 my-4 mt-8 ${
                     exam.material && showMaterial ? "w-1/2" : "w-full "
-                  } `}>
+                  } `}
+                >
                   {exam.questions.map((question, index) => (
-                    <div
-                      key={index}
-                      className='mb-4'>
+                    <div key={index} className="mb-4">
                       {question.questionType === "True/False" ? (
-                        <Card className=' w-11/12 mx-auto bg-gray-50 rounded-none'>
-                          <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
-                            <h3 className='text-blue-900 font-semibold text-lg'>
+                        <Card className=" w-11/12 mx-auto bg-gray-50 rounded-none">
+                          <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                            <h3 className="text-blue-900 font-semibold text-lg">
                               Question {index + 1}
                             </h3>
-                            <p className='font-semibold text-blue-900'>
+                            <p className="font-semibold text-blue-900">
                               Points {question.points}
                             </p>
                           </div>
-                          <div className='mt-4 mx-4 flex items-start'>
-                            <h3 className='font-semibold text-[1rem]'>
+                          <div className="mt-4 mx-4 flex items-start">
+                            <h3 className="font-semibold text-[1rem]">
                               {question.questionText}
                             </h3>
                           </div>
-                          <div className='mt-8 flex items-start mx-4 '>
-                            <Form.Item
-                              label='Your Answer'
-                              className='w-48'>
+                          <div className="mt-8 flex items-start mx-4 ">
+                            <Form.Item label="Your Answer" className="w-48">
                               <Select
                                 onChange={(e) => {
                                   answers[question._id] = e;
                                   handleAnswer(question._id, e);
                                 }}
-                                value={answers[question._id]}>
-                                <Select.Option value='true'>True</Select.Option>
-                                <Select.Option value='false'>
+                                value={answers[question._id]}
+                              >
+                                <Select.Option value="true">True</Select.Option>
+                                <Select.Option value="false">
                                   False
                                 </Select.Option>
                               </Select>
@@ -563,42 +575,44 @@ const ExamScreen = ({
                           </div>
                         </Card>
                       ) : question.questionType === "choose" ? (
-                        <Card className='bg-gray-50 w-11/12 mx-auto'>
-                          <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
-                            <h3 className='text-blue-900 font-semibold text-lg'>
+                        <Card className="bg-gray-50 w-11/12 mx-auto">
+                          <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                            <h3 className="text-blue-900 font-semibold text-lg">
                               Question {index + 1}
                             </h3>
-                            <p className='font-semibold text-blue-900'>
+                            <p className="font-semibold text-blue-900">
                               Points {question.points}
                             </p>
                           </div>
-                          <div className='mt-4 mx-4 flex items-start border-b pb-4'>
-                            <h3 className='font-semibold text-[1rem]'>
+                          <div className="mt-4 mx-4 flex items-start border-b pb-4">
+                            <h3 className="font-semibold text-[1rem]">
                               {question.questionText}
                             </h3>
                           </div>
-                          <div className='mt-4 w-full flex items-start mx-4 gap-4'>
-                            <div className='flex flex-col'>
+                          <div className="mt-4 w-full flex items-start mx-4 gap-4">
+                            <div className="flex flex-col">
                               <Radio.Group
                                 onChange={(e) => {
                                   answers[question._id] = e.target.value;
                                   handleAnswer(question._id, e.target.value);
                                 }}
-                                value={answers[question._id]}>
+                                value={answers[question._id]}
+                              >
                                 {question.questionChoice.map(
                                   (choice, choiceIndex) => (
                                     <Form.Item
                                       key={choiceIndex}
                                       label={`${String.fromCharCode(
                                         65 + choiceIndex
-                                      )}`}>
-                                      <div className='flex gap-4 justify-center'>
-                                        <p className='font-semibold'>
+                                      )}`}
+                                    >
+                                      <div className="flex gap-4 justify-center">
+                                        <p className="font-semibold">
                                           {choice}
                                         </p>
-                                        <div className='flex gap-2 items-center'>
+                                        <div className="flex gap-2 items-center">
                                           <Radio value={choice}></Radio>
-                                          <span className='text-blue-700'></span>
+                                          <span className="text-blue-700"></span>
                                         </div>
                                       </div>
                                     </Form.Item>
@@ -609,23 +623,23 @@ const ExamScreen = ({
                           </div>
                         </Card>
                       ) : question.questionType === "shortAnswer" ? (
-                        <Card className='bg-gray-50 w-11/12 mx-auto my-2'>
-                          <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
-                            <h3 className='text-blue-900 font-semibold text-lg'>
+                        <Card className="bg-gray-50 w-11/12 mx-auto my-2">
+                          <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                            <h3 className="text-blue-900 font-semibold text-lg">
                               Question {index + 1}
                             </h3>
-                            <p className='font-semibold text-blue-900'>
+                            <p className="font-semibold text-blue-900">
                               Points {question.points}
                             </p>
                           </div>
 
-                          <div className='mt-4 mx-4 flex items-start '>
-                            <h3 className='font-semibold text-[1rem]'>
+                          <div className="mt-4 mx-4 flex items-start ">
+                            <h3 className="font-semibold text-[1rem]">
                               {question.questionText}
                             </h3>
                           </div>
 
-                          <div className='mt-4 flex items-start mx-4 mb-4'>
+                          <div className="mt-4 flex items-start mx-4 mb-4">
                             <TextArea
                               rows={4}
                               onChange={(e) => {
@@ -633,29 +647,30 @@ const ExamScreen = ({
                                 handleAnswer(question._id, e.target.value);
                               }}
                               value={answers[question._id]}
-                              placeholder='Enter your question here'>
+                              placeholder="Enter your question here"
+                            >
                               {answers[question._id]}
                             </TextArea>
                           </div>
                         </Card>
                       ) : question.questionType === "essay" ? (
-                        <Card className='bg-gray-50 w-11/12 mx-auto my-8'>
-                          <div className='flex gap-8 items-center justify-between mx-4 border-b pb-2'>
-                            <h3 className='text-blue-900 font-semibold text-lg'>
+                        <Card className="bg-gray-50 w-11/12 mx-auto my-8">
+                          <div className="flex gap-8 items-center justify-between mx-4 border-b pb-2">
+                            <h3 className="text-blue-900 font-semibold text-lg">
                               Question {index + 1}
                             </h3>
-                            <p className='font-semibold text-blue-900'>
+                            <p className="font-semibold text-blue-900">
                               Points {question.points}
                             </p>
                           </div>
 
-                          <div className='mt-4 mx-4 flex items-start'>
-                            <h3 className='font-semibold text-[1rem]'>
+                          <div className="mt-4 mx-4 flex items-start">
+                            <h3 className="font-semibold text-[1rem]">
                               {question.questionText}
                             </h3>
                           </div>
 
-                          <div className='mt-4 flex items-start mx-4 mb-4'>
+                          <div className="mt-4 flex items-start mx-4 mb-4">
                             <TextArea
                               rows={4}
                               onChange={(e) => {
@@ -663,7 +678,7 @@ const ExamScreen = ({
                                 handleAnswer(question._id, e.target.value);
                               }}
                               value={answers[question._id]}
-                              placeholder='Enter your question here'
+                              placeholder="Enter your question here"
                             />
                           </div>
                         </Card>
@@ -672,68 +687,72 @@ const ExamScreen = ({
                   ))}
                 </div>
                 {exam.material && showMaterial && (
-                  <div className='w-1/2'>
+                  <div className="w-1/2">
                     <iframe
-                      src={`http://localhost:8080${exam.material}`}
-                      title={exam.examFile}
-                      className='w-full h-full'
+                      src={`${serverURL}${exam.material}`}
+                      title={exam.material}
+                      className="w-full h-full"
                     />
                   </div>
                 )}
               </div>
               <button
                 onClick={() => handleFinishExam("Exam submitted successfully!")}
-                className='bg-primary-500 text-white cursor-pointer rounded px-4 py-2'>
+                className="bg-primary-500 text-white cursor-pointer rounded px-4 py-2"
+              >
                 Finish
               </button>
             </div>
           ) : exam.examType === "pdfUpload" ? (
-            <div className='flex flex-col gap-4 justify-center h-full w-full'>
-              <div className='flex items-center justify-end'>
+            <div className="flex flex-col gap-4 justify-center h-full w-full">
+              <div className="flex items-center justify-end">
                 <button
                   onClick={() =>
                     handleFinishExam("Exam submitted successfully!")
                   }
-                  className='bg-primary-500 text-white cursor-pointer rounded px-4 py-2'>
+                  className="bg-primary-500 text-white cursor-pointer rounded px-4 py-2"
+                >
                   Finish
                 </button>
               </div>
-              <div className='flex gap-2 h-full'>
-                {(exam.material && showMaterial) ? (<iframe
-                  src={`http://localhost:8080${exam.examFile}`}
-                  title={exam.examFile}
-                  className='w-1/2 h-full'
-                />) : <div className='w-1/2'>
+              <div className="flex gap-2 h-full">
+                {exam.material && showMaterial ? (
+                  <iframe
+                    src={`${serverURL}${exam.material}`}
+                    title={exam.material}
+                    className="w-1/2 h-full"
+                  />
+                ) : (
+                  <div className="w-1/2">
                     <iframe
-                      src={`http://localhost:8080${exam.material}`}
+                      src={`${serverURL}${exam.examFile}`}
                       title={exam.examFile}
-                      className='w-full h-full'
+                      className="w-full h-full"
                     />
-                  </div>}
+                  </div>
+                )}
                 <ReactQuill
-                  className='w-1/2 h-full flex-1 bg-white'
+                  className="w-1/2 h-full flex-1 bg-white"
                   value={userAnswer}
                   onChange={setUserAnswer}
                 />
               </div>
-
-              
             </div>
           ) : (
             <div className={` flex gap-4 h-full w-full`}>
               <iframe
-                src={`http://localhost:8080${exam.examFile}`}
+                src={`${serverURL}${exam.examFile}`}
                 title={exam.examFile}
                 className={`${
                   exam.material && showMaterial ? "w-1/2" : "w-full "
                 }`}
               />
               {exam.material && showMaterial && (
-                <div className='w-1/2'>
+                <div className="w-1/2">
                   <iframe
-                    src={`http://localhost:8080${exam.material}`}
-                    title={exam.examFile}
-                    className='w-full h-full'
+                    src={`${serverURL}${exam.material}`}
+                    title={exam.material}
+                    className="w-full h-full"
                   />
                 </div>
               )}
