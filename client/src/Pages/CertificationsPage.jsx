@@ -1,8 +1,10 @@
 import { Card, Form, Button, Input, Avatar, Pagination, Image } from "antd";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const { Search } = Input;
 const { Meta } = Card;
@@ -25,9 +27,39 @@ const tabListNoTitle = [
 const CertificationsPage = () => {
   const [activeTabKey, setActiveTabKey] = useState("All");
   const [basicInfoForm] = Form.useForm(); // Define basicInfoForm here
+  const [examDetail, setExamDetail] = useState([]);
+  // get the workspace
+  const { workspace } = useSelector((state) => state.data);
+
+  console.log(workspace, "the workspace");
 
   useEffect(() => {
     // Fetch data here
+    const fetchCertificationsExam = async () => {
+      try {
+        // Fetch certifications from the server
+        const response = await axios.get(
+          `/api/exams/my-exam/${workspace?._id}`,
+          {
+            hasCertificate: true,
+          }
+        );
+
+        const examData = response.data.data.data.map((exam) => {
+          return {
+            id: exam._id,
+            name: exam.examName,
+            organization: exam.organization.name,
+          };
+        });
+
+        setExamDetail(examData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("Error fetching data");
+      }
+    };
+    fetchCertificationsExam();
   }, []);
 
   const onTabChange = (key) => {
@@ -47,9 +79,9 @@ const CertificationsPage = () => {
     }
   };
 
-  const ExamCard = ({ id }) => {
+  const ExamCard = ({ id, name, organization }) => {
     return (
-      <Link to={`/dashboard/certifications/${id}`}>
+      // <Link to={`/dashboard/certifications/${id}`}>
         <Card
           style={{
             width: 300,
@@ -57,10 +89,10 @@ const CertificationsPage = () => {
           className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200"
         >
           <div className="flex-col flex items-start gap-2">
-            <h3 className="font-bold text-md">English exam certificate</h3>
+            <h3 className="font-bold text-md">{name}</h3>
 
             <p className="font-semibold flex gap-2 items-center justify-center">
-              AASTU{" "}
+              {organization}{" "}
               <span>
                 <Icon
                   icon="gravity-ui:seal-check"
@@ -70,7 +102,7 @@ const CertificationsPage = () => {
             </p>
           </div>
         </Card>
-      </Link>
+      // </Link>
     );
   };
 
@@ -92,7 +124,12 @@ const CertificationsPage = () => {
           {activeTabKey === "All" && (
             <>
               <div className="flex flex-wrap gap-4">
-                <ExamCard />
+                {
+                  // Display ExamCard for each exam
+                  examDetail.map((exam) => (
+                    <ExamCard key={exam.id} {...exam} />
+                  ))
+                }
               </div>
               <Pagination current="1" total="5" className="mt-8" />
             </>

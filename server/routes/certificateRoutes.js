@@ -32,4 +32,7 @@ router
   .patch(protect, updateCertificate)
   .delete(protect, deleteCertificate);
 
+
+
+
 module.exports = router;
