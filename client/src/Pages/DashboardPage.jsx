@@ -69,9 +69,9 @@ const DashboardPage = () => {
     return (
       <div className='flex flex-col gap-2'>
       <UserStats userStats={userStats} />
-      <Card>
+      {/* <Card>
         <LineCharttt userStats={userStats} />
-      </Card>
+      </Card> */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-2 mx-2 lg:gap-2'>
       <Card>
         <ResultsPage />
