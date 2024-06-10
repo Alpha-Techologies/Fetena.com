@@ -88,7 +88,7 @@ const TakeExamScreen = () => {
       try {
         const response = await axios.get(`/api/exams/${id}`);
         setExam(response.data.data.data[0]);
-        console.log("this is the fuckn data", response.data.data.data[0]);
+        console.log("this is the data", response.data.data.data[0]);
       } catch (error) {
         console.error("Error fetching exam details:", error);
         toast.error("Failed to fetch exam details");
@@ -129,7 +129,10 @@ const TakeExamScreen = () => {
 
   const handleStartExam = () => {
     setStartExam(true);
-    requestFullscreen();
+    if (exam) {
+      exam?.securityLevel === "high" && requestFullscreen();
+
+    }
   };
 
   const handleCancelFinishExam = () => {

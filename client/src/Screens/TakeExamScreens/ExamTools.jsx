@@ -41,7 +41,7 @@ const CountDown = ({ showCountdown, startTime, duration, onCountdownEnd }) => {
   );
 };
 
-const ExamTools = ({ exam, isCharging, batteryLevel, examinee }) => {
+const ExamTools = ({ exam, isCharging, batteryLevel, examinee, showMaterial, setShowMaterial }) => {
   const [currentTime, setCurrentTime] = useState(moment());
   const [showCalculator, setShowCalculator] = useState(false);
   const [showCountdown, setShowCountdown] = useState(true);
@@ -79,6 +79,11 @@ const ExamTools = ({ exam, isCharging, batteryLevel, examinee }) => {
   const onCalculatorChangeSwitch = (checked) => {
     console.log(`switch to ${checked}`);
     setShowCalculator(checked);
+  };
+
+  const onMaterialChangeSwitch = (checked) => {
+    console.log(`switch to ${checked}`);
+    setShowMaterial(checked);
   };
 
   const onCountdownChangeSwitch = (checked) => {
@@ -152,6 +157,17 @@ const ExamTools = ({ exam, isCharging, batteryLevel, examinee }) => {
             />
           </div>
         )}
+        {exam.material && (
+          <div className='flex gap-2 items-center justify-center'>
+            <Icon className="w-5 h-5" icon='ph:files' />
+            <p>Material</p>
+            <Switch
+              size='small'
+              defaultChecked={showMaterial}
+              onChange={onMaterialChangeSwitch}
+            />
+          </div>
+        )}
         <div className='flex gap-2'>
           {isCharging ? (
             <Icon
@@ -189,8 +205,7 @@ const ExamTools = ({ exam, isCharging, batteryLevel, examinee }) => {
           />
           <p>Time: {currentTime.format("hh:mm")}</p>
         </div>
-        <div
-          className="flex gap-2 items-center">
+        <div className='flex gap-2 items-center'>
           <div>
             <CountDown
               showCountdown={showCountdown}
