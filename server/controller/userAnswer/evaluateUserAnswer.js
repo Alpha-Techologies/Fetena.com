@@ -79,14 +79,6 @@ exports.evaluateUserAnswer = catchAsync(async (req, res, next) => {
 
   var response = {};
 
-  if (exam.privateScore) {
-    // totalScore = 0
-  }
-
-  if (exam.privateAnswer) {
-    // userAnswer.questionAnswers = "undefined"
-  }
-
   response.userAnswer = userAnswer.questionAnswers; // userAnswer.questionAnswers[answerText]  // score
   response.questions = questions; //questions
   response.score = totalScore;

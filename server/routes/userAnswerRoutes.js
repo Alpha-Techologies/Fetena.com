@@ -3,10 +3,7 @@ const router = express.Router();
 
 const {
   createUserAnswer,
-  deleteUserAnswer,
-  getAllUserAnswer,
   getOneUserAnswer,
-  updateUserAnswer,
   evaluateUserAnswer,
 } = require("../controller/userAnswer");
 const { protect } = require("../controller/auth");
@@ -17,11 +14,5 @@ router
   .post(protect, createUserAnswer);
 
 router.route("/eval/:id").post(protect, evaluateUserAnswer);
-// .post(evaluateUserAnswer)
-// .put(updateQuestion)
-// .delete(deleteQuestion);
-
-// router.route("/")
-// .get(getAllQuestion)
 
 module.exports = router;

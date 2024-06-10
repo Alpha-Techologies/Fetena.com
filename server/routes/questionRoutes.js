@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-// import '../controller/Question'
+
 const {
   createQuestion,
   deleteQuestion,

@@ -11,16 +11,12 @@ const handleCastErrorDB = (err) => {
 };
 
 const handleDuplicateDB = (err) => {
-  //const value  = err.errmsg.match(/(["'])(\\?.)*?\1/);
-  //console.log(value)
   const message = `Duplicate field value. Please use another value `;
   return new APIError(message, 400);
 };
 
 const handleValidatonDB = (err) => {
-  console.log("gotcha")
   const errors = Object.values(err.errors).map((el) => el.message);
-
   const message = `Invalid input data. ${errors.join(". ")}`;
   return new APIError(message, 400);
 };
@@ -64,6 +60,7 @@ module.exports = async (err, req, res, next) => {
   err.status = err.status || "error";
 
   if (process.env.NODE_ENV === "development") {
+  // if (process.env.NODE_ENV === "production") {
     errorOndev(err, res);
   } else if (process.env.NODE_ENV === "production") {
     console.log(err.message + 9090)
@@ -83,7 +80,4 @@ module.exports = async (err, req, res, next) => {
 
     errorOnpro(error, res);
   }
-  // const session = req.body.session
-  // console.log("SESSION " + session)
-  // await req.body.session.abortTransaction()
 };

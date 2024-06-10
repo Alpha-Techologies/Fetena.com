@@ -4,9 +4,11 @@ const catchAsync = require("../utils/catchAsync");
 const { logActivity } = require("../utils/logActivity");
 const APIFeatures = require("../utils/apiFeatures");
 const { dbConn } = require("../config/db_Connection");
-const OrganizationExaminer = require("../models/organization.examiner.model");
+const User = require("../models/user.model");
+const Exam = require("../models/exam.model");
 
 const { StatusCodes } = require("http-status-codes");
+const Email = require("../utils/sendMail");
 require("events").EventEmitter.prototype._maxListeners = 70;
 require("events").defaultMaxListeners = 70;
 
@@ -19,7 +21,7 @@ exports.getOne = (Model) =>
 
     const doc = await query.query;
     if (!doc) {
-      return next(new APIError(`No document found with ${req.params.id}`, 404));
+      return next(new APIError(`No document found`, 404));
     }
 
     res.status(200).json({
@@ -67,7 +69,7 @@ exports.getAll = (Model, options = "", obj = {}) =>
 
     if (!doc) {
       return next(
-        new APIError(`No document found with id = ${req.params.id}`, 404)
+        new APIError(`No document found`, 404)
       );
     }
 
@@ -101,7 +103,7 @@ exports.updateOne = (Model) =>
     );
     if (!doc) {
       return next(
-        new APIError(`No document found with id = ${req.params.id}`, 404)
+        new APIError(`No document found`, 404)
       );
     }
 
@@ -122,7 +124,7 @@ exports.deleteOne = (Model) =>
 
     if (!model) {
       return next(
-        new APIError(`No document found with id = ${req.params.id}`, 404)
+        new APIError(`No document found`, 404)
       );
     }
 
@@ -147,7 +149,7 @@ exports.deleteMany = (Model, delArr) =>
 
     if (!doc) {
       return next(
-        new APIError(`No document found with id = ${req.params.id}`, 404)
+        new APIError(`No document found`, 404)
       );
     }
     res.status(204).json({
@@ -161,7 +163,7 @@ exports.createOne = (Model) =>
     const doc = await Model.create(req.body);
     if (!doc) {
       return next(
-        new APIError(`An error occured while creating the document`, 500)
+        new APIError(`An error occured while saving`, 500)
       );
     }
 
@@ -180,9 +182,18 @@ exports.createMany = (Model, returnOnlyId = false) =>
     const doc = await Model.insertMany(req.body);
     if (!doc) {
       return next(
-        new APIError(`An error occured while creating the document`, 404)
+        new APIError(`An error occured while saving`, 404)
       );
     }
+
+    // if(Model?.modelName.toLowerCase() == "certificate"){
+        // console.log(doc)
+        // const user = User.findOne({id:doc.user})
+        // const exam = Exam.findOne({id:doc.user})
+        // console.log({user})
+        // console.log({exam})
+      // await new Email('user',_,doc.score, examName).sendCertificate()
+    // }
 
     if (returnOnlyId) {
       let id = doc.map((item) => item._id);

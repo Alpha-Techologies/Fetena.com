@@ -81,7 +81,7 @@ exports.updateIdPhoto = catchAsync(async (req, res, next) => {
 
   if (!idPhoto.mimetype.startsWith("image")) {
     return next(
-      new APIError("Please a Proper Id Photo", StatusCodes.BAD_REQUEST)
+      new APIError("Please use a Proper Id Photo", StatusCodes.BAD_REQUEST)
     );
   }
 

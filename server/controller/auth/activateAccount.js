@@ -4,7 +4,7 @@ const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
 const crypto = require("crypto");
 
-exports.  activateAccount = catchAsync(async (req, res, next) => {
+exports.activateAccount = catchAsync(async (req, res, next) => {
   const { token, email } = req.body;
 
   if (!token || !email) {
@@ -17,6 +17,10 @@ exports.  activateAccount = catchAsync(async (req, res, next) => {
     .digest("hex");
 
   const user = await User.findOne({ email });
+
+  if(user.isVerified){
+    next(new APIError("User already activated", StatusCodes.ACCEPTED));
+  }
 
   if (!user) {
     next(

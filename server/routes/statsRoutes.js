@@ -8,9 +8,9 @@ const { getExamStats } = require("../controller/stats/getExamStats");
 const { protect, restrictTo } = require("../controller/auth");
 const { generateExam } = require("../controller/stats/generateExam");
 
-router.route("/org/:id").get(getOrgStats);
+router.route("/org/:id").get(protect, restrictTo(true), getOrgStats);
 
-router.route("/exam/:id").get(getExamStats);
+router.route("/exam/:id").get(protect, restrictTo(true), getExamStats);
 
 router.route("/gen").post(protect, generateExam);
 

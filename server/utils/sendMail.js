@@ -3,12 +3,14 @@ const pug = require("pug");
 const htmlToText = require("html-to-text");
 
 module.exports = class Email {
-  constructor(user, url) {
+  constructor(user, url, score, examName) {
     this.to = user.email;
     // this.firstname = user.name.split(" ")[0]
     this.firstName = user.firstName;
     this.url = url;
     this.from = process.env.EMAIL_FROM;
+    this.score = score
+    this.examName = examName
   }
   newTransport() {
     // if (process.env.NODE_ENV === 'production') {
@@ -49,6 +51,8 @@ module.exports = class Email {
         password,
         url: this.url,
         subject,
+        score:this.score,
+        examName:this.examName
       }
     );
 
@@ -83,7 +87,22 @@ module.exports = class Email {
   async sendActivationToken() {
     await this.send(
       "activationToken",
-      `Your password reset token is valid for 10 minutes`
+      `Acivation for your Fetena.com account`
     );
   }
+
+  async sendCertificate() {
+    await this.send(
+      "certification",
+      `New Certificate from Fetena.com`
+    );
+  }
+
+  async sendScore() {
+    await this.send(
+      "result",
+      `Your result for your exam on Fetena.com`
+    );
+  }
+
 };
