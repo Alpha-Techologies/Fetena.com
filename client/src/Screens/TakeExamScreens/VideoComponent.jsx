@@ -133,7 +133,7 @@ const VideoComponent = ({ socket, takeExamId }) => {
     return () => {
       // Stop video stream tracks
       // reload the page
-      window.location.reload();
+      // window.location.reload();
 
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());

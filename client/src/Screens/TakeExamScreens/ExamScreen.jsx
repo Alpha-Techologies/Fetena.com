@@ -331,27 +331,28 @@ const ExamScreen = ({
     handleUserActivity,
     userActivityMessage,
     setUserExplanation,
+    userExplanation,
   }) => {
-    const [countdownTime, setCountdownTime] = useState(30);
+    // const [countdownTime, setCountdownTime] = useState(30);
 
-    useEffect(() => {
-      let timer;
-      if (showUserActivityModal) {
-        timer = setInterval(() => {
-          setCountdownTime((prevTime) => prevTime - 1);
-        }, 1000);
-      }
+    // useEffect(() => {
+    //   let timer;
+    //   if (showUserActivityModal) {
+    //     timer = setInterval(() => {
+    //       setCountdownTime((prevTime) => prevTime - 1);
+    //     }, 1000);
+    //   }
 
-      return () => clearInterval(timer);
-    }, [showUserActivityModal]);
+    //   return () => clearInterval(timer);
+    // }, [showUserActivityModal]);
 
-    useEffect(() => {
-      if (countdownTime === 0) {
-        setShowUserActivityModal(false);
-        handleFinishExam("Exam Time is Over. Exam Submitted Successfully!");
-        console.log("times up");
-      }
-    }, [countdownTime, setShowUserActivityModal]);
+    // useEffect(() => {
+    //   if (countdownTime === 0) {
+    //     setShowUserActivityModal(false);
+    //     handleFinishExam("Exam Time is Over. Exam Submitted Successfully!");
+    //     console.log("times up");
+    //   }
+    // }, [countdownTime, setShowUserActivityModal]);
 
     return (
       <Modal
@@ -373,10 +374,11 @@ const ExamScreen = ({
           You have been temporarly locked out from the exam.
         </div>
         <div>This is because: {userActivityMessage}</div>
-        <div>
+        {/* <div>
           The Exam Will Automatically Terminate in : {countdownTime} Seconds
-        </div>
+        </div> */}
         <Input
+          value={userExplanation}
           placeholder="enter your explanation here"
           onChange={(e) => {
             setUserExplanation(e.target.value);
@@ -388,13 +390,45 @@ const ExamScreen = ({
 
   return (
     <Layout className="h-screen">
-      <ExplainModal
+      {/* <ExplainModal
         showUserActivityModal={showUserActivityModal}
         setShowUserActivityModal={setShowUserActivityModal}
         handleUserActivity={handleUserActivity}
         userActivityMessage={userActivityMessage}
         setUserExplanation={setUserExplanation}
-      />
+        userExplanation={userExplanation}
+      /> */}
+
+      <Modal
+        title="Locked Out"
+        open={showUserActivityModal}
+        onOk={handleUserActivity}
+        // onCancel={handleFinishExam}
+        footer={[
+          <button
+            key="back"
+            onClick={handleUserActivity}
+            className="bg-primary-500 text-white cursor-pointer rounded px-4 py-2"
+          >
+            Submit
+          </button>,
+        ]}
+      >
+        <div className="">
+          You have been temporarly locked out from the exam.
+        </div>
+        <div>This is because: {userActivityMessage}</div>
+        {/* <div>
+          The Exam Will Automatically Terminate in : {countdownTime} Seconds
+        </div> */}
+        <Input
+          value={userExplanation}
+          placeholder="enter your explanation here"
+          onChange={(e) => {
+            setUserExplanation(e.target.value);
+          }}
+        />
+      </Modal>
       <FloatButton
         onClick={() => setShowChat(!showChat)}
         shape="circle"
