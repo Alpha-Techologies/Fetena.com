@@ -34,6 +34,23 @@ const countExamsBySecurityLevel = async (organizationId) => {
   return examsBySecurityLevel;
 };
 
+const countExamsByStartDate = async (organizationId) => {
+  const examsByStartDate = await Exam.aggregate([
+    { $match :{ organization: new mongoose.Types.ObjectId(organizationId) }},
+    { $group: { _id: "$startDate", count: { $sum: 1 } } }
+  ]);
+
+  console.log('Exams by start Date:', examsByStartDate);
+
+  // [
+  //   { "_id": "high", "count": 5 },
+  //   { "_id": "medium", "count": 12 },
+  //   { "_id": "low", "count": 8 }
+  // ]
+  
+  return examsByStartDate;
+};
+
 const countActiveExams = async (organizationId) => {
   const activeExams = await Exam.countDocuments({
      active: true,
@@ -42,22 +59,6 @@ const countActiveExams = async (organizationId) => {
   console.log(`Active Exams: ${activeExams}`);
 };
 
-const countExamsByType = async (organizationId) => {
-  const examsByType = await Exam.aggregate([
-    { $match :{ organization: new mongoose.Types.ObjectId(organizationId) }},
-    { $group: { _id: "$examType", count: { $sum: 1 } } }
-  ]);
-
-  console.log('Exams by Type:', examsByType);
-
-  // [
-  //   { "_id": "final", "count": 10 },
-  //   { "_id": "midterm", "count": 8 },
-  //   { "_id": "quiz", "count": 15 }
-  // ]
-
-  return examsByType
-};
 
 const countExamsWithCertificates = async (organizationId) => {
   const examsWithCertificates = await Exam.countDocuments({
@@ -67,6 +68,7 @@ const countExamsWithCertificates = async (organizationId) => {
 
   return examsWithCertificates;
 };
+
 
 const countExamsByVisibility = async (organizationId) => {
   const examsByVisibility = await Exam.aggregate([
@@ -112,6 +114,7 @@ exports.getExamStats = catchAsync(async (req, res, next) => {
     const examsByType = await countExamsByType(organizationId)
     const examsWithCert = await countExamsWithCertificates(organizationId)
     const examsByVisibility = await countExamsByVisibility(organizationId)
+    const examsByStartDate = await countExamsByStartDate(organizationId)
     // const examsByCreator = await findExamsByUser(req.user._id,organizationId)
 
     res.status(StatusCodes.ACCEPTED).send({
@@ -121,6 +124,7 @@ exports.getExamStats = catchAsync(async (req, res, next) => {
       examsByType,
       examsWithCert,
       examsByVisibility,
+      examsByStartDate
       // examsByCreator
     })
     
