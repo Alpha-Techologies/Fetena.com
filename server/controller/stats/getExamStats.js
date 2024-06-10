@@ -17,6 +17,23 @@ const countTotalExams = async (organizationId) => {
   return totalExams
 };
 
+const countExamsByType = async (organizationId) => {
+  const examsByType = await Exam.aggregate([
+    { $match :{ organization: new mongoose.Types.ObjectId(organizationId) }},
+    { $group: { _id: "$examType", count: { $sum: 1 } } }
+  ]);
+
+  console.log('Exams by Type:', examsByType);
+
+  // [
+  //   { "_id": "final", "count": 10 },
+  //   { "_id": "midterm", "count": 8 },
+  //   { "_id": "quiz", "count": 15 }
+  // ]
+
+  return examsByType
+};
+
 const countExamsBySecurityLevel = async (organizationId) => {
   const examsBySecurityLevel = await Exam.aggregate([
     { $match :{ organization: new mongoose.Types.ObjectId(organizationId) }},
