@@ -1,5 +1,5 @@
 const TakeExam = require("../../models/take.exam.model");
-const User = require("../../models/user.model")
+const User = require("../../models/user.model");
 const catchAsync = require("../../utils/catchAsync");
 const { StatusCodes } = require("http-status-codes");
 const { default: mongoose } = require("mongoose");
@@ -43,7 +43,7 @@ const { default: mongoose } = require("mongoose");
 //   //   { "_id": "medium", "count": 12 },
 //   //   { "_id": "low", "count": 8 }
 //   // ]
-  
+
 //   return examsBySecurityLevel;
 // };
 
@@ -60,7 +60,7 @@ const { default: mongoose } = require("mongoose");
 //   //   { "_id": "medium", "count": 12 },
 //   //   { "_id": "low", "count": 8 }
 //   // ]
-  
+
 //   return examsByStartDate;
 // };
 
@@ -72,7 +72,6 @@ const { default: mongoose } = require("mongoose");
 //   console.log(`Active Exams: ${activeExams}`);
 // };
 
-
 // const countExamsWithCertificates = async (organizationId) => {
 //   const examsWithCertificates = await Exam.countDocuments({
 //     organization: new mongoose.Types.ObjectId(organizationId),
@@ -81,7 +80,6 @@ const { default: mongoose } = require("mongoose");
 
 //   return examsWithCertificates;
 // };
-
 
 // const countExamsByVisibility = async (organizationId) => {
 //   const examsByVisibility = await Exam.aggregate([
@@ -98,65 +96,61 @@ const { default: mongoose } = require("mongoose");
 //   // ]
 
 //   return examsByVisibility
-  
+
 // };
 
-
-const conutExamsByTaken = async (req) =>{
+const conutExamsByTaken = async (req) => {
   const examsTaken = await TakeExam.countDocuments({
-    user:req.user.id,
-  })
+    user: req.user.id,
+  });
 
   return examsTaken;
-}
+};
 
-const countExamsByCertification = async (req) =>{
+const countExamsByCertification = async (req) => {
   const examsTaken = await TakeExam.countDocuments({
-    user:req.user.id,
-    hasCertificate: false
-  })
+    user: req.user.id,
+    hasCertificate: false,
+  });
 
   return examsTaken;
-}
+};
 
-const countOrgsFollowed = async (req) =>{
-  const user = await User.findById(req.user.id)
+const countOrgsFollowed = async (req) => {
+  const user = await User.findById(req.user.id);
 
-  console.log({user})
+  console.log({ user });
 
   return user.organizationsFollowed.length;
-}
+};
 
-
-const countExamsByDate = async (req) =>{
+const countExamsByDate = async (req) => {
   const examsTaken = await TakeExam.aggregate([
-    { $match :{ organization: new mongoose.Types.ObjectId(req.user.id) }},
-    { $group: { _id: "$startDate", count: { $sum: 1 } } }
+    { $match: { user: new mongoose.Types.ObjectId(req.user.id) } },
+    { $group: { _id: "$startDate", count: { $sum: 1 } } },
   ]);
 
   return examsTaken;
-}
+};
 
 exports.getUserStats = catchAsync(async (req, res, next) => {
-   
-    // const organizationId = req.params.id;
+  // const organizationId = req.params.id;
 
-    // const organization = await Organization.findOne({ _id: organizationId });
+  // const organization = await Organization.findOne({ _id: organizationId });
 
-    // if (!organization) {
-    //     next(new APIError("Organization not found", StatusCodes.BAD_REQUEST));
-    // }
+  // if (!organization) {
+  //     next(new APIError("Organization not found", StatusCodes.BAD_REQUEST));
+  // }
 
-    const totalExams = await conutExamsByTaken(req)
-    const examsByCertificate = await countExamsByCertification(req)
-    const examsByDate = await countExamsByDate(req)
-    const orgsFollowed = await countOrgsFollowed(req)
-    
-    res.status(StatusCodes.ACCEPTED).send({
-      totalExams,
-      examsByCertificate,
-      examsByDate,
-      orgsFollowed
-    })
-    
-})
+  const totalExams = await conutExamsByTaken(req);
+  const examsByCertificate = await countExamsByCertification(req);
+  const examsByDate = await countExamsByDate(req);
+  const orgsFollowed = await countOrgsFollowed(req);
+
+  res.status(StatusCodes.ACCEPTED).send({
+    totalExams,
+    examsByCertificate,
+    examsByDate,
+    orgsFollowed,
+  });
+});

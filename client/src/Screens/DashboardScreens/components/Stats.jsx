@@ -22,8 +22,9 @@ function Stats({examStats,orgStats}) {
           style={{ width: 300 }}
         >
           <div className='flex gap-4'>
-            <Icon
-              icon='healthicons:i-exam-multiple-choice-outline'
+          <Icon
+              icon="ph:exam-bold"
+
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
@@ -42,8 +43,8 @@ function Stats({examStats,orgStats}) {
           style={{ width: 300 }}
         >
           <div className='flex gap-4'>
-            <Icon
-              icon='healthicons:i-exam-multiple-choice-outline'
+          <Icon
+              icon="eos-icons:trusted-organization"
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
@@ -55,14 +56,13 @@ function Stats({examStats,orgStats}) {
           </div>
         </Card>
 
-
         <Card
           className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
           style={{ width: 300 }}
         >
           <div className='flex gap-4'>
             <Icon
-              icon='healthicons:i-exam-multiple-choice-outline'
+             icon="ph:chalkboard-teacher-light" 
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
@@ -74,14 +74,13 @@ function Stats({examStats,orgStats}) {
           </div>
         </Card>
 
-
         <Card
           className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
           style={{ width: 300 }}
         >
           <div className='flex gap-4'>
             <Icon
-              icon='healthicons:i-exam-multiple-choice-outline'
+             icon="mingcute:user-follow-line"
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>

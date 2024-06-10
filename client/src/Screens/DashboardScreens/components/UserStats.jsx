@@ -12,7 +12,7 @@ function IconImage({ src, alt }) {
 function UserStats({userStats}) {
  
   return (
-    <div className="flex justify-center flex-wrap  gap-4 w-full ">
+    <div className="flex justify-between flex-wrap  gap-4 w-full ">
 
 
 <Card
@@ -21,7 +21,8 @@ function UserStats({userStats}) {
         >
           <div className='flex gap-4'>
             <Icon
-              icon='healthicons:i-exam-multiple-choice-outline'
+              icon="ph:exam-bold"
+
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
@@ -33,15 +34,13 @@ function UserStats({userStats}) {
           </div>
         </Card>
 
-
-
         <Card
           className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
           style={{ width: 400 }}
         >
           <div className='flex gap-4'>
             <Icon
-              icon='healthicons:i-exam-multiple-choice-outline'
+            icon="ri:school-line"
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
@@ -53,14 +52,13 @@ function UserStats({userStats}) {
           </div>
         </Card>
 
-
-        <Card
+     <Card
           className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
           style={{ width: 400 }}
         >
           <div className='flex gap-4'>
             <Icon
-              icon='healthicons:i-exam-multiple-choice-outline'
+              icon="eos-icons:trusted-organization"
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
