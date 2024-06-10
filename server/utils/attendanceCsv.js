@@ -5,7 +5,7 @@ const exportAttendanceToCsv = async (filePath) => {
   // Find all exams and populate related user data
   const exams = await TakeExam.find()
     .populate('exam', 'name') // Adjust field names as per your `Exam` schema
-    .populate('user', 'name email') // Adjust field names as per your `User` schema
+    .populate('user', 'email') // Adjust field names as per your `User` schema
     .exec();
 
   // Initialize CSV Writer
@@ -27,11 +27,11 @@ const exportAttendanceToCsv = async (filePath) => {
     examId: exam.exam ? exam.exam._id.toString() : 'Unknown',
     exam: exam.exam ? exam.exam.name : 'Unknown',
     userId: exam.user ? exam.user._id.toString() : 'Unknown',
-    user: exam.user ? `${exam.user.name} (${exam.user.email})` : 'Unknown',
+    user: exam.user ? `${exam.user.email}` : 'Unknown',
     status: exam.status,
     startTime: exam.startTime ? exam.startTime : 'N/A',
     // endTime: exam.endTime ? exam.endTime.toISOString() : 'N/A',
-    endTime: exam.endTime ? new Date(exam.endTime).toISOString() : 'N/A',
+    endTime: exam.endTime ? new exam.startTimeDate(exam.endTime).toISOString() : 'N/A',
   }));
 
   // Write the records to a CSV file
