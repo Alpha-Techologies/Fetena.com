@@ -17,31 +17,6 @@ const countTotalExams = async (organizationId) => {
   return totalExams
 };
 
-const countExamsBySecurityLevel = async (organizationId) => {
-  const examsBySecurityLevel = await Exam.aggregate([
-    { $match :{ organization: new mongoose.Types.ObjectId(organizationId) }},
-    { $group: { _id: "$securityLevel", count: { $sum: 1 } } }
-  ]);
-
-  console.log('Exams by Security Level:', examsBySecurityLevel);
-
-  // [
-  //   { "_id": "high", "count": 5 },
-  //   { "_id": "medium", "count": 12 },
-  //   { "_id": "low", "count": 8 }
-  // ]
-  
-  return examsBySecurityLevel;
-};
-
-const countActiveExams = async (organizationId) => {
-  const activeExams = await Exam.countDocuments({
-     active: true,
-     organization: new mongoose.Types.ObjectId(organizationId)
-    });
-  console.log(`Active Exams: ${activeExams}`);
-};
-
 const countExamsByType = async (organizationId) => {
   const examsByType = await Exam.aggregate([
     { $match :{ organization: new mongoose.Types.ObjectId(organizationId) }},
@@ -59,6 +34,49 @@ const countExamsByType = async (organizationId) => {
   return examsByType
 };
 
+const countExamsBySecurityLevel = async (organizationId) => {
+  const examsBySecurityLevel = await Exam.aggregate([
+    { $match :{ organization: new mongoose.Types.ObjectId(organizationId) }},
+    { $group: { _id: "$securityLevel", count: { $sum: 1 } } }
+  ]);
+
+  console.log('Exams by Security Level:', examsBySecurityLevel);
+
+  // [
+  //   { "_id": "high", "count": 5 },
+  //   { "_id": "medium", "count": 12 },
+  //   { "_id": "low", "count": 8 }
+  // ]
+  
+  return examsBySecurityLevel;
+};
+
+const countExamsByStartDate = async (organizationId) => {
+  const examsByStartDate = await Exam.aggregate([
+    { $match :{ organization: new mongoose.Types.ObjectId(organizationId) }},
+    { $group: { _id: "$startDate", count: { $sum: 1 } } }
+  ]);
+
+  console.log('Exams by start Date:', examsByStartDate);
+
+  // [
+  //   { "_id": "high", "count": 5 },
+  //   { "_id": "medium", "count": 12 },
+  //   { "_id": "low", "count": 8 }
+  // ]
+  
+  return examsByStartDate;
+};
+
+const countActiveExams = async (organizationId) => {
+  const activeExams = await Exam.countDocuments({
+     active: true,
+     organization: new mongoose.Types.ObjectId(organizationId)
+    });
+  console.log(`Active Exams: ${activeExams}`);
+};
+
+
 const countExamsWithCertificates = async (organizationId) => {
   const examsWithCertificates = await Exam.countDocuments({
     organization: new mongoose.Types.ObjectId(organizationId),
@@ -67,6 +85,7 @@ const countExamsWithCertificates = async (organizationId) => {
 
   return examsWithCertificates;
 };
+
 
 const countExamsByVisibility = async (organizationId) => {
   const examsByVisibility = await Exam.aggregate([
@@ -112,6 +131,7 @@ exports.getExamStats = catchAsync(async (req, res, next) => {
     const examsByType = await countExamsByType(organizationId)
     const examsWithCert = await countExamsWithCertificates(organizationId)
     const examsByVisibility = await countExamsByVisibility(organizationId)
+    const examsByStartDate = await countExamsByStartDate(organizationId)
     // const examsByCreator = await findExamsByUser(req.user._id,organizationId)
 
     res.status(StatusCodes.ACCEPTED).send({
@@ -121,6 +141,7 @@ exports.getExamStats = catchAsync(async (req, res, next) => {
       examsByType,
       examsWithCert,
       examsByVisibility,
+      examsByStartDate
       // examsByCreator
     })
     
