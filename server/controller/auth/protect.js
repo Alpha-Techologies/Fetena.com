@@ -1,8 +1,8 @@
 const { StatusCodes } = require("http-status-codes");
-const catchAsync = require("../../utils/catchAsync");
 const { attachCookiesToResponse, isTokenValid } = require("../../utils/jwt");
 const APIError = require("../../utils/apiError");
 const { TokenModel } = require("../../models/Token.model");
+const catchAsync = require("../../utils/catchAsync");
 
 exports.protect = catchAsync(async (req, res, next) => {
   const { refreshToken, accessToken } = req.signedCookies;
@@ -39,7 +39,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     next();
   } catch (error) {
     return next(
-      new APIError("Authentication Invalid", StatusCodes.UNAUTHORIZED)
+      new APIError({ refreshToken, accessToken }, StatusCodes.UNAUTHORIZED)
     );
   }
 });

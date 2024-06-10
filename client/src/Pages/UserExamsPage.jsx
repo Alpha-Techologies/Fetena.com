@@ -63,24 +63,7 @@ const UserExamsPage = () => {
   }, [searchText]);
 
 
-  const onTabChange = (key) => {
-    if (activeTabKey === "All" && key !== "All") {
-      basicInfoForm
-        .validateFields()
-        .then(() => {
-          setActiveTabKey(key);
-        })
-        .catch(() => {
-          toast.error("Please complete all required fields in Basic Info");
-        });
-    } else if (activeTabKey === "Featured" && key !== "Featured") {
-      // Add validation or other functionality specific to Exam Questions tab
-      setActiveTabKey(key);
-    } else {
-      setActiveTabKey(key);
-    }
-  };
-
+  
 
 
   const onPaginationChange = (page) => {
@@ -95,7 +78,7 @@ const UserExamsPage = () => {
       <Link to={`/dashboard/exams/${_id}`} key={_id}>
         <Card
           className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
-          style={{ width: 300 }}
+          style={{ width: 280 }}
         >
           <div className='flex gap-4'>
             <Icon
@@ -124,7 +107,8 @@ const UserExamsPage = () => {
       <div className='flex justify-between gap-4 items-center'>
          <h1 className='text-2xl font-bold text-blue-900 text-left'>Exams</h1>
 
-        <div className='flex flex-col justify-start w-96'>
+        <div className='flex gap-2 justify-start w-96'>
+
           <Search
             placeholder='Search Exams'
             allowClear
@@ -146,10 +130,7 @@ const UserExamsPage = () => {
       <div>
         <Card
           style={{ width: "100%" }}
-          // tabList={tabListNoTitle}
-          activeTabKey={activeTabKey}
-          onTabChange={onTabChange}
-          // tabProps={{ size: "middle" }}
+   
           >
           {activeTabKey === "All" && (
             <>
@@ -166,8 +147,7 @@ const UserExamsPage = () => {
 />
             </>
           )}
-          {activeTabKey === "Featured" && <p>Featured</p>}
-          {activeTabKey === "Taken" && <p>Taken</p>}
+         
         </Card>
       </div>
     </div>

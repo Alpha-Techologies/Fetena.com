@@ -3,6 +3,7 @@ const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
 const Organization = require("../../models/organization.model");
 const { fileUpload } = require("../profile/fileUpload");
+const { logActivity } = require("../../utils/logActivity");
 
 exports.updateOrganizationLogo = catchAsync(async (req, res, next) => {
   if (!req.files) {
@@ -38,7 +39,8 @@ exports.updateOrganizationLogo = catchAsync(async (req, res, next) => {
   organization.logo = logo;
   await organization.save();
 
-  await logActivity(req,1,{name:'Organization',id:organization.id} )
+  req.organization = orgId;
+  await logActivity(req, 1, { name: "Organization", id: organization.id });
 
   res.status(StatusCodes.CREATED).json({
     status: "success",

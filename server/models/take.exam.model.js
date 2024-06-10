@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const moment = require("moment");
+// const moment = require("moment");
 
 const chatMessageSchema = new mongoose.Schema({
   sender: {
@@ -44,6 +44,10 @@ const userActivityLogSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  imageUrl: {
+    type: String,
+  },
+
 });
 
 const takeExamSchema = new mongoose.Schema({

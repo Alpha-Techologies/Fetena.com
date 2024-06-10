@@ -217,7 +217,7 @@ const confirmDeleteQuestion = () => {
 
 
 
-
+console.log(basicInfoValues,"edit an exammmmmmmmmmm")
 
 
 
@@ -254,8 +254,8 @@ const confirmDeleteQuestion = () => {
           </div>
 
           <div className="w-full  flex flex-wrap gap-16 py-2 px-8 my-4">
-          <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Organization : </span>AASTU 
-          {workspace.isVerified ?  <span>
+          <p className="font-semibold flex gap-2 items-center justify-center"><span className="font-bold text-blue-700">Organization : </span>{basicInfoValues.organization.name} 
+          {basicInfoValues.organization.isVerified ?  <span>
                 <Icon
                   icon="gravity-ui:seal-check"
                   className="text-lg text-blue-800"

@@ -1,6 +1,7 @@
 // React Related Imports
 import { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
+import GoogleTranslate from "./GoogleTranslate";
 
 // Components Imports
 import Button from './Button'
@@ -9,7 +10,6 @@ import Button from './Button'
 import { Icon } from "@iconify/react";
 import fetena_logo from "../assets/fetena_logo.png"
 import Hamburger from "hamburger-react"
-
 
 const NavBar = ({displayPage, setDisplayPage}) => {
 
@@ -45,9 +45,14 @@ const NavBar = ({displayPage, setDisplayPage}) => {
           alt='Fetena.com Logo'
         />
         <div className='flex items-center md:order-2 space-x-3 md:space-x-0 '>
+          <div className="-mr-4 hidden lg:flex">
+
+        <GoogleTranslate />
+          </div>
           <Link to='/sign-in'>
             <Button text='Get started' />
           </Link>
+          
           <div className='md:hidden'>
             <Hamburger
               toggled={isOpen}

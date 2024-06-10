@@ -37,10 +37,6 @@ const user = new mongoose.Schema(
     password: {
       type: String,
       default: null,
-      // validate: [
-      //   validator.isAlphanumeric,
-      //   "Only letters and numbers are allowed as password",
-      // ],
       minlength: 8,
       maxlength: 100,
       required: [true, "Please provide a Password"],
@@ -91,15 +87,6 @@ const user = new mongoose.Schema(
       default: null,
       trim: true,
     },
-    // idPhotoType: {
-    //   type: String,
-    //   required: true,
-    //   default: "National",
-    //   enum: {
-    //     values: ["National", "Kebele", "Passport", "License", "SchoolId"],
-    //     message: "Id Type must be of the Provided Types.",
-    //   },
-    // },
     createdAt: {
       type: Date,
       default: Date.now(),
@@ -108,38 +95,6 @@ const user = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    // role: {
-    //   type: String,
-    //   required: false,
-    //   default: "user",
-    //   enum: {
-    //     values: ["manager", "receptionist", "user"],
-    //     message: "role can be either reception, manager or user",
-    //   },
-    // },
-    // notificationCount: {
-    //   type: Number,
-    //   default: 0,
-    // },
-    // unreadMessage: [
-    //   {
-    //     type: Schema.Types.ObjectId,
-    //     ref: "feedback",
-    //   },
-    // ],
-    // markedMessage: [
-    //   {
-    //     type: Schema.Types.ObjectId,
-    //     ref: "feedback",
-    //   },
-    // ],
-    // publishCount: {
-    //   type: Number,
-    //   default: 0,
-    // },
-    // passwordChangedAt: {
-    //   type: Date,
-    // },
     passwordResetToken: {
       type: String,
       default: undefined,
@@ -197,7 +152,7 @@ user.pre("save", function (next) {
 
       // override the cleartext password with the hashed one
       user.password = hash;
-      // user.passwordConfirm = hash;
+      user.passwordConfirm = hash;
       next();
     });
   });

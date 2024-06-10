@@ -25,16 +25,18 @@ import {
 import { toast } from "react-toastify";
 import {
   switchToPersonalWorkspace,
+  switchToSysAdminWorkspace,
   switchSidebar,
   currentUserOrganizationsIdAndRole,
 } from "../../Redux/features/dataSlice";
 import { current } from "@reduxjs/toolkit";
+import GoogleTranslate from "../../Components/GoogleTranslate";
 const { Header, Content, Footer, Sider } = Layout;
 
 const DashboardScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   const [orgModal, setOrgModal] = useState(false);
   const [workspaceDropdownItems, setWorkspaceDropdownItems] = useState([]);
   const [currentWorkspace, setCurrentWorkspace] = useState("personal");
@@ -67,7 +69,11 @@ const DashboardScreen = () => {
     if (workspace === null) {
       setUserRole("examinee");
       setCurrentWorkspace("peronal");
-    } else if (workspace.adminUser._id === user._id) {
+    } else if (workspace === "sysAdmin") {
+      setUserRole("sysAdmin")
+      setCurrentWorkspace("sysAdmin")
+    }
+    else if (workspace.adminUser._id === user._id) {
       setUserRole("admin");
       setCurrentWorkspace(workspace._id);
     } else {
@@ -92,115 +98,80 @@ const DashboardScreen = () => {
 
   const examineeSidebarItems = [
     getItem(
-      <Link
-        to=''
-        onClick={() => dispatch(switchSidebar("1"))}>
+      <Link to="" onClick={() => dispatch(switchSidebar("1"))}>
         Dashboard
       </Link>,
       "1",
-      <Icon
-        className='w-5 h-5'
-        icon='akar-icons:dashboard'
-      />
+      <Icon className="w-5 h-5" icon="akar-icons:dashboard" />
     ),
     getItem(
-      <Link
-        to='organizations'
-        onClick={() => dispatch(switchSidebar("2"))}>
+      <Link to="organizations" onClick={() => dispatch(switchSidebar("2"))}>
         Organizations
       </Link>,
       "2",
-      <Icon
-        className='w-4 h-4'
-        icon='grommet-icons:organization'
-      />
+      <Icon className="w-4 h-4" icon="grommet-icons:organization" />
     ),
     getItem(
-      <Link
-        to='exams'
-        onClick={() => dispatch(switchSidebar("3"))}>
+      <Link to="exams/userexams" onClick={() => dispatch(switchSidebar("3"))}>
         Exams
       </Link>,
       "3",
       <Icon
-        className='w-5 h-5'
-        icon='healthicons:i-exam-multiple-choice-outline'
+        className="w-5 h-5"
+        icon="healthicons:i-exam-multiple-choice-outline"
       />
     ),
     getItem(
-      <Link
-        to='results'
-        onClick={() => dispatch(switchSidebar("4"))}>
-        Results
-      </Link>,
-      "4",
-      <Icon
-        className='w-5 h-5'
-        icon='ph:exam'
-      />
-    ),
-    getItem(
-      <Link
-        to='certifications'
-        onClick={() => dispatch(switchSidebar("5"))}>
+      <Link to="usercertifications" onClick={() => dispatch(switchSidebar("4"))}>
         Certifications
       </Link>,
-      "5",
-      <Icon
-        className='w-5 h-5'
-        icon='la:award'
-      />
+      "4",
+      <Icon className="w-5 h-5" icon="la:award" />
     ),
+    getItem(
+      <Link to="results" onClick={() => dispatch(switchSidebar("5"))}>
+        Results
+      </Link>,
+      "5",
+      <Icon className="w-5 h-5" icon="ph:exam" />
+    ),
+    
     { type: "divider" },
     getItem(
-      <Link
-        to='trainingVideos'
-        onClick={() => dispatch(switchSidebar("6"))}>
+      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("6"))}>
         Training Videos
       </Link>,
       "6",
-      <Icon
-        className='w-5 h-5'
-        icon='healthicons:i-training-class-outline'
-      />
+      <Icon className="w-5 h-5" icon="healthicons:i-training-class-outline" />
     ),
     getItem(
-      <Link
-        to='support'
-        onClick={() => dispatch(switchSidebar("7"))}>
+      <Link to="support" onClick={() => dispatch(switchSidebar("7"))}>
         Support
       </Link>,
       "7",
       <Icon
-        className='w-5 h-5'
-        icon='material-symbols:contact-support-outline'
+        className="w-5 h-5"
+        icon="material-symbols:contact-support-outline"
       />
     ),
   ];
 
   const examinerSidebarItems = [
     getItem(
-      <Link
-        to=''
-        onClick={() => dispatch(switchSidebar("1"))}>
+      <Link to="" onClick={() => dispatch(switchSidebar("1"))}>
         Dashboard
       </Link>,
       "1",
-      <Icon
-        className='w-5 h-5'
-        icon='akar-icons:dashboard'
-      />
+      <Icon className="w-5 h-5" icon="akar-icons:dashboard" />
     ),
     getItem(
-      <Link
-        to='exams'
-        onClick={() => dispatch(switchSidebar("2"))}>
+      <Link to="exams" onClick={() => dispatch(switchSidebar("2"))}>
         My Exams
       </Link>,
       "2",
       <Icon
-        className='w-5 h-5'
-        icon='healthicons:i-exam-multiple-choice-outline'
+        className="w-5 h-5"
+        icon="healthicons:i-exam-multiple-choice-outline"
       />
     ),
     getItem(
@@ -211,14 +182,17 @@ const DashboardScreen = () => {
       <Icon className="w-5 h-5" icon="la:award" />
     ),
     getItem(
-      <Link to="exam-monitor" onClick={() => dispatch(switchSidebar("4"))}>
-        Exam Monitoring
-      </Link>,
+      <Link
+      to="exam-monitor"
+      onClick={() => {
+        dispatch(switchSidebar("4"));
+        setCollapsed(true);
+      }}
+    >
+      Exam Monitoring
+    </Link>,
       "4",
-      <Icon
-        className='w-5 h-5'
-        icon='ic:outline-monitor-heart'
-      />
+      <Icon className="w-5 h-5" icon="ic:outline-monitor-heart" />
     ),
     { type: "divider" },
     getItem(
@@ -234,35 +208,28 @@ const DashboardScreen = () => {
       </Link>,
       "6",
       <Icon
-        className='w-5 h-5'
-        icon='material-symbols:contact-support-outline'
+        className="w-5 h-5"
+        icon="material-symbols:contact-support-outline"
       />
     ),
   ];
 
   const orgAdminSidebarItems = [
     getItem(
-      <Link
-        to=''
-        onClick={() => dispatch(switchSidebar("1"))}>
+      <Link to="" onClick={() => dispatch(switchSidebar("1"))}>
         Dashboard
       </Link>,
       "1",
-      <Icon
-        className='w-5 h-5'
-        icon='akar-icons:dashboard'
-      />
+      <Icon className="w-5 h-5" icon="akar-icons:dashboard" />
     ),
     getItem(
-      <Link
-        to='exams'
-        onClick={() => dispatch(switchSidebar("2"))}>
+      <Link to="exams" onClick={() => dispatch(switchSidebar("2"))}>
         Exams
       </Link>,
       "2",
       <Icon
-        className='w-5 h-5'
-        icon='healthicons:i-exam-multiple-choice-outline'
+        className="w-5 h-5"
+        icon="healthicons:i-exam-multiple-choice-outline"
       />
     ),
     getItem(
@@ -285,15 +252,16 @@ const DashboardScreen = () => {
     // ),
     getItem(
       <Link
-        to='exam-monitor'
-        onClick={() => dispatch(switchSidebar("4"))}>
+      to="exam-monitor"
+      onClick={() => {
+        dispatch(switchSidebar("4"));
+        setCollapsed(true);
+      }}
+    >
         Exam Monitoring
       </Link>,
       "4",
-      <Icon
-        className='w-5 h-5'
-        icon='ic:outline-monitor-heart'
-      />
+      <Icon className="w-5 h-5" icon="ic:outline-monitor-heart" />
     ),
     getItem(
       <Link
@@ -331,7 +299,6 @@ const DashboardScreen = () => {
         icon='uil:setting'
       />
     ),
-    { type: "divider" },
     getItem(
       <Link
         to='trainingVideos'
@@ -350,7 +317,7 @@ const DashboardScreen = () => {
         onClick={() => dispatch(switchSidebar("9"))}>
         Support
       </Link>,
-      "9",
+      "5",
       <Icon
         className='w-5 h-5'
         icon='material-symbols:contact-support-outline'
@@ -358,8 +325,70 @@ const DashboardScreen = () => {
     ),
   ];
 
-  const changeWorkspace = (workspace, userRole) => {
+  const systemAdminSidebarItems = [
+    getItem(
+      <Link
+        to=''
+        onClick={() => dispatch(switchSidebar("1"))}>
+        Dashboard
+      </Link>,
+      "1",
+      <Icon
+        className='w-5 h-5'
+        icon='akar-icons:dashboard'
+      />
+    ),
+    getItem(
+      <Link
+        to='organization-list-sysAdmin'
+        onClick={() => dispatch(switchSidebar("2"))}>
+        Organizations
+      </Link>,
+      "2",
+      <Icon
+        className='w-4 h-4'
+        icon='grommet-icons:organization'
+      />
+    ),
+    getItem(
+      <Link
+        to='activites-list-sysAdmin'
+        onClick={() => dispatch(switchSidebar("3"))}>
+        Activity Log
+      </Link>,
+      "3",
+      <Icon
+        className='w-4 h-4'
+        icon='octicon:log-24'
+      />
+    ),
+    getItem(
+      <Link
+        to='users-list-sysAdmin'
+        onClick={() => dispatch(switchSidebar("4"))}>
+        Users
+      </Link>,
+      "4",
+      <Icon
+        className='w-4 h-4'
+        icon='ph:users'
+      />
+    ),
+    getItem(
+      <Link
+        to='subscription-list-sysAdmin'
+        onClick={() => dispatch(switchSidebar("5"))}>
+        Subscriptions
+      </Link>,
+      "5",
+      <Icon
+        className='w-4 h-4'
+        icon='streamline:subscription-cashflow'
+      />
+    ),
+  ];
 
+  const changeWorkspace = (workspace, userRole) => {
     if (workspace === "personal") {
       setUserRole(userRole);
       setCurrentWorkspace(workspace);
@@ -369,14 +398,24 @@ const DashboardScreen = () => {
       });
       navigate("/dashboard");
       return;
+    } else if (workspace === "systemAdmin") {
+      console.log(workspace, userRole, 'workspace')
+      setUserRole(userRole);
+      setCurrentWorkspace(workspace);
+      dispatch(switchToSysAdminWorkspace());
+      toast.success("Workspace switched successfully!", {
+        position: "bottom-right",
+      });
+      navigate("/dashboard");
+      return;
     }
 
     setCurrentWorkspace(workspace);
-    console.log(currentWorkspace);
+    // console.log(currentWorkspace);
     dispatch(switchWorkspace({ id: workspace, field: "" }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          console.log(res);
+          // console.log(res);
           setOrganization(res.payload.data.data[0]);
           toast.success("Workspace switched successfully!", {
             position: "bottom-right",
@@ -403,12 +442,13 @@ const DashboardScreen = () => {
             onClick={() => {
               changeWorkspace("personal", "examinee");
               dispatch(switchSidebar("1"));
-            }}>
+            }}
+          >
             Personal Workspace
           </span>
         ),
         key: "1",
-        icon: <Icon icon='ep:user' />,
+        icon: <Icon icon="ep:user" />,
       },
       {
         type: "divider",
@@ -439,12 +479,13 @@ const DashboardScreen = () => {
                     userOrganizations[i].userType
                   );
                   dispatch(switchSidebar("1"));
-                }}>
+                }}
+              >
                 {userOrganizations[i].organization?.name}
               </span>
             ),
             key: ++itemsSoFar,
-            icon: <Icon icon='grommet-icons:organization' />,
+            icon: <Icon icon="grommet-icons:organization" />,
           },
         ]);
     }
@@ -452,11 +493,12 @@ const DashboardScreen = () => {
     const joinOrgItem = {
       label: (
         <span
-          className='text-primary-500 cursor-pointer'
+          className="text-primary-500 cursor-pointer"
           onClick={() => {
             setOrgModal(true);
             console.log(orgModal);
-          }}>
+          }}
+        >
           Join Organization
         </span>
       ),
@@ -469,21 +511,40 @@ const DashboardScreen = () => {
       ),
     };
 
+    const systemAdminItem = {
+      label: (
+        <span
+          className='cursor-pointer'
+          onClick={() => {
+            changeWorkspace("systemAdmin", "sysAdmin");
+            dispatch(switchSidebar("1"));
+          }}>
+          System Overview
+        </span>
+      ),
+      key: ++itemsSoFar,
+      icon: <Icon icon='eos-icons:system-group' />,
+    };
+
     setWorkspaceDropdownItems((prevItems) => [...prevItems, joinOrgItem]);
+    if (user.isSystemAdmin) {
+      setWorkspaceDropdownItems((prevItems) => [...prevItems, {
+        type: "divider",
+      }])
+      setWorkspaceDropdownItems((prevItems) => [...prevItems, systemAdminItem]);
+    }
     dispatch(currentUserOrganizationsIdAndRole(org));
   };
 
   const profileDropdownItems = [
     {
       label: (
-        <Link
-          to={"profile"}
-          onClick={() => dispatch(switchSidebar(""))}>
+        <Link to={"profile"} onClick={() => dispatch(switchSidebar(""))}>
           Profile
         </Link>
       ),
       key: "1",
-      icon: <Icon icon='ep:user' />,
+      icon: <Icon icon="ep:user" />,
     },
     {
       type: "divider",
@@ -491,21 +552,17 @@ const DashboardScreen = () => {
     {
       label: (
         <span
-          className='text-error-500 cursor-pointer'
+          className="text-error-500 cursor-pointer"
           onClick={() => {
             dispatch(logoutUser());
             dispatch(switchToPersonalWorkspace());
-          }}>
+          }}
+        >
           Logout
         </span>
       ),
       key: "3",
-      icon: (
-        <Icon
-          className='text-error-500'
-          icon='carbon:logout'
-        />
-      ),
+      icon: <Icon className="text-error-500" icon="carbon:logout" />,
     },
   ];
 
@@ -513,59 +570,59 @@ const DashboardScreen = () => {
     <Layout
       style={{
         minHeight: "100vh",
-      }}>
-      <OrganizationModal
-        orgModal={orgModal}
-        setOrgModal={setOrgModal}
-      />
+      }}
+    >
+      <OrganizationModal orgModal={orgModal} setOrgModal={setOrgModal} />
 
       <FloatButton
-        icon={<Icon icon='mingcute:document-line' />}
-        tooltip='Enter Exam Key'
+        icon={<Icon icon="mingcute:document-line" />}
+        tooltip="Enter Exam Key"
       />
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        style={{
-          overflow: "auto",
-          height: "100vh",
-          position: "fixed",
-          left: 0,
-          top: 0,
-          bottom: 0,
-        }}
-        onCollapse={(value) => setCollapsed(value)}
-        theme='light'>
-        <Link
-          to={""}
-          onClick={() => dispatch(switchSidebar("1"))}
-          className='demo-logo-vertical p-4 flex justify-center '>
-          <img
-            src={fetena_logo}
-            alt='Fetena.com Logo'
-            className='w-24'
-          />
-        </Link>
-        <Menu
-          theme='light'
-          defaultSelectedKeys={[currentSidebar]}
-          selectedKeys={[currentSidebar]}
-          mode='inline'
-          items={
-            userRole === "examinee"
-              ? examineeSidebarItems
-              : userRole === "admin"
-              ? orgAdminSidebarItems
-              : examinerSidebarItems
-          }
-        />
-      </Sider>
+  <Sider
+  width={250}
+  collapsible
+  collapsed={collapsed}
+  style={{
+    overflow: "auto",
+    height: "100vh",
+    position: "fixed",
+    left: 0,
+    top: 0,
+    bottom: 0,
+  }}
+  onCollapse={(value) => setCollapsed(value)}
+  theme="light"
+>
+  <Link
+    to=""
+    onClick={() => dispatch(switchSidebar("1"))}
+    className="demo-logo-vertical p-4 flex justify-center "
+  >
+    <img src={fetena_logo} alt="Fetena.com Logo" className="w-24" />
+  </Link>
+  <Menu
+    theme="light"
+    defaultSelectedKeys={[currentSidebar]}
+    selectedKeys={[currentSidebar]}
+    mode="inline"
+    style={{ padding: '12px 8px' }} // Optional: Adds a bit of padding around the menu items
+    className="ant-menu-item-inline"
+    items={
+      userRole === "examinee"
+        ? examineeSidebarItems
+        : userRole === "admin"
+        ? orgAdminSidebarItems
+        : examinerSidebarItems
+    }
+  />
+</Sider>
       <Layout
         style={{
-          marginLeft: collapsed ? 75 : 200,
-        }}>
+          marginLeft: collapsed ? 75 : 250,
+        }}
+      >
         <Header
-          className='flex justify-between items-center'
+          className="flex justify-between items-center"
           style={{
             padding: 16,
             background: "white",
@@ -573,17 +630,24 @@ const DashboardScreen = () => {
             top: 0,
             zIndex: 1,
             width: "100%",
-          }}>
-          <h1 className='hidden lg:flex  text-xl font-semibold text-primary-500 '>
+          }}
+        >
+          <h1 className="hidden lg:flex  text-xl font-semibold text-primary-500 ">
             {"Hello there, " + user.firstName + " " + user.lastName + "!"}
           </h1>
-          <div className='inline-flex items-center justify-center gap-4'>
+          <div className="inline-flex items-center justify-center gap-4">
+<div className="mb-8 mx-8 hidden lg:flex">
+
+          <GoogleTranslate />
+</div>
+          
+
             <Dropdown
               onClick={() => {
                 fetchUserOrganizations();
                 setupWorkspaceItems();
               }}
-              overlayClassName='overflow-auto h-64'
+              overlayClassName="overflow-auto h-64"
               menu={{
                 items: workspaceDropdownItems,
               }}
@@ -591,34 +655,34 @@ const DashboardScreen = () => {
               <div className='text-primary-500 border w-full border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md inline-flex items-center cursor-pointer gap-2'>
                 <div className='inline-flex items-center justify-center gap-2 h-fit'>
                   <Icon icon='octicon:organization-24' />
-                  {workspace === null ? "Personal Workspace" : workspace.name}
+                  {workspace === null ? "Personal Workspace" : workspace === "sysAdmin" ? "System Overview" : workspace.name}
                 </div>
-                <Icon icon='gridicons:dropdown' />
+                <Icon icon="gridicons:dropdown" />
               </div>
             </Dropdown>
+            
             <Link
               onClick={() => dispatch(switchSidebar(""))}
-              to='notifications'>
+              to="notifications"
+            >
               <Avatar
-                className='cursor-pointer flex items-center justify-center'
-                size='large'
-                icon={<Icon icon='iconamoon:notification' />}
+                className="cursor-pointer flex items-center justify-center"
+                size="large"
+                icon={<Icon icon="iconamoon:notification" />}
               />
             </Link>
             <Dropdown
               menu={{
                 items: profileDropdownItems,
               }}
-              trigger={["click"]}>
+              trigger={["click"]}
+            >
               <Avatar
-                className='cursor-pointer w-16 h-10 items-center justify-center'
-                size='large'
-                icon={
-                  <img
-                    src={`http://localhost:8080/${user.profilePhoto}`}
-                    alt='avatar'
-                  />
-                }
+                className="cursor-pointer w-10 h-10 items-center justify-center"
+                size="large"
+
+                icon={<img src={`${import.meta.env.VITE_API_URL}/${user.profilePhoto}`} alt="avatar" />}
+
               />
             </Dropdown>
           </div>
@@ -627,12 +691,13 @@ const DashboardScreen = () => {
           style={{
             margin: "24px 16px 0",
             overflow: "initial",
-          }}>
+          }}
+        >
           {
             // TODO: loading screen issue becasue of infinte loop useEffect from the parent component into the child pages
 
             false ? (
-              <div className='flex items-center justify-center h-full'>
+              <div className="flex items-center justify-center h-full">
                 <Loading />
               </div>
             ) : (
@@ -643,7 +708,8 @@ const DashboardScreen = () => {
         <Footer
           style={{
             textAlign: "center",
-          }}></Footer>
+          }}
+        ></Footer>
       </Layout>
     </Layout>
   );

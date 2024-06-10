@@ -18,6 +18,14 @@ import {
   getNotifications,
   updateNotification,
   takeExam,
+  paymentIntent,
+  paymentVerify,
+  getOneTransaction,
+  getOrganizationTransactions,
+  getAllTransactions,
+  getAllUsers,
+  getAllActivities,
+  toggleUserActivation
 } from "./dataActions";
 
 const initialState = {
@@ -36,6 +44,9 @@ const dataSlice = createSlice({
   reducers: {
     switchToPersonalWorkspace(state) {
       state.workspace = null;
+    },
+    switchToSysAdminWorkspace(state) {
+      state.workspace = 'sysAdmin';
     },
     switchSidebar(state, action) {
       console.log(action, "action");
@@ -233,12 +244,109 @@ const dataSlice = createSlice({
       .addCase(takeExam.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(paymentIntent.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(paymentIntent.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(paymentIntent.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(paymentVerify.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(paymentVerify.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(paymentVerify.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getOneTransaction.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOneTransaction.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(getOneTransaction.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getOrganizationTransactions.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOrganizationTransactions.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(getOrganizationTransactions.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getAllTransactions.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllTransactions.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(getAllTransactions.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getAllUsers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(getAllUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getAllActivities.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllActivities.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(getAllActivities.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(toggleUserActivation.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(toggleUserActivation.fulfilled, (state, action) => {
+        state.loading = false;
+        // state.userOrganizations = action.payload.data.data;
+        console.log(action, "dataslice data");
+      })
+      .addCase(toggleUserActivation.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });
 
 export const {
   switchToPersonalWorkspace,
+  switchToSysAdminWorkspace,
   switchSidebar,
   currentUserOrganizationsIdAndRole,
 } = dataSlice.actions;

@@ -2,11 +2,12 @@ import React from "react";
 import FeatureSection1 from "../../Components/FeatureSection1";
 import Faq from "../../Components/Faq";
 import { Card } from "antd";
+import Developers from "../../Components/Developers";
 
 const featuresData = {
-  title: "For Examiners or Examinees",
+  title: "About Us",
   description:
-    "Our company is dedicated to helping landlords and property developers to rent and sell out their properties. If you want to save time and money, while expanding, you might want to be interested in our professional services Our company could be your ideal partner for renting or selling your property. We are committed to our customers and promoters and our main objective is to be transparent while achieving results",
+    "We are a team of passionate 5th-year graduating software engineering students behind Fetena.com, our final year capstone project. Our aim is to simplify and modernize the exam process, replacing traditional paper-based exams with a user-friendly and secure online platform. Throughout our academic journey, we've leveraged our skills to create a seamless experience for both examiners and examinees. Fetena.com represents a fusion of theoretical learning and practical application, driving us to continuously enhance its efficiency and convenience. Thank you for joining us on this journey towards innovative exam management.",
   btnLink: "/search",
   btnLabel: "Get started",
   imgSrc:
@@ -25,6 +26,8 @@ const About = () => {
 
         <Faq />
       </div>
+
+      <Developers />
 
       <div className="mx-16 my-16">
         <h1 className="text-3xl font-bold text-blue-900 mb-8 text-center">

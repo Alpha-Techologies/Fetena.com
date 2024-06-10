@@ -64,6 +64,8 @@ const monitorExamSocket = (io, socket) => {
     // get all the take exam that are currently taking the exam
     const takeExams = await TakeExam.find({ examId: examId });
 
+    console.log(takeExams, "takeExams");
+
     // iterate over the take exam and create emit a socket event to terminate the examinee
     takeExams.forEach((takeExam) => {
       if (takeExam.status === "inprogress") {

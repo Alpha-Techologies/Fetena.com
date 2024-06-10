@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Select, Card,Tag  } from "antd";
+import { Select, Card, Tag, Carousel } from "antd";
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import useSocketIO from "../../utils/socket/useSocketIO";
@@ -15,6 +15,7 @@ import MonitoringTab from "./MonitoringTab";
 import ResultsTab from "./ResultsTab";
 import VideoMonitorWindow from "./VideoMonitorWindow";
 import { current } from "@reduxjs/toolkit";
+import CarouselComponent from "../../Components/CarouselComponent";
 
 const MonitoringPage = () => {
   const [activeTabKey1, setActiveTabKey1] = useState("tab1");
@@ -31,7 +32,8 @@ const MonitoringPage = () => {
   const [examineeStatusStats, setExamineeStatusStats] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const navigate = useNavigate();
-  const serverURL = "http://localhost:3000";
+  // const serverURL = "http://localhost:3000";
+  const serverURL = import.meta.env.VITE_SOCKET_URL;
   let tempExam = {};
 
   const fetchData = async (page = 1, active = true, access = "") => {
@@ -148,6 +150,10 @@ const MonitoringPage = () => {
     }
   }, [examStatus]);
 
+  useEffect(() => {
+    fetchExamineeList(currentExam._id);
+  }, [currentExam]);
+
   const tabList = [
     {
       key: "tab1",
@@ -190,34 +196,23 @@ const MonitoringPage = () => {
   };
 
   const handleExamChange = (value) => {
+    setSeeStatusOf("all");  
     fetchExamDetails(value);
   };
 
   const handleExamStatusChange = async (value) => {
-    console.log(examStatus, currentExam.access, "examStatus");
-    const changeExamStatus = async (status) => {
-      try {
-        const response = await axios.patch(`/api/exams/${currentExam._id}`, {
-          access: status,
-        });
-        // console.log(response, "response from fetch single exam");
+    console.log(value, currentExam.access, "examStatus");
+    // if (value === "close") socket.emit("closeExam", currentExam._id);
+    try {
+      const response = await axios.patch(`/api/exams/${currentExam._id}`, {
+        access: value,
+      });
 
-        socket.emit("closeExam", currentExam._id);
-        return response.status;
-      } catch (error) {
-        console.error("Error fetching exam details:", error);
+      if (response.status === 200) {
+        fetchExamDetails(currentExam._id);
       }
-    };
-    if (examStatus === "closed") {
-      const resp = await changeExamStatus("open");
-      if (resp === 200) {
-        setExamStatus(value);
-      }
-    } else {
-      const resp = await changeExamStatus("closed");
-      if (resp === 200) {
-        setExamStatus(value);
-      }
+    } catch (error) {
+      console.error("Error fetching exam details:", error);
     }
   };
 
@@ -226,16 +221,22 @@ const MonitoringPage = () => {
       {!examsList.length ? (
         <div>
           <div className="flex justify-between gap-4 items-center">
-          <h1 className='text-2xl font-bold text-blue-900 text-left mb-2'>Exam Monitoring</h1>
+            <h1 className="text-2xl font-bold text-blue-900 text-left mb-2">
+              Exam Monitoring
+            </h1>
           </div>
           <p>You currently have no exams created.</p>
         </div>
       ) : (
         <div>
           <div className="flex justify-between gap-4 items-center  mb-2">
-          <h1 className='text-2xl font-bold text-blue-900 text-left'>Exam Monitoring</h1>
+            <h1 className="text-2xl font-bold text-blue-900 text-left">
+              Exam Monitoring
+            </h1>
             <div className="flex items-center justify-center gap-4">
-              <span className="font-bold text-blue-900 text-[1rem]">Exam : </span>
+              <span className="font-bold text-blue-900 text-[1rem]">
+                Exam :{" "}
+              </span>
               <Select
                 defaultValue={examsList[0].value}
                 style={{
@@ -250,18 +251,21 @@ const MonitoringPage = () => {
             <Card>
               <div className="flex justify-between my-4">
                 <p className="text-lg">
-                  <span className="font-semibold">Exam :</span> <span className="font-bold text-blue-900"> {currentExam.examName}</span>
+                  <span className="font-semibold">Exam :</span>{" "}
+                  <span className="font-bold text-blue-900">
+                    {" "}
+                    {currentExam.examName}
+                  </span>
                 </p>
                 {examStatus === "open" ? (
                   <span className="text-success-500 font-semibold flex gap-2 items-center">
                     <Icon icon="heroicons-outline:status-online" />
                     <Tag color="green">Online</Tag>
-                  
-                    
                   </span>
                 ) : (
                   <span className="text-error-500 font-semibold flex gap-2 items-center">
-                    <Icon icon="codicon:eye-closed" />   <Tag color="red">Closed</Tag>{" "}
+                    <Icon icon="codicon:eye-closed" />{" "}
+                    <Tag color="red">Closed</Tag>{" "}
                   </span>
                 )}
               </div>
@@ -326,9 +330,39 @@ const MonitoringPage = () => {
                   currentExam={currentExam}
                   socket={socket}
                 />
-                {seeStatusOf !== "all" && (
-                  <VideoMonitorWindow socket={socket} />
-                )}
+                {seeStatusOf !== "all" &&
+                  (currentUser?.status !== "inprogress" ? (
+                    <div className="flex justify-center items-center">
+                      <Carousel fade autoplay className="w-full max-w-2xl">
+                        {currentUser?.userActivityLogs
+                          ?.filter((item) => !!item.imageUrl)
+                          ?.map((log, index) => {
+                            if (log.imageUrl) console.log(log, "log the image");
+                            return (
+                              <div
+                                key={index}
+                                className="flex justify-center items-center"
+                              >
+                                <img
+                                  src={`${import.meta.env.VITE_TARGET_URL}${
+                                    log.imageUrl
+                                  }`}
+                                  alt="faceaiDetection"
+                                  className="w-full h-auto object-cover rounded-md"
+                                />
+                              </div>
+                            );
+                          })}
+                      </Carousel>
+                    </div>
+                  ) : (
+                    <div className="flex justify-center items-center">
+                      <VideoMonitorWindow
+                        socket={socket}
+                        currentUser={currentUser}
+                      />
+                    </div>
+                  ))}
               </div>
             </div>
           </div>

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Input, Modal, Collapse, Form, Select, InputNumber, Card, Radio } from 'antd';
 import { Icon } from "@iconify/react";
-
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import TogetherManager from "../../../AI";
 import questionGenerationTemplate from "../../../Prompts/questionGenerationTemplate";
+import { toast } from "react-toastify";
 
 const { TextArea } = Input;
 const { Panel } = Collapse;
@@ -124,8 +125,20 @@ const AiQuestionGenerator = ({
           </Button>
         </div>
 
-        {isLoading ? <div className="text-center font-semibold text-gray-500">Loading...</div> : <pre className="h-80 overflow-auto font-semibold text-blue-900 text-md -mt-4 border border-gray-300 rounded-lg p-2" >{promptResponse}</pre>}
-      </div>
+        {isLoading ? (
+  <div className="text-center font-semibold text-gray-500">Loading...</div>
+) : (
+  <div className="flex flex-col gap-2">
+    <pre className="h-80 overflow-auto font-semibold text-blue-900 text-md -mt-4 border border-gray-300 rounded-lg p-2">
+      {promptResponse}
+    </pre>
+    <CopyToClipboard text={promptResponse} onCopy={() => toast.success("Results copied successfully!")}>
+  <Button className="bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded">
+    Copy Results
+  </Button>
+</CopyToClipboard>
+  </div>
+)}      </div>
     </Modal>
   );
 };
