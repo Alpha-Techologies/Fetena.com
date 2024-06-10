@@ -16,7 +16,7 @@ const FeatureSection1 = ({ featuresData }) => {
               loading="lazy"
               width="100%" // Adjust width as needed
               height="auto" // Maintain aspect ratio
-              className="rounded-2xl group-hover:scale-105 transition-all ease-in-out duration-300
+              className="rounded-2xl group-hover:scale-105 transition-all ease-in-out duration-300 w-96 mx-auto
               "
             />
           </div>

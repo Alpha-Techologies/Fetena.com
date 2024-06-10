@@ -1,4 +1,5 @@
 import yosefPic from '../../src/assets/yosef.png'
+import avatar from '../../src/assets/avatar.png'
 import Button from './Button'
 
 
@@ -21,16 +22,40 @@ const data = [
     name: 'Yosef Lakew',
     image: yosefPic,
     role: 'Web Developer / UI/UX Designer',
+    description: 'As a passionate Web Developer and UI/UX Designer, I specialize in creating intuitive and visually appealing user interfaces. My work focuses on enhancing user experience through thoughtful design and seamless front-end development. I have a strong background in HTML, CSS, JavaScript, and React, which allows me to turn complex ideas into user-friendly web applications.',
+    link: 'https://portifoliov1-three.vercel.app/'
+  }
+,  
+  {
+    name: 'Yohannes Mesganaw',
+    image: avatar,
+    role: 'Web Developer / UI/UX Designer',
     description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis, quidem voluptates in nesciunt doloremque nulla sequi vero sint accusantium expedita aspernatur cumque, unde doloribus voluptatem voluptas necessitatibus iste iusto itaque.',
     link: 'https://portifoliov1-three.vercel.app/'
   },
   {
-    name: 'Yosef Lakew',
-    image: yosefPic,
+    name: 'Yohannes Teshome',
+    image: avatar,
+    role: 'Web Developer / UI/UX Designer',
+    description: 'As a passionate Web Developer and UI/UX Designer, I specialize in creating intuitive and visually appealing user interfaces. My work focuses on enhancing user experience through thoughtful design and seamless front-end development. I have a strong background in HTML, CSS, JavaScript, and React, which allows me to turn complex ideas into user-friendly web applications.',
+    link: 'https://portifoliov1-three.vercel.app/'
+  }
+,  
+  {
+    name: 'Yonas Enchalew',
+    image: avatar,
     role: 'Web Developer / UI/UX Designer',
     description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis, quidem voluptates in nesciunt doloremque nulla sequi vero sint accusantium expedita aspernatur cumque, unde doloribus voluptatem voluptas necessitatibus iste iusto itaque.',
     link: 'https://portifoliov1-three.vercel.app/'
+  },
+  {
+    name: 'Tibebe Solomon',
+    image: avatar,
+    role: 'Web Developer / UI/UX Designer',
+    description: 'As a passionate Web Developer and UI/UX Designer, I specialize in creating intuitive and visually appealing user interfaces. My work focuses on enhancing user experience through thoughtful design and seamless front-end development. I have a strong background in HTML, CSS, JavaScript, and React, which allows me to turn complex ideas into user-friendly web applications.',
+    link: 'https://portifoliov1-three.vercel.app/'
   }
+
 ]
 
 
@@ -484,7 +509,10 @@ const Developer = ({ data }) => {
                 <a
                   href={data.link}
                 >
-                <Button text="Portfolio" />
+                   <button
+      type='button'
+      className="flex items-center gap-2 bg-primary-500 hover:bg-primary-700 text-white font-semibold py-[0.4rem] px-8 rounded-md text-sm">
+Portfolio    </button>
                 </a>
 
                
@@ -533,17 +561,16 @@ const Developers = () => {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
+
         <SwiperSlide><Developer data={data[0]} />
         </SwiperSlide>
         <SwiperSlide><Developer data={data[1]} />
         </SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
+        <SwiperSlide><Developer data={data[2]} /></SwiperSlide>
+        <SwiperSlide><Developer data={data[3]} /></SwiperSlide>
+        <SwiperSlide><Developer data={data[4]} /></SwiperSlide>
+     
+
       </Swiper>
     </>
 
