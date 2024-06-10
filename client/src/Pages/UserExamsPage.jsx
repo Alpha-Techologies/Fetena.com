@@ -47,6 +47,12 @@ const UserExamsPage = () => {;
     console.log(searchText);
   };
 
+  useEffect(() => {
+    if (!workspace) {
+      
+    }
+  }, []);
+
   const fetchData = async (page = 1) => {
     try {
       const response = await axios.get(
@@ -132,7 +138,7 @@ const UserExamsPage = () => {;
       </div>
       <div>
         <Card style={{ width: "100%" }}>
-          {activeTabKey === "All" && (
+          {(
             <>
               <div className='flex flex-wrap gap-2'>
                 {exams &&
