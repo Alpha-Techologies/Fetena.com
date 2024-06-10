@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import Peer from "peerjs";
 import * as faceapi from "face-api.js";
+import Peer from "peerjs";
 
 const VideoMonitorWindow = ({ socket, currentUser }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   // const [socket, setSocket] = useState(null);
   const [stream, setStream] = useState(null);
-  const [myPeer, setMyPeer] = useState(null);
   const [videoOnPlay, setVideoOnPlay] = useState(false);
   useEffect(() => {
     const modelUrl = `${import.meta.env.VITE_CLIENT_URL}models`;
@@ -58,12 +57,11 @@ const VideoMonitorWindow = ({ socket, currentUser }) => {
       });
     });
 
-    const newPeer = new Peer();
-    setMyPeer(newPeer);
-
     // newSocket.on("connect", () => {
     //   console.log("Connected as viewer");
     // });
+
+    const newPeer = new Peer();
 
     if (socket) {
       newPeer.on("open", (viewerId) => {
@@ -73,7 +71,7 @@ const VideoMonitorWindow = ({ socket, currentUser }) => {
           stream.getTracks().forEach((track) => {
             track.stop();
           });
-          setStream(null);
+          // setStream(null);
         }
         socket.emit("join-as-viewer", currentUser._id, viewerId);
         console.log("Connected as viewer", currentUser);
@@ -87,15 +85,15 @@ const VideoMonitorWindow = ({ socket, currentUser }) => {
         });
       });
 
-      newPeer.on("connection", (conn) => {
-        conn.on("close", () => {
-          setTimeout(reload, 1000);
-        });
-      });
+      // newPeer.on("connection", (conn) => {
+      //   conn.on("close", () => {
+      //     setTimeout(reload, 1000);
+      //   });
+      // });
 
-      socket.on("disconnect", () => {
-        console.log("disconnected viewer");
-      });
+      // socket.on("disconnect", () => {
+      //   console.log("disconnected viewer");
+      // });
     }
 
     return () => {
