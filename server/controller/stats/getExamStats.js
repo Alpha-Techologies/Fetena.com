@@ -1,5 +1,6 @@
 const Exam = require("../../models/exam.model");
 const Organization = require("../../models/organization.model");
+const APIError = require("../../utils/apiError");
 // const OrganizationExaminer = require("../../models/organization.examiner.model");
 // const OrganizationFollower = require("../../models/organization.follower.model");
 
@@ -12,6 +13,8 @@ const countTotalExams = async (organizationId) => {
     { organization: new mongoose.Types.ObjectId(organizationId) }
   );
   console.log(`Total Exams: ${totalExams}`);
+
+  return totalExams
 };
 
 const countExamsBySecurityLevel = async (organizationId) => {
@@ -21,12 +24,20 @@ const countExamsBySecurityLevel = async (organizationId) => {
   ]);
 
   console.log('Exams by Security Level:', examsBySecurityLevel);
+
+  // [
+  //   { "_id": "high", "count": 5 },
+  //   { "_id": "medium", "count": 12 },
+  //   { "_id": "low", "count": 8 }
+  // ]
+  
+  return examsBySecurityLevel;
 };
 
 const countActiveExams = async (organizationId) => {
   const activeExams = await Exam.countDocuments({
      active: true,
-     organization: new mongoose.Types.ObjectId(organizationId) 
+     organization: new mongoose.Types.ObjectId(organizationId)
     });
   console.log(`Active Exams: ${activeExams}`);
 };
@@ -38,6 +49,14 @@ const countExamsByType = async (organizationId) => {
   ]);
 
   console.log('Exams by Type:', examsByType);
+
+  // [
+  //   { "_id": "final", "count": 10 },
+  //   { "_id": "midterm", "count": 8 },
+  //   { "_id": "quiz", "count": 15 }
+  // ]
+
+  return examsByType
 };
 
 const countExamsWithCertificates = async (organizationId) => {
@@ -45,6 +64,8 @@ const countExamsWithCertificates = async (organizationId) => {
     organization: new mongoose.Types.ObjectId(organizationId),
     hasCertificate: true });
   console.log(`Exams with Certificates: ${examsWithCertificates}`);
+
+  return examsWithCertificates;
 };
 
 const countExamsByVisibility = async (organizationId) => {
@@ -54,15 +75,24 @@ const countExamsByVisibility = async (organizationId) => {
   ]);
 
   console.log('Exams by Visibility:', examsByVisibility);
+
+  // [
+  //   { "_id": "public", "count": 20 },
+  //   { "_id": "private", "count": 10 },
+  //   { "_id": "restricted", "count": 5 }
+  // ]
+
+  return examsByVisibility
+  
 };
 
-const findExamsByUser = async (userId, organizationId) => {
-  const exams = await Exam.find({
-  organization: new mongoose.Types.ObjectId(organizationId),
-  createdBy: mongoose.Types.ObjectId(userId) 
-});
-  console.log(`Exams created by User ${userId}:`, exams);
-};
+// const findExamsByUser = async (userId, organizationId) => {
+//   const exams = await Exam.find({
+//   organization: new mongoose.Types.ObjectId(organizationId),
+//   createdBy: mongoose.Types.ObjectId(userId) 
+// });
+//   console.log(`Exams created by User ${userId}:`, exams);
+// };
 
 
 exports.getExamStats = catchAsync(async (req, res, next) => {
@@ -75,16 +105,14 @@ exports.getExamStats = catchAsync(async (req, res, next) => {
         next(new APIError("Organization not found", StatusCodes.BAD_REQUEST));
     }
 
-    // countVerifiedOrganizations()
+    const totalExams = await countTotalExams(organization.id)
+    const examsBySecurity = await countExamsBySecurityLevel(organizationId)
+    const activeExams = await countActiveExams(organizationId)
 
-    const totalExams = countTotalExams(organization.id)
-    const examsBySecurity = countExamsBySecurityLevel(organizationId)
-    const activeExams = countActiveExams(organizationId)
-
-    const examsByType = countExamsByType(organizationId)
-    const examsWithCert = countExamsWithCertificates(organizationId)
-    const examsByVisibility = countExamsByVisibility(organizationId)
-    const examsByCreator = findExamsByUser(req.user._id,organizationId)
+    const examsByType = await countExamsByType(organizationId)
+    const examsWithCert = await countExamsWithCertificates(organizationId)
+    const examsByVisibility = await countExamsByVisibility(organizationId)
+    // const examsByCreator = await findExamsByUser(req.user._id,organizationId)
 
     res.status(StatusCodes.ACCEPTED).send({
       totalExams,
@@ -93,7 +121,7 @@ exports.getExamStats = catchAsync(async (req, res, next) => {
       examsByType,
       examsWithCert,
       examsByVisibility,
-      examsByCreator
+      // examsByCreator
     })
     
 })
