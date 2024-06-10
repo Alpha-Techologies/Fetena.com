@@ -2,14 +2,15 @@ const path = require("path");
 const fs = require("fs");
 const { exportAttendanceToCsv } = require("../../utils/attendanceCsv");
 const catchAsync = require("../../utils/catchAsync");
-const TakeExam = require("../../models/take.exam.model");
 const { StatusCodes } = require("http-status-codes");
+const APIError = require("../../utils/apiError");
+const Exam = require("../../models/exam.model");
 
 const exportAttendanceToCSV = catchAsync(async (req, res, next) => {
   // if the take exam exits
-  const takeExam = await TakeExam.findOne({ _id: req.params.id });
+  const exam = await Exam.findOne({ _id: req.params.id });
 
-  if (!takeExam) {
+  if (!exam) {
     return next(new APIError("Take Exam id Invalid.", StatusCodes.BAD_REQUEST));
   }
 
@@ -25,20 +26,19 @@ const exportAttendanceToCSV = catchAsync(async (req, res, next) => {
   }
 
   // Export data to CSV
-  await exportAttendanceToCsv(filePath, takeExam._id);
+  await exportAttendanceToCsv(filePath, exam._id);
   console.log("exporting attendance to csv");
 
   // // Respond with the CSV file
-  // res.download(filePath, fileName, (err) => {
-  //   if (err) {
-  //     return res.status(500).json({ error: "Error downloading the file." });
-  //   }
+  res.download(filePath, fileName, (err) => {
+    if (err) {
+      return res.status(500).json({ error: "Error downloading the file." });
+    }
 
-  //   // Optionally, delete the file after download if not needed
-  //   // fs.unlinkSync(filePath);
-  // });
-
-  return res.status(500).json({ error: "Failed to export attendance to CSV" });
+    // Optionally, delete the file after download if not needed
+    // fs.unlinkSync(filePath);
+    res.status(200).json({ success: true });
+  });
 });
 
 module.exports = {

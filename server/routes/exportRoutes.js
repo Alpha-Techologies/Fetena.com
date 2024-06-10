@@ -1,15 +1,18 @@
 // routes/logCsvRoutes.js
-const attendanceController = require("../controller/exports/attendanceController");
+const { protect } = require("../controller/auth");
+const {
+  exportAttendanceToCSV,
+} = require("../controller/exports/attendanceController");
 
 const express = require("express");
 const router = express.Router();
 
-router.route("/").get((req, res, next) => {
-  console.log("her");
-  res.send("dh");
-});
+// router.route("/").get((req, res, next) => {
+//   console.log("her");
+//   res.send("dh");
+// });
 
 // New endpoint for exporting logs to CSV
-router.route("/attendance/:id").get(attendanceController);
+router.route("/attendance/:id").get(protect, exportAttendanceToCSV);
 
 module.exports = router;
