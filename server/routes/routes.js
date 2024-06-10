@@ -11,7 +11,8 @@ const logRouter = require("./logRoutes");
 
 
 const certificateRouter = require("./certificateRoutes");
-const statsRouter = require("./statsRoutes")
+const statsRouter = require("./statsRoutes");
+// const sseRouter = require("./sseRoutes");
 
 const logCsvRouter = require("./logCsvRoutes");
 const attCsvRouter = require("./attCsvRoutes");
@@ -26,8 +27,8 @@ router.use("/useranswers", userAnswerRouter);
 router.use("/cert",certificateRouter)
 router.use("/stats", statsRouter)
 
-router.use("/sse",sseRouter)
-router.use("/chat",chatRouter)
+// router.use("/sse",sseRouter)
+// router.use("/chat",chatRouter )
 
 router.use("/log", logRouter);
 
