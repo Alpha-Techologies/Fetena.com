@@ -6,6 +6,7 @@ const {
   getOneExamTaker,
   updateTakeExam,
   faceaiDetection,
+  getTakenExam,
 } = require("../controller/takeExam");
 
 const { protect } = require("../controller/auth");
@@ -18,5 +19,6 @@ router.route("/take-exam/ai").post(protect, faceaiDetection);
 router.route("/take-exam/:id").patch(protect, updateTakeExam);
 // get all the exam taken history of a exam in which is provided the examid in param
 router.route("/exam-history/:id").get(protect, getAllExamTaker);
+router.route("/taken-exams").get(protect, getTakenExam);
 
 module.exports = router;
