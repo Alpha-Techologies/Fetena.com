@@ -521,7 +521,7 @@ const ExamScreen = ({
           {exam.examType === "online" ? (
             <div>
               <div className="flex gap-2 w-full">
-                <div className={`flex flex-col gap-4 my-4 mt-8 ${exam.material && showMaterial ? 'w-1/2' : 'w-full'} ` }>
+                <div className={`flex flex-col gap-4 my-4 mt-8 ${exam.material && showMaterial ? 'w-1/2' : 'w-full '} ` }>
                   {exam.questions.map((question, index) => (
                     <div
                       key={index}

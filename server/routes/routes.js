@@ -30,8 +30,8 @@ router.use("/transactions", transactionRouter);
 router.use("/cert",certificateRouter)
 router.use("/stats", statsRouter)
 
-router.use("/sse",sseRouter)
-router.use("/chat",chatRouter)
+// router.use("/sse",sseRouter)
+// router.use("/chat",chatRouter)
 
 router.use("/log", logRouter);
 
