@@ -77,10 +77,7 @@ const Preview = ({
       toast.error("Please enter the instruction");
       return;
     }
-    if (!basicInfoValues.examType) {
-      toast.error("Please enter the exam type");
-      return;
-    }
+  
     if (!basicInfoValues.material) {
       basicInfoValues.uploadMaterials = false;
     }
@@ -99,12 +96,6 @@ const Preview = ({
       "aheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
     );
 
-    // if (!basicInfoValues.material || !basicInfoValues.material.name) {
-    //   toast.error("Please upload the material");
-    //   return;
-    // }
-
-    // Check if questions are available
     if (
       basicInfoValues.examType === "online" &&
       questionsCollection.length === 0
@@ -112,23 +103,9 @@ const Preview = ({
       toast.error("Please add questions to submit the exam.");
       return;
     }
-    console.log(
-      "one add questions start-------------------------------------------------------------------------------------------"
-    );
     try {
-      console.log(
-        "one add questions startrrrrrrrrrrrrr-------------------------------------------------------------------------------------------"
-      );
 
-      // Make the Axios POST request to save questions
       const response = await axios.post("/api/questions", questionsCollection);
-
-      // Handle success
-      console.log("Questions submitted successfully:", response.data.data.data);
-      setQuestionsCollection([]);
-      localStorage.removeItem("questionsCollection");
-
-      // setExamKey(response.data.data.exam.examKey);
 
       const updatedBasicInfoValues = {
         ...basicInfoValues,
@@ -136,6 +113,8 @@ const Preview = ({
         points: totalPoints,
       };
       setBasicInfoValues(updatedBasicInfoValues);
+
+      console.log(updatedBasicInfoValues,"888888888888888888888888888888888888888888888888888888888888888888888888888888888")
 
       const examDataToSend = new FormData();
 
@@ -153,6 +132,9 @@ const Preview = ({
           examType: updatedBasicInfoValues.examType,
           access: updatedBasicInfoValues.access,
           hasCertificate: updatedBasicInfoValues.hasCertificate,
+
+          visibility: updatedBasicInfoValues.visibility,
+
           toolsPermitted: [
             updatedBasicInfoValues.calculator && "calculator",
             updatedBasicInfoValues.formulasCollection && "formulasCollection",
@@ -172,24 +154,18 @@ const Preview = ({
 
       console.log(examDataToSend, updatedBasicInfoValues);
 
-      // Send examData to the /api/exams end  point with authentication header
       const examResponse = await axios.post("/api/exams", examDataToSend);
 
       console.log("Exam data submitted successfully:", examResponse);
       toast.success("Exam submitted successfully.");
 
-      // Clear questionsCollection and remove from local storage
       setExamKey(examResponse.data.data.exam.examKey);
 
       setActiveTabKey("Success");
     } catch (error) {
-      // Handle error
       console.error("Error submitting exam:", error);
       toast.error("Error submitting exam. Please try again later.");
     }
-    console.log(
-      "one add questions end-------------------------------------------------------------------------------------------"
-    );
 
     setBasicInfoValues({
       examName: "",
@@ -210,8 +186,11 @@ const Preview = ({
       points: 0,
       examFile: null,
       hasCertificate: false,
+      visibility: "public"
     });
     localStorage.removeItem("basicInfoValues");
+    setQuestionsCollection([]);
+    localStorage.removeItem("questionsCollection");
   };
 
   const [editingQuestion, setEditingQuestion] = useState(null);
@@ -223,14 +202,7 @@ const Preview = ({
     setIsModalVisible(true);
   };
 
-  // const handleChoiceEditQuestion = (question, index) => {
-  //   console.log(question)
-  //   const questionCopy = { ...question };
-  //   setEditingQuestion({ ...questionCopy, index });
-  //   setIsModalVisible(true);
-  // };
 
-  // // Add a function to handle deleting a question
 
   const handleOk = () => {
     const updatedQuestions = [...questionsCollection];
@@ -344,12 +316,13 @@ const Preview = ({
 
             <p className="font-semibold flex gap-2 items-center justify-center">
               <span className="font-bold text-blue-700">Certification : </span>
-              {basicInfoValues.hasCertificate ? (
-                <Tag color="green">Yes</Tag>
-              ) : (
-                <Tag color="red">No</Tag>
-              )}{" "}
-            </p>
+               
+              {basicInfoValues.hasCertificate ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}            </p>
+
+              <p className="font-semibold flex gap-2 items-center justify-center">
+              <span className="font-bold text-blue-700">Visibility : </span>
+               
+              {basicInfoValues.visibility === 'public' ? <Tag color="green">Public</Tag> : <Tag color="red">Private</Tag>}            </p>
           </div>
 
           <div className="w-full  flex flex-col gap-2 py-4 px-8 my-4 items-start">

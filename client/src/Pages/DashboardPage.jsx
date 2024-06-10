@@ -22,15 +22,12 @@ const DashboardPage = () => {
 
 <BarChart />
   </Card>
-  <Card>
+ 
+  
+</div>
+<Card>
 <LineChartt />
     </Card>
-    <Card>
-
-<PieChart />
-    </Card>
-</div>
-
 
     </div>
   )

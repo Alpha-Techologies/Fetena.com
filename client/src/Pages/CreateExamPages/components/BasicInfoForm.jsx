@@ -154,6 +154,17 @@ const BasicInfoForm = ({
             <Select.Option value={false}>No</Select.Option>
           </Select>
         </Form.Item>
+
+        <Form.Item
+          label="Visiblity?"
+          name="visibility"
+          
+        >
+          <Select>
+            <Select.Option value={"public"}>Public</Select.Option>
+            <Select.Option value={"private"}>Private</Select.Option>
+          </Select>
+        </Form.Item>
         </div>
      
 <div className="flex justify-end">
