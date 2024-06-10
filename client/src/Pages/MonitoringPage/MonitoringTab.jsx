@@ -22,14 +22,17 @@ const MonitoringTab = ({
   const currentTime = moment();
 
   const handleEndExam = async (status, userId) => {
-    console.log("Ending Exam", status, userId);
-    // const tempCurrentUser = _.find(
-    //   examineeList,
-    //   (item) => item.user && item.user._id === userId
-    // );
+    const tempCurrentUser = _.find(
+      examineeList,
+      (item) => item.user && item.user._id === userId
+    );
+
+    // console.log(examineeList, !!tempCurrentUser, userId);
+
+    if (!tempCurrentUser) return toast.error("User not found");
 
     if (status === "inprogress") {
-      socket.emit("terminateExaminee", currentUser._id);
+      socket.emit("terminateExaminee", tempCurrentUser._id);
       fetchExamineeList(currentExam._id);
     } else {
       const letUserIn = async (id) => {
@@ -42,7 +45,7 @@ const MonitoringTab = ({
           toast.error("Failed to let user in: " + error.message);
         }
       };
-      await letUserIn(currentUser._id);
+      await letUserIn(tempCurrentUser._id);
 
       fetchExamineeList(currentExam._id);
     }

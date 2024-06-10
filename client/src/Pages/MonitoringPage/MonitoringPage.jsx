@@ -341,11 +341,15 @@ const MonitoringPage = () => {
                 {seeStatusOf !== "all" &&
                   (currentUser?.status !== "inprogress" ? (
                     <div className="flex justify-center items-center">
-                      <Carousel fade autoplay className="w-full max-w-2xl">
+                      <Carousel
+                        key={currentUser?.status && seeStatusOf}
+                        fade
+                        autoplay
+                        className="w-full max-w-2xl"
+                      >
                         {currentUser?.userActivityLogs
                           ?.filter((item) => !!item.imageUrl)
                           ?.map((log, index) => {
-                            if (log.imageUrl) console.log(log, "log the image");
                             return (
                               <div
                                 key={index}
@@ -368,7 +372,7 @@ const MonitoringPage = () => {
                       <VideoMonitorWindow
                         socket={socket}
                         currentUser={currentUser}
-                        newPeer={peer}
+                        // newPeer={peer}
                       />
                     </div>
                   ))}

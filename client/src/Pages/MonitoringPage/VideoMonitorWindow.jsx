@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import * as faceapi from "face-api.js";
+import Peer from "peerjs";
 
-const VideoMonitorWindow = ({ socket, currentUser, newPeer }) => {
+const VideoMonitorWindow = ({ socket, currentUser }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   // const [socket, setSocket] = useState(null);
@@ -60,6 +61,8 @@ const VideoMonitorWindow = ({ socket, currentUser, newPeer }) => {
     //   console.log("Connected as viewer");
     // });
 
+    const newPeer = new Peer();
+
     if (socket) {
       newPeer.on("open", (viewerId) => {
         // disconnect the current stream
@@ -68,7 +71,7 @@ const VideoMonitorWindow = ({ socket, currentUser, newPeer }) => {
           stream.getTracks().forEach((track) => {
             track.stop();
           });
-          setStream(null);
+          // setStream(null);
         }
         socket.emit("join-as-viewer", currentUser._id, viewerId);
         console.log("Connected as viewer", currentUser);
