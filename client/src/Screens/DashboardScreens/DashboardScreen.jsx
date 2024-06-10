@@ -443,43 +443,44 @@ const DashboardScreen = () => {
         icon={<Icon icon="mingcute:document-line" />}
         tooltip="Enter Exam Key"
       />
-      <Sider
-        width={250}
-        collapsible
-        collapsed={collapsed}
-        style={{
-          overflow: "auto",
-          height: "100vh",
-          position: "fixed",
-          left: 0,
-          top: 0,
-          bottom: 0,
-       
-        }}
-        onCollapse={(value) => setCollapsed(value)}
-        theme="light"
-      >
-        <Link
-          to={""}
-          onClick={() => dispatch(switchSidebar("1"))}
-          className="demo-logo-vertical p-4 flex justify-center "
-        >
-          <img src={fetena_logo} alt="Fetena.com Logo" className="w-24" />
-        </Link>
-        <Menu
-          theme="light"
-          defaultSelectedKeys={[currentSidebar]}
-          selectedKeys={[currentSidebar]}
-          mode="inline"
-          items={
-            userRole === "examinee"
-              ? examineeSidebarItems
-              : userRole === "admin"
-              ? orgAdminSidebarItems
-              : examinerSidebarItems
-          }
-        />
-      </Sider>
+  <Sider
+  width={250}
+  collapsible
+  collapsed={collapsed}
+  style={{
+    overflow: "auto",
+    height: "100vh",
+    position: "fixed",
+    left: 0,
+    top: 0,
+    bottom: 0,
+  }}
+  onCollapse={(value) => setCollapsed(value)}
+  theme="light"
+>
+  <Link
+    to=""
+    onClick={() => dispatch(switchSidebar("1"))}
+    className="demo-logo-vertical p-4 flex justify-center "
+  >
+    <img src={fetena_logo} alt="Fetena.com Logo" className="w-24" />
+  </Link>
+  <Menu
+    theme="light"
+    defaultSelectedKeys={[currentSidebar]}
+    selectedKeys={[currentSidebar]}
+    mode="inline"
+    style={{ padding: '12px 8px' }} // Optional: Adds a bit of padding around the menu items
+    className="ant-menu-item-inline"
+    items={
+      userRole === "examinee"
+        ? examineeSidebarItems
+        : userRole === "admin"
+        ? orgAdminSidebarItems
+        : examinerSidebarItems
+    }
+  />
+</Sider>
       <Layout
         style={{
           marginLeft: collapsed ? 75 : 250,

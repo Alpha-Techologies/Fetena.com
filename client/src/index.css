@@ -28,3 +28,10 @@
     object-fit: cover;
   }
   
+
+
+
+
+  .ant-menu-item-inline {
+    margin-left: 0 !important;
+  }
