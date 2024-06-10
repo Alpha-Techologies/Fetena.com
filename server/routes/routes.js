@@ -11,6 +11,7 @@ const logRouter = require("./logRoutes");
 
 const certificateRouter = require("./certificateRoutes");
 const statsRouter = require("./statsRoutes")
+
 router.use("/users", userRouter);
 router.use("/exams", examRouter);
 router.use("/questions", questionRouter);
@@ -18,7 +19,7 @@ router.use("/organizations", organizationRouter);
 router.use("/notifications", notificationRouter);
 router.use("/useranswers", userAnswerRouter);
 
-router.use("/cert",certificateRouter)
+router.use("/certs",certificateRouter)
 router.use("/stats", statsRouter)
 
 router.use("/log", logRouter);

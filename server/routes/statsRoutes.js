@@ -6,17 +6,17 @@ const {
 } = require("../controller/stats/getOrgStats");
 
 const {    
-    getExamStats
+    getExamStats,
 } = require("../controller/stats/getExamStats");
 
 const { protect,restrictTo } = require("../controller/auth");
 
 router
     .route("/org/:id")
-        .get(getOrgStats)
+        .get(protect,restrictTo(true), getOrgStats)
 
 router
     .route("/exam/:id")
-        .get(getExamStats)
+        .get(protect,restrictTo(true), getExamStats)
 
 module.exports = router

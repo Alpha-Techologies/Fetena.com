@@ -3,7 +3,7 @@ const catchAsync = require("./../../utils/catchAsync");
 
 const fs = require("fs");
 const { StatusCodes } = require("http-status-codes");
-const APIError = require("../../utils/APIError");
+const APIError = require("../../utils/apiError");
 
 const fileUpload =
   // new args
