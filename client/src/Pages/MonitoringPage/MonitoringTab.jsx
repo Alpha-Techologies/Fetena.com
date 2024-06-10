@@ -28,7 +28,7 @@ const MonitoringTab = ({
 
     if (status === "inprogress") {
       socket.emit("terminateExaminee", tempCurrentUser._id);
-      fetchExamineeList(tempCurrentUser.exam);
+      fetchExamineeList(tempCurrentUser.exam._id);
     } else {
       const letUserIn = async (id) => {
         // updat the take exam of the user to inprogress
@@ -42,7 +42,7 @@ const MonitoringTab = ({
       };
       await letUserIn(tempCurrentUser._id);
 
-      fetchExamineeList(tempCurrentUser.exam);
+      fetchExamineeList(tempCurrentUser.exam._id);
     }
   };
 
@@ -185,7 +185,7 @@ const MonitoringTab = ({
     useEffect(() => {
       if (socket) {
         socket.on("userActivityLog", (takeExamId, activityLog) => {
-          fetchExamineeList(currentUser.exam);
+          fetchExamineeList(currentUser.exam._id);
         });
       }
     });
