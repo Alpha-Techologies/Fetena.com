@@ -4,6 +4,8 @@ const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
 const Notification = require("../../models/notification.model");
 const OrganizationExaminer = require("../../models/organization.examiner.model");
+const { logActivity } = require("../../utils/logActivity");
+
 
 exports.joinOrganization = catchAsync(async (req, res, next) => {
   const organizationId = req.params.id;

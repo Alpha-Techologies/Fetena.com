@@ -48,6 +48,15 @@ const dataSlice = createSlice({
     switchToSysAdminWorkspace(state) {
       state.workspace = 'sysAdmin';
     },
+    destroyData(state) {
+      state.loading = false
+  state.error = null
+  state.workspace = null
+  state.currentSidebar = "1"
+  state.currentExamSession = null
+  state.currentTakeExamSession = null
+  state.currentUserOrganizationsIdAndRole = null
+    },
     switchSidebar(state, action) {
       console.log(action, "action");
       state.currentSidebar = action.payload;
@@ -349,6 +358,7 @@ export const {
   switchToSysAdminWorkspace,
   switchSidebar,
   currentUserOrganizationsIdAndRole,
+  destroyData
 } = dataSlice.actions;
 
 export default dataSlice.reducer;

@@ -51,7 +51,7 @@ exports.activateExaminer = catchAsync(async (req, res, next) => {
   });
 
   req.organization = organizationId
-  await logActivity(req,6,{name:'Organization Examiner',id:user.id} )
+  await logActivity(req,6,{name:'Organization Examiner',id:userId} )
 
 
   res.status(StatusCodes.OK).json({

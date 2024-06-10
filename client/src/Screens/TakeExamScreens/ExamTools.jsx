@@ -96,7 +96,6 @@ const ExamTools = ({ exam, isCharging, batteryLevel, examinee, showMaterial, set
   };
 
   const populateExamToolItems = () => {
-    console.log("populateExamToolItems", exam);
     if (exam.examType === "pdfUpload") {
       setExamToolItems((prev) => [
         ...prev,
@@ -108,13 +107,6 @@ const ExamTools = ({ exam, isCharging, batteryLevel, examinee, showMaterial, set
       setExamToolItems((prev) => [
         ...prev,
         { key: "1", label: <span>Worksheet</span>},
-      ]);
-    }
-
-    if (exam.material) {
-      setExamToolItems((prev) => [
-        ...prev,
-        { key: "2", label: <span>Materials</span> },
       ]);
     }
   };

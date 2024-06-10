@@ -47,6 +47,8 @@ const OrganizationStaffPage = () => {
   }
 
   const handleActivate = (userId) => {
+    console.log(workspace._id, userId, "id, userId");
+
     setConfirmLoading(true);
     dispatch(activateStaff({id: workspace._id, userId: userId}))
       .then((res) => {
@@ -54,11 +56,13 @@ const OrganizationStaffPage = () => {
         if (res.meta.requestStatus === "fulfilled") {
           console.log(res);
           // setOpen(false);
+          console.log("Activated")
           setOpenRowId(null)
           setConfirmLoading(false);
           fetchOrganizationStaffs()
         } else {
           // setOpen(false);
+          console.log("Not Activated")
           setOpenRowId(null)
           setConfirmLoading(false);
           toast.error(res.payload.message);
@@ -74,6 +78,7 @@ const OrganizationStaffPage = () => {
   };
   const handleDeactivate = (userId) => {
     setConfirmLoading(true);
+    console.log(workspace._id, userId, 'id, userId')
     dispatch(deactivateStaff({ id: workspace._id, userId: userId }))
       .then((res) => {
         
