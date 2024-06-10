@@ -1,10 +1,5 @@
-const Exam = require("../../models/exam.model");
-const Organization = require("../../models/organization.model");
 const TakeExam = require("../../models/take.exam.model");
-const APIError = require("../../utils/apiError");
-// const OrganizationExaminer = require("../../models/organization.examiner.model");
-// const OrganizationFollower = require("../../models/organization.follower.model");
-
+const User = require("../../models/user.model")
 const catchAsync = require("../../utils/catchAsync");
 const { StatusCodes } = require("http-status-codes");
 const { default: mongoose } = require("mongoose");
@@ -124,6 +119,14 @@ const countExamsByCertification = async (req) =>{
   return examsTaken;
 }
 
+const countOrgsFollowed = async (req) =>{
+  const user = await User.findById(req.user.id)
+
+  console.log({user})
+
+  return user.organizationsFollowed.length;
+}
+
 
 const countExamsByDate = async (req) =>{
   const examsTaken = await TakeExam.aggregate([
@@ -147,11 +150,13 @@ exports.getUserStats = catchAsync(async (req, res, next) => {
     const totalExams = await conutExamsByTaken(req)
     const examsByCertificate = await countExamsByCertification(req)
     const examsByDate = await countExamsByDate(req)
+    const orgsFollowed = await countOrgsFollowed(req)
     
     res.status(StatusCodes.ACCEPTED).send({
       totalExams,
       examsByCertificate,
-      examsByDate
+      examsByDate,
+      orgsFollowed
     })
     
 })

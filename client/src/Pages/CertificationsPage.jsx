@@ -1,5 +1,5 @@
 import { Card, Form, Button, Input, Avatar, Pagination, Image } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
@@ -26,6 +26,10 @@ const CertificationsPage = () => {
   const [activeTabKey, setActiveTabKey] = useState("All");
   const [basicInfoForm] = Form.useForm(); // Define basicInfoForm here
 
+  useEffect(() => {
+    // Fetch data here
+  }, []);
+
   const onTabChange = (key) => {
     if (activeTabKey === "All" && key !== "All") {
       basicInfoForm
@@ -43,9 +47,9 @@ const CertificationsPage = () => {
     }
   };
 
-  const ExamCard = () => {
+  const ExamCard = ({ id }) => {
     return (
-      <Link to="/dashboard/certifications/hjh">
+      <Link to={`/dashboard/certifications/${id}`}>
         <Card
           style={{
             width: 300,
@@ -88,11 +92,6 @@ const CertificationsPage = () => {
           {activeTabKey === "All" && (
             <>
               <div className="flex flex-wrap gap-4">
-                <ExamCard />
-                <ExamCard />
-                <ExamCard />
-                <ExamCard />
-                <ExamCard />
                 <ExamCard />
               </div>
               <Pagination current="1" total="5" className="mt-8" />

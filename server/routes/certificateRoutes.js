@@ -10,11 +10,21 @@ const {
 } = require("../controller/certificate");
 
 const { protect, restrictTo } = require("../controller/auth");
+const {
+  getOrganizationId,
+} = require("../controller/organization/getOrganizationId");
+const {
+  addOrganizationForCertificate,
+} = require("../controller/certificate/createCertificate");
 
 router
   .route("/")
-    .post(createCertificate)
-    .get(protect, getAllCertificate)
+  .post(
+    protect,
+    addOrganizationForCertificate,
+    createCertificate
+  )
+  .get(protect, getAllCertificate);
 
 router
   .route("/:id")
