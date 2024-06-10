@@ -187,6 +187,20 @@ const ResultsTab = ({
     setCurrentUser,
   }) => {
     const editQuestionPoint = async (question, answer) => {
+      if (currentUser.exam.examType === "pdfUpload") {
+        currentUser.pdfScore = answer;
+        try {
+          const response = await axios.patch(
+            `/api/exams/take-exam/${currentUser._id}`,
+            currentUser
+          );
+          toast.success("Points Updated");
+          fetchExamDetails(currentExam._id);
+        } catch (error) {
+          console.log(error);
+        }
+        return;
+      }
       if (question.points < answer.point) {
         toast.error(
           "Points cannot be more than the total points of the question"
@@ -475,13 +489,14 @@ const ResultsTab = ({
                     className="w-[20%]"
                     min={0}
                     max={100000}
-                    // value={answer.point}
+                    value={currentUser.pdfScore}
                     onChange={(value) => {
-                      answer.point = value;
-                      answer.manuallyMarked = true;
+                      currentUser.pdfScore = value;
                     }}
                   />
-                  <Button onClick={() => editQuestionPoint(question, answer)}>
+                  <Button
+                    onClick={() => editQuestionPoint("", currentUser.pdfScore)}
+                  >
                     Save Points
                   </Button>
                 </div>

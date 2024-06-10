@@ -90,6 +90,9 @@ const takeExamSchema = new mongoose.Schema({
   pdfAnswer: {
     type: String,
   },
+  pdfScore: {
+    type: String,
+  },
 
   chatMessages: [chatMessageSchema],
   userActivityLogs: [userActivityLogSchema],
