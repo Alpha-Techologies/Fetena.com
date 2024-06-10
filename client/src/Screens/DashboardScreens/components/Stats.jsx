@@ -9,14 +9,17 @@ function IconImage({ src, alt }) {
   );
 }
 
-function Stats() {
+function Stats({examStats,orgStats}) {
+  console.log(examStats)
+  console.log(orgStats)
+  console.log(examStats.followers)
   return (
-    <div className="flex  justify-between flex-wrap mx-8 gap-2">
+    <div className="flex justify-center flex-wrap  gap-2 w-full ">
 
 
 <Card
           className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
-          style={{ width: 330 }}
+          style={{ width: 300 }}
         >
           <div className='flex gap-4'>
             <Icon
@@ -24,9 +27,9 @@ function Stats() {
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
-            <h3 className='font-bold text-md text-primary-500 truncate'>iuiuyuyi</h3>              
+            <h3 className='font-bold text-xl text-primary-500 truncate'>{examStats.totalExams}</h3>              
               <p className='font-semibold flex gap-2 items-center justify-center'>
-               hoiiuyiuyuiyiuyiu
+               Total Exams
               </p>
             </div>
           </div>
@@ -36,7 +39,7 @@ function Stats() {
 
         <Card
           className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
-          style={{ width: 330 }}
+          style={{ width: 300 }}
         >
           <div className='flex gap-4'>
             <Icon
@@ -44,9 +47,9 @@ function Stats() {
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
-            <h3 className='font-bold text-md text-primary-500 truncate'>iuiuyuyi</h3>              
+            <h3 className='font-bold text-xl text-primary-500 truncate'>{examStats.examsWithCert}</h3>              
               <p className='font-semibold flex gap-2 items-center justify-center'>
-               hoiiuyiuyuiyiuyiu
+               Certified Exams
               </p>
             </div>
           </div>
@@ -55,7 +58,7 @@ function Stats() {
 
         <Card
           className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
-          style={{ width: 330 }}
+          style={{ width: 300 }}
         >
           <div className='flex gap-4'>
             <Icon
@@ -63,9 +66,9 @@ function Stats() {
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
-            <h3 className='font-bold text-md text-primary-500 truncate'>iuiuyuyi</h3>              
+            <h3 className='font-bold text-xl text-primary-500 truncate'>{orgStats.examiners}</h3>              
               <p className='font-semibold flex gap-2 items-center justify-center'>
-               hoiiuyiuyuiyiuyiu
+               Examiners
               </p>
             </div>
           </div>
@@ -74,7 +77,7 @@ function Stats() {
 
         <Card
           className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
-          style={{ width: 330 }}
+          style={{ width: 300 }}
         >
           <div className='flex gap-4'>
             <Icon
@@ -82,9 +85,9 @@ function Stats() {
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
-            <h3 className='font-bold text-md text-primary-500 truncate'>iuiuyuyi</h3>              
+            <h3 className='font-bold text-xl text-primary-500 truncate'>{orgStats.followers}</h3>              
               <p className='font-semibold flex gap-2 items-center justify-center'>
-               hoiiuyiuyuiyiuyiu
+               Followers
               </p>
             </div>
           </div>

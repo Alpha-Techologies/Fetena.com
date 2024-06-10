@@ -15,6 +15,7 @@ const MonitoringTab = ({
   setSeeStatusOf,
   socket,
   fetchExamineeList,
+  currentExam,
 }) => {
   // const serverURL = "http://localhost:3000";
   const serverURL = import.meta.env.VITE_SOCKET_URL;
@@ -26,9 +27,13 @@ const MonitoringTab = ({
       (item) => item.user && item.user._id === userId
     );
 
+    // console.log(examineeList, !!tempCurrentUser, userId);
+
+    if (!tempCurrentUser) return toast.error("User not found");
+
     if (status === "inprogress") {
       socket.emit("terminateExaminee", tempCurrentUser._id);
-      fetchExamineeList(tempCurrentUser.exam);
+      fetchExamineeList(currentExam._id);
     } else {
       const letUserIn = async (id) => {
         // updat the take exam of the user to inprogress
@@ -42,7 +47,7 @@ const MonitoringTab = ({
       };
       await letUserIn(tempCurrentUser._id);
 
-      fetchExamineeList(tempCurrentUser.exam);
+      fetchExamineeList(currentExam._id);
     }
   };
 
@@ -115,6 +120,7 @@ const MonitoringTab = ({
     examineeStatusStats,
     overviewTableColumns,
     overviewTableData,
+    currentExam,
   }) => {
     return (
       <div className="flex flex-col gap-2">
@@ -181,11 +187,13 @@ const MonitoringTab = ({
     socket,
     fetchExamineeList,
     handleEndExam,
+    currentExam,
   }) => {
     useEffect(() => {
       if (socket) {
         socket.on("userActivityLog", (takeExamId, activityLog) => {
-          fetchExamineeList(currentUser.exam);
+          console.log(currentUser);
+          fetchExamineeList(currentExam._id);
         });
       }
     });
@@ -386,6 +394,7 @@ const MonitoringTab = ({
           overviewTableColumns={overviewTableColumns}
           overviewTableData={overviewTableData}
           examineeStatusStats={examineeStatusStats}
+          currentExam={currentExam}
         />
       ) : (
         <MonitoringIndividualPage
@@ -395,6 +404,7 @@ const MonitoringTab = ({
           socket={socket}
           fetchExamineeList={fetchExamineeList}
           handleEndExam={handleEndExam}
+          currentExam={currentExam}
         />
       )}
     </>

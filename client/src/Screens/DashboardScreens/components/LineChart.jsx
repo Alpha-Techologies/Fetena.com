@@ -52,6 +52,8 @@ export default class Example extends PureComponent {
   static demoUrl = 'https://codesandbox.io/p/sandbox/line-chart-width-xaxis-padding-8v7952';
 
   render() {
+    const { examStats } = this.props;
+
     return (
       <div style={{ width: '100%', height: 400 }}>
         <ResponsiveContainer>

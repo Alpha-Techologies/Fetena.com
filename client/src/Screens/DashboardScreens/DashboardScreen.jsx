@@ -35,7 +35,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const DashboardScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   const [orgModal, setOrgModal] = useState(false);
   const [workspaceDropdownItems, setWorkspaceDropdownItems] = useState([]);
   const [currentWorkspace, setCurrentWorkspace] = useState("personal");
@@ -107,7 +107,7 @@ const DashboardScreen = () => {
       <Icon className="w-4 h-4" icon="grommet-icons:organization" />
     ),
     getItem(
-      <Link to="exams" onClick={() => dispatch(switchSidebar("3"))}>
+      <Link to="exams/userexams" onClick={() => dispatch(switchSidebar("3"))}>
         Exams
       </Link>,
       "3",
@@ -116,16 +116,7 @@ const DashboardScreen = () => {
         icon="healthicons:i-exam-multiple-choice-outline"
       />
     ),
-    getItem(
-      <Link to="exams" onClick={() => dispatch(switchSidebar("4"))}>
-        Certifications
-      </Link>,
-      "4",
-      <Icon
-        className="w-5 h-5"
-        icon="healthicons:i-exam-multiple-choice-outline"
-      />
-    ),
+    
     getItem(
       <Link to="results" onClick={() => dispatch(switchSidebar("5"))}>
         Results
@@ -186,9 +177,15 @@ const DashboardScreen = () => {
       <Icon className="w-5 h-5" icon="la:award" />
     ),
     getItem(
-      <Link to="exam-monitor" onClick={() => dispatch(switchSidebar("4"))}>
-        Exam Monitoring
-      </Link>,
+      <Link
+      to="exam-monitor"
+      onClick={() => {
+        dispatch(switchSidebar("4"));
+        setCollapsed(true);
+      }}
+    >
+      Exam Monitoring
+    </Link>,
       "4",
       <Icon className="w-5 h-5" icon="ic:outline-monitor-heart" />
     ),
@@ -249,7 +246,13 @@ const DashboardScreen = () => {
     //   />
     // ),
     getItem(
-      <Link to="exam-monitor" onClick={() => dispatch(switchSidebar("4"))}>
+      <Link
+      to="exam-monitor"
+      onClick={() => {
+        dispatch(switchSidebar("4"));
+        setCollapsed(true);
+      }}
+    >
         Exam Monitoring
       </Link>,
       "4",
@@ -452,44 +455,47 @@ const DashboardScreen = () => {
         icon={<Icon icon="mingcute:document-line" />}
         tooltip="Enter Exam Key"
       />
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        style={{
-          overflow: "auto",
-          height: "100vh",
-          position: "fixed",
-          left: 0,
-          top: 0,
-          bottom: 0,
-        }}
-        onCollapse={(value) => setCollapsed(value)}
-        theme="light"
-      >
-        <Link
-          to={""}
-          onClick={() => dispatch(switchSidebar("1"))}
-          className="demo-logo-vertical p-4 flex justify-center "
-        >
-          <img src={fetena_logo} alt="Fetena.com Logo" className="w-24" />
-        </Link>
-        <Menu
-          theme="light"
-          defaultSelectedKeys={[currentSidebar]}
-          selectedKeys={[currentSidebar]}
-          mode="inline"
-          items={
-            userRole === "examinee"
-              ? examineeSidebarItems
-              : userRole === "admin"
-              ? orgAdminSidebarItems
-              : examinerSidebarItems
-          }
-        />
-      </Sider>
+  <Sider
+  width={250}
+  collapsible
+  collapsed={collapsed}
+  style={{
+    overflow: "auto",
+    height: "100vh",
+    position: "fixed",
+    left: 0,
+    top: 0,
+    bottom: 0,
+  }}
+  onCollapse={(value) => setCollapsed(value)}
+  theme="light"
+>
+  <Link
+    to=""
+    onClick={() => dispatch(switchSidebar("1"))}
+    className="demo-logo-vertical p-4 flex justify-center "
+  >
+    <img src={fetena_logo} alt="Fetena.com Logo" className="w-24" />
+  </Link>
+  <Menu
+    theme="light"
+    defaultSelectedKeys={[currentSidebar]}
+    selectedKeys={[currentSidebar]}
+    mode="inline"
+    style={{ padding: '12px 8px' }} // Optional: Adds a bit of padding around the menu items
+    className="ant-menu-item-inline"
+    items={
+      userRole === "examinee"
+        ? examineeSidebarItems
+        : userRole === "admin"
+        ? orgAdminSidebarItems
+        : examinerSidebarItems
+    }
+  />
+</Sider>
       <Layout
         style={{
-          marginLeft: collapsed ? 75 : 200,
+          marginLeft: collapsed ? 75 : 250,
         }}
       >
         <Header

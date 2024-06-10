@@ -9,6 +9,7 @@ const VideoComponent = ({ socket, takeExamId }) => {
   const videoRef = useRef(null);
   const peerClientRef = useRef(null);
   const [stream, setStream] = useState(null);
+  const streamRef = useRef(null);
   const canvasRef = useRef(null);
   const [videoOnPlay, setVideoOnPlay] = useState(false);
 
@@ -52,19 +53,24 @@ const VideoComponent = ({ socket, takeExamId }) => {
     } catch (error) {}
   };
 
-  const debounceHandleImageCapture = useCallback(
-    debounce(captureCanvaImage, 10000),
-    []
-  );
+  // const debounceHandleImageCapture = useCallback(
+  //   debounce(captureCanvaImage, 10000),
+  //   []
+  // );
 
-  const handleCapture = () => {
-    console.log("capturing image debounce");
-    // debounce the image capture
-    debounceHandleImageCapture();
-  };
+  // const handleCapture = () => {
+  //   console.log("capturing image debounce");
+  //   // debounce the image capture
+  //   debounceHandleImageCapture();
+  // };
+
+  useEffect(() => {
+    streamRef.current = stream;
+  }, [stream]);
 
   // Setup video stream
   useEffect(() => {
+    let intervalId;
     const modelUrl = `${import.meta.env.VITE_CLIENT_URL}models`;
     Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri(modelUrl),
@@ -119,6 +125,7 @@ const VideoComponent = ({ socket, takeExamId }) => {
           audio: true,
         });
         setStream(mediaStream);
+        console.log(stream, mediaStream, "the stream that was set");
 
         if (videoRef.current) {
           addVideoStream(videoRef.current, mediaStream);
@@ -133,7 +140,7 @@ const VideoComponent = ({ socket, takeExamId }) => {
     return () => {
       // Stop video stream tracks
       // reload the page
-      window.location.reload();
+      // window.location.reload();
 
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());
@@ -143,8 +150,11 @@ const VideoComponent = ({ socket, takeExamId }) => {
       if (videoRef.current) {
         videoRef.current.srcObject = null;
       }
+
+      // clear the interval
+      // clearInterval(intervalId);
     };
-  }, []);
+  }, [videoRef, socket]);
 
   // Setup PeerJS and socket listeners
   useEffect(() => {
@@ -152,6 +162,7 @@ const VideoComponent = ({ socket, takeExamId }) => {
     peerClientRef.current = new Peer();
 
     peerClientRef.current.on("open", (streamerId) => {
+      console.log("listening as a streamer for admin", streamerId, stream);
       socket.emit("join-as-streamer", streamerId);
     });
 
@@ -160,7 +171,7 @@ const VideoComponent = ({ socket, takeExamId }) => {
     });
 
     socket.on("viewer-connected", (viewerId) => {
-      console.log("viewer connected");
+      console.log("viewer connected", viewerId);
       connectToNewViewer(viewerId);
     });
 
@@ -180,7 +191,7 @@ const VideoComponent = ({ socket, takeExamId }) => {
       socket.off("viewer-connected");
       socket.off("viewer-disconnected");
     };
-  }, [socket]);
+  }, []);
 
   // Function to add video stream to a video element
   const addVideoStream = (videoElement, stream) => {
@@ -193,8 +204,14 @@ const VideoComponent = ({ socket, takeExamId }) => {
 
   // Function to connect to a new viewer using PeerJS
   const connectToNewViewer = (viewerId) => {
-    if (peerClientRef.current && stream) {
-      const call = peerClientRef.current.call(viewerId, stream);
+    console.log(
+      "calling viewer",
+      viewerId,
+      streamRef.current,
+      peerClientRef.current
+    );
+    if (peerClientRef.current && streamRef.current) {
+      const call = peerClientRef.current.call(viewerId, streamRef.current);
       call.on("error", (err) => {
         console.error("Call error:", err);
       });
