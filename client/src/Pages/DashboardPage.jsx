@@ -12,7 +12,7 @@ const DashboardPage = () => {
     <div className='flex flex-col gap-4'>
     
     <Stats />
-  <div className='grid grid-cols-1 lg:grid-cols-2 gap-2 mx-2 lg:gap-4 lg:mx-8'>
+  <div className='grid grid-cols-1 lg:grid-cols-2 gap-2 mx-2 lg:gap-2 '>
 
   <Card >
 

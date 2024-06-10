@@ -116,16 +116,7 @@ const DashboardScreen = () => {
         icon="healthicons:i-exam-multiple-choice-outline"
       />
     ),
-    getItem(
-      <Link to="exams" onClick={() => dispatch(switchSidebar("4"))}>
-        Certifications
-      </Link>,
-      "4",
-      <Icon
-        className="w-5 h-5"
-        icon="healthicons:i-exam-multiple-choice-outline"
-      />
-    ),
+    
     getItem(
       <Link to="results" onClick={() => dispatch(switchSidebar("5"))}>
         Results
@@ -453,6 +444,7 @@ const DashboardScreen = () => {
         tooltip="Enter Exam Key"
       />
       <Sider
+        width={250}
         collapsible
         collapsed={collapsed}
         style={{
@@ -462,6 +454,7 @@ const DashboardScreen = () => {
           left: 0,
           top: 0,
           bottom: 0,
+       
         }}
         onCollapse={(value) => setCollapsed(value)}
         theme="light"
@@ -489,7 +482,7 @@ const DashboardScreen = () => {
       </Sider>
       <Layout
         style={{
-          marginLeft: collapsed ? 75 : 200,
+          marginLeft: collapsed ? 75 : 250,
         }}
       >
         <Header

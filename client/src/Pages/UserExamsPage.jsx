@@ -78,7 +78,7 @@ const UserExamsPage = () => {
       <Link to={`/dashboard/exams/${_id}`} key={_id}>
         <Card
           className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
-          style={{ width: 300 }}
+          style={{ width: 280 }}
         >
           <div className='flex gap-4'>
             <Icon
@@ -107,7 +107,8 @@ const UserExamsPage = () => {
       <div className='flex justify-between gap-4 items-center'>
          <h1 className='text-2xl font-bold text-blue-900 text-left'>Exams</h1>
 
-        <div className='flex flex-col justify-start w-96'>
+        <div className='flex gap-2 justify-start w-96'>
+
           <Search
             placeholder='Search Exams'
             allowClear
