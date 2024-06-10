@@ -11,7 +11,7 @@ function IconImage({ src, alt }) {
 
 function Stats() {
   return (
-    <div className="flex justify-center flex-wrap  gap-2">
+    <div className="flex justify-center flex-wrap  gap-2 w-full ">
 
 
 <Card
