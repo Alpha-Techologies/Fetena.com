@@ -14,7 +14,11 @@ export default class Example extends PureComponent {
     }));
 
     return (
+      <>
+    <h3 className='text-xl font-bold text-start mb-4 mx-2 text-blue-900'>Exams by secutiry</h3>
+
       <div style={{ width: '100%', height: 380 }}>
+        
         <ResponsiveContainer>
           <BarChart
             data={data}
@@ -35,6 +39,7 @@ export default class Example extends PureComponent {
           </BarChart>
         </ResponsiveContainer>
       </div>
+      </>
     );
   }
 }

@@ -3,50 +3,11 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 
-const data = [
-  {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
+// Function to format the date to a readable format
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
 
 export default class Example extends PureComponent {
   static demoUrl = 'https://codesandbox.io/p/sandbox/line-chart-width-xaxis-padding-8v7952';
@@ -54,7 +15,16 @@ export default class Example extends PureComponent {
   render() {
     const { examStats } = this.props;
 
+    // Transform the examStats data to match the format required by the LineChart
+    const data = examStats.examsByStartDate?.map(item => ({
+      name: formatDate(item._id),
+      count: item.count
+    }));
+
     return (
+      <>
+      <h3 className='text-xl font-bold text-start mb-4 mx-2 text-blue-900'>Exams Generated History</h3>
+
       <div style={{ width: '100%', height: 400 }}>
         <ResponsiveContainer>
           <LineChart
@@ -71,11 +41,12 @@ export default class Example extends PureComponent {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="pv" stroke="#1E3A8A" activeDot={{ r: 8 }} />
-            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+            <Line type="monotone" dataKey="count" stroke="#1E3A8A" activeDot={{ r: 8 }} />
           </LineChart>
         </ResponsiveContainer>
       </div>
+      </>
+
     );
   }
 }
