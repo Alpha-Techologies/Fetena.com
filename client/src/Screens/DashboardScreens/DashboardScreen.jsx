@@ -680,7 +680,7 @@ const DashboardScreen = () => {
               trigger={["click"]}
             >
               <Avatar
-                className="cursor-pointer w-10 h-10 items-center justify-center"
+                className="cursor-pointer w-24 h-10 items-center justify-center"
                 size="large"
 
                 icon={<img src={`${import.meta.env.VITE_API_URL}/${user.profilePhoto}`} alt="avatar" />}
