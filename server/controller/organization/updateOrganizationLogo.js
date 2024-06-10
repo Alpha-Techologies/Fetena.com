@@ -39,6 +39,7 @@ exports.updateOrganizationLogo = catchAsync(async (req, res, next) => {
   organization.logo = logo;
   await organization.save();
 
+  req.organization = orgId;
   await logActivity(req, 1, { name: "Organization", id: organization.id });
 
   res.status(StatusCodes.CREATED).json({

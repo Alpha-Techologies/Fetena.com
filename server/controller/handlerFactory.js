@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const APIError = require("../utils/apiError");
 const catchAsync = require("../utils/catchAsync");
-const {logActivity} = require("../utils/logActivity");
+const { logActivity } = require("../utils/logActivity");
 const APIFeatures = require("../utils/apiFeatures");
 const { dbConn } = require("../config/db_Connection");
 const OrganizationExaminer = require("../models/organization.examiner.model");
@@ -18,7 +18,6 @@ exports.getOne = (Model) =>
       .populate();
 
     const doc = await query.query;
-
     if (!doc) {
       return next(new APIError(`No document found with ${req.params.id}`, 404));
     }
@@ -35,7 +34,7 @@ exports.getOne = (Model) =>
 exports.getAll = (Model, options = "", obj = {}) =>
   catchAsync(async (req, res, next) => {
     // currentTime, pathname, method
-    // const {currentTime,_parsedOriginalUrl} = req 
+    // const {currentTime,_parsedOriginalUrl} = req
     // console.log(currentTime)
     // console.log(_parsedOriginalUrl.pathname)
 
@@ -51,7 +50,7 @@ exports.getAll = (Model, options = "", obj = {}) =>
 
     const page = req.query.page * 1 || 1;
 
-    console.log(opt, options)
+    console.log(opt, options);
     const limit = req.query.limit * 1 || 10;
 
     let count = new APIFeatures(Model.find(opt), req.query).filter().count();
@@ -106,8 +105,8 @@ exports.updateOne = (Model) =>
       );
     }
 
-    await logActivity(req,1,{name:Model?.modelName,id:req.params.id})
-    
+    await logActivity(req, 1, { name: Model?.modelName, id: req.params.id });
+
     res.status(200).json({
       status: "success",
       data: {
@@ -131,7 +130,7 @@ exports.deleteOne = (Model) =>
     console.log(model);
     await model.save();
 
-    await logActivity(req,5,{name:Model?.modelName,id:req.params.id} )
+    await logActivity(req, 5, { name: Model?.modelName, id: req.params.id });
     res.status(StatusCodes.OK).json({
       status: "success",
       data: null,
@@ -166,7 +165,7 @@ exports.createOne = (Model) =>
       );
     }
 
-    await logActivity(req,0,{name:Model?.modelName,id:doc.id})
+    await logActivity(req, 0, { name: Model?.modelName, id: doc.id });
 
     res.status(201).json({
       status: "success",
@@ -195,7 +194,6 @@ exports.createMany = (Model, returnOnlyId = false) =>
         },
       });
     } else {
-
       // await logActivity(req,0,{name:Model?.modelName,id:req.params.id} )
 
       res.status(201).json({

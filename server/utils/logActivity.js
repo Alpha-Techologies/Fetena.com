@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Log = require("../models/log.model");
 const actionTypes = [
   "created",

@@ -25,6 +25,7 @@ import {
 import { toast } from "react-toastify";
 import {
   switchToPersonalWorkspace,
+  switchToSysAdminWorkspace,
   switchSidebar,
   currentUserOrganizationsIdAndRole,
 } from "../../Redux/features/dataSlice";
@@ -68,7 +69,11 @@ const DashboardScreen = () => {
     if (workspace === null) {
       setUserRole("examinee");
       setCurrentWorkspace("peronal");
-    } else if (workspace.adminUser._id === user._id) {
+    } else if (workspace === "sysAdmin") {
+      setUserRole("sysAdmin")
+      setCurrentWorkspace("sysAdmin")
+    }
+    else if (workspace.adminUser._id === user._id) {
       setUserRole("admin");
       setCurrentWorkspace(workspace._id);
     } else {
@@ -116,7 +121,13 @@ const DashboardScreen = () => {
         icon="healthicons:i-exam-multiple-choice-outline"
       />
     ),
-    
+    getItem(
+      <Link to="usercertifications" onClick={() => dispatch(switchSidebar("4"))}>
+        Certifications
+      </Link>,
+      "4",
+      <Icon className="w-5 h-5" icon="la:award" />
+    ),
     getItem(
       <Link to="results" onClick={() => dispatch(switchSidebar("5"))}>
         Results
@@ -124,26 +135,20 @@ const DashboardScreen = () => {
       "5",
       <Icon className="w-5 h-5" icon="ph:exam" />
     ),
-    getItem(
-      <Link to="usercertifications" onClick={() => dispatch(switchSidebar("6"))}>
-        Certifications
-      </Link>,
-      "6",
-      <Icon className="w-5 h-5" icon="la:award" />
-    ),
+    
     { type: "divider" },
     getItem(
-      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("7"))}>
+      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("6"))}>
         Training Videos
       </Link>,
-      "7",
+      "6",
       <Icon className="w-5 h-5" icon="healthicons:i-training-class-outline" />
     ),
     getItem(
-      <Link to="support" onClick={() => dispatch(switchSidebar("8"))}>
+      <Link to="support" onClick={() => dispatch(switchSidebar("7"))}>
         Support
       </Link>,
-      "8",
+      "7",
       <Icon
         className="w-5 h-5"
         icon="material-symbols:contact-support-outline"
@@ -265,38 +270,120 @@ const DashboardScreen = () => {
         Activity Log
       </Link>,
       "5",
-      <Icon className="w-4 h-4" icon="octicon:log-24" />
+      <Icon
+        className='w-4 h-4'
+        icon='octicon:log-24'
+      />
     ),
     getItem(
-      <Link to="staffs" onClick={() => dispatch(switchSidebar("6"))}>
+      <Link
+        to='staffs'
+        onClick={() => dispatch(switchSidebar("6"))}>
         Staff
       </Link>,
       "6",
-      <Icon className="w-5 h-5" icon="fluent:people-team-16-regular" />
+      <Icon
+        className='w-5 h-5'
+        icon='fluent:people-team-16-regular'
+      />
     ),
     getItem(
-      <Link to="settings" onClick={() => dispatch(switchSidebar("7"))}>
+      <Link
+        to='settings'
+        onClick={() => dispatch(switchSidebar("7"))}>
         Settings
       </Link>,
       "7",
-      <Icon className="w-5 h-5" icon="uil:setting" />
+      <Icon
+        className='w-5 h-5'
+        icon='uil:setting'
+      />
     ),
-    { type: "divider" },
     getItem(
-      <Link to="trainingVideos" onClick={() => dispatch(switchSidebar("8"))}>
+      <Link
+        to='trainingVideos'
+        onClick={() => dispatch(switchSidebar("8"))}>
         Training Videos
       </Link>,
       "8",
-      <Icon className="w-5 h-5" icon="healthicons:i-training-class-outline" />
+      <Icon
+        className='w-5 h-5'
+        icon='healthicons:i-training-class-outline'
+      />
     ),
     getItem(
-      <Link to="support" onClick={() => dispatch(switchSidebar("9"))}>
+      <Link
+        to='support'
+        onClick={() => dispatch(switchSidebar("9"))}>
         Support
       </Link>,
-      "9",
+      "5",
       <Icon
-        className="w-5 h-5"
-        icon="material-symbols:contact-support-outline"
+        className='w-5 h-5'
+        icon='material-symbols:contact-support-outline'
+      />
+    ),
+  ];
+
+  const systemAdminSidebarItems = [
+    getItem(
+      <Link
+        to=''
+        onClick={() => dispatch(switchSidebar("1"))}>
+        Dashboard
+      </Link>,
+      "1",
+      <Icon
+        className='w-5 h-5'
+        icon='akar-icons:dashboard'
+      />
+    ),
+    getItem(
+      <Link
+        to='organization-list-sysAdmin'
+        onClick={() => dispatch(switchSidebar("2"))}>
+        Organizations
+      </Link>,
+      "2",
+      <Icon
+        className='w-4 h-4'
+        icon='grommet-icons:organization'
+      />
+    ),
+    getItem(
+      <Link
+        to='activites-list-sysAdmin'
+        onClick={() => dispatch(switchSidebar("3"))}>
+        Activity Log
+      </Link>,
+      "3",
+      <Icon
+        className='w-4 h-4'
+        icon='octicon:log-24'
+      />
+    ),
+    getItem(
+      <Link
+        to='users-list-sysAdmin'
+        onClick={() => dispatch(switchSidebar("4"))}>
+        Users
+      </Link>,
+      "4",
+      <Icon
+        className='w-4 h-4'
+        icon='ph:users'
+      />
+    ),
+    getItem(
+      <Link
+        to='subscription-list-sysAdmin'
+        onClick={() => dispatch(switchSidebar("5"))}>
+        Subscriptions
+      </Link>,
+      "5",
+      <Icon
+        className='w-4 h-4'
+        icon='streamline:subscription-cashflow'
       />
     ),
   ];
@@ -311,14 +398,24 @@ const DashboardScreen = () => {
       });
       navigate("/dashboard");
       return;
+    } else if (workspace === "systemAdmin") {
+      console.log(workspace, userRole, 'workspace')
+      setUserRole(userRole);
+      setCurrentWorkspace(workspace);
+      dispatch(switchToSysAdminWorkspace());
+      toast.success("Workspace switched successfully!", {
+        position: "bottom-right",
+      });
+      navigate("/dashboard");
+      return;
     }
 
     setCurrentWorkspace(workspace);
-    console.log(currentWorkspace);
+    // console.log(currentWorkspace);
     dispatch(switchWorkspace({ id: workspace, field: "" }))
       .then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          console.log(res);
+          // console.log(res);
           setOrganization(res.payload.data.data[0]);
           toast.success("Workspace switched successfully!", {
             position: "bottom-right",
@@ -406,10 +503,36 @@ const DashboardScreen = () => {
         </span>
       ),
       key: ++itemsSoFar,
-      icon: <Icon className="text-primary-500" icon="material-symbols:add" />,
+      icon: (
+        <Icon
+          className='text-primary-500'
+          icon='material-symbols:add'
+        />
+      ),
+    };
+
+    const systemAdminItem = {
+      label: (
+        <span
+          className='cursor-pointer'
+          onClick={() => {
+            changeWorkspace("systemAdmin", "sysAdmin");
+            dispatch(switchSidebar("1"));
+          }}>
+          System Overview
+        </span>
+      ),
+      key: ++itemsSoFar,
+      icon: <Icon icon='eos-icons:system-group' />,
     };
 
     setWorkspaceDropdownItems((prevItems) => [...prevItems, joinOrgItem]);
+    if (user.isSystemAdmin) {
+      setWorkspaceDropdownItems((prevItems) => [...prevItems, {
+        type: "divider",
+      }])
+      setWorkspaceDropdownItems((prevItems) => [...prevItems, systemAdminItem]);
+    }
     dispatch(currentUserOrganizationsIdAndRole(org));
   };
 
@@ -528,12 +651,11 @@ const DashboardScreen = () => {
               menu={{
                 items: workspaceDropdownItems,
               }}
-              trigger={["click"]}
-            >
-              <div className="text-primary-500 border w-auto border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md inline-flex items-center cursor-pointer gap-2">
-                <div className="inline-flex items-center justify-center gap-2 h-fit">
-                  <Icon icon="octicon:organization-24" />
-                  {workspace === null ? "Personal Workspace" : workspace.name}
+              trigger={["click"]}>
+              <div className='text-primary-500 border w-full border-primary-200 bg-primary-200 bg-opacity-30 hover:bg-opacity-50 h-10 px-8 py-4 rounded-md inline-flex items-center cursor-pointer gap-2'>
+                <div className='inline-flex items-center justify-center gap-2 h-fit'>
+                  <Icon icon='octicon:organization-24' />
+                  {workspace === null ? "Personal Workspace" : workspace === "sysAdmin" ? "System Overview" : workspace.name}
                 </div>
                 <Icon icon="gridicons:dropdown" />
               </div>

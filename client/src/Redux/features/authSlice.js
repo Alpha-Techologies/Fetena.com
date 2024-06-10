@@ -105,6 +105,7 @@ const authSlice = createSlice({
           organizationsFollowed:
             action.payload.data.data[0].organizationsFollowed,
           adminOf: action.payload.data.data[0].adminOf,
+          isSystemAdmin: action.payload.data.data[0].isSystemAdmin,
         };
         state.error = null;
       })
