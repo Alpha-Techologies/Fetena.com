@@ -145,7 +145,7 @@ const ExamScreen = ({
         });
       } else {
         // ask the user why re-entered the exam
-        if (exam.securityLevel === "high") {
+        if (exam?.securityLevel === "high") {
           promptUserExplanation("User has re-entered the exam");
         }
       }

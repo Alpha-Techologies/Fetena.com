@@ -614,6 +614,8 @@ const DashboardScreen = () => {
         ? examineeSidebarItems
         : userRole === "admin"
         ? orgAdminSidebarItems
+        : userRole === "sysAdmin"
+        ? systemAdminSidebarItems
         : examinerSidebarItems
     }
   />
