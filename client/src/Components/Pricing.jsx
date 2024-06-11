@@ -184,7 +184,7 @@ const Pricing = () => {
                   </span>
                   <span className='ml-1 text-xl font-semibold'>/month</span>
                 </p>
-                <p className='mt-6 '>You just want to discover</p>
+                <p className='mt-6 '>You just want to discover - valid for 30 days</p>
               </div>
               <a className='bg-primary-50 text-primary-700 hover:bg-primary-100 hover:text-white mt-8 block w-full py-3 px-6 border border-transparent rounded-md text-center font-medium'>
                 Current Plan
@@ -192,15 +192,15 @@ const Pricing = () => {
             </div>
             <div className='relative p-8 min-w-64  border border-gray-200 rounded-2xl shadow-sm flex flex-col'>
               <div className='flex-1'>
-                <h3 className='text-xl font-semibold '>Pro</h3>
+                <h3 className='text-xl font-semibold '>Yearly Plan</h3>
                 <p className='absolute top-0 py-1.5 px-4 bg-primary-500 text-white rounded-full text-xs font-semibold uppercase tracking-wide  transform -translate-y-1/2'>
                   Most popular
                 </p>
-                <p className='mt-4 flex flex-col items-baseline '>
+                <p className='mt-4 flex flex-col items-center justify-center '>
                   <span className='text-5xl font-extrabold tracking-tight'>
                     ETB 9,999.99
                   </span>
-                  <span className='ml-1 text-xl font-semibold'>/month</span>
+                  <span className='ml-1 text-xl font-semibold'>/year</span>
                 </p>
                 <p className='mt-6 '>
                   A license for your school or university - save 25%
@@ -223,7 +223,7 @@ const Pricing = () => {
             <div className='relative p-8 min-w-64 border border-gray-200 rounded-2xl shadow-sm flex flex-col'>
               <div className='flex-1'>
                 <h3 className='text-xl font-semibold '>Monthly Plan</h3>
-                <p className='mt-4 flex flex-col items-baseline '>
+                <p className='mt-4 flex flex-col items-center justify-center '>
                   <span className='text-5xl font-extrabold tracking-tight'>
                     ETB 999.99
                   </span>
