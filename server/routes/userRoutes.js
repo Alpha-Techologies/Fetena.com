@@ -16,19 +16,16 @@ const {
 const {
   getAllUsers,
   getMe,
-  getMyEdits,
   deleteMe,
   toggleUserRole,
   deleteUser,
   updateMe,
   getUser,
-  filterUserUpdateFields,
   updateIdPhoto,
   followOrganization,
   addAsAdmin,
   unfollowOrganization,
   getUserOrganization,
-  // getProfile,
 } = require("../controller/userController");
 
 const { getMyCerts } = require("../controller/certificate");
@@ -41,13 +38,6 @@ const {
   getOrganizationId,
 } = require("../controller/organization/getOrganizationId");
 
-// const {
-//   getUserProfile,
-//   uploadUserProfile,
-//   deleteUserProfile,
-//   buffer,
-//   resizePhoto,
-// } = require("../lib/imageUpload");
 
 const router = express.Router();
 
@@ -63,7 +53,6 @@ router.route("/me/cert").get(protect, getMe, getMyCerts);
 
 router.get("/", protect, getAllUsers);
 router.get("/logout", protect, logout);
-router.get("/myEdits", protect); //getMyEdits
 
 router.post("/signup", validationRules[2], signUp);
 router.post("/login", validationRules[3], login);
@@ -75,7 +64,6 @@ router.patch(
   "/updateMe",
   protect,
   getMe,
-  // filterUserUpdateFields("firstName", "lastName", "email", "phoneNumber"),
   updateMe
 );
 router.patch("/deleteMe", protect, deleteMe);
@@ -93,57 +81,10 @@ router.get("/organizations", protect, getUserOrganization);
 router
   .route("/:id")
   .patch(protect, restrictTo(false), getOrganizationId, updateUser);
-// router.patch("/activate/:token", activateAccount);
-// verify-email
-
-// OTP
-// LOGIN WITH GOOGLE
-
-// router.get(
-//   "/image/:filename",
-//   protect,
-//   restrictTo("manager", "reception", "user"),
-//   getUserProfile /**gets the filename from the user profile*/
-// );
-// router.patch(
-//   "/image/:id",
-//   protect,
-//   restrictTo("manager", "reception", "user"),
-//   uploadUserProfile.single("photo"),
-//   getProfile /*gets the id from the users profile photo**/,
-//   deleteUserProfile
-// );
-// router.delete(
-//   "/image/:id",
-//   protect,
-//   restrictTo("manager", "reception", "user"),
-//   deleteUserProfile
-// );
-
-// router
-//   .route("/")
-//   .get(protect, restrictTo("manager"), getAllUsers) //getAllUsers
-//   .post() //export doesnt make sene, create another route
-//   .patch(
-//     protect,
-//     // filterUserUpdateFields(
-//     //   "firstName",
-//     //   "lastName",
-//     //   "email",
-//     // //   "woreda",
-//     // //   "city",
-//     // //   "subCity",
-//     //   "phoneNumber"
-//     // ),
-//     getMe,
-//     updateMe
-//   )
-//   .delete(protect, deleteMe); // deactivate user
 
 router
   .route("/:id")
   .get(protect, getUser) //getUser
-  //   .post() //
   .patch(protect, restrictTo(), toggleUserRole) //toggleUserRole
   .delete(protect, restrictTo(), deleteUser); //deleteUser
 

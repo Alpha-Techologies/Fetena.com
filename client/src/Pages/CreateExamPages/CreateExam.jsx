@@ -102,7 +102,8 @@ const CreateExam = () => {
           questions: [],
           access: "closed",
           tags: [],
-          hasCertificate: false
+          hasCertificate: false,
+          visibility: "public",
         };
   });
 
@@ -265,7 +266,8 @@ const CreateExam = () => {
         !choose.questionText ||
         !choose.questionChoice ||
         !choose.questionType ||
-        !choose.points
+        !choose.points ||
+        !!choose.correctAnswer
       ) {
         console.log(choose);
         toast.error("Please enter all the fields");

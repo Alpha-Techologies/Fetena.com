@@ -1,25 +1,22 @@
-import { Card, Form, Input, Button, Select, InputNumber, DatePicker, Radio, Switch } from "antd";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import {  Form, Button,  Radio } from "antd";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const { TextArea } = Input;
 
 
 const ExamTypeForm = ({setActiveTabKey,setExamType, basicInfoValues,examType,
   setBasicInfoValues,}) => {
 
 
+    useEffect(() => {
+      setBasicInfoValues({...basicInfoValues,examType: examType})
+    },[examType]);
+
     const [uploading, setUploading] = useState(false); 
   const [uploadProgress, setUploadProgress] = useState(0); 
 
 
-  // const handleChange = (changedValues) => {
-  //   setBasicInfoValues({ ...basicInfoValues, ...changedValues });
-  //   console.log(basicInfoValues)
-  // };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -47,7 +44,6 @@ const ExamTypeForm = ({setActiveTabKey,setExamType, basicInfoValues,examType,
 
 
 
-
   return (
     <div>
 
@@ -62,11 +58,12 @@ const ExamTypeForm = ({setActiveTabKey,setExamType, basicInfoValues,examType,
     className="flex flex-wrap justify-center items-center gap-8"
     value={examType}
     onChange={(e) => {
-      const selectedExamType = e.target.value;
+      setBasicInfoValues({...basicInfoValues,examType: e.target.value})
+      let selectedExamType = e.target.value;
       setExamType(selectedExamType);
       setBasicInfoValues({
         ...basicInfoValues,
-        examType: selectedExamType,
+
         questions: selectedExamType === 'online' ? basicInfoValues.questions : [],
         examFile: selectedExamType !== 'online' ? basicInfoValues.examFile : null,
       });

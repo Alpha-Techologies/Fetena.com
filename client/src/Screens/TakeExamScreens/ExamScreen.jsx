@@ -429,7 +429,7 @@ const ExamScreen = ({
         <Result
           status="success"
           title={
-            exam.examType === "online"
+            exam.examType === "online" && exam.privateScore === false
               ? `You have scored ${userScore}`
               : `Answer Submitted for Evaluation.`
           }

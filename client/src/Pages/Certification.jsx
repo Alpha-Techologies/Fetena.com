@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Form, Button, Input, Avatar, Pagination, Image } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import fetena_logoo from "../assets/fetena_logo_primary.png";
 import signature from "../assets/sign.png";
@@ -8,15 +8,38 @@ import fetena_icon from "../assets/Frame.svg";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useRef } from "react";
+import axios from "axios";
 
-const Certification = ({
-  examinee = "Yosef Lakew",
-  exam = "Data Analysis with Python",
-  examDate = "March 21, 2024",
-  score = "90%",
-  org = "AASTU",
-}) => {
+const Certification = (
+  {
+    // examinee = "Yosef Lakew",
+    // exam = "Data Analysis with Python",
+    // examDate = "March 21, 2024",
+    // score = "90%",
+    // org = "AASTU",
+  }
+) => {
   const printableContentRef = useRef(null);
+  // extract the params from the page
+  const params = useParams();
+  const { id } = params;
+  const [cert, setCert] = useState({});
+
+  useEffect(() => {
+    // fetch the data from the server
+    // fetch the certificate from the database using the id using axois
+    console.log("the error liees here");
+    const fetchCertificate = async () => {
+      try {
+        const response = await axios.get(`/api/cert/${id}`);
+        setCert(response.data.data.data[0]);
+      } catch (error) {
+        console.log("error fetching the certificate", error);
+      }
+    };
+
+    fetchCertificate();
+  }, []);
 
   const handleSaveAsPdf = async () => {
     const element = printableContentRef.current;
@@ -40,7 +63,7 @@ const Certification = ({
     <div className="flex flex-col gap-4">
       <div className="flex justify-between gap-4 items-center">
         <div className="flex gap-4 items-center ">
-          <Link to="/dashboard/certifications">
+          <Link to="/dashboard/usercertifications">
             <Icon
               icon="fluent-emoji-high-contrast:left-arrow"
               className="text-2xl text-primary-500"
@@ -71,19 +94,24 @@ const Certification = ({
             This certifies that
           </div>
           <div className="mt-4 text-5xl font-bold text-center text-blue-900 leading-[49.5px] max-md:text-4xl">
-            {examinee}
+            {cert.user?.fullName}
           </div>
           <div className="mt-7 text-2xl leading-7 text-center text-slate-900">
             successfully taken the
           </div>
           <div className="mt-6 text-5xl font-bold text-center text-blue-900 leading-[49.5px] max-md:max-w-full max-md:text-4xl">
-            {exam}
+            {cert.exam?.examName}
           </div>
           <div className="mt-5 text-2xl leading-7 text-center text-slate-900">
-            Exam from <span className="text-blue-800 font-semibold">{org}</span>{" "}
+            Exam from{" "}
+            <span className="text-blue-800 font-semibold">
+              {cert.organizationName}
+            </span>{" "}
             organization with a score of{" "}
-            <span className="text-blue-800 font-semibold">{score}</span> on{" "}
-            <span className="text-blue-800 font-semibold">{examDate}</span>
+            <span className="text-blue-800 font-semibold">{cert.score}</span> on{" "}
+            <span className="text-blue-800 font-semibold">
+              {new Date(cert.issueDate).toLocaleString()}
+            </span>
           </div>
           <div className="flex gap-5 mt-8 w-full max-w-[1074px] max-md:flex-wrap max-md:max-w-full">
             <div className="flex-auto max-md:max-w-full">

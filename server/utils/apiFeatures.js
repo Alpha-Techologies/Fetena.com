@@ -16,16 +16,12 @@ class APIFeatures {
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
     queryStr = JSON.parse(queryStr);
     for (let i in queryStr) {
-      // code to be removed
-      // queryStr[i] = new RegExp([queryStr[i]],"i");
-      // Convert boolean strings to actual boolean values
       if (
         queryStr[i].toLowerCase() == "true" ||
         queryStr[i].toLowerCase() == "false"
       ) {
         queryStr[i] = JSON.parse(queryStr[i].toLowerCase());
       } else {
-        // Convert other string values to case-insensitive regular expressions
         queryStr[i] = new RegExp(queryStr[i], "i");
       }
     }
@@ -68,7 +64,6 @@ class APIFeatures {
       { path: "adminUser", options: { strictPopulate: false } },
       { path: "user", options: { strictPopulate: false } },
       { path: "questionID", options: { strictPopulate: false } },
-      // { path: "adminOf", options: { strictPopulate: false } },
       { path: "organizationsFollowed", options: { strictPopulate: false } },
       { path: "organizationsJoined", options: { strictPopulate: false } },
       { path: "follower", options: { strictPopulate: false } },
@@ -77,6 +72,10 @@ class APIFeatures {
       { path: "userAnswers", options: { strictPopulate: false } },
       { path: "user", options: { strictPopulate: false } },
       { path: "exam", options: { strictPopulate: false } },
+      {
+        path: "certificates.exam.organization",
+        options: { strictPopulate: false },
+      },
 
       // for user Answer
       { path: "userId", options: { strictPopulate: false } },
@@ -104,4 +103,5 @@ class APIFeatures {
     return this;
   }
 }
+
 module.exports = APIFeatures;

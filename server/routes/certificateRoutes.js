@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-// import '../controller/exam'
 const {
   createCertificate,
   deleteCertificate,
@@ -11,13 +10,29 @@ const {
 } = require("../controller/certificate");
 
 const { protect, restrictTo } = require("../controller/auth");
+const {
+  getOrganizationId,
+} = require("../controller/organization/getOrganizationId");
+const {
+  addOrganizationForCertificate,
+} = require("../controller/certificate/createCertificate");
 
-router.route("/").get(getAllCertificate).post(createCertificate);
+router
+  .route("/")
+  .post(
+    protect,
+    addOrganizationForCertificate,
+    createCertificate
+  )
+  .get(protect, getAllCertificate);
 
 router
   .route("/:id")
-  .get(getOneCertificate)
-  .patch(updateCertificate)
-  .delete(deleteCertificate);
+  .get(protect, getOneCertificate)
+  .patch(protect, updateCertificate)
+  .delete(protect, deleteCertificate);
+
+
+
 
 module.exports = router;

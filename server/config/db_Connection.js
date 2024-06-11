@@ -8,7 +8,6 @@ const { dbAuth } = require("./db_Authentication");
 
 mongoose.connect("mongodb://0.0.0.0:27017/exam-management?retryWrites=true", {
   // mongoose.connect("mongodb+srv://admin:adminpass@cluster0.dxol3zc.mongodb.net/exam-management", {
-  // .connect("mongodb://mongo:27017/beach-resort?retryWrites=true", { //create connection
   //create connection
   // useNewUrlParser: true,
   // useCreateIndex: true,

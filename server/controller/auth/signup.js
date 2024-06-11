@@ -82,7 +82,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
   const activationURL = `http://${"localhost:4000"}/activate?token=${activationToken}&email=${email}`;
 
   try {
-    await new Email(newUser, activationURL).sendPasswordReset();
+    await new Email(newUser, activationURL).sendActivationToken();
     console.log(activationURL);
 
     res.status(StatusCodes.CREATED).json({

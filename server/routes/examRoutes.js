@@ -3,7 +3,6 @@ const router = express.Router();
 
 const takeExamRouter = require("./takeExamRoutes");
 
-// import '../controller/exam'
 const {
   createExam,
   deleteExam,

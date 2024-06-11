@@ -17,29 +17,13 @@ import axios from "axios";
 
 const { Search } = Input;
 
-const { Meta } = Card;
-
-const tabListNoTitle = [
-  {
-    key: "All",
-    label: "All",
-  },
-  {
-    key: "Featured",
-    label: "Featured",
-  },
-  {
-    key: "Taken",
-    label: "Taken",
-  },
-];
-
-const UserExamsPage = () => {;
+const UserExamsPage = () => {
   const { workspace } = useSelector((state) => state.data);
   const { userOrganizationsIdAndRole } = useSelector((state) => state.data);
   const [exams, setExams] = useState([]);
   const [pages, setPages] = useState(1); // Total pages of organizations
   const [current, setCurrent] = useState(1); // Current page number
+  const [totalItems, setTotalItems] = useState(0); // Total number of items
   const [searchText, setSearchText] = useState(""); // Search text
 
   const onSearch = (value, _e, info) => {
@@ -47,27 +31,20 @@ const UserExamsPage = () => {;
     console.log(searchText);
   };
 
-  useEffect(() => {
-    if (!workspace) {
-      
-    }
-  }, []);
-
-  const fetchData = async (page = 1) => {
+  const fetchData = async (page = 1, searchText = "") => {
     try {
-      const response = await axios.get(
-        `/api/exams/get-public?fields=examName,organization&page=${page}&sort=-createdAt&examName=${searchText}`
-      );
+      const response = await axios.get(`/api/exams/get-public?fields=examName,organization&page=${page}&sort=-createdAt&examName=${encodeURIComponent(searchText)}`);
       setExams(response.data.data.data);
       setPages(response.data.data.totalPages); // Set the total number of pages
+      setTotalItems(response.data.data.total); // Set the total number of items
     } catch (error) {
       toast.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, [searchText]);
+    fetchData(current, searchText);
+  }, [current, searchText]);
 
   const onPaginationChange = (page) => {
     setCurrent(page);
@@ -88,9 +65,7 @@ const UserExamsPage = () => {;
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
-              <h3 className='font-bold text-md text-primary-500 truncate'>
-                {examName}
-              </h3>
+              <h3 className='font-bold text-md text-primary-500 truncate'>{examName}</h3>              
               <p className='font-semibold flex gap-2 items-center justify-center'>
                 {organization?.name}{" "}
                 {organization?.isVerified && (
@@ -113,7 +88,6 @@ const UserExamsPage = () => {;
     <div className='flex flex-col gap-4'>
       <div className='flex justify-between gap-4 items-center'>
         <h1 className='text-2xl font-bold text-blue-900 text-left'>Exams</h1>
-
         <div className='flex gap-2 justify-start w-96'>
           <Search
             placeholder='Search Exams'
@@ -123,7 +97,6 @@ const UserExamsPage = () => {;
             onSearch={onSearch}
           />
         </div>
-
         {workspace?._id in userOrganizationsIdAndRole && (
           <Link
             to='/dashboard/create-exam'
@@ -138,25 +111,19 @@ const UserExamsPage = () => {;
       </div>
       <div>
         <Card style={{ width: "100%" }}>
-          {(
-            <>
-              <div className='flex flex-wrap gap-2'>
-                {exams &&
-                  exams.map((exam) => (
-                    <ExamCard
-                      key={exam._id}
-                      {...exam}
-                    />
-                  ))}
-              </div>
-              <Pagination
-                className='mt-8'
-                current={current}
-                total={pages * 10}
-                onChange={onPaginationChange}
-              />
-            </>
-          )}
+          <>
+            <div className='flex flex-wrap gap-2'>
+              {exams && exams.map((exam) => (
+                <ExamCard key={exam._id} {...exam} />
+              ))}
+            </div>
+            <Pagination
+              className='mt-8'
+              current={current}
+              total={totalItems} // Total number of items, not pages
+              onChange={onPaginationChange}
+            />
+          </>
         </Card>
       </div>
     </div>

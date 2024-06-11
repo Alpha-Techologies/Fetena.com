@@ -32,7 +32,7 @@ exports.getPublicExam = catchAsync(async (req, res, next) => {
 
   if (!doc) {
     return next(
-      new APIError(`No document found with id = ${req.params.id}`, 404)
+      new APIError(`No document found`, 404)
     );
   }
 

@@ -9,92 +9,73 @@ function IconImage({ src, alt }) {
   );
 }
 
-function Stats({examStats,orgStats}) {
-  console.log(examStats)
-  console.log(orgStats)
-  console.log(examStats.followers)
+function UserStats({userStats}) {
+ 
   return (
-    <div className="flex justify-center flex-wrap  gap-2 w-full ">
+    <div className="flex justify-between flex-wrap  gap-4 w-full ">
 
 
 <Card
           className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
-          style={{ width: 300 }}
+          style={{ width: 400 }}
         >
           <div className='flex gap-4'>
-          <Icon
+            <Icon
               icon="ph:exam-bold"
 
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
-            <h3 className='font-bold text-xl text-primary-500 truncate'>{examStats.totalExams}</h3>              
+            <h3 className='font-bold text-xl text-primary-500 truncate'>{userStats.totalExams}</h3>              
               <p className='font-semibold flex gap-2 items-center justify-center'>
-               Total Exams
+               Exams Taken
               </p>
             </div>
           </div>
         </Card>
 
-
-
         <Card
           className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
-          style={{ width: 300 }}
+          style={{ width: 400 }}
         >
           <div className='flex gap-4'>
-          <Icon
+            <Icon
+            icon="ri:school-line"
+              className='text-4xl text-blue-700'
+            />
+            <div className='flex-col flex items-start gap-2'>
+            <h3 className='font-bold text-xl text-primary-500 truncate'>{userStats.orgsFollowed}</h3>              
+              <p className='font-semibold flex gap-2 items-center justify-center'>
+               Organizations Followed
+              </p>
+            </div>
+          </div>
+        </Card>
+
+     <Card
+          className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
+          style={{ width: 400 }}
+        >
+          <div className='flex gap-4'>
+            <Icon
               icon="eos-icons:trusted-organization"
               className='text-4xl text-blue-700'
             />
             <div className='flex-col flex items-start gap-2'>
-            <h3 className='font-bold text-xl text-primary-500 truncate'>{examStats.examsWithCert}</h3>              
+            <h3 className='font-bold text-xl text-primary-500 truncate'>{userStats.examsByCertificate}</h3>              
               <p className='font-semibold flex gap-2 items-center justify-center'>
-               Certified Exams
+               Certificates earned
               </p>
             </div>
           </div>
         </Card>
 
-        <Card
-          className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
-          style={{ width: 300 }}
-        >
-          <div className='flex gap-4'>
-            <Icon
-             icon="ph:chalkboard-teacher-light" 
-              className='text-4xl text-blue-700'
-            />
-            <div className='flex-col flex items-start gap-2'>
-            <h3 className='font-bold text-xl text-primary-500 truncate'>{orgStats.examiners}</h3>              
-              <p className='font-semibold flex gap-2 items-center justify-center'>
-               Examiners
-              </p>
-            </div>
-          </div>
-        </Card>
 
-        <Card
-          className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200'
-          style={{ width: 300 }}
-        >
-          <div className='flex gap-4'>
-            <Icon
-             icon="mingcute:user-follow-line"
-              className='text-4xl text-blue-700'
-            />
-            <div className='flex-col flex items-start gap-2'>
-            <h3 className='font-bold text-xl text-primary-500 truncate'>{orgStats.followers}</h3>              
-              <p className='font-semibold flex gap-2 items-center justify-center'>
-               Followers
-              </p>
-            </div>
-          </div>
-        </Card>
+       
     
     </div>
 
   );
 }
 
-export default Stats;
+export default UserStats;

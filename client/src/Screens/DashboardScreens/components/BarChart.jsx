@@ -1,57 +1,24 @@
 import React, { PureComponent } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const data = [
-  {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
-
 export default class Example extends PureComponent {
   static demoUrl = 'https://codesandbox.io/p/sandbox/bar-chart-has-no-padding-2hlnt8';
 
   render() {
+    const { examStats } = this.props;
+
+    // Transform the examStats data to match the format required by the BarChart
+    const data = examStats.examsByType?.map(item => ({
+      name: item._id,
+      count: item.count
+    }));
+
     return (
+      <>
+    <h3 className='text-xl font-bold text-start mb-4 mx-2 text-blue-900'>Exams by secutiry</h3>
+
       <div style={{ width: '100%', height: 380 }}>
+        
         <ResponsiveContainer>
           <BarChart
             data={data}
@@ -68,10 +35,11 @@ export default class Example extends PureComponent {
             <Tooltip />
             <Legend />
             <CartesianGrid strokeDasharray="3 3" />
-            <Bar dataKey="pv" fill="#1E3A8A" background={{ fill: '#eee' }} />
+            <Bar dataKey="count" fill="#1E3A8A" background={{ fill: '#eee' }} />
           </BarChart>
         </ResponsiveContainer>
       </div>
+      </>
     );
   }
 }
