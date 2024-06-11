@@ -193,11 +193,12 @@ const ResultsTab = ({
           exam: currentExam._id,
           issueDate: new Date(),
           score:
-            currentUser.examType === "online"
+            currentUser.exam.examType === "online"
               ? currentUser.userAnswers.score
               : currentUser.pdfScore,
         });
-        toast.success("Certeficate Generated");
+
+        toast.success("Certificate Generated");
       } catch (error) {
         console.log(error);
       }

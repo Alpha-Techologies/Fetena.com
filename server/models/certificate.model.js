@@ -21,7 +21,7 @@ const certificateSchema = new mongoose.Schema(
       default: Date.now,
       required: [true, "Issue date is required"],
     },
-    score: {
+      score: {
       type: Number,
       required: [true, "Score is required"],
     },

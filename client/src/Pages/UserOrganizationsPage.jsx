@@ -65,7 +65,7 @@ const OrganizationsPage = () => {
   const user = useSelector((state) => state.auth.user); // User information from Redux
   const [activeTabKey, setActiveTabKey] = useState("All"); // Active tab key
   const [followedOrganizations, setFollowedOrganizations] = useState([]);
-  const url = import.meta.env.VITE_API_URL
+  const url = import.meta.env.VITE_API_URL;
 
   // Function to handle tab changes
   const onTabChange = (key) => {
@@ -90,7 +90,7 @@ const OrganizationsPage = () => {
           const pagesTemp = res.payload.data.paginationData.totalPages;
           setPages(pagesTemp);
           setOrganizations(res.payload.data.data);
-            setLoading(false); // Update loading state
+          setLoading(false); // Update loading state
         } else {
           toast.error(res.message);
         }
@@ -104,7 +104,7 @@ const OrganizationsPage = () => {
   // Effect hook to fetch organizations when component mounts
   useEffect(() => {
     fetchOrganizations(1, "", "", "name");
-    
+
     for (let org of user.organizationsFollowed) {
       setFollowedOrganizations((prevItems) => [...prevItems, org._id]);
     }
@@ -238,7 +238,6 @@ const OrganizationsPage = () => {
           Organizations
         </h1>
         {/* Search input and sorting options */}
-       
       </div>
 
       {/* Rendering organizations based on the active tab */}
@@ -266,7 +265,7 @@ const OrganizationsPage = () => {
                     >
                       {/* Organization details */}
                       <div className="flex gap-2">
-                        <Link to={`${organization._id}`}>
+                        <Link to={`organizations/${organization._id}`}>
                           <img
                             className="w-12 h-12 rounded-full cursor-pointer"
                             src={url + organization.logo}
@@ -276,7 +275,7 @@ const OrganizationsPage = () => {
                         <div className="flex flex-col items-start justify-center">
                           <div className="flex gap-2 items-center">
                             <Link
-                              to={`${organization._id}`}
+                              to={`organizations/${organization._id}`}
                               className="text-lg font-semibold cursor-pointer"
                             >
                               {organization.name}
