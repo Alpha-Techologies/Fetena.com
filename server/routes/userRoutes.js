@@ -2,14 +2,15 @@ const express = require("express");
 
 const {
   logout,
-  // forgotPassword,
-  // updatePassword,
-  // resetPassword,
+  forgotPassword,
+  updatePassword,
+  resetPassword,
   restrictTo,
   signUp,
   protect,
-  activateAccount
-} = require("./../controller/authController");
+  activateAccount,
+  login,
+} = require("../controller/auth");
 
 const {
   getAllUsers,
@@ -21,13 +22,19 @@ const {
   updateMe,
   getUser,
   filterUserUpdateFields,
+  updateIdPhoto,
+  followOrganization,
+  addAsAdmin,
+  unfollowOrganization,
+  getUserOrganization,
   // getProfile,
-} = require("./../controller/userController");
+} = require("../controller/userController");
 
-const {zip} = require("./../utils/zip")
+const { fileUpload } = require("../controller/profile/fileUpload");
 
+const { zip } = require("../utils/zip");
 const { validationRules, checkId } = require("../lib/validation");
-const { login } = require("../controller/auth/login");
+
 // const {
 //   getUserProfile,
 //   uploadUserProfile,
@@ -42,27 +49,37 @@ router.param("id", checkId);
 router.param("token", checkId);
 router.param("filename", checkId);
 
+router.route("/backup").get(zip);
 
-router
-    .route("/backup")
-    .get(zip)
-  
-router.get("/", log);
-// router.get("/", protect, getAllUsers);
+router.get("/", protect, getAllUsers);
 router.get("/me", protect, getMe, getUser);
-router.get("/logout", logout);
-router.get("/myEdits", protect);//getMyEdits
+router.get("/logout", protect, logout);
+router.get("/myEdits", protect); //getMyEdits
 
-router.post("/signup",validationRules[2], signUp);
+router.post("/signup", validationRules[2], signUp);
 router.post("/login", validationRules[3], login);
-// router.post("/forgotPassword", validationRules[4], forgotPassword);
-// router.post("/resetPassword/:token", resetPassword);
-
+router.post("/forgotPassword", validationRules[4], forgotPassword);
+router.post("/resetPassword/:token", resetPassword);
 
 router.patch("/updatePassword", protect, updatePassword);
-router.patch("/updateMe", protect, updateMe);
+router.patch(
+  "/updateMe",
+  protect,
+  getMe,
+  // filterUserUpdateFields("firstName", "lastName", "email", "phoneNumber"),
+  updateMe
+);
 router.patch("/deleteMe", protect, deleteMe);
-router.patch("/activate/:token", activateAccount);
+router.post("/verify-email", activateAccount);
+router.patch("/updateIdPhoto", protect, updateIdPhoto);
+
+router.post("/uploads", fileUpload);
+router.post("/follow/:id", protect, followOrganization);
+router.post("/unfollow/:id", protect, unfollowOrganization);
+router.post("/addAdmin", addAsAdmin);
+
+router.get("/organizations", protect, getUserOrganization);
+// router.patch("/activate/:token", activateAccount);
 // verify-email
 
 // OTP
@@ -111,13 +128,9 @@ router.patch("/activate/:token", activateAccount);
 
 router
   .route("/:id")
-//   .get(protect, restrictTo("manager", "reception", "user"), getUser) //getUser
-//   .post() //
-  .patch(
-    protect,
-    restrictTo("manager"),
-    toggleUserRole
-  ) //toggleUserRole
-//   .delete(protect, restrictTo("manager"), deleteUser); //deleteUser
+  .get(protect, getUser) //getUser
+  //   .post() //
+  .patch(protect, restrictTo(), toggleUserRole) //toggleUserRole
+  .delete(protect, restrictTo(), deleteUser); //deleteUser
 
 module.exports = router;

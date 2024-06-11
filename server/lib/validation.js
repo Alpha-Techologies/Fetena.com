@@ -23,7 +23,7 @@ exports.validationRules = [
       .escape(),
   ],
   [
-    //1 rock
+    //1 
     body("name")
       .notEmpty()
       .withMessage("Title can not be empty")

@@ -3,14 +3,13 @@ const APIError = require("../../utils/apiError");
 const createTokenUser = require("../../utils/createTokenUser");
 const { attachCookiesToResponse } = require("../../utils/jwt");
 const catchAsync = require("../../utils/catchAsync");
-const User = require("../../models/userModel");
+const User = require("../../models/user.model");
 const { TokenModel } = require("../../models/Token.model");
 const crypto = require("crypto");
 
 
 
 exports.login = catchAsync(async (req, res, next) => {
-    console.log('user login', req.body)
     const { email, password } = req.body;
     // 1) Check if email and password exist
     if (!email || !password) {
@@ -20,13 +19,14 @@ exports.login = catchAsync(async (req, res, next) => {
     const user = await User.findOne({
       email,
     }).select("+password");
-    console.log({user})
 
     if(!user){
         return next(new APIError('User Not Found.', StatusCodes.NOT_FOUND))
     }
   
     if (!user.active){ return next(new APIError("Your have been deactivated, Please contact manager for further instructions", StatusCodes.UNAUTHORIZED))}
+
+    if(!user.isVerified) {return next(new APIError("Your Account is not Activated.", StatusCodes.UNAUTHORIZED))}
   
     if (!user || !(await user.correctPassword(password, user.password))) {
       return next(new APIError("Invalid Credentials", StatusCodes.UNAUTHORIZED));
