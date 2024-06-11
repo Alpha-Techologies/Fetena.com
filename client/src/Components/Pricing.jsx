@@ -80,6 +80,7 @@ const Pricing = () => {
             tempArray,
             (item) => -new Date(item.date).getTime()
           );
+          if (sortedData[0].status === "pending") return 
           console.log(sortedData);
           setSubscriptionStatus({
             status: sortedData[0].status,
