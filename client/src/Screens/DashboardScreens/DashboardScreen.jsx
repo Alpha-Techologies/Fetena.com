@@ -542,10 +542,10 @@ const DashboardScreen = () => {
     >
       <OrganizationModal orgModal={orgModal} setOrgModal={setOrgModal} />
 
-      <FloatButton
+      {/* <FloatButton
         icon={<Icon icon="mingcute:document-line" />}
         tooltip="Enter Exam Key"
-      />
+      /> */}
       <Sider
         width={250}
         collapsible
