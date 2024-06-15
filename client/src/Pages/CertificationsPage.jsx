@@ -55,8 +55,6 @@ const CertificationsPage = () => {
 
         setExamDetail(examData);
       } catch (error) {
-        console.error("Error fetching data:", error);
-        toast.error("Error fetching data");
       }
     };
     fetchCertificationsExam();
@@ -82,26 +80,26 @@ const CertificationsPage = () => {
   const ExamCard = ({ id, name, organization }) => {
     return (
       // <Link to={`/dashboard/certifications/${id}`}>
-        <Card
-          style={{
-            width: 300,
-          }}
-          className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200"
-        >
-          <div className="flex-col flex items-start gap-2">
-            <h3 className="font-bold text-md">{name}</h3>
+      <Card
+        style={{
+          width: 300,
+        }}
+        className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200"
+      >
+        <div className="flex-col flex items-start gap-2">
+          <h3 className="font-bold text-md">{name}</h3>
 
-            <p className="font-semibold flex gap-2 items-center justify-center">
-              {organization}{" "}
-              <span>
-                <Icon
-                  icon="gravity-ui:seal-check"
-                  className="text-lg text-blue-800"
-                />
-              </span>
-            </p>
-          </div>
-        </Card>
+          <p className="font-semibold flex gap-2 items-center justify-center">
+            {organization}{" "}
+            <span>
+              <Icon
+                icon="gravity-ui:seal-check"
+                className="text-lg text-blue-800"
+              />
+            </span>
+          </p>
+        </div>
+      </Card>
       // </Link>
     );
   };

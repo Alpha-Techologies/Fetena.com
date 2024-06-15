@@ -266,8 +266,7 @@ const CreateExam = () => {
         !choose.questionText ||
         !choose.questionChoice ||
         !choose.questionType ||
-        !choose.points ||
-        !!choose.correctAnswer
+        !choose.points 
       ) {
         console.log(choose);
         toast.error("Please enter all the fields");
