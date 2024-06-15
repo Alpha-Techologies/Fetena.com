@@ -1,5 +1,9 @@
 import yosefPic from '../../src/assets/yosef.png'
-import avatar from '../../src/assets/avatar.png'
+import yoni from '../../src/assets/yoni.jpg'
+import tibe  from '../../src/assets/tibe.jpg'
+import gragn from '../../src/assets/gragn.jpg'
+import wesagn from '../../src/assets/wesagn.jpg'
+import avatar from '../../src/assets/avatar.jpg'
 import Button from './Button'
 
 
@@ -28,14 +32,14 @@ const data = [
 ,  
   {
     name: 'Yohannes Mesganaw',
-    image: avatar,
-    role: 'Web Developer / UI/UX Designer',
-    description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis, quidem voluptates in nesciunt doloremque nulla sequi vero sint accusantium expedita aspernatur cumque, unde doloribus voluptatem voluptas necessitatibus iste iusto itaque.',
+    image: gragn,
+    role: 'Full Stack Developer',
+    description: 'As a passionate Web Developer and UI/UX Designer, I specialize in creating intuitive and visually appealing user interfaces. My work focuses on enhancing user experience through thoughtful design and seamless front-end development. I have a strong background in HTML, CSS, JavaScript, and React, which allows me to turn complex ideas into user-friendly web applications.',
     link: 'https://portifoliov1-three.vercel.app/'
   },
   {
     name: 'Yohannes Teshome',
-    image: avatar,
+    image: wesagn,
     role: 'Web Developer / UI/UX Designer',
     description: 'As a passionate Web Developer and UI/UX Designer, I specialize in creating intuitive and visually appealing user interfaces. My work focuses on enhancing user experience through thoughtful design and seamless front-end development. I have a strong background in HTML, CSS, JavaScript, and React, which allows me to turn complex ideas into user-friendly web applications.',
     link: 'https://portifoliov1-three.vercel.app/'
@@ -43,15 +47,15 @@ const data = [
 ,  
   {
     name: 'Yonas Enchalew',
-    image: avatar,
-    role: 'Web Developer / UI/UX Designer',
-    description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nobis, quidem voluptates in nesciunt doloremque nulla sequi vero sint accusantium expedita aspernatur cumque, unde doloribus voluptatem voluptas necessitatibus iste iusto itaque.',
+    image: yoni,
+    role: 'Full Stack Developer',
+    description: 'As a passionate Web Developer and UI/UX Designer, I specialize in creating intuitive and visually appealing user interfaces. My work focuses on enhancing user experience through thoughtful design and seamless front-end development. I have a strong background in HTML, CSS, JavaScript, and React, which allows me to turn complex ideas into user-friendly web applications.',
     link: 'https://portifoliov1-three.vercel.app/'
   },
   {
     name: 'Tibebe Solomon',
-    image: avatar,
-    role: 'Web Developer / UI/UX Designer',
+    image: tibe,
+    role: 'Full Stack Developer',
     description: 'As a passionate Web Developer and UI/UX Designer, I specialize in creating intuitive and visually appealing user interfaces. My work focuses on enhancing user experience through thoughtful design and seamless front-end development. I have a strong background in HTML, CSS, JavaScript, and React, which allows me to turn complex ideas into user-friendly web applications.',
     link: 'https://portifoliov1-three.vercel.app/'
   }
