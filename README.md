@@ -67,7 +67,7 @@
 
 ## :star2: About the Project
 
-Fetena.com is a robust and secure online platform designed to facilitate the management and monitoring of exams for organizations, institutions, and schools. It streamlines the process of exam creation, scheduling, and real-time supervision using deep learning technologies to ensure exam integrity and prevent cheating. The system empowers organizations to efficiently manage large-scale exams while maintaining a high standard of academic honesty.
+Fetena.com is an online platform designed to facilitate the management and monitoring of exams for organizations, institutions, and schools. It streamlines the process of exam creation, scheduling, and real-time supervision using deep learning technologies to ensure exam integrity and prevent cheating. The system empowers organizations to efficiently manage large-scale exams while maintaining a high standard of academic honesty.
 
 <!-- Screenshots -->
 
