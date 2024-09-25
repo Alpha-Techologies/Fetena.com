@@ -9,7 +9,7 @@
   
   
 <!-- Badges -->
-<p>
+<!-- <p>
   <a href="https://github.com/johannesteshome/dashtrack-task-management-system/network/members">
     <img src="https://img.shields.io/github/forks/johannesteshome/dashtrack-task-management-system
     " alt="forks" />
@@ -22,20 +22,20 @@
     <img src="https://img.shields.io/github/issues/johannesteshome/dashtrack-task-management-system
     " alt="open issues" />
   </a>
-</p>
+</p> -->
    
 <h4>
-    <a href="https://dashtrack-task-management-system.vercel.app/">View Demo</a>
-  <span> · </span>
+    <!-- <a href="https://dashtrack-task-management-system.vercel.app/">View Demo</a>
+  <span> · </span> -->
     <!-- <a href="https://github.com/Louis3797/awesome-readme-template">Documentation</a>
   <span> · </span> -->
-    <a href="https://github.com/Louis3797/awesome-readme-template/issues/">Report Bug</a>
+    <!-- <a href="https://github.com/Louis3797/awesome-readme-template/issues/">Report Bug</a>
   <span> · </span>
-    <a href="https://github.com/Louis3797/awesome-readme-template/issues/">Request Feature</a>
+    <a href="https://github.com/Louis3797/awesome-readme-template/issues/">Request Feature</a> -->
   </h4>
 </div>
 
-<br />
+<!-- <br /> -->
 
 <!-- Table of Contents -->
 
@@ -74,56 +74,114 @@ Fetena.com is a robust and secure online platform designed to facilitate the man
 ### :camera: Screenshots
 
 <div align="center"> 
-  <img src="./frontend/src/img/screenshots/signin.jpg" alt="screenshot" />
+  <img src="./client/public/screenshots/landing-page.png" alt="screenshot" />
+  <p>Landing Page</p>
+</div>
+
+#### User Management
+
+<div align="center"> 
+  <img src="./client/public/screenshots/login-page.png" alt="screenshot" />
   <p>Login Page</p>
 </div>
 <div align="center"> 
-  <img src="./frontend/src/img/screenshots/dashboard.jpg" alt="screenshot" />
-  <p>Dashboard Page</p>
+  <img src="./client/public/screenshots/user-profile.png" alt="screenshot" />
+  <p>User Profile</p>
+</div>
+
+#### Organization Management
+
+<div align="center"> 
+  <img src="./client/public/screenshots/organization-creation.png" alt="screenshot" />
+  <p>Organization Creation</p>
 </div>
 <div align="center"> 
-  <img src="./frontend/src/img/screenshots/createProject.jpg" alt="screenshot" />
-  <p>Creating a Project</p>
+  <img src="./client/public/screenshots/organizations-list.png" alt="screenshot" />
+  <p>Organization Lists</p>
+</div>
+<div align="center"> 
+  <img src="./client/public/screenshots/workspace-switch.png" alt="screenshot" />
+  <p>Workspace Switch</p>
+</div>
+
+#### Exam Management
+
+<div align="center"> 
+  <img src="./client/public/screenshots/exam-creation.png" alt="screenshot" />
+  <p>Creating an Exam</p>
+</div>
+
+<div align="center">
+  <img src="./client/public/screenshots/exam-security-type.png" alt="screenshot" />
+  <p>Choosing Exam Security Type: Proctored vs Unproctored</p>
 </div>
 <div align="center">
-  <img src="./frontend/src/img/screenshots/inviteMember.jpg" alt="screenshot" />
-  <p>Inviting a Team Member via Email</p>
+  <img src="./client/public/screenshots/exam-type.png" alt="screenshot" />
+  <p>Choosing Exam Type: Upload your own PDF questions or create online.</p>
 </div>
 <div align="center">
-  <img src="./frontend/src/img/screenshots/createTeam.jpg" alt="screenshot" />
-  <p>Creating a Team</p>
+  <img src="./client/public/screenshots/exam-tools.png" alt="screenshot" />
+  <p>Choosing Allowed Tools for the Exam.</p>
+</div>
+
+<div align="center">
+  <img src="./client/public/screenshots/enter-exam-questions.png" alt="screenshot" />
+  <p>Entering Exam Questions: Supports True/False, Multiple Choice, Short Answer and Essay type Questioins</p>
 </div>
 <div align="center"> 
-  <img src="./frontend/src/img/screenshots/projectPage.jpg" alt="screenshot" />
-  <p>Project Members and Teams List</p>
+  <img src="./client/public/screenshots/true-false-question.png" />
+  <p>True/False Question</p>
 </div>
 <div align="center"> 
-  <img src="./frontend/src/img/screenshots/creatingTasks.jpg" alt="screenshot" />
-  <p>Creating a Task</p>
+  <img src="./client/public/screenshots/multiple-choice-question.png" alt="screenshot" />
+  <p>Multiple Choice Question</p>
 </div>
 <div align="center"> 
-  <img src="./frontend/src/img/screenshots/kanbanBoardView.jpg" alt="screenshot" />
-  <p>Kanban Board View of Tasks</p>
+  <img src="./client/public/screenshots/short-answer-question.png" alt="screenshot" />
+  <p>Short Answer Question</p>
 </div>
 <div align="center"> 
-  <img src="./frontend/src/img/screenshots/TaskListView.jpg" alt="screenshot" />
-  <p>Table List View of Tasks</p>
+  <img src="./client/public/screenshots/ai-exam-generator.png" alt="screenshot" />
+  <p>AI Exam Generator</p>
 </div>
 <div align="center"> 
-  <img src="./frontend/src/img/screenshots/calendarView.jpg" alt="screenshot" />
-  <p>Calendar View of Tasks</p>
+  <img src="./client/public/screenshots/exam-bank.png" alt="screenshot" />
+  <p>Exam Bank</p>
 </div>
 <div align="center"> 
-  <img src="./frontend/src/img/screenshots/chatView.jpg" alt="screenshot" />
-  <p>Team Chat</p>
+  <img src="./client/public/screenshots/exam-preview.png" />
+  <p>Exam Preview</p>
+</div>
+
+### Exam Taking
+
+<div align="center"> 
+  <img src="./client/public/screenshots/exam-details.png" alt="screenshot" />
+  <p>Exam Details</p>
 </div>
 <div align="center"> 
-  <img src="./frontend/src/img/screenshots/notificationsPage.jpg" alt="screenshot" />
-  <p>Notifications Page View</p>
+  <img src="./client/public/screenshots/exam-entry-screen.png" alt="screenshot" />
+  <p>Exam Entry Screen</p>
 </div>
 <div align="center"> 
-  <img src="./frontend/src/img/screenshots/profileDetails.jpg" alt="screenshot" />
-  <p>Profile Page</p>
+  <img src="./client/public/screenshots/exam-session-with-chat.png" alt="screenshot" />
+  <p>Exam Session with Live Chat</p>
+</div>
+<div align="center"> 
+  <img src="./client/public/screenshots/exam-session-with-tools.png" alt="screenshot" />
+  <p>Exam Session with Tools like Calculator</p>
+</div>
+<div align="center"> 
+  <img src="./client/public/screenshots/exam-monitoring.png" alt="screenshot" />
+  <p>Live Exam Monitoring</p>
+</div>
+<div align="center"> 
+  <img src="./client/public/screenshots/result.png" alt="screenshot" />
+  <p>Exam Result upon Completion</p>
+</div>
+<div align="center"> 
+  <img src="./client/public/screenshots/certificate.png" alt="screenshot" />
+  <p>Certificate of Exam Completion</p>
 </div>
 
 <!-- TechStack -->
@@ -149,7 +207,7 @@ These are the technologies and frameworks used to build this project.
 
 - **Cheating Prevention**: The platform includes mechanisms for detecting and preventing cheating during exams through live proctoring - face tracking, automated alerts, and monitoring.
 
-- **Easy Exam Creation and Management**: Organizations can create exams with customizable question formats (multiple-choice, short answers, essays) and schedule them for a wide range of participants.
+- **Easy Exam Creation and Management**: Organizations can create exams with customizable question formats (multiple-choice, short answers, essays), along with an AI exam generator and exam banks and schedule them for a wide range of participants.
 
 - **User Management**: Admins can add, manage, and assign roles to users (e.g., examiners, students) for a streamlined workflow.
 
