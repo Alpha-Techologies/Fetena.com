@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Tag, Table, Card, Avatar, Timeline, Button } from "antd";
+import { Tag, Table, Card, Avatar, Timeline, Divider, Button } from "antd";
 import axios from "axios";
 import _ from "lodash";
 import moment from "moment";
@@ -15,6 +15,7 @@ const MonitoringTab = ({
   setSeeStatusOf,
   socket,
   fetchExamineeList,
+  currentExam,
 }) => {
   // const serverURL = "http://localhost:3000";
   const serverURL = import.meta.env.VITE_SOCKET_URL;
@@ -26,9 +27,13 @@ const MonitoringTab = ({
       (item) => item.user && item.user._id === userId
     );
 
+    // console.log(examineeList, !!tempCurrentUser, userId);
+
+    if (!tempCurrentUser) return toast.error("User not found");
+
     if (status === "inprogress") {
       socket.emit("terminateExaminee", tempCurrentUser._id);
-      fetchExamineeList(tempCurrentUser.exam);
+      fetchExamineeList(currentExam._id);
     } else {
       const letUserIn = async (id) => {
         // updat the take exam of the user to inprogress
@@ -42,7 +47,7 @@ const MonitoringTab = ({
       };
       await letUserIn(tempCurrentUser._id);
 
-      fetchExamineeList(tempCurrentUser.exam);
+      fetchExamineeList(currentExam._id);
     }
   };
 
@@ -115,6 +120,7 @@ const MonitoringTab = ({
     examineeStatusStats,
     overviewTableColumns,
     overviewTableData,
+    currentExam,
   }) => {
     return (
       <div className="flex flex-col gap-2">
@@ -181,11 +187,13 @@ const MonitoringTab = ({
     socket,
     fetchExamineeList,
     handleEndExam,
+    currentExam,
   }) => {
     useEffect(() => {
       if (socket) {
         socket.on("userActivityLog", (takeExamId, activityLog) => {
-          fetchExamineeList(currentUser.exam);
+          console.log(currentUser);
+          fetchExamineeList(currentExam._id);
         });
       }
     });
@@ -203,7 +211,7 @@ const MonitoringTab = ({
         <div className="flex justify-between w-full">
           <div
             onClick={() => setSeeStatusOf("all")}
-            className="flex items-center gap-2 text-primary-500 cursor-pointer"
+            className="flex items-center gap-2 text-primary-500 cursor-pointer "
           >
             <Icon icon="lets-icons:back" />
             Back to Overview
@@ -264,10 +272,12 @@ const MonitoringTab = ({
             {currentUser?.user?.email}
           </p>
         </div>
-
-        <p className="font-bold ">Examinee History</p>
+        <Divider orientation="center">
+          {" "}
+          <p className="font-semibold text-md ">Examinee History</p>
+        </Divider>
         <Timeline reverse>
-          {currentUser?.userActivityLogs.map((item, index) => (
+          {currentUser?.userActivityLogs?.map((item, index) => (
             <Timeline.Item
               key={index}
               dot={
@@ -280,13 +290,24 @@ const MonitoringTab = ({
                   }
                 />
               }
-              color={item.actionType === "warning" ? "red" : "blue"}
+              color={item.actionType === "warning" ? "red" : "green"}
             >
               <span>
-                <span className="text-red-500 italic"></span> {item.action}{" "}
+                <span
+                  className={` ${
+                    item.actionType === "warning"
+                      ? "text-red-500"
+                      : "text-green-500"
+                  } font-semibold  italic`}
+                >
+                  {" "}
+                  {item.action}{" "}
+                </span>{" "}
                 <br />
-                <span className="text-black-500">Reason </span> {item.reason}{" "}
-                <br />
+                <span className="text-blue-800 font-semibold">
+                  Reason -{" "}
+                </span>{" "}
+                <span className="font-semibold">{item.reason}</span> <br />
                 <span className="italic text-gray-500">
                   {new Date(item.timestamp).toLocaleString()}
                 </span>
@@ -373,6 +394,7 @@ const MonitoringTab = ({
           overviewTableColumns={overviewTableColumns}
           overviewTableData={overviewTableData}
           examineeStatusStats={examineeStatusStats}
+          currentExam={currentExam}
         />
       ) : (
         <MonitoringIndividualPage
@@ -382,6 +404,7 @@ const MonitoringTab = ({
           socket={socket}
           fetchExamineeList={fetchExamineeList}
           handleEndExam={handleEndExam}
+          currentExam={currentExam}
         />
       )}
     </>

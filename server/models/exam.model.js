@@ -102,10 +102,10 @@ const ExamSchema = new mongoose.Schema(
       enum: ["private", "public"],
       default: "public",
     },
-    hasCertificate:{
-      type:Boolean,
-      default:false 
-    }
+    hasCertificate: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

@@ -16,7 +16,7 @@ const FeatureSection1 = ({ featuresData }) => {
               loading="lazy"
               width="100%" // Adjust width as needed
               height="auto" // Maintain aspect ratio
-              className="rounded-2xl group-hover:scale-105 transition-all ease-in-out duration-300
+              className="rounded-2xl group-hover:scale-105 transition-all ease-in-out duration-300 w-96 mx-auto
               "
             />
           </div>
@@ -24,8 +24,8 @@ const FeatureSection1 = ({ featuresData }) => {
             <h2 className="text-3xl font-bold text-blue-900 md:text-4xl">{title}</h2>
             <p className="my-8 text-gray-600">{description}</p>
             <Link
-              to={btnLink}
-              className='flex items-center justify-center'
+                  to='/sign-in'              
+                  className='flex items-center justify-center'
             >
               
               

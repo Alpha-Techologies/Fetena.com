@@ -76,11 +76,12 @@ class APIFeatures {
       { path: "createdBy", options: { strictPopulate: false } },
       { path: "userAnswers", options: { strictPopulate: false } },
       { path: "user", options: { strictPopulate: false } },
-      // { path: "exam", options: { strictPopulate: false } },
+      { path: "exam", options: { strictPopulate: false } },
 
       // for user Answer
       { path: "userId", options: { strictPopulate: false } },
       { path: "examId", options: { strictPopulate: false } },
+      { path: "createdBy", options: { strictPopulate: false } },
     ];
 
     let populateObj = [];

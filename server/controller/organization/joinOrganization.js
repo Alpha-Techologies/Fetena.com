@@ -4,6 +4,8 @@ const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
 const Notification = require("../../models/notification.model");
 const OrganizationExaminer = require("../../models/organization.examiner.model");
+const { logActivity } = require("../../utils/logActivity");
+
 
 exports.joinOrganization = catchAsync(async (req, res, next) => {
   const organizationId = req.params.id;
@@ -50,6 +52,9 @@ exports.joinOrganization = catchAsync(async (req, res, next) => {
     user: adminUserId,
     message: `User with id ${userId} has requested to join the organization `,
   });
+
+  req.organization = organizationId
+  await logActivity(req,7,{name:'Organization',id:organization.id} )
 
   res.status(StatusCodes.OK).json({
     status: "success",

@@ -72,15 +72,13 @@ const OrganizationsPage = () => {
     setActiveTabKey(key); // Update active tab key
   };
 
-  // Effect hook to fetch organizations when component mounts
-  useEffect(() => {
-    // Dispatch action to fetch organizations
+  const fetchOrganizations = (current, searchText, sortOrder, sortOption) => {
     dispatch(
       getOrganizations({
-        page: 1,
+        page: current,
         searchText: ["name", searchText],
-        sort: "",
-        sortOption: "name",
+        sort: sortOrder,
+        sortOption,
         limit: 10,
         field: "",
       })
@@ -92,14 +90,21 @@ const OrganizationsPage = () => {
           const pagesTemp = res.payload.data.paginationData.totalPages;
           setPages(pagesTemp);
           setOrganizations(res.payload.data.data);
-          setLoading(false); // Update loading state
+            setLoading(false); // Update loading state
+        } else {
+          toast.error(res.message);
         }
       })
       .catch((error) => {
         console.log(error);
         toast.error("There is some error while fetching organizations!"); // Notify user of error
       });
+  };
 
+  // Effect hook to fetch organizations when component mounts
+  useEffect(() => {
+    fetchOrganizations(1, "", "", "name");
+    
     for (let org of user.organizationsFollowed) {
       setFollowedOrganizations((prevItems) => [...prevItems, org._id]);
     }
@@ -108,113 +113,25 @@ const OrganizationsPage = () => {
   // Function to handle search
   const onSearch = (value, _e, info) => {
     setSearchText(value); // Update search text
-    // Dispatch action to fetch organizations based on search query
-    dispatch(
-      getOrganizations({
-        page: 1,
-        searchText: ["name", value],
-        sort: sortOrder,
-        sortOption: sortOption,
-        limit: 10,
-        field: "",
-      })
-    )
-      .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          // Update state with fetched organizations and pagination data
-          setPages(res.payload.data.paginationData.totalPages);
-          setOrganizations(res.payload.data.data);
-          setLoading(false); // Update loading state
-          setActiveTabKey("All"); // Switch to "All" tab
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("There is some error while fetching organizations!"); // Notify user of error
-      });
+    fetchOrganizations(1, value, sortOrder, sortOption);
   };
 
   // Function to handle sorting option change
   const onSortOptionChange = (value) => {
     setSortOption(value); // Update sorting option
-    // Dispatch action to fetch organizations with updated sorting option
-    dispatch(
-      getOrganizations({
-        page: 1,
-        searchText: ["name", searchText],
-        sort: sortOrder,
-        sortOption: value,
-        limit: 10,
-        field: "",
-      })
-    )
-      .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          // Update state with fetched organizations and pagination data
-          setPages(res.payload.data.paginationData.totalPages);
-          setOrganizations(res.payload.data.data);
-          setLoading(false); // Update loading state
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("There is some error while fetching organizations!"); // Notify user of error
-      });
+    fetchOrganizations(1, searchText, sortOrder, value);
   };
 
   // Function to handle sorting order change
   const onSortOrderChange = (value) => {
-    // Dispatch action to fetch organizations with updated sorting order
-    dispatch(
-      getOrganizations({
-        page: 1,
-        searchText: ["name", searchText],
-        sort: value,
-        sortOption: sortOption,
-        limit: 10,
-        field: "",
-      })
-    )
-      .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          // Update state with fetched organizations and pagination data
-          setPages(res.payload.data.paginationData.totalPages);
-          setOrganizations(res.payload.data.data);
-          setLoading(false); // Update loading state
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("There is some error while fetching organizations!"); // Notify user of error
-      });
+    setSortOrder(value); // Update sorting order
+    fetchOrganizations(1, searchText, value, sortOption);
   };
 
   // Function to handle pagination change
   const onPaginationChange = (page) => {
     setCurrent(page); // Update current page number
-    // Dispatch action to fetch organizations for the selected page
-    dispatch(
-      getOrganizations({
-        page: page,
-        searchText: ["name", searchText],
-        sort: sortOrder,
-        sortOption: sortOption,
-        limit: 10,
-        field: "",
-      })
-    )
-      .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          // Update state with fetched organizations and pagination data
-          setPages(res.payload.data.paginationData.totalPages);
-          setOrganizations(res.payload.data.data);
-          setLoading(false); // Update loading state
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("There is some error while fetching organizations!"); // Notify user of error
-      });
+    fetchOrganizations(page, searchText, sortOrder, sortOption);
   };
 
   const filterOrganization = (key) => {

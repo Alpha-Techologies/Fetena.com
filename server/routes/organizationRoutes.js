@@ -10,9 +10,12 @@ const {
   deactivateExaminer,
   updateOrganizationLogo,
   organizationStaff,
-  leaveOrganization
+  leaveOrganization,
 } = require("../controller/organization");
 const { protect, restrictTo } = require("../controller/auth");
+const {
+  getOrganizationId,
+} = require("../controller/organization/getOrganizationId");
 
 const organizationRouter = express.Router();
 
@@ -25,8 +28,8 @@ organizationRouter.route("/staff/:id").get(protect, organizationStaff);
 
 organizationRouter
   .route("/:id")
+  .patch(protect, restrictTo(true), getOrganizationId, updateOrganization)
   .get(protect, getOneOrganization)
-  .patch(protect, restrictTo(true), updateOrganization)
   .delete(protect, deleteOrganization);
 
 organizationRouter

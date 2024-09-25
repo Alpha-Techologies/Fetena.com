@@ -10,6 +10,7 @@ const {
   protect,
   activateAccount,
   login,
+  updateUser,
 } = require("../controller/auth");
 
 const {
@@ -30,14 +31,15 @@ const {
   // getProfile,
 } = require("../controller/userController");
 
-const {
-  getMyCerts
-} = require("../controller/certificate")
+const { getMyCerts } = require("../controller/certificate");
 
 const { fileUpload } = require("../utils/fileUpload");
 
 const { zip } = require("../utils/zip");
 const { validationRules, checkId } = require("../lib/validation");
+const {
+  getOrganizationId,
+} = require("../controller/organization/getOrganizationId");
 
 // const {
 //   getUserProfile,
@@ -55,13 +57,9 @@ router.param("filename", checkId);
 
 router.route("/backup").get(zip);
 
-router
-    .route("/me")
-      .get(protect, getMe, getUser);
+router.route("/me").get(protect, getMe, getUser);
 
-router
-    .route("/me/cert")
-      .get(protect, getMe, getMyCerts)
+router.route("/me/cert").get(protect, getMe, getMyCerts);
 
 router.get("/", protect, getAllUsers);
 router.get("/logout", protect, logout);
@@ -86,13 +84,15 @@ router.post("/verify-email", activateAccount);
 router.post("/profile", fileUpload);
 router.patch("/updateIdPhoto", protect, updateIdPhoto);
 
-
 router.post("/uploads", fileUpload);
 router.post("/follow/:id", protect, followOrganization);
 router.post("/unfollow/:id", protect, unfollowOrganization);
 router.post("/addAdmin", addAsAdmin);
 
 router.get("/organizations", protect, getUserOrganization);
+router
+  .route("/:id")
+  .patch(protect, restrictTo(false), getOrganizationId, updateUser);
 // router.patch("/activate/:token", activateAccount);
 // verify-email
 

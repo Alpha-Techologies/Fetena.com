@@ -4,6 +4,8 @@ const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
 const { fileUpload } = require("../profile/fileUpload");
 const generateRandomKey = require("../../utils/generateRandomKey");
+const { logActivity } = require("../../utils/logActivity");
+
 
 exports.createExam = catchAsync(async (req, res, next) => {
   // form data will be send in req, holding in the req.file the material that is a PDF file
@@ -12,9 +14,6 @@ exports.createExam = catchAsync(async (req, res, next) => {
   //   if (!req.files.material) {
   //     return next(new APIError("There is no file", StatusCodes.BAD_REQUEST));
   //   }
-
-
-  console.log(req.files, req.body);
 
 
   if (!req.body.data) {
@@ -85,6 +84,9 @@ exports.createExam = catchAsync(async (req, res, next) => {
     }
 
   await exam.save();
+
+  req.organization = exam.organization
+  await logActivity(req,0,{name:'exam',id:exam.id} )
 
   res.status(201).json({
     status: "success",

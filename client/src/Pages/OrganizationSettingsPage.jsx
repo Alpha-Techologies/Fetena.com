@@ -9,8 +9,9 @@ import {
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
+import Pricing from "../Components/Pricing";
 
-const OrganizationSettingsPage = () => {
+const OrganizationInfo = () => {
   const { workspace } = useSelector((state) => state.data);
   const url = import.meta.env.VITE_API_URL
   const [form] = Form.useForm();
@@ -130,95 +131,149 @@ const OrganizationSettingsPage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 items-start">
-      <h1 className="text-2xl font-bold text-blue-900 text-left">
+    <Card
+      style={{ width: "100%" }}
+      className='px-4'>
+      <Form
+        className='w-full'
+        form={form}
+        onFinish={onFinish}
+        initialValues={initialValues}
+        layout='vertical'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-x-8 '>
+          <div>
+            <Form.Item
+              label='Organization Name'
+              required
+              name={"name"}
+              tooltip='This is a required field'>
+              <Input placeholder='Enter your organization name' />
+            </Form.Item>
+            <Form.Item
+              label='Description'
+              required
+              name={"description"}
+              tooltip={{
+                title: "Write a description about your organization",
+              }}>
+              <Input placeholder='Enter Descirption' />
+            </Form.Item>
+            <Form.Item
+              label='Address'
+              name={"address"}
+              required>
+              <Input placeholder='Enter your address' />
+            </Form.Item>
+            <div>
+              <Form.Item
+                label='Organization Photo'
+                required>
+                <input
+                  type='file'
+                  accept='image/*'
+                  ref={fileInputRef}
+                  onChange={handleFileChange} // Update this line
+                />
+              </Form.Item>
+              <div className='flex items-center gap-2 my-4'>
+                <img
+                  src={
+                    pictureData.logo
+                      ? URL.createObjectURL(pictureData.logo)
+                      : url + workspace.logo
+                  }
+                  alt='Uploaded Photo'
+                  className='uploaded-photo w-48 h-56'
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <Form.Item
+              label='Email'
+              name={"email"}>
+              <Input placeholder='Enter your organziation email' />
+            </Form.Item>
+
+            <Form.Item
+              label='Phone Number'
+              name={"phone"}>
+              <Input placeholder='Enter your orgnaization phone number' />
+            </Form.Item>
+
+            <Form.Item
+              label='Website'
+              name={"website"}>
+              <Input placeholder='Enter your organization website' />
+            </Form.Item>
+          </div>
+        </div>
+
+        {/* <Button type="primary" className="px-8 flex gap-2 items-center font-semibold bg-primary-500" onClick={submitExam}><Icon  icon="lucide:save"  className="text-xl text-white" />{" "} Save & Submit</Button> */}
+        <div className='w-full flex gap-2 items-center justify-center'>
+          <Form.Item>
+            <Button
+              className='px-8 flex gap-2 items-center font-semibold bg-primary-500 w-full'
+              type='primary'
+              htmlType='submit'>
+              <Icon
+                icon='lucide:save'
+                className='text-xl text-white'
+              />{" "}
+              Update Organization
+            </Button>
+          </Form.Item>
+        </div>
+      </Form>
+    </Card>
+  );
+};
+
+
+const OrganizationSettingsPage = () => {
+
+  const tabList = [
+    {
+      key: "tab1",
+      tab: "Info",
+    },
+    {
+      key: "tab2",
+      tab: "Subscription",
+    },
+  ];
+  const contentList = {
+    tab1: <OrganizationInfo />,
+    tab2: <Pricing />,
+  };
+
+  const [activeTabKey1, setActiveTabKey1] = useState("tab1");
+
+  const onTab1Change = (key) => {
+    setActiveTabKey1(key);
+  };
+  
+
+  
+
+  return (
+    <div className='flex flex-col gap-4 items-start'>
+      <h1 className='text-2xl font-bold text-blue-900 text-left'>
         Organizations Settings
       </h1>
 
-      <Card style={{ width: "100%" }} className="px-4">
-        <Form
-          className="w-full"
-          form={form}
-          onFinish={onFinish}
-          initialValues={initialValues}
-          layout="vertical"
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 ">
-            <div>
-              <Form.Item
-                label="Organization Name"
-                required
-                name={"name"}
-                tooltip="This is a required field"
-              >
-                <Input placeholder="Enter your organization name" />
-              </Form.Item>
-              <Form.Item
-                label="Description"
-                required
-                name={"description"}
-                tooltip={{
-                  title: "Write a description about your organization",
-                }}
-              >
-                <Input placeholder="Enter Descirption" />
-              </Form.Item>
-              <Form.Item label="Address" name={"address"} required>
-                <Input placeholder="Enter your address" />
-              </Form.Item>
-              <div>
-                <Form.Item label="Organization Photo" required>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    ref={fileInputRef}
-                    onChange={handleFileChange} // Update this line
-                  />
-                </Form.Item>
-                <div className="flex items-center gap-2 my-4">
-                  <img
-                    src={
-                      pictureData.logo
-                        ? URL.createObjectURL(pictureData.logo)
-                        : url + workspace.logo
-                    }
-                    alt="Uploaded Photo"
-                    className="uploaded-photo w-48 h-56"
-                  />
-                </div>
-              </div>
-            </div>
-            <div>
-              <Form.Item label="Email" name={"email"}>
-                <Input placeholder="Enter your organziation email" />
-              </Form.Item>
-
-              <Form.Item label="Phone Number" name={"phone"}>
-                <Input placeholder="Enter your orgnaization phone number" />
-              </Form.Item>
-
-              <Form.Item label="Website" name={"website"}>
-                <Input placeholder="Enter your organization website" />
-              </Form.Item>
-            </div>
-          </div>
-
-          {/* <Button type="primary" className="px-8 flex gap-2 items-center font-semibold bg-primary-500" onClick={submitExam}><Icon  icon="lucide:save"  className="text-xl text-white" />{" "} Save & Submit</Button> */}
-          <div className="w-full flex gap-2 items-center justify-center">
-            <Form.Item>
-              <Button
-                className="px-8 flex gap-2 items-center font-semibold bg-primary-500 w-full"
-                type="primary"
-                htmlType="submit"
-              >
-                <Icon icon="lucide:save" className="text-xl text-white" />{" "}
-                Update Organization
-              </Button>
-            </Form.Item>
-          </div>
-        </Form>
+      <Card
+        style={{
+          width: "100%",
+        }}
+        tabList={tabList}
+        activeTabKey={activeTabKey1}
+        onTabChange={onTab1Change}>
+        {contentList[activeTabKey1]}
       </Card>
     </div>
   );
 };
 export default OrganizationSettingsPage;
+
+

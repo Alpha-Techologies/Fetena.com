@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-const ExamStartConfirmationModal = ({handleStartExam}) => {
+const ExamStartConfirmationModal = ({handleStartExam, exam}) => {
     const [isModalOpen, setIsModalOpen] = useState(true);
     const navigate = useNavigate()
 
@@ -26,8 +26,7 @@ const ExamStartConfirmationModal = ({handleStartExam}) => {
         onOk={handleOk}
         onCancel={handleCancel}>
         <p>
-          This is a high security exam. Make sure to give permission for camera
-          and microphone. The exam is about to start.
+          {` ${exam?.securityLevel === "high" ? "This is a high security exam. Make sure to give permission for camera and microphone." : "This is a low security exam."}  The exam is about to start.`}
         </p>
       </Modal>
     </>

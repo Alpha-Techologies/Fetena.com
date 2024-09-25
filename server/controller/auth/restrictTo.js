@@ -13,6 +13,7 @@ exports.restrictTo = (isOrgOperation) => {
     if (isOrgOperation) {
       // use the find function to create req.params.id and admin.toString()
       const org = await Organization.findOne({ _id: req.params.id });
+
       if (!org) {
         return next(
           new APIError("Organization Does not Exist", StatusCodes.BAD_REQUEST)

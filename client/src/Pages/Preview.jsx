@@ -123,19 +123,20 @@ const Preview = () => {
             <div className="w-full  flex flex-wrap gap-16 py-2 px-8 my-4">
               <p className="font-semibold flex gap-2 items-center justify-center">
                 <span className="font-bold text-blue-700">Organization : </span>
-                AASTU{" "}
-                <span>
-                  <Icon
-                    icon="gravity-ui:seal-check"
-                    className="text-lg text-blue-800"
-                  />
-                </span>
+                {exam.organization?.name}{" "}
+                {exam.organization?.isVerified && (
+                  <Icon className="text-blue-500" icon="mdi:verified" />
+                )}
               </p>
 
               <p className="font-semibold flex gap-2 items-center justify-center">
                 <span className="font-bold text-blue-700">Created by : </span>
                 {user.firstName} {user.lastName}{" "}
               </p>
+              <p className="font-semibold flex gap-2 items-center justify-center">
+              <span className="font-bold text-blue-700">Certification : </span>
+               
+              {exam.hasCertificate ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}            </p>
             </div>
 
             <div className="w-full  flex flex-col gap-2 py-4 px-8 my-4 items-start">
@@ -153,11 +154,11 @@ const Preview = () => {
         <div className="w-full flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4">
           <p className="font-semibold">
             <span className="font-bold text-blue-700">Private Answer : </span>
-            {exam.privateAnswer ? "Yes" : "No"}
+            {exam.privateAnswer ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
           </p>
           <p className="font-semibold">
             <span className="font-bold text-blue-700">Private Score : </span>
-            {exam.privateScore ? "Yes" : "No"}
+            {exam.privateScore ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
           </p>
           <p className="font-semibold">
             <span className="font-bold text-blue-700">Security level : </span>
@@ -172,17 +173,17 @@ const Preview = () => {
         <div className="w-full flex flex-wrap justify-between py-2 px-8 rounded-sm border mt-4">
           <p className="font-semibold">
             <span className="font-bold text-blue-700">Calculator : </span>
-            {exam.toolsPermitted.includes("calculator") ? "Yes" : "No"}
+            {exam.toolsPermitted.includes("calculator") ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
           </p>
           <p className="font-semibold">
             <span className="font-bold text-blue-700">
               Formulas Collection :{" "}
             </span>
-            {exam.formulasCollection ? "Yes" : "No"}
+            {exam.formulasCollection ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
           </p>
           <p className="font-semibold">
             <span className="font-bold text-blue-700">Upload Materials : </span>
-            {exam.uploadMaterials ? "Yes" : "No"}
+            {exam.uploadMaterials ? <Tag color="green">Yes</Tag> : <Tag color="red">No</Tag>}
           </p>
         </div>
 
@@ -308,28 +309,20 @@ const Preview = () => {
           </div>
         )}
 
-
-
-{exam.examType !== 'online' && exam.examFile && (
-  <Card
-    className='hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200 mx-auto mt-8 mb-2'
-  >
-    <div className='flex flex-col gap-4 justify-center items-center'>
-      <div className='flex gap-4 justify-center items-center'>
-       
-
-
-      </div>
-      {exam.examFile && (
-        <iframe
-        src={`${import.meta.env.VITE_API_URL}/${exam.examFile}`}
-        title={exam.examFile}
-        className="w-[1000px] h-[600px]"
-      />
-      )}
-    </div>
-  </Card>
-)}
+        {exam.examType !== "online" && exam.examFile && (
+          <Card className="hover:shadow-md transition-all ease-in-out duration-300 border border-gray-200 mx-auto mt-8 mb-2">
+            <div className="flex flex-col gap-4 justify-center items-center">
+              <div className="flex gap-4 justify-center items-center"></div>
+              {exam.examFile && (
+                <iframe
+                  src={`${import.meta.env.VITE_API_URL}/${exam.examFile}`}
+                  title={exam.examFile}
+                  className="w-[1000px] h-[600px]"
+                />
+              )}
+            </div>
+          </Card>
+        )}
 
         <Card className=" mx-auto mt-8 mb-2 shadow-sm ">
           <div className="flex gap-8 items-center justify-center">

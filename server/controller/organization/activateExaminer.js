@@ -4,6 +4,7 @@ const APIError = require("../../utils/apiError");
 const catchAsync = require("../../utils/catchAsync");
 const OrganizationExaminer = require("../../models/organization.examiner.model");
 const Notification = require("../../models/notification.model");
+const { logActivity } = require("../../utils/logActivity");
 
 exports.activateExaminer = catchAsync(async (req, res, next) => {
   const { userId } = req.body;
@@ -48,6 +49,10 @@ exports.activateExaminer = catchAsync(async (req, res, next) => {
     user: userId,
     message: `Your account as an Examiner has been Activated. In the Organization ${organization.name}`,
   });
+
+  req.organization = organizationId
+  await logActivity(req,6,{name:'Organization Examiner',id:userId} )
+
 
   res.status(StatusCodes.OK).json({
     status: "success",
